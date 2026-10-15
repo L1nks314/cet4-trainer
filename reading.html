@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>仔细阅读 · 总览</title>
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--line:#e6e8ec;--txt:#1c1e21;--sub:#6b7280;
+ --blue:#2563eb;--blue-soft:#eff4ff;--green:#0d8a52;--green-soft:#e9f7ef;
+ --red:#c0392b;--amber:#b45309;--amber-soft:#fef6e7;--grey:#f2f3f5;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.72 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto;}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:19px;margin:2px 0 14px}
+h2{font-size:16px;margin:0 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.today .k{font-size:12.5px;color:var(--sub);letter-spacing:.5px}
+.today .n{font-size:19px;font-weight:700;margin:6px 0 4px;line-height:1.4}
+.today .m{font-size:13.5px;color:var(--sub)}
+.go{display:block;width:100%;margin-top:14px;padding:15px;border-radius:11px;
+ background:var(--blue);color:#fff;font-size:16.5px;font-weight:700;text-align:center;
+ text-decoration:none;letter-spacing:.5px}
+.go:active{transform:scale(.985)}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:14px}
+.lh{padding:13px 16px;border-bottom:1px solid var(--line);font-weight:700;font-size:14.5px}
+a.it{display:flex;align-items:center;gap:11px;padding:13px 16px;border-bottom:1px solid var(--line);
+ text-decoration:none;color:var(--txt);font-size:14.5px}
+a.it:last-child{border-bottom:0}
+a.it:active{background:var(--blue-soft)}
+a.it .no{color:var(--sub);font-size:12.5px;min-width:26px}
+a.it .tx{flex:1}
+a.it .mt{font-size:12px;color:var(--sub)}
+a.it .ar{color:#c3c8d0}
+a.it.now{background:var(--green-soft)}
+a.it.now .tx{font-weight:700;color:var(--green)}
+.tag{font-size:11.5px;padding:2px 7px;border-radius:20px;background:var(--blue-soft);color:var(--blue);margin-left:6px}
+table{width:100%;border-collapse:collapse;font-size:13.2px}
+th,td{padding:8px 7px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:#fafbfc;font-weight:600}
+td.c{text-align:center;white-space:nowrap;color:var(--sub);font-size:12px}
+tr:last-child td{border-bottom:0}
+.frow{display:flex;align-items:center;gap:11px;padding:7px 0}
+.fn{flex:0 0 88px;font-size:13.2px}
+.fbar{flex:1;height:8px;background:#eceef2;border-radius:5px;overflow:hidden}
+.fbar i{display:block;height:100%;background:var(--red);border-radius:5px}
+.fv{flex:0 0 30px;text-align:right;font-size:13px;font-weight:700;color:var(--red)}
+.hint{color:var(--sub);font-size:12.5px;margin:0 0 12px;line-height:1.8}
+.tip{background:var(--blue-soft);color:#123a75;border-radius:10px;padding:11px 13px;
+ font-size:13.2px;line-height:1.7;margin-top:12px}
+.big{display:flex;gap:10px;text-align:center}
+.big div{flex:1;background:var(--grey);border-radius:10px;padding:11px 6px}
+.big b{display:block;font-size:20px;font-weight:800}
+.big span{font-size:11.5px;color:var(--sub)}
+details.fold{border:1px solid var(--line);border-radius:11px;overflow:hidden}
+details.fold>summary{padding:11px 14px;background:#fafbfc;cursor:pointer;font-size:14px;
+ font-weight:600;list-style:none;color:var(--blue)}
+details.fold>summary::-webkit-details-marker{display:none}
+details.fold>summary::before{content:"▸ "}
+details.fold[open]>summary::before{content:"▾ "}
+details.fold .inner{padding:0 12px 10px;max-height:60vh;overflow:auto}
+</style>
+</head>
+<body>
+
+<a class="back" href="index.html">← 返回作战台</a>
+<h1>仔细阅读 · 总览</h1>
+
+<div class="card today" id="todayBox"></div>
+
+<div class="card">
+  <h2>阅读怎么练（20 分钟）</h2>
+  <div class="big">
+    <div><b>12</b><span>分钟做题</span></div>
+    <div><b>8</b><span>分钟分析</span></div>
+  </div>
+  <div class="tip">
+    <b>四步：</b><br>
+    ① 先看题干，划出关键词（人名、数字、名词）<br>
+    ② 回原文定位，找到答案出处的<b>那一句</b><br>
+    ③ 对比题干与原文，找<b>同义替换</b>—— 答案就在这儿<br>
+    ④ 排除干扰项：偷换范围 / 无中生有 / 把话说过头
+  </div>
+</div>
+
+<div class="list"><div class="lh">全部篇目（16 篇 / 80 题）</div><div id="list"></div></div>
+
+<div class="card">
+  <h2>同义替换本（104 组）</h2>
+  <p class="hint">四级阅读的答案，<b>八成靠同义替换</b>。做完每篇回来对一遍这张表。</p>
+  <details class="fold"><summary>展开全部 104 组替换对</summary>
+    <div class="inner">
+      <table><tr><th class="c">套</th><th class="c">题</th><th>原文表达</th>
+      <th class="c"></th><th>选项表达</th></tr><tr><td class="c">2025/12/1</td><td class="c">46</td><td>can significantly influence your health</td><td class="c">↔</td><td>It has a considerable impact on our health</td></tr><tr><td class="c">2025/12/1</td><td class="c">47</td><td>can react differently to the medicine over the course of a 24-hour time period</td><td class="c">↔</td><td>Their reaction to medicines changes during the day-night cycle</td></tr><tr><td class="c">2025/12/1</td><td class="c">48</td><td>they rarely consider the best time to take it</td><td class="c">↔</td><td>They give little thought to the time of taking it for maximum effect</td></tr><tr><td class="c">2025/12/1</td><td class="c">49</td><td>to ensure compliance</td><td class="c">↔</td><td>To ensure they take the drugs as instructed</td></tr><tr><td class="c">2025/12/1</td><td class="c">50</td><td>More research is needed to determine the best times to administer treatments for different diseases</td><td class="c">↔</td><td>Conducting more studies to find out the best timing for treating different diseases</td></tr><tr><td class="c">2025/12/1</td><td class="c">51</td><td>The hairdresser agreed but for a different reason</td><td class="c">↔</td><td>They differ in their reasons for continuing to work</td></tr><tr><td class="c">2025/12/1</td><td class="c">52</td><td>years of slow rise in real wages</td><td class="c">↔</td><td>The rate of wage increase in terms of purchasing power has slowed down for years</td></tr><tr><td class="c">2025/12/1</td><td class="c">53</td><td>The share of Americans with bachelor&#x27;s degrees who were working into their 70s reached nearly 20%</td><td class="c">↔</td><td>The higher their educational level, the more likely they are to delay retirement</td></tr><tr><td class="c">2025/12/1</td><td class="c">54</td><td>more for social benefits than for financial reasons</td><td class="c">↔</td><td>Staying connected socially</td></tr><tr><td class="c">2025/12/1</td><td class="c">55</td><td>may be more likely to look forward to retiring</td><td class="c">↔</td><td>They tend to anticipate retirement</td></tr><tr><td class="c">2025/6/2</td><td class="c">46</td><td>the extra edge</td><td class="c">↔</td><td>Add to our advantage</td></tr><tr><td class="c">2025/6/2</td><td class="c">46</td><td>in our professional and personal lives</td><td class="c">↔</td><td>in work and life</td></tr><tr><td class="c">2025/6/2</td><td class="c">47</td><td>the symbolic meaning that we assign to different types of clothing</td><td class="c">↔</td><td>Different types of clothing convey different messages symbolically.</td></tr><tr><td class="c">2025/6/2</td><td class="c">47</td><td>assign</td><td class="c">↔</td><td>convey</td></tr><tr><td class="c">2025/6/2</td><td class="c">48</td><td>the way they make us feel</td><td class="c">↔</td><td>how we feel about ourselves</td></tr><tr><td class="c">2025/6/2</td><td class="c">48</td><td>because of</td><td class="c">↔</td><td>By impacting</td></tr><tr><td class="c">2025/6/2</td><td class="c">49</td><td>puts us in the right frame of mind</td><td class="c">↔</td><td>enable people to have the right mentality</td></tr><tr><td class="c">2025/6/2</td><td class="c">49</td><td>to conduct business</td><td class="c">↔</td><td>for doing business</td></tr><tr><td class="c">2025/6/2</td><td class="c">50</td><td>a casual dress</td><td class="c">↔</td><td>Dress casually</td></tr><tr><td class="c">2025/6/2</td><td class="c">50</td><td>wearing formal wear isn&#x27;t a great idea when we want to socialize</td><td class="c">↔</td><td>Dress casually</td></tr><tr><td class="c">2025/6/2</td><td class="c">51</td><td>both opera and classical music are now still quite alive</td><td class="c">↔</td><td>They still make their presence felt</td></tr><tr><td class="c">2025/6/2</td><td class="c">52</td><td>uses similar beats, harmonies, and melodies(旋律) as those that were used in some of classical music&#x27;s best works</td><td class="c">↔</td><td>It contains elements similar to those in some masterpieces of classical music</td></tr><tr><td class="c">2025/6/2</td><td class="c">53</td><td>A better example for the relevance of opera and classical music can be seen in the invention of the rock opera</td><td class="c">↔</td><td>To show the relevance of opera and classical music</td></tr><tr><td class="c">2025/6/2</td><td class="c">54</td><td>there are few types of music that are more expressive</td><td class="c">↔</td><td>They are considered to be the most expressive type of music</td></tr><tr><td class="c">2025/6/2</td><td class="c">55</td><td>Classical music and opera are the very foundation of what our modern music is based upon</td><td class="c">↔</td><td>It could not have come into being without classical music and opera as its foundation</td></tr><tr><td class="c">2025/6/1</td><td class="c">46</td><td>may be at risk of dying out</td><td class="c">↔</td><td>may cease to exist</td></tr><tr><td class="c">2025/6/1</td><td class="c">46</td><td>because they are too comfortable</td><td class="c">↔</td><td>as a result of enjoying too good a life</td></tr><tr><td class="c">2025/6/1</td><td class="c">47</td><td>Environmentalists have long believed that building roads or homes near the bears may threaten their survival</td><td class="c">↔</td><td>Environmentalists&#x27; long-time belief regarding panda conservation</td></tr><tr><td class="c">2025/6/1</td><td class="c">47</td><td>But the new research suggests that a modest degree of discomfort and fragmentation may actually help preserve panda populations.</td><td class="c">↔</td><td>may be misleading</td></tr><tr><td class="c">2025/6/1</td><td class="c">48</td><td>be happy enough to thrive, but not so content that they don&#x27;t want to move around and find new mates</td><td class="c">↔</td><td>Their chances of finding new mates have a lot to do with their habitat.</td></tr><tr><td class="c">2025/6/1</td><td class="c">48</td><td>their habitat（隐含于 happy/content 之中——&quot;舒适&quot;是栖息地状态）</td><td class="c">↔</td><td>their habitat</td></tr><tr><td class="c">2025/6/1</td><td class="c">49</td><td>Their conclusions about what The Guardian described as this &quot;sweet spot&quot; are in line with the so-called Goldilocks principle</td><td class="c">↔</td><td>It applies to the preservation of pandas too.</td></tr><tr><td class="c">2025/6/1</td><td class="c">49</td><td>applied to a wide range of disciplines, from developmental psychology to economics and engineering</td><td class="c">↔</td><td>applies to … too</td></tr><tr><td class="c">2025/6/1</td><td class="c">50</td><td>implications beyond panda conservation</td><td class="c">↔</td><td>Shed light on the conservation of most large meat-eating animals.</td></tr><tr><td class="c">2025/6/1</td><td class="c">50</td><td>Most large animals that eat meat live in increasingly fragmented landscapes</td><td class="c">↔</td><td>most large meat-eating animals</td></tr><tr><td class="c">2025/6/1</td><td class="c">51</td><td>it feels as if they excel without really trying</td><td class="c">↔</td><td>They seem to outdo others without hard work</td></tr><tr><td class="c">2025/6/1</td><td class="c">52</td><td>As much as talent counts, effort counts twice</td><td class="c">↔</td><td>It plays a lesser role in one&#x27;s success</td></tr><tr><td class="c">2025/6/1</td><td class="c">52</td><td>talent may be overrated</td><td class="c">↔</td><td>plays a lesser role</td></tr><tr><td class="c">2025/6/1</td><td class="c">53</td><td>our thoughts are immediately burdened by all the things we must first learn</td><td class="c">↔</td><td>They are burdened by their expectation of perfection</td></tr><tr><td class="c">2025/6/1</td><td class="c">54</td><td>Grit allows us to redefine our goals</td><td class="c">↔</td><td>It lets us reconsider the goals to achieve</td></tr><tr><td class="c">2025/6/1</td><td class="c">55</td><td>If at first you fail, then try one more time with grit</td><td class="c">↔</td><td>We should stay persistent even in face of failures</td></tr><tr><td class="c">2025/6/1</td><td class="c">55</td><td>grit, the perfect combination of passion and persistence</td><td class="c">↔</td><td>stay persistent</td></tr><tr><td class="c">2025/6/1</td><td class="c">55</td><td>continue to try</td><td class="c">↔</td><td>stay persistent</td></tr><tr><td class="c">2024/6/1</td><td class="c">46</td><td>Care about what other people think</td><td class="c">↔</td><td>taking to heart others&#x27; opinion of us</td></tr><tr><td class="c">2024/6/1</td><td class="c">46</td><td>you will always be their prisoner</td><td class="c">↔</td><td>can never be truly free</td></tr><tr><td class="c">2024/6/1</td><td class="c">47</td><td>unproductive</td><td class="c">↔</td><td>unfruitful</td></tr><tr><td class="c">2024/6/1</td><td class="c">47</td><td>an exhausting way to go through life</td><td class="c">↔</td><td>exhausting</td></tr><tr><td class="c">2024/6/1</td><td class="c">48</td><td>when we were children</td><td class="c">↔</td><td>early childhood</td></tr><tr><td class="c">2024/6/1</td><td class="c">48</td><td>terrified of abandonment</td><td class="c">↔</td><td>fear of being deserted</td></tr><tr><td class="c">2024/6/1</td><td class="c">49</td><td>happier in your life</td><td class="c">↔</td><td>happier life</td></tr><tr><td class="c">2024/6/1</td><td class="c">50</td><td>love yourself</td><td class="c">↔</td><td>Love ourselves as we are</td></tr><tr><td class="c">2024/6/1</td><td class="c">51</td><td>a slide into forgetfulness</td><td class="c">↔</td><td>memory gradually deteriorates</td></tr><tr><td class="c">2024/6/1</td><td class="c">52</td><td>brains may change every time a person learns something new</td><td class="c">↔</td><td>Brains can refresh and improve with learning.</td></tr><tr><td class="c">2024/6/1</td><td class="c">53</td><td>taking a different route to the grocery store or going somewhere new on vacation</td><td class="c">↔</td><td>Approaching everyday tasks in novel ways.</td></tr><tr><td class="c">2024/6/1</td><td class="c">54</td><td>curiosity and a desire for knowledge</td><td class="c">↔</td><td>Being curious and desiring knowledge.</td></tr><tr><td class="c">2024/6/1</td><td class="c">55</td><td>that desire for novel experiences, which can, in turn, refresh the brain</td><td class="c">↔</td><td>Desiring new experiences can help to renovate the brain.</td></tr><tr><td class="c">2023/12/1</td><td class="c">46</td><td>That&#x27;s what important people say. That&#x27;s what people who get promoted say</td><td class="c">↔</td><td>follows successful people&#x27;s example</td></tr><tr><td class="c">2023/12/1</td><td class="c">47</td><td>the more we believe that one has the opportunity for success based on hard work</td><td class="c">↔</td><td>We hold the belief that hard work leads to success</td></tr><tr><td class="c">2023/12/1</td><td class="c">48</td><td>one in five highly engaged employees is at risk of burnout</td><td class="c">↔</td><td>It does much harm to many busy employees&#x27; well-being</td></tr><tr><td class="c">2023/12/1</td><td class="c">49</td><td>you&#x27;re being held against your will from working</td><td class="c">↔</td><td>One is forced by circumstances to stop working</td></tr><tr><td class="c">2023/12/1</td><td class="c">50</td><td>You can share loud and proud that you won&#x27;t be checking email until you&#x27;re back</td><td class="c">↔</td><td>To ensure employees as well as employers truly have time off</td></tr><tr><td class="c">2023/12/1</td><td class="c">50</td><td>Leaders should take time off themselves and encourage employees to do the same</td><td class="c">↔</td><td>employers as well as employees</td></tr><tr><td class="c">2023/12/1</td><td class="c">51</td><td>this gap is largely explained by the fact that women tended to book earlier than men</td><td class="c">↔</td><td>It is largely attributed to women booking earlier than men</td></tr><tr><td class="c">2023/12/1</td><td class="c">52</td><td>what was causing these gender differences in booking business trips</td><td class="c">↔</td><td>What accounted for the gender gap in airfares</td></tr><tr><td class="c">2023/12/1</td><td class="c">53</td><td>the gender gap disappears</td><td class="c">↔</td><td>The gender difference in airfare expenses no longer existed</td></tr><tr><td class="c">2023/12/1</td><td class="c">54</td><td>it can result in lower employee motivation, business performance and workplace morale(士气) and culture</td><td class="c">↔</td><td>It proves to be counterproductive in a number of ways</td></tr><tr><td class="c">2023/12/1</td><td class="c">55</td><td>early booking by women can translate into savings of $1 million a year</td><td class="c">↔</td><td>It can help companies increase their savings significantly</td></tr><tr><td class="c">2023/6/1</td><td class="c">46</td><td>a reward for hard work and diligence</td><td class="c">↔</td><td>A reward for industriousness</td></tr><tr><td class="c">2023/6/1</td><td class="c">47</td><td>a reduced quality of life for many</td><td class="c">↔</td><td>Many Americans&#x27; quality of life has become lower</td></tr><tr><td class="c">2023/6/1</td><td class="c">48</td><td>ethical questions</td><td class="c">↔</td><td>Questions related to moral principles</td></tr><tr><td class="c">2023/6/1</td><td class="c">49</td><td>an increase in amenities purchased by the affluent means a reduction in amenities for the poor</td><td class="c">↔</td><td>the affluent enjoy a more comfortable life at the expense of the poor</td></tr><tr><td class="c">2023/6/1</td><td class="c">50</td><td>create more publicly accessible spaces and amenities for all</td><td class="c">↔</td><td>More public spaces created for everyone to enjoy</td></tr><tr><td class="c">2023/6/1</td><td class="c">51</td><td>higher-than-average ambition</td><td class="c">↔</td><td>more ambitious than ordinary people</td></tr><tr><td class="c">2023/6/1</td><td class="c">52</td><td>you are more likely to succeed</td><td class="c">↔</td><td>may not have a greater chance of success</td></tr><tr><td class="c">2023/6/1</td><td class="c">53</td><td>adapt to new circumstances</td><td class="c">↔</td><td>adapt to new situations</td></tr><tr><td class="c">2023/6/1</td><td class="c">54</td><td>disastrous, and impossible to recover from</td><td class="c">↔</td><td>means the end of their career</td></tr><tr><td class="c">2023/6/1</td><td class="c">55</td><td>such success means nothing for their health and happiness—and if you don&#x27;t have health and happiness, what else could possibly matter?</td><td class="c">↔</td><td>Prioritize health and happiness over material success</td></tr><tr><td class="c">2023/6/2</td><td class="c">46</td><td>thinnest-margined businesses</td><td class="c">↔</td><td>losing customers and profits</td></tr><tr><td class="c">2023/6/2</td><td class="c">46</td><td>under attack from e-commerce giants</td><td class="c">↔</td><td>losing customers</td></tr><tr><td class="c">2023/6/2</td><td class="c">47</td><td>first came about in America</td><td class="c">↔</td><td>It originated in the United States.</td></tr><tr><td class="c">2023/6/2</td><td class="c">48</td><td>a revolution in distribution</td><td class="c">↔</td><td>They revolutionized the distribution of goods.</td></tr><tr><td class="c">2023/6/2</td><td class="c">49</td><td>travel through as much of the store as possible, and be tempted along the way</td><td class="c">↔</td><td>Induce customers to make more unplanned purchases.</td></tr><tr><td class="c">2023/6/2</td><td class="c">50</td><td>uses corporate black magic on our appetite</td><td class="c">↔</td><td>They use tricky strategies to promote their business.</td></tr><tr><td class="c">2023/6/2</td><td class="c">51</td><td>the summer months were needed for farm work</td><td class="c">↔</td><td>Students needed to help with farm work</td></tr><tr><td class="c">2023/6/2</td><td class="c">52</td><td>Teachers and students experience a closer relationship</td><td class="c">↔</td><td>strengthen their relationship with teachers</td></tr><tr><td class="c">2023/6/2</td><td class="c">53</td><td>time off from school is vital to healthy development</td><td class="c">↔</td><td>It contributes to students&#x27; healthy growth</td></tr><tr><td class="c">2023/6/2</td><td class="c">54</td><td>most stay at home, watching TV or playing games on electronic devices, which hardly benefits them</td><td class="c">↔</td><td>It does little good to most students</td></tr><tr><td class="c">2023/6/2</td><td class="c">55</td><td>The U.S. has changed from a farming economy to a knowledge- and innovation-based economy, so it makes sense for the school year to change as well</td><td class="c">↔</td><td>Outdated</td></tr><tr><td class="c">2022/12/1</td><td class="c">46</td><td>a wonderful variety of seaweeds</td><td class="c">↔</td><td>Variety</td></tr><tr><td class="c">2022/12/1</td><td class="c">46</td><td>at least five different colors in every meal</td><td class="c">↔</td><td>Variety</td></tr><tr><td class="c">2022/12/1</td><td class="c">47</td><td>eat much bigger portions</td><td class="c">↔</td><td>tend to eat quite a lot</td></tr><tr><td class="c">2022/12/1</td><td class="c">47</td><td>than people in other countries</td><td class="c">↔</td><td>tend to</td></tr><tr><td class="c">2022/12/1</td><td class="c">48</td><td>regional, seasonal produce</td><td class="c">↔</td><td>Seasonal local produce</td></tr><tr><td class="c">2022/12/1</td><td class="c">49</td><td>make meals an event</td><td class="c">↔</td><td>attach great importance to their meals</td></tr><tr><td class="c">2022/12/1</td><td class="c">50</td><td>walk way more than the average American</td><td class="c">↔</td><td>do considerably more walking</td></tr><tr><td class="c">2022/12/1</td><td class="c">51</td><td>being sensitive to people&#x27;s feelings</td><td class="c">↔</td><td>People who are aware of others&#x27; feelings</td></tr><tr><td class="c">2022/12/1</td><td class="c">51</td><td>come with an extra dose of stress</td><td class="c">↔</td><td>may experience more stress</td></tr><tr><td class="c">2022/12/1</td><td class="c">52</td><td>to measure their emotional intelligence</td><td class="c">↔</td><td>To assess the impacts of being emotionally clever</td></tr><tr><td class="c">2022/12/1</td><td class="c">52</td><td>The findings suggest that some people may be too emotionally clever for their own good</td><td class="c">↔</td><td>the impacts of being emotionally clever</td></tr><tr><td class="c">2022/12/1</td><td class="c">53</td><td>some people may be too emotionally clever for their own good</td><td class="c">↔</td><td>People may suffer from having a high emotional intelligence</td></tr><tr><td class="c">2022/12/1</td><td class="c">53</td><td>Sometimes you can be so good at something that it causes trouble</td><td class="c">↔</td><td>suffer from having a high emotional intelligence</td></tr><tr><td class="c">2022/12/1</td><td class="c">54</td><td>emotional intelligence can be used to manipulate others for personal gains</td><td class="c">↔</td><td>Some people may take advantage of it and benefit themselves</td></tr><tr><td class="c">2022/12/1</td><td class="c">55</td><td>you are not responsible for how other people feel</td><td class="c">↔</td><td>Avoid burdening themselves with others&#x27; feelings</td></tr><tr><td class="c">2022/12/1</td><td class="c">55</td><td>some sensitive individuals may assume responsibility for other people&#x27;s sadness or anger, which ultimately stresses them out</td><td class="c">↔</td><td>burdening themselves with others&#x27; feelings</td></tr></table>
+    </div>
+  </details>
+</div>
+
+<div class="card">
+  <h2>干扰项手法分布（8 套 · 240 个干扰项）</h2>
+  <p class="hint">这是<b>命题组造错项的套路</b>。认出来就能直接排除。</p>
+  <div class="frow"><span class="fn">无中生有</span><span class="fbar"><i style="width:100%"></i></span><span class="fv">61</span></div><div class="frow"><span class="fn">偷换概念</span><span class="fbar"><i style="width:83%"></i></span><span class="fv">51</span></div><div class="frow"><span class="fn">与原文相反</span><span class="fbar"><i style="width:72%"></i></span><span class="fv">44</span></div><div class="frow"><span class="fn">张冠李戴</span><span class="fbar"><i style="width:45%"></i></span><span class="fv">28</span></div><div class="frow"><span class="fn">以偏概全</span><span class="fbar"><i style="width:39%"></i></span><span class="fv">24</span></div><div class="frow"><span class="fn">过度推断</span><span class="fbar"><i style="width:29%"></i></span><span class="fv">18</span></div><div class="frow"><span class="fn">答非所问</span><span class="fbar"><i style="width:21%"></i></span><span class="fv">13</span></div><div class="frow"><span class="fn">因果颠倒</span><span class="fbar"><i style="width:1%"></i></span><span class="fv">1</span></div>
+  <div class="tip">考场上拿不准时先问：<b>它偷换了范围吗？原文压根没提吗？话说过了头吗？</b></div>
+</div>
+
+<script>
+var START = new Date(2026,9,15);      // 集训起点（10/15 起，周二/周四各一篇）
+var LESSONS = [
+  {f:"read-2025-12-1.html",d:"2025年12月 第1套 · 第 1 篇",n:"46\u201350"},
+  {f:"read-2025-12-1.html",d:"2025年12月 第1套 · 第 2 篇",n:"51\u201355"},
+  {f:"read-2025-06-2.html",d:"2025年6月 第2套 · 第 1 篇",n:"46\u201350"},
+  {f:"read-2025-06-2.html",d:"2025年6月 第2套 · 第 2 篇",n:"51\u201355"},
+  {f:"read-2025-06-1.html",d:"2025年6月 第1套 · 第 1 篇",n:"46\u201350"},
+  {f:"read-2025-06-1.html",d:"2025年6月 第1套 · 第 2 篇",n:"51\u201355"},
+  {f:"read-2024-06-1.html",d:"2024年6月 第1套 · 第 1 篇",n:"46\u201350"},
+  {f:"read-2024-06-1.html",d:"2024年6月 第1套 · 第 2 篇",n:"51\u201355"},
+  {f:"read-2023-12-1.html",d:"2023年12月 第1套 · 第 1 篇",n:"46\u201350"},
+  {f:"read-2023-12-1.html",d:"2023年12月 第1套 · 第 2 篇",n:"51\u201355"},
+  {f:"read-2023-06-1.html",d:"2023年6月 第1套 · 第 1 篇",n:"46\u201350"},
+  {f:"read-2023-06-1.html",d:"2023年6月 第1套 · 第 2 篇",n:"51\u201355"},
+  {f:"read-2023-06-2.html",d:"2023年6月 第2套 · 第 1 篇",n:"46\u201350"},
+  {f:"read-2023-06-2.html",d:"2023年6月 第2套 · 第 2 篇",n:"51\u201355"},
+  {f:"read-2022-12-1.html",d:"2022年12月 第1套 · 第 1 篇",n:"46\u201350"},
+  {f:"read-2022-12-1.html",d:"2022年12月 第1套 · 第 2 篇",n:"51\u201355"}
+];
+function d0(x){return new Date(x.getFullYear(),x.getMonth(),x.getDate());}
+function seqOf(date){
+  var n=0, d=new Date(START.getFullYear(),START.getMonth(),START.getDate());
+  while(d<=date){ var w=d.getDay(); if(w===2||w===4) n++; d.setDate(d.getDate()+1); }
+  return n;
+}
+var today=d0(new Date());
+var idx=seqOf(today)-1;
+var fin = idx>=LESSONS.length;
+var tb=document.getElementById('todayBox');
+if(fin){
+  tb.innerHTML='<div class="k">全部 '+LESSONS.length+' 篇已排完</div>'
+   +'<div class="n">接下来回炉重做旧篇目</div>'
+   +'<div class="m">重做比做新题更值 —— 没记牢的替换对才是你的漏洞。</div>';
+}else{
+  idx=Math.max(idx,0);
+  var L=LESSONS[idx];
+  var ds=(today.getMonth()+1)+'月'+today.getDate()+'日';
+  tb.innerHTML='<div class="k">'+ds+' · 第 '+(idx+1)+' 篇 / 共 '+LESSONS.length+' 篇</div>'
+   +'<div class="n">'+L.d+'</div>'
+   +'<div class="m">第 '+L.n+' 题 · 12 分钟做题 + 8 分钟对照解析</div>'
+   +'<a class="go" href="'+encodeURI(L.f)+'">开始今天的阅读 →</a>';
+}
+document.getElementById('list').innerHTML = LESSONS.map(function(l,i){
+  var cls='it'+(i===idx&&!fin?' now':'');
+  var tg=(i===idx&&!fin)?'<span class="tag">今天</span>':'';
+  return '<a class="'+cls+'" href="'+encodeURI(l.f)+'"><span class="no">'+(i+1)+'</span>'
+   +'<span class="tx">'+l.d+tg+'</span><span class="mt">'+l.n+' 题</span>'
+   +'<span class="ar">›</span></a>';
+}).join('');
+</script>
+</body>
+</html>

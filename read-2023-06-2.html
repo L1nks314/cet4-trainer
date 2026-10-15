@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>仔细阅读 · 2023年6月 第2套</title>
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--line:#e6e8ec;--txt:#1c1e21;--sub:#6b7280;
+ --blue:#2563eb;--blue-soft:#eff4ff;--green:#0d8a52;--green-soft:#e9f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;--grey:#f2f3f5;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto;}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:19px;margin:2px 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:14px}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.chead h2{font-size:16px;margin:0}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.tabs{display:flex;gap:7px;margin-bottom:13px;flex-wrap:wrap}
+.tab,.tbtn2{border:1px solid var(--line);background:#fff;color:var(--sub);font-size:13.5px;
+ padding:7px 15px;border-radius:20px;cursor:pointer;font-family:inherit}
+.tab.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+.tbtn2{margin-left:auto;color:var(--amber);border-color:#f0dfb8;background:var(--amber-soft)}
+.tbtn2.on{background:var(--amber);color:#fff;border-color:var(--amber)}
+.panel{display:none}.panel.on{display:block}
+.para{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid #f0f2f5}
+.para:last-child{border-bottom:0}
+.pno{flex:0 0 30px;font-size:12px;color:#fff;background:#c3c9d4;border-radius:6px;
+ height:20px;line-height:20px;text-align:center;margin-top:3px;font-weight:600}
+.para.hl .pno{background:var(--amber)}
+.para.hl{background:var(--amber-soft);border-radius:8px;margin:0 -9px;padding-left:9px;padding-right:9px}
+.ptx{flex:1;min-width:0}
+.ptx .en{margin:0;font-size:14.8px;line-height:1.8;text-align:justify}
+.ptx .zh{margin:5px 0 0;font-size:13.2px;color:var(--sub);line-height:1.7;
+ display:none;border-left:2px solid var(--line);padding-left:10px}
+body.zh .ptx .zh,body.zh .oz{display:block}
+.q{padding:14px 0;border-bottom:1px solid var(--line)}
+.q:last-of-type{border-bottom:0}
+.qs{display:flex;gap:8px;font-size:15px;font-weight:600;line-height:1.6}
+.qn{flex:0 0 auto;color:var(--blue)}
+.qsz{font-size:13px;color:var(--sub);margin:5px 0 0;display:none}
+body.zh .qsz{display:block}
+.opts{margin-top:10px;display:flex;flex-direction:column;gap:7px}
+.opt{display:flex;gap:9px;align-items:flex-start;text-align:left;background:#fafbfc;
+ border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;
+ font-family:inherit;font-size:14px;color:var(--txt);line-height:1.6;width:100%}
+.opt:active{transform:scale(.995)}
+.opt .k{flex:0 0 20px;font-weight:700;color:var(--sub);padding-top:1px}
+.opt .ot{flex:1;min-width:0}
+.opt .oe{display:block}
+.opt .oz{display:none;font-size:12.8px;color:var(--sub);margin-top:4px}
+.opt.sel{border-color:var(--blue);background:var(--blue-soft)}
+.opt.right{border-color:var(--green);background:var(--green-soft)}
+.opt.wrong{border-color:var(--red);background:var(--red-soft)}
+.jump{margin-top:9px;font-size:12.5px;padding:5px 12px;border-radius:16px;
+ border:1px dashed #c9d3e5;background:#fff;color:var(--blue);cursor:pointer;font-family:inherit}
+.subrow{margin-top:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.submit{padding:12px 24px;border:0;border-radius:11px;background:var(--blue);color:#fff;
+ font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.submit:disabled{background:#9fb4de}
+.score{font-size:15px;font-weight:700}
+.hint{font-size:13px;color:var(--sub);background:#fafbfc;border:1px solid var(--line);
+ border-radius:10px;padding:10px 12px;margin:0 0 14px;line-height:1.7}
+.ana{border:1px solid var(--line);border-radius:11px;margin-bottom:9px;overflow:hidden;background:#fff}
+.ana>summary{display:flex;gap:10px;align-items:center;padding:11px 13px;cursor:pointer;
+ font-size:14px;list-style:none;background:#fafbfc}
+.ana>summary::-webkit-details-marker{display:none}
+.ana .an{font-weight:700;color:var(--blue)}
+.ana .aa{color:var(--green);font-weight:700}
+.ana .at{font-size:12.5px;color:var(--sub);background:var(--grey);padding:2px 9px;border-radius:20px}
+.ana .ac{margin-left:auto;font-size:12.5px;color:var(--sub)}
+.ana[open] .ac::after{content:""}
+.ana[open] .ac{color:var(--blue)}
+.abody{padding:13px;border-top:1px solid var(--line)}
+.arow{display:flex;gap:10px;margin-bottom:11px}
+.arow:last-child{margin-bottom:0}
+.atag{flex:0 0 42px;font-size:12px;font-weight:700;color:var(--blue);background:var(--blue-soft);
+ border-radius:6px;height:21px;line-height:21px;text-align:center}
+.atx{flex:1;min-width:0;font-size:13.6px;line-height:1.75;color:#2b2f36}
+.atx p{margin:0}
+.atx .lpara{display:inline-block;font-size:11.5px;background:var(--amber-soft);color:var(--amber);
+ border-radius:5px;padding:1px 8px;margin-bottom:5px;font-weight:700}
+.len{margin:0;font-size:13.8px;font-weight:600}
+.lzh{margin:4px 0 0;font-size:12.8px;color:var(--sub)}
+.vds{display:flex;flex-direction:column;gap:10px}
+.vd{border-radius:10px;padding:10px 12px;border:1px solid}
+.vd.ok{background:var(--green-soft);border-color:#bfe3cf}
+.vd.bad{background:#fafbfc;border-color:var(--line)}
+.vdh{display:flex;gap:9px;align-items:center;margin-bottom:6px}
+.vdl{font-weight:700;font-size:14px}
+.vdf{font-size:12px;padding:2px 9px;border-radius:20px;font-weight:600}
+.vd.ok .vdf{background:var(--green);color:#fff}
+.vd.bad .vdf{background:#dde1e8;color:#4b5563}
+.pairs{display:flex;flex-direction:column;gap:4px;margin:7px 0}
+.pair{display:flex;gap:8px;align-items:baseline;font-size:13px;flex-wrap:wrap}
+.po{color:var(--green);font-weight:600}
+.pa{color:var(--sub)}
+.pp{color:var(--blue);font-weight:600}
+.vdn{margin:7px 0 0;font-size:13.2px;color:#3a3f47;line-height:1.72}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:8px 7px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:#fafbfc;font-weight:600}
+td.c{text-align:center;white-space:nowrap;color:var(--sub);font-size:12.5px}
+tr:last-child td{border-bottom:0}
+.frow{display:flex;align-items:center;gap:11px;padding:7px 0}
+.fn{flex:0 0 88px;font-size:13.2px}
+.fbar{flex:1;height:8px;background:#eceef2;border-radius:5px;overflow:hidden}
+.fbar i{display:block;height:100%;background:var(--red);border-radius:5px}
+.fv{flex:0 0 30px;text-align:right;font-size:13px;font-weight:700;color:var(--red)}
+.tip{background:var(--blue-soft);color:#123a75;border-radius:10px;padding:11px 13px;
+ font-size:13.2px;line-height:1.7;margin-top:12px}
+</style>
+</head>
+<body>
+
+<a class="back" href="reading.html">← 阅读总览</a>
+<h1>仔细阅读 · 2023年6月 第2套</h1>
+
+<div class="card">
+  <div class="chead"><h2>本篇概况</h2><span class="cmeta">共 10 题</span></div>
+  <table>
+    <tr><th>项目</th><th>内容</th></tr>
+    <tr><td>题号</td><td>46–50、51–55</td></tr>
+    <tr><td>篇幅</td><td>10 段 / 约 696 词</td></tr>
+    <tr><td>建议用时</td><td><b>12 分钟做题</b> + 8 分钟分析（对照解析）</td></tr>
+  </table>
+  <div class="tip">阅读考的不是"读懂全文"，是 <b>定位能力 + 同义替换识别</b>。
+  每题解析都给了<b>原文定位句</b>和<b>替换对照</b>，做完务必回去对照。</div>
+</div>
+
+
+<div class="card" id="p1">
+  <div class="chead"><h2>第 1 篇 · 第 46–50 题</h2>
+    <span class="cmeta">5 段 · 5 题</span></div>
+
+  <div class="tabs">
+    <button class="tab on" data-panel="p1-read">原文</button>
+    <button class="tab" data-panel="p1-quiz">答题</button>
+    <button class="tab" data-panel="p1-ana">解析</button>
+    <button class="tbtn2" data-zh="p1">中译</button>
+  </div>
+
+  <div class="panel on" id="p1-read"><div class="para" id="p1-1"><span class="pno">P1</span><div class="ptx"><p class="en">Supermarkets have long been suffering as one of the thinnest-margined businesses in existence and one of the least-looked-forward-to places to work or visit. For more than a decade, they have been under attack from e-commerce giants, blamed for making Americans fat, and accused of contributing to climate change.</p></div></div><div class="para" id="p1-2"><span class="pno">P2</span><div class="ptx"><p class="en">Supermarkets can technically be defined as giants housing 15,000 to 60,000 different products. The revolutionary idea of a self-service grocery, where people could hunt and gather food from aisles rather than asking a clerk to fetch items from behind a counter, first came about in America. There is some debate about which was the very first, but over the years a consensus has built around King Kullen Supermarket, founded in New York in 1930.</p></div></div><div class="para" id="p1-3"><span class="pno">P3</span><div class="ptx"><p class="en">For some 300 years, Americans had fed themselves from small stores and public markets. Shopping for food involved mud, noisy chickens, clouds of flies, nasty smells, bargaining, and getting short-changed. The supermarket imitated the Fordist factory, with its emphasis on efficiency and standardization, and reimagined it as a place to buy food. Supermarkets may not feel cutting-edge now, but they were a revolution in distribution at the time. They were such strange marvels that, on her first official state visit to the United States in 1957, Queen Elizabeth II insisted on an impromptu(即兴的) tour of a suburban-Maryland Giant Food.</p></div></div><div class="para" id="p1-4"><span class="pno">P4</span><div class="ptx"><p class="en">The typical supermarket layout has barely changed over the past 90 years. Most stores open with flowers, fruit and vegetables at the front as a breath of freshness to arouse our appetite. Meanwhile, they keep the milk, eggs, and other daily basics all the way back so you&#x27;ll travel through as much of the store as possible, and be tempted along the way.</p></div></div><div class="para" id="p1-5"><span class="pno">P5</span><div class="ptx"><p class="en">In the early days, as the supermarket multiplied, so did our suspicion of it. We have long feared that this &quot;revolution in distribution&quot; uses corporate black magic on our appetite. The book The Hidden Persuaders, published in 1957, warned that supermarkets were putting women in a &quot;hypnoidal trance(催眠恍惚状态),&quot; causing them to wander aisles bumping into boxes and &quot;picking things off shelves at random.&quot;</p></div></div></div>
+
+  <div class="panel" id="p1-quiz">
+    <p class="hint">按阅读流程做：<b>先看题干划关键词 → 回原文定位 → 找同义替换 → 排除干扰项</b>。
+    做完点下方提交，会自动判分。右上「中译」可一键显示题干与选项的中文。</p>
+    <div class="q" data-q="46"><div class="qs"><span class="qn">46.</span><span class="qse">What problem have supermarkets been facing?</span></div><div class="qsz">超市一直面临什么问题?</div><div class="opts"><button class="opt" data-q="46" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">They are actually on the way to bankruptcy.</span><span class="oz">它们实际上正走向破产。</span></span></button><button class="opt" data-q="46" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">They have been losing customers and profits.</span><span class="oz">它们一直在流失顾客和利润。</span></span></button><button class="opt" data-q="46" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">They are forced to use e-commerce strategies.</span><span class="oz">它们被迫使用电子商务策略。</span></span></button><button class="opt" data-q="46" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">They have difficulty adapting to climate change.</span><span class="oz">它们难以适应气候变化。</span></span></button></div><button class="jump" data-go="p1-1" data-qnum="46">定位 P1</button></div><div class="q" data-q="47"><div class="qs"><span class="qn">47.</span><span class="qse">What does the passage say about the idea of a self-service grocery?</span></div><div class="qsz">文章对自助式杂货店这一理念有何评价?</div><div class="opts"><button class="opt" data-q="47" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">It was put forward by King Kullen.</span><span class="oz">它是由King Kullen提出的。</span></span></button><button class="opt" data-q="47" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">It originated in the United States.</span><span class="oz">它起源于美国。</span></span></button><button class="opt" data-q="47" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">It has been under constant debate.</span><span class="oz">它一直处于持续争论之中。</span></span></button><button class="opt" data-q="47" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">It proves revolutionary even today.</span><span class="oz">它即使在今天也被证明是革命性的。</span></span></button></div><button class="jump" data-go="p1-2" data-qnum="47">定位 P2</button></div><div class="q" data-q="48"><div class="qs"><span class="qn">48.</span><span class="qse">What did supermarkets do by adopting the Fordist factory approach?</span></div><div class="qsz">超市通过采用福特主义工厂方式做了什么?</div><div class="opts"><button class="opt" data-q="48" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">They modernized traditional groceries in many ways.</span><span class="oz">它们在许多方面使传统杂货店现代化。</span></span></button><button class="opt" data-q="48" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">They introduced cutting-edge layout of their stores.</span><span class="oz">它们引入了最前沿的店面布局。</span></span></button><button class="opt" data-q="48" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">They improved the quality of the food they sold.</span><span class="oz">它们提高了所售食品的质量。</span></span></button><button class="opt" data-q="48" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">They revolutionized the distribution of goods.</span><span class="oz">它们彻底改变了商品分销方式。</span></span></button></div><button class="jump" data-go="p1-3" data-qnum="48">定位 P3</button></div><div class="q" data-q="49"><div class="qs"><span class="qn">49.</span><span class="qse">What is the typical supermarket layout intended to do?</span></div><div class="qsz">典型的超市布局旨在做什么?</div><div class="opts"><button class="opt" data-q="49" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Arouse customers&#x27; appetite to buy flowers, fruit and vegetables.</span><span class="oz">激发顾客购买鲜花、水果和蔬菜的欲望。</span></span></button><button class="opt" data-q="49" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Provide customers easy access to items they want to buy.</span><span class="oz">为顾客提供便捷途径获取他们想购买的商品。</span></span></button><button class="opt" data-q="49" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">Induce customers to make more unplanned purchases.</span><span class="oz">诱导顾客进行更多计划外购买。</span></span></button><button class="opt" data-q="49" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Enable customers to have a more enjoyable shopping experience.</span><span class="oz">使顾客获得更愉快的购物体验。</span></span></button></div><button class="jump" data-go="p1-4" data-qnum="49">定位 P4</button></div><div class="q" data-q="50"><div class="qs"><span class="qn">50.</span><span class="qse">What have people long feared about supermarkets?</span></div><div class="qsz">人们长期以来对超市有什么担忧?</div><div class="opts"><button class="opt" data-q="50" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">They use tricky strategies to promote their business.</span><span class="oz">它们使用狡猾的策略来促进业务。</span></span></button><button class="opt" data-q="50" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">They are going to replace the local groceries entirely.</span><span class="oz">它们将完全取代当地杂货店。</span></span></button><button class="opt" data-q="50" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">They apply corporate black magic to the goods on display.</span><span class="oz">它们对陈列的商品施加企业黑魔法。</span></span></button><button class="opt" data-q="50" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">They take advantage of the weaknesses of women shoppers.</span><span class="oz">它们利用女性购物者的弱点。</span></span></button></div><button class="jump" data-go="p1-5" data-qnum="50">定位 P5</button></div>
+    <div class="subrow"><button class="submit" data-sec="p1">提交答案 · 自动判分</button>
+      <span class="score" id="sc-p1"></span></div>
+  </div>
+
+  <div class="panel" id="p1-ana">
+    <p class="hint">答案与解析。建议<b>先做完再看</b>—— 解析里的「定位」和「同义替换」才是阅读提分的关键。</p>
+    <details class="ana" data-q="46"><summary><span class="an">46.</span><span class="aa">答案 B</span><span class="at">细节题</span><span class="ac">展开解析</span></summary><div class="abody"><div class="arow"><span class="atag">判型</span><p class="atx">题干 What problem have supermarkets been facing? 直接问一个具体事实——超市在面临什么难处，答案应能在原文找到明确对应句。</p></div><div class="arow"><span class="atag">拆句</span><p class="atx">What problem have supermarkets been facing? 是一个 what 引导的特殊疑问句，主干是&quot;超市一直在面对什么难处&quot;，have been facing 是现在完成进行时，强调&quot;长期、持续&quot;在面对，这个时态暗示原文会有 long/for more than a decade 一类的长期信号词，结构本身无陷阱。</p></div><div class="arow"><span class="atag">定位</span><div class="atx"><span class="lpara">P1</span><p class="len">Supermarkets have long been suffering as one of the thinnest-margined businesses in existence and one of the least-looked-forward-to places to work or visit. For more than a decade, they have been under attack from e-commerce giants, blamed for making Americans fat, and accused of contributing to climate change.</p><p class="lzh">长期以来，超市一直是利润最薄的行业之一，也是人们最不愿去工作或光顾的场所之一。十多年来，它们一直受到电商巨头的攻击，被指责让美国人发胖，还被指控加剧气候变化。</p></div></div><div class="arow"><span class="atag">选项</span><div class="atx vds"><div class="vd bad"><div class="vdh"><span class="vdl">A</span><span class="vdf">过度推断</span></div><p class="vdn">原文只说超市利润薄、处境难，从未说它&quot;正走向破产&quot;；on the way to bankruptcy 把&quot;利润薄&quot;夸大成&quot;濒临破产&quot;，程度严重超出原文。</p></div><div class="vd ok"><div class="vdh"><span class="vdl">B</span><span class="vdf">✓ 正确</span></div><div class="pairs"><div class="pair"><span class="po">thinnest-margined businesses</span><span class="pa">↔</span><span class="pp">losing customers and profits</span></div><div class="pair"><span class="po">under attack from e-commerce giants</span><span class="pa">↔</span><span class="pp">losing customers</span></div></div><p class="vdn">预判落在&quot;生意难做、客流利润受损&quot;，四个选项里只有 They have been losing customers and profits. 同时覆盖了原文的&quot;利润薄&quot;和&quot;受电商攻击&quot;，与预判最契合。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">C</span><span class="vdf">偷换概念</span></div><p class="vdn">原文说超市&quot;受电商攻击&quot;，并没说它们&quot;被迫去采用电商策略&quot;；forced to use e-commerce strategies 把&quot;被攻击&quot;偷换成&quot;被迫效仿&quot;，是原文未提的内容。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">D</span><span class="vdf">偷换概念</span></div><p class="vdn">原文是超市&quot;被指责加剧气候变化&quot;（超市是被指责方），而 have difficulty adapting to climate change 说成&quot;超市难以适应气候变化&quot;，把&quot;被指责制造问题&quot;换成了&quot;自己适应不了&quot;。</p></div></div></div></div></details><details class="ana" data-q="47"><summary><span class="an">47.</span><span class="aa">答案 B</span><span class="at">细节题</span><span class="ac">展开解析</span></summary><div class="abody"><div class="arow"><span class="atag">判型</span><p class="atx">题干 What does the passage say about the idea of a self-service grocery? 问的是原文就这个想法&quot;说了什么&quot;，是对原文具体陈述的核对，属细节题。</p></div><div class="arow"><span class="atag">拆句</span><p class="atx">What does the passage say about the idea of a self-service grocery? 主干是&quot;原文关于这个想法说了什么&quot;，of the idea of a self-service grocery 是层层嵌套的 of 介词短语作后置定语，只是在限定&quot;哪个想法&quot;，剥掉修饰后主干很清楚，无理解陷阱。</p></div><div class="arow"><span class="atag">定位</span><div class="atx"><span class="lpara">P2</span><p class="len">The revolutionary idea of a self-service grocery, where people could hunt and gather food from aisles rather than asking a clerk to fetch items from behind a counter, first came about in America.</p><p class="lzh">让人们能在货架间自行寻找采集食物、而不必请店员从柜台后取货的自助式杂货这一革命性想法，最早出现在美国。</p></div></div><div class="arow"><span class="atag">选项</span><div class="atx vds"><div class="vd bad"><div class="vdh"><span class="vdl">A</span><span class="vdf">张冠李戴</span></div><p class="vdn">原文说金库伦是公认的&quot;第一家超市&quot;，并未说这个&quot;想法&quot;是金库伦&quot;提出&quot;的；put forward by King Kullen 把&quot;第一家店&quot;错安成&quot;想法的提出者&quot;。</p></div><div class="vd ok"><div class="vdh"><span class="vdl">B</span><span class="vdf">✓ 正确</span></div><div class="pairs"><div class="pair"><span class="po">first came about in America</span><span class="pa">↔</span><span class="pp">It originated in the United States.</span></div></div><p class="vdn">预判核心是&quot;起源地是美国&quot;，四项里只有 It originated in the United States. 准确对应定位句的起源信息，故锁定。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">C</span><span class="vdf">偷换概念</span></div><p class="vdn">原文 some debate about which was the very first 争论的是&quot;哪家是第一家店&quot;，而非&quot;这个想法本身&quot;；under constant debate 把争论对象由&quot;谁是第一家&quot;偷换成&quot;这个想法&quot;。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">D</span><span class="vdf">与原文相反</span></div><p class="vdn">原文只说该想法当年是 revolutionary，并称超市 may not feel cutting-edge now（如今未必前沿），并无&quot;至今仍具革命性&quot;之说；proves revolutionary even today 是原文没有的论断。</p></div></div></div></div></details><details class="ana" data-q="48"><summary><span class="an">48.</span><span class="aa">答案 D</span><span class="at">细节题</span><span class="ac">展开解析</span></summary><div class="abody"><div class="arow"><span class="atag">判型</span><p class="atx">题干 What did supermarkets do by adopting the Fordist factory approach? 问超市靠这一做法&quot;做成了什么&quot;，是对原文一个具体结果的核对，属细节题。</p></div><div class="arow"><span class="atag">拆句</span><p class="atx">What did supermarkets do by adopting the Fordist factory approach? 主干是&quot;超市做了什么&quot;，by adopting... 是 by + 动名词的方式状语，表示&quot;通过采用福特式工厂做法这一手段&quot;，by 在此不是&quot;被&quot;而是&quot;通过&quot;，基础薄弱者易误读，点明即可。</p></div><div class="arow"><span class="atag">定位</span><div class="atx"><span class="lpara">P3</span><p class="len">The supermarket imitated the Fordist factory, with its emphasis on efficiency and standardization, and reimagined it as a place to buy food. Supermarkets may not feel cutting-edge now, but they were a revolution in distribution at the time.</p><p class="lzh">超市模仿了讲求效率与标准化的福特式工厂，并把它重新设想成一个买食物的地方。超市如今也许感觉不再前沿，但它们在当时是分销领域的一场革命。</p></div></div><div class="arow"><span class="atag">选项</span><div class="atx vds"><div class="vd bad"><div class="vdh"><span class="vdl">A</span><span class="vdf">无中生有</span></div><p class="vdn">原文只说超市模仿福特工厂、成为分销革命，没说它&quot;在许多方面把传统杂货店现代化&quot;；modernized traditional groceries in many ways 是原文未提的笼统说法。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">B</span><span class="vdf">与原文相反</span></div><p class="vdn">原文紧接着说超市 may not feel cutting-edge now（如今未必前沿），且布局九十年几乎没变，并非&quot;引入了前沿布局&quot;；cutting-edge layout 与原文意思相反。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">C</span><span class="vdf">无中生有</span></div><p class="vdn">原文谈的是分销方式的革命，全程未涉及&quot;食品质量&quot;的提升；improved the quality of the food 在原文找不到任何依据。</p></div><div class="vd ok"><div class="vdh"><span class="vdl">D</span><span class="vdf">✓ 正确</span></div><div class="pairs"><div class="pair"><span class="po">a revolution in distribution</span><span class="pa">↔</span><span class="pp">They revolutionized the distribution of goods.</span></div></div><p class="vdn">预判核心是&quot;在分销上掀起革命&quot;，四项里只有 They revolutionized the distribution of goods. 与定位句 a revolution in distribution 直接等值，故锁定。</p></div></div></div></div></details><details class="ana" data-q="49"><summary><span class="an">49.</span><span class="aa">答案 C</span><span class="at">细节题</span><span class="ac">展开解析</span></summary><div class="abody"><div class="arow"><span class="atag">判型</span><p class="atx">题干 What is the typical supermarket layout intended to do? 问布局的具体意图，是对原文一处目的陈述的核对，属细节题。</p></div><div class="arow"><span class="atag">拆句</span><p class="atx">What is the typical supermarket layout intended to do? 主干是&quot;布局意在做什么&quot;，be intended to do 是&quot;被设计用来做……&quot;的固定结构，是被动语态，主语 layout 是被设计的对象，看懂这个被动是解题前提，结构上无其他陷阱。</p></div><div class="arow"><span class="atag">定位</span><div class="atx"><span class="lpara">P4</span><p class="len">Meanwhile, they keep the milk, eggs, and other daily basics all the way back so you&#x27;ll travel through as much of the store as possible, and be tempted along the way.</p><p class="lzh">与此同时，超市把牛奶、鸡蛋等日用必需品全放在最里面，好让你穿过尽可能多的店面，一路上被诱惑。</p></div></div><div class="arow"><span class="atag">选项</span><div class="atx vds"><div class="vd bad"><div class="vdh"><span class="vdl">A</span><span class="vdf">以偏概全</span></div><p class="vdn">原文说前端摆鲜花果蔬只是 a breath of freshness to arouse our appetite（唤起食欲）的一个手段，最终目的是让人走遍全店；appetite to buy flowers, fruit and vegetables 把局部手段当成了整体布局的意图。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">B</span><span class="vdf">与原文相反</span></div><p class="vdn">原文布局恰恰把必需品放到最里、逼顾客绕远，并非&quot;方便顾客买想买的东西&quot;；easy access to items they want to buy 与原文意图相反。</p></div><div class="vd ok"><div class="vdh"><span class="vdl">C</span><span class="vdf">✓ 正确</span></div><div class="pairs"><div class="pair"><span class="po">travel through as much of the store as possible, and be tempted along the way</span><span class="pa">↔</span><span class="pp">Induce customers to make more unplanned purchases.</span></div></div><p class="vdn">预判核心是&quot;让顾客多走多买计划外的东西&quot;，四项里只有 Induce customers to make more unplanned purchases. 抓住了布局的真实意图，故锁定。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">D</span><span class="vdf">无中生有</span></div><p class="vdn">原文讲的是诱导顾客多买，从未说布局是为&quot;让购物更愉快&quot;；more enjoyable shopping experience 是原文没有的说法。</p></div></div></div></div></details><details class="ana" data-q="50"><summary><span class="an">50.</span><span class="aa">答案 A</span><span class="at">细节题</span><span class="ac">展开解析</span></summary><div class="abody"><div class="arow"><span class="atag">判型</span><p class="atx">题干 What have people long feared about supermarkets? 问人们长期害怕的具体内容，是对原文一处陈述的核对，属细节题。</p></div><div class="arow"><span class="atag">拆句</span><p class="atx">What have people long feared about supermarkets? 主干是&quot;人们长期害怕超市什么&quot;，have long feared 是现在完成时夹一个副词 long，强调&quot;长久以来一直害怕&quot;，about supermarkets 是 fear 的对象，结构清楚无陷阱。</p></div><div class="arow"><span class="atag">定位</span><div class="atx"><span class="lpara">P5</span><p class="len">We have long feared that this &quot;revolution in distribution&quot; uses corporate black magic on our appetite.</p><p class="lzh">长期以来我们一直害怕，这场&quot;分销革命&quot;在用企业的黑魔法操纵我们的食欲。</p></div></div><div class="arow"><span class="atag">选项</span><div class="atx vds"><div class="vd ok"><div class="vdh"><span class="vdl">A</span><span class="vdf">✓ 正确</span></div><div class="pairs"><div class="pair"><span class="po">uses corporate black magic on our appetite</span><span class="pa">↔</span><span class="pp">They use tricky strategies to promote their business.</span></div></div><p class="vdn">预判核心是&quot;用隐秘手段操纵食欲&quot;，四项里只有 They use tricky strategies to promote their business. 把&quot;黑魔法&quot;这一比喻还原为&quot;狡猾手段&quot;，与定位句契合，故锁定。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">B</span><span class="vdf">无中生有</span></div><p class="vdn">原文讲的是人们怕超市操纵食欲，全程未提&quot;取代本地杂货店&quot;；replace the local groceries entirely 是原文没有的内容。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">C</span><span class="vdf">偷换概念</span></div><p class="vdn">原文是黑魔法用在 our appetite（我们的食欲）上，而 black magic to the goods on display 把作用对象偷换成&quot;陈列的商品&quot;，对象张冠李戴。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">D</span><span class="vdf">以偏概全</span></div><p class="vdn">关于女性的内容出自被引用的《隐形说客》一书、只是个例证，并非人们&quot;长期&quot;害怕的核心；weaknesses of women shoppers 拿书中一个局部例子当成了普遍的担忧。</p></div></div></div></div></details>
+  </div>
+</div>
+<div class="card" id="p2">
+  <div class="chead"><h2>第 2 篇 · 第 51–55 题</h2>
+    <span class="cmeta">5 段 · 5 题</span></div>
+
+  <div class="tabs">
+    <button class="tab on" data-panel="p2-read">原文</button>
+    <button class="tab" data-panel="p2-quiz">答题</button>
+    <button class="tab" data-panel="p2-ana">解析</button>
+    <button class="tbtn2" data-zh="p2">中译</button>
+  </div>
+
+  <div class="panel on" id="p2-read"><div class="para" id="p2-1"><span class="pno">P1</span><div class="ptx"><p class="en">The traditional school year, with three months of vacation every summer, was first implemented when America was an agricultural society and the summer months were needed for farm work. Since then, we&#x27;ve completely changed as a nation. Students no longer spend summers farming, but they aren&#x27;t in school, either. The average American student receives 13 weeks off from school each calendar year-with about 11 of those during the summer. Few other countries have more than seven weeks off in a school calendar.</p></div></div><div class="para" id="p2-2"><span class="pno">P2</span><div class="ptx"><p class="en">With the U.S. lagging behind other countries in academics, it&#x27;s time to consider year-round schooling. One benefit of this change is that students will not fall victim to the &quot;summer slide,&quot; or the well-documented phenomenon where students forget some of the knowledge they have acquired when too much time is taken off from school. Decades of research shows that it can take from 8 to 13 weeks at the beginning of every school year for students to get back to where they were before the summer holiday.</p></div></div><div class="para" id="p2-3"><span class="pno">P3</span><div class="ptx"><p class="en">But year-round schooling isn&#x27;t just about academics. Teachers and students experience a closer relationship in year-round schools than they do in traditional schools and, in the absence of any long-term break, students do not feel detached from the school environment. These closer bonds and greater attachment pay off. Research shows that students in year-round schools are more self-confident and feel more positive about their schooling experience.</p></div></div><div class="para" id="p2-4"><span class="pno">P4</span><div class="ptx"><p class="en">But don&#x27;t kids need time to relax? Some childhood development experts believe that time off from school is vital to healthy development as kids are not designed to spend so much of their time inside classrooms and the summer break provides a perfect opportunity to get outside. The problem with this argument is that most children aren&#x27;t playing outside or even spending time with other kids. While some children visit summer camps, most stay at home, watching TV or playing games on electronic devices, which hardly benefits them.</p></div></div><div class="para" id="p2-5"><span class="pno">P5</span><div class="ptx"><p class="en">The U.S. has changed from a farming economy to a knowledge- and innovation-based economy, so it makes sense for the school year to change as well.</p></div></div></div>
+
+  <div class="panel" id="p2-quiz">
+    <p class="hint">按阅读流程做：<b>先看题干划关键词 → 回原文定位 → 找同义替换 → 排除干扰项</b>。
+    做完点下方提交，会自动判分。右上「中译」可一键显示题干与选项的中文。</p>
+    <div class="q" data-q="51"><div class="qs"><span class="qn">51.</span><span class="qse">Why did America&#x27;s traditional school year have a three-month summer vacation?</span></div><div class="qsz">为什么美国传统学年有三个月的暑假?</div><div class="opts"><button class="opt" data-q="51" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Students needed to help with farm work.</span><span class="oz">学生需要帮助干农活。</span></span></button><button class="opt" data-q="51" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Students needed time to learn necessary farming skills.</span><span class="oz">学生需要时间学习必要的农业技能。</span></span></button><button class="opt" data-q="51" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">The agricultural society then attached less importance to academics.</span><span class="oz">当时的农业社会不太重视学业。</span></span></button><button class="opt" data-q="51" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">America lagged behind other countries in making a scientific school calendar.</span><span class="oz">美国在制定科学的校历方面落后于其他国家。</span></span></button></div><button class="jump" data-go="p2-1" data-qnum="51">定位 P1</button></div><div class="q" data-q="52"><div class="qs"><span class="qn">52.</span><span class="qse">What benefit will year-round schooling bring students in addition to improving their learning?</span></div><div class="qsz">除了提高学习成绩之外,全年制教育还会给学生带来什么好处?</div><div class="opts"><button class="opt" data-q="52" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">It will help them get back to where their lessons started.</span><span class="oz">它将帮助他们回到课程开始的地方。</span></span></button><button class="opt" data-q="52" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">It will enable them to absorb what they have learned.</span><span class="oz">它将使他们能够消化所学的知识。</span></span></button><button class="opt" data-q="52" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">It will familiarize them with the school environment.</span><span class="oz">它将使他们熟悉学校环境。</span></span></button><button class="opt" data-q="52" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">It will strengthen their relationship with teachers.</span><span class="oz">它将加强他们与教师的关系。</span></span></button></div><button class="jump" data-go="p2-3" data-qnum="52">定位 P3</button></div><div class="q" data-q="53"><div class="qs"><span class="qn">53.</span><span class="qse">What do some childhood development experts believe about the long summer vacation?</span></div><div class="qsz">一些儿童发展专家对漫长的暑假有什么看法?</div><div class="opts"><button class="opt" data-q="53" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">It meets students&#x27; need to study on their own.</span><span class="oz">它满足了学生自主学习的需求。</span></span></button><button class="opt" data-q="53" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">It enables students to learn about the outside world.</span><span class="oz">它使学生能够了解外部世界。</span></span></button><button class="opt" data-q="53" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">It satisfies students&#x27; desire to stay longer at home.</span><span class="oz">它满足了学生希望在家待更长时间的愿望。</span></span></button><button class="opt" data-q="53" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">It contributes to students&#x27; healthy growth.</span><span class="oz">它有助于学生的健康成长。</span></span></button></div><button class="jump" data-go="p2-4" data-qnum="53">定位 P4</button></div><div class="q" data-q="54"><div class="qs"><span class="qn">54.</span><span class="qse">What is the argument against the experts&#x27; idea of a long summer vacation?</span></div><div class="qsz">反对专家关于漫长暑假观点的论据是什么?</div><div class="opts"><button class="opt" data-q="54" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">It does little good to most students.</span><span class="oz">它对大多数学生没什么好处。</span></span></button><button class="opt" data-q="54" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">It benefits few students playing outside.</span><span class="oz">它只让少数在户外玩耍的学生受益。</span></span></button><button class="opt" data-q="54" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">It leads students to neglect their studies.</span><span class="oz">它导致学生忽视学业。</span></span></button><button class="opt" data-q="54" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">It makes students addicted to computer games.</span><span class="oz">它使学生沉迷于电脑游戏。</span></span></button></div><button class="jump" data-go="p2-4" data-qnum="54">定位 P4</button></div><div class="q" data-q="55"><div class="qs"><span class="qn">55.</span><span class="qse">What does the author think of the traditional school year in the U.S. today?</span></div><div class="qsz">作者如何看待当今美国的传统学年?</div><div class="opts"><button class="opt" data-q="55" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Well-grounded.</span><span class="oz">有充分根据的。</span></span></button><button class="opt" data-q="55" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Culture-bound.</span><span class="oz">受文化束缚的。</span></span></button><button class="opt" data-q="55" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">Outdated.</span><span class="oz">过时的。</span></span></button><button class="opt" data-q="55" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Welcomed.</span><span class="oz">受欢迎的。</span></span></button></div></div>
+    <div class="subrow"><button class="submit" data-sec="p2">提交答案 · 自动判分</button>
+      <span class="score" id="sc-p2"></span></div>
+  </div>
+
+  <div class="panel" id="p2-ana">
+    <p class="hint">答案与解析。建议<b>先做完再看</b>—— 解析里的「定位」和「同义替换」才是阅读提分的关键。</p>
+    <details class="ana" data-q="51"><summary><span class="an">51.</span><span class="aa">答案 A</span><span class="at">细节题</span><span class="ac">展开解析</span></summary><div class="abody"><div class="arow"><span class="atag">判型</span><p class="atx">Why did America&#x27;s traditional school year have a three-month summer vacation? 问一个写在文中的具体事实原因，答案应能在原文直接找到。</p></div><div class="arow"><span class="atag">拆句</span><p class="atx">Q51 是一个 Why 引导的特殊疑问句，主干就是 school year have a three-month summer vacation，没有从句也没有否定，结构平铺直叙、无陷阱。</p></div><div class="arow"><span class="atag">定位</span><div class="atx"><span class="lpara">P1</span><p class="len">The traditional school year, with three months of vacation every summer, was first implemented when America was an agricultural society and the summer months were needed for farm work.</p><p class="lzh">传统学年带有每年夏季三个月假期，它最初设立于美国还是农业社会、夏季几个月需要用于农活的时候。</p></div></div><div class="arow"><span class="atag">选项</span><div class="atx vds"><div class="vd ok"><div class="vdh"><span class="vdl">A</span><span class="vdf">✓ 正确</span></div><div class="pairs"><div class="pair"><span class="po">the summer months were needed for farm work</span><span class="pa">↔</span><span class="pp">Students needed to help with farm work</span></div></div><p class="vdn">预判的&quot;夏天要干农活&quot;与 Students needed to help with farm work 完全吻合，故锁定此项。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">B</span><span class="vdf">无中生有</span></div><p class="vdn">原文只说夏季需要去做农活，从未提学生需要时间去&quot;学习&quot;农业技能，learn necessary farming skills 文中没有依据。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">C</span><span class="vdf">无中生有</span></div><p class="vdn">原文只说当时是农业社会、夏天要务农，并未说农业社会 attached less importance to academics，这是文中没有的因果。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">D</span><span class="vdf">张冠李戴</span></div><p class="vdn">America lagged behind other countries 出自第二段 With the U.S. lagging behind other countries in academics，那是&quot;如今&quot;现状，并非当初设三个月暑假的原因，张冠李戴。</p></div></div></div></div></details><details class="ana" data-q="52"><summary><span class="an">52.</span><span class="aa">答案 D</span><span class="at">细节题</span><span class="ac">展开解析</span></summary><div class="abody"><div class="arow"><span class="atag">判型</span><p class="atx">What benefit will year-round schooling bring students in addition to improving their learning? 问一项写在文中的具体好处，属可直接核对的事实。</p></div><div class="arow"><span class="atag">拆句</span><p class="atx">Q52 主干是 What benefit will year-round schooling bring students，后接介词短语 in addition to improving their learning 作限定，提醒答案要排除学业类好处，是理解关键。</p></div><div class="arow"><span class="atag">定位</span><div class="atx"><span class="lpara">P3</span><p class="len">But year-round schooling isn&#x27;t just about academics. Teachers and students experience a closer relationship in year-round schools than they do in traditional schools and, in the absence of any long-term break, students do not feel detached from the school environment.</p><p class="lzh">但全年制不仅仅关乎学业。在全年制学校里，师生关系比在传统学校里更亲近，而且由于没有任何长期假期，学生不会感到与校园环境疏离。</p></div></div><div class="arow"><span class="atag">选项</span><div class="atx vds"><div class="vd bad"><div class="vdh"><span class="vdl">A</span><span class="vdf">答非所问</span></div><p class="vdn">get back to where their lessons started 套用第二段 get back to where they were，那讲的是暑期遗忘后补回进度，属学业范畴，被题干限定排除，且原文是消除这一损耗而非&quot;帮学生回到起点&quot;。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">B</span><span class="vdf">答非所问</span></div><p class="vdn">absorb what they have learned 仍是讲学习吸收，属 improving their learning 范畴，被题干&quot;除学业外&quot;排除。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">C</span><span class="vdf">偷换概念</span></div><p class="vdn">原文说的是学生 do not feel detached from the school environment（不疏离），并非 familiarize them with the school environment（使其熟悉环境），把&quot;不疏远&quot;偷换成&quot;变熟悉&quot;。</p></div><div class="vd ok"><div class="vdh"><span class="vdl">D</span><span class="vdf">✓ 正确</span></div><div class="pairs"><div class="pair"><span class="po">Teachers and students experience a closer relationship</span><span class="pa">↔</span><span class="pp">strengthen their relationship with teachers</span></div></div><p class="vdn">预判的&quot;师生关系更近&quot;正对应 strengthen their relationship with teachers，且它落在&quot;学业之外&quot;的范围内，故选此项。</p></div></div></div></div></details><details class="ana" data-q="53"><summary><span class="an">53.</span><span class="aa">答案 D</span><span class="at">细节题</span><span class="ac">展开解析</span></summary><div class="abody"><div class="arow"><span class="atag">判型</span><p class="atx">What do some childhood development experts believe about the long summer vacation? 问的是专家在文中直接表述的观点，可逐字核对，不需要读者推断。</p></div><div class="arow"><span class="atag">拆句</span><p class="atx">Q53 主干 What do some childhood development experts believe，后接 about the long summer vacation 点明评论对象；注意主语是 experts 而非作者，是&quot;这话谁说的&quot;的关键。</p></div><div class="arow"><span class="atag">定位</span><div class="atx"><span class="lpara">P4</span><p class="len">Some childhood development experts believe that time off from school is vital to healthy development as kids are not designed to spend so much of their time inside classrooms and the summer break provides a perfect opportunity to get outside.</p><p class="lzh">一些儿童发展专家认为，离开学校的休息时间对健康成长至关重要，因为孩子天生不适合把这么多时间花在教室里，而暑假正好提供了走到户外的绝佳机会。</p></div></div><div class="arow"><span class="atag">选项</span><div class="atx vds"><div class="vd bad"><div class="vdh"><span class="vdl">A</span><span class="vdf">无中生有</span></div><p class="vdn">专家强调的是休息和户外，从未说放假满足学生 study on their own（自学）的需要，原文无此意。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">B</span><span class="vdf">过度推断</span></div><p class="vdn">原文只说暑假给孩子 a perfect opportunity to get outside（到户外的机会），并不等于 learn about the outside world（了解外部世界），后者把&quot;到户外&quot;拔高成&quot;认识世界&quot;。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">C</span><span class="vdf">张冠李戴</span></div><p class="vdn">专家观点里没有&quot;满足学生 stay longer at home&quot;的说法；待在家看电视是后文作者反驳时提到的现实，并非专家所赞同的需求。</p></div><div class="vd ok"><div class="vdh"><span class="vdl">D</span><span class="vdf">✓ 正确</span></div><div class="pairs"><div class="pair"><span class="po">time off from school is vital to healthy development</span><span class="pa">↔</span><span class="pp">It contributes to students&#x27; healthy growth</span></div></div><p class="vdn">预判的&quot;放假利于健康成长&quot;正对应 It contributes to students&#x27; healthy growth，故选此项。</p></div></div></div></div></details><details class="ana" data-q="54"><summary><span class="an">54.</span><span class="aa">答案 A</span><span class="at">细节题</span><span class="ac">展开解析</span></summary><div class="abody"><div class="arow"><span class="atag">判型</span><p class="atx">What is the argument against the experts&#x27; idea of a long summer vacation? 问一个写在文中的具体反驳理由，可直接核对。</p></div><div class="arow"><span class="atag">拆句</span><p class="atx">Q54 主干 What is the argument against the experts&#x27; idea，介词 against 决定方向是&quot;反对专家&quot;；读懂 against 才不会把专家自己的话误当反驳，是理解关键。</p></div><div class="arow"><span class="atag">定位</span><div class="atx"><span class="lpara">P4</span><p class="len">The problem with this argument is that most children aren&#x27;t playing outside or even spending time with other kids. While some children visit summer camps, most stay at home, watching TV or playing games on electronic devices, which hardly benefits them.</p><p class="lzh">这个论点的问题在于，大多数孩子并没有在户外玩耍，甚至没有和别的孩子相处。虽然有些孩子去参加夏令营，但多数人待在家里看电视或玩电子设备上的游戏，这对他们几乎没有好处。</p></div></div><div class="arow"><span class="atag">选项</span><div class="atx vds"><div class="vd ok"><div class="vdh"><span class="vdl">A</span><span class="vdf">✓ 正确</span></div><div class="pairs"><div class="pair"><span class="po">most stay at home, watching TV or playing games on electronic devices, which hardly benefits them</span><span class="pa">↔</span><span class="pp">It does little good to most students</span></div></div><p class="vdn">预判的&quot;对多数孩子没好处&quot;正对应 It does little good to most students，故选此项。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">B</span><span class="vdf">以偏概全</span></div><p class="vdn">原文 hardly benefits them 说的是待在家的&quot;多数&quot;孩子没好处，benefits few students playing outside 却把对象缩成&quot;在外面玩的少数&quot;，偷改了范围。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">C</span><span class="vdf">无中生有</span></div><p class="vdn">作者反驳讲的是放假对孩子无益，并未说放假让学生 neglect their studies（荒废学业），文中无此意。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">D</span><span class="vdf">以偏概全</span></div><p class="vdn">原文把看电视和玩电子设备游戏并列为现象之一，并未断言放假使学生 addicted to computer games（沉迷电脑游戏），把众多居家活动之一夸成&quot;上瘾&quot;。</p></div></div></div></div></details><details class="ana" data-q="55"><summary><span class="an">55.</span><span class="aa">答案 C</span><span class="at">态度题</span><span class="ac">展开解析</span></summary><div class="abody"><div class="arow"><span class="atag">判型</span><p class="atx">What does the author think of the traditional school year in the U.S. today? 问的是作者对旧学制的整体评价，需通览全文立场而非某句。</p></div><div class="arow"><span class="atag">拆句</span><p class="atx">Q55 主干 What does the author think of the traditional school year，关键是 today——问的是&quot;在今天看来&quot;旧学制如何，提示要结合文章&quot;时代已变&quot;的论调判断，是解题关键。</p></div><div class="arow"><span class="atag">选项</span><div class="atx vds"><div class="vd bad"><div class="vdh"><span class="vdl">A</span><span class="vdf">与原文相反</span></div><p class="vdn">Well-grounded（有充分根据的）是褒义，意味旧学制合理；而作者全篇主张它该改，态度恰好相反。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">B</span><span class="vdf">无中生有</span></div><p class="vdn">文章把旧学制归因于&quot;农业经济&quot;这一时代背景，并未从&quot;文化&quot;角度评价，Culture-bound（受文化局限）在原文找不到落点。</p></div><div class="vd ok"><div class="vdh"><span class="vdl">C</span><span class="vdf">✓ 正确</span></div><div class="pairs"><div class="pair"><span class="po">The U.S. has changed from a farming economy to a knowledge- and innovation-based economy, so it makes sense for the school year to change as well</span><span class="pa">↔</span><span class="pp">Outdated</span></div></div><p class="vdn">预判的&quot;旧学制已不合时宜、该改&quot;与 Outdated 一词对应，故选此项。</p></div><div class="vd bad"><div class="vdh"><span class="vdl">D</span><span class="vdf">与原文相反</span></div><p class="vdn">Welcomed（受欢迎的）是褒义，暗示作者赞许旧学制；而作者主张它该改、显然不持欢迎态度，方向相反。</p></div></div></div></div></details>
+  </div>
+</div>
+
+<div class="card">
+  <h2>同义替换本（11 对）</h2>
+  <p class="hint">四级阅读的答案，<b>八成靠同义替换</b>。这张表就是本题的命门 —— 反复看，看到条件反射。</p>
+  <table><tr><th class="c">题</th><th>原文表达</th><th class="c"></th><th>选项表达</th></tr><tr><td class="c">46</td><td>thinnest-margined businesses</td><td class="c">↔</td><td>losing customers and profits</td></tr><tr><td class="c">46</td><td>under attack from e-commerce giants</td><td class="c">↔</td><td>losing customers</td></tr><tr><td class="c">47</td><td>first came about in America</td><td class="c">↔</td><td>It originated in the United States.</td></tr><tr><td class="c">48</td><td>a revolution in distribution</td><td class="c">↔</td><td>They revolutionized the distribution of goods.</td></tr><tr><td class="c">49</td><td>travel through as much of the store as possible, and be tempted along the way</td><td class="c">↔</td><td>Induce customers to make more unplanned purchases.</td></tr><tr><td class="c">50</td><td>uses corporate black magic on our appetite</td><td class="c">↔</td><td>They use tricky strategies to promote their business.</td></tr><tr><td class="c">51</td><td>the summer months were needed for farm work</td><td class="c">↔</td><td>Students needed to help with farm work</td></tr><tr><td class="c">52</td><td>Teachers and students experience a closer relationship</td><td class="c">↔</td><td>strengthen their relationship with teachers</td></tr><tr><td class="c">53</td><td>time off from school is vital to healthy development</td><td class="c">↔</td><td>It contributes to students&#x27; healthy growth</td></tr><tr><td class="c">54</td><td>most stay at home, watching TV or playing games on electronic devices, which hardly benefits them</td><td class="c">↔</td><td>It does little good to most students</td></tr><tr><td class="c">55</td><td>The U.S. has changed from a farming economy to a knowledge- and innovation-based economy, so it makes sense for the school year to change as well</td><td class="c">↔</td><td>Outdated</td></tr></table>
+</div>
+
+<div class="card">
+  <h2>干扰项手法分布</h2>
+  <p class="hint">认出这些套路，就能直接排除。</p>
+  <div class="frow"><span class="fn">无中生有</span><span class="fbar"><i style="width:100%"></i></span><span class="fv">9</span></div><div class="frow"><span class="fn">偷换概念</span><span class="fbar"><i style="width:55%"></i></span><span class="fv">5</span></div><div class="frow"><span class="fn">与原文相反</span><span class="fbar"><i style="width:55%"></i></span><span class="fv">5</span></div><div class="frow"><span class="fn">以偏概全</span><span class="fbar"><i style="width:44%"></i></span><span class="fv">4</span></div><div class="frow"><span class="fn">张冠李戴</span><span class="fbar"><i style="width:33%"></i></span><span class="fv">3</span></div><div class="frow"><span class="fn">过度推断</span><span class="fbar"><i style="width:22%"></i></span><span class="fv">2</span></div><div class="frow"><span class="fn">答非所问</span><span class="fbar"><i style="width:22%"></i></span><span class="fv">2</span></div>
+  <div class="tip">考场上遇到拿不准的选项，先问自己：<b>它是偷换了范围？还是原文压根没提？还是把话说过头了？</b></div>
+</div>
+
+<script>
+var ANS = {"c-1": {"46": "B", "47": "B", "48": "D", "49": "C", "50": "A"}, "c-2": {"51": "A", "52": "D", "53": "D", "54": "A", "55": "C"}};
+var picked = {}, judged = {};
+
+document.querySelectorAll('.tab').forEach(function(t){
+  t.addEventListener('click', function(){
+    var box = t.closest('.card');
+    box.querySelectorAll('.tab').forEach(function(x){ x.classList.toggle('on', x===t); });
+    box.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('on'); });
+    var el = document.getElementById(t.dataset.panel);
+    if (el) el.classList.add('on');
+  });
+});
+
+document.querySelectorAll('.tbtn2').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.body.classList.toggle('zh');
+    var on = document.body.classList.contains('zh');
+    document.querySelectorAll('.tbtn2').forEach(function(x){
+      x.classList.toggle('on', on); x.textContent = on ? '隐藏中译' : '中译';
+    });
+  });
+});
+
+document.querySelectorAll('.opt').forEach(function(o){
+  o.addEventListener('click', function(){
+    var q = o.dataset.q;
+    if (judged[q]) return;
+    picked[q] = o.dataset.k;
+    o.closest('.opts').querySelectorAll('.opt').forEach(function(x){ x.classList.remove('sel'); });
+    o.classList.add('sel');
+  });
+});
+
+document.querySelectorAll('.submit').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var sec = btn.dataset.sec;
+    var box = document.getElementById(sec);
+    var total = 0, right = 0;
+    box.querySelectorAll('.q').forEach(function(qd){
+      var q = qd.dataset.q;
+      var ans = (ANS[sec.split('-')[0]] || ANS[Object.keys(ANS)[0]])[q];
+      // 在两篇里找本题答案
+      for (var k in ANS){ if (ANS[k][q]) ans = ANS[k][q]; }
+      total++;
+      qd.querySelectorAll('.opt').forEach(function(o){
+        o.classList.remove('sel','right','wrong');
+        if (o.dataset.k === ans) o.classList.add('right');
+        else if (o.dataset.k === picked[q]) o.classList.add('wrong');
+      });
+      if (picked[q] === ans) right++;
+      judged[q] = true;
+    });
+    box.querySelectorAll('.submit').forEach(function(x){ x.disabled = true; x.textContent='已提交'; });
+    var sc = document.getElementById('sc-' + sec);
+    sc.textContent = '得分 ' + right + '/' + total + '  ·  正确率 ' + Math.round(right/total*100) + '%';
+    sc.style.color = right/total >= 0.6 ? 'var(--green)' : 'var(--red)';
+  });
+});
+
+document.querySelectorAll('.jump').forEach(function(b){
+  b.addEventListener('click', function(){
+    var t = document.getElementById(b.dataset.go);
+    if (!t) return;
+    // 切回原文页签
+    var card = b.closest('.card');
+    card.querySelectorAll('.tab').forEach(function(x){ x.classList.toggle('on', x.dataset.panel && x.dataset.panel.endsWith('-read')); });
+    card.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('on'); });
+    var rd = card.querySelector('.panel[id$="-read"]'); if (rd) rd.classList.add('on');
+    card.querySelectorAll('.para').forEach(function(p){ p.classList.remove('hl'); });
+    t.classList.add('hl');
+    t.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+});
+</script>
+</body>
+</html>
