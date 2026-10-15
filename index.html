@@ -103,6 +103,7 @@ a.it.now .tx{font-weight:700;color:var(--green)}
   .task::before{content:"";position:absolute;left:0;top:15px;bottom:15px;width:3px;
     border-radius:2px;background:var(--blue);opacity:.28;transition:background .2s,opacity .2s;}
   .task.on::before{background:var(--green);opacity:1;}
+
 </style>
 </head>
 <body>
@@ -355,5 +356,6 @@ pull().then(function(remote){
   push(PROG);                                            // 每次打开刷新云端有效期
 });
 </script>
+
 </body>
 </html>

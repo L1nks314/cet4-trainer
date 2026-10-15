@@ -183,16 +183,16 @@
 .stem{display:none}
 body.qshow .stem{display:block}
 #stemToggle{margin-left:8px}
-#prepOverlay{position:fixed;inset:0;background:rgba(10,14,20,.8);z-index:9999;display:none;
- flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;
- padding:24px;font-family:inherit}
+#prepOverlay{position:fixed;top:0;left:0;right:0;z-index:9000;background:var(--card,#fff);
+ border-bottom:1px solid var(--line,#e5e8ec);box-shadow:0 2px 12px rgba(0,0,0,.08);
+ display:none;align-items:center;gap:12px;padding:9px 14px;font-family:inherit}
 #prepOverlay.on{display:flex}
-#prepOverlay .pt{font-size:15px;opacity:.92;margin-bottom:8px}
-#prepCount{font-size:72px;font-weight:800;line-height:1}
-#prepOverlay .ps{font-size:13px;opacity:.75;margin-top:14px}
-#prepSkip{margin-top:22px;padding:10px 24px;border-radius:10px;border:1px solid rgba(255,255,255,.45);
- background:transparent;color:#fff;font-size:14px;cursor:pointer;font-family:inherit}
-#prepSkip:active{background:rgba(255,255,255,.15)}
+#prepOverlay .pt{font-size:13.5px;color:var(--txt,#333);flex:1;margin:0;opacity:1;line-height:1.5}
+#prepCount{font-size:26px;font-weight:800;color:var(--blue,#2563eb);line-height:1;min-width:34px;text-align:center}
+#prepOverlay .ps{display:none}
+#prepSkip{padding:7px 14px;border-radius:8px;border:1px solid var(--line,#e5e8ec);
+ background:var(--soft,#fafbfc);color:var(--txt,#333);font-size:13px;cursor:pointer;font-family:inherit;margin:0}
+#prepSkip:active{background:var(--grey,#f2f3f5)}
 #studyTimer{position:fixed;right:12px;bottom:14px;z-index:9000;background:var(--card,#fff);
  border:1px solid var(--line,#e5e8ec);border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,.14);
  padding:8px 12px;font-size:13px;color:var(--txt,#333);cursor:pointer;display:flex;
@@ -206,7 +206,16 @@ body.qshow .stem{display:block}
 .line.ansline .en{background:var(--green-soft,#e8f7ef)}
 .anstag{display:inline-block;font-size:11px;font-weight:700;color:#fff;background:var(--green,#0d8a52);
  border-radius:6px;padding:2px 7px;margin-left:8px;white-space:nowrap;vertical-align:middle}
-</style>
+
+/* ═══ 涂写标记 ═══ */
+#markBar{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:8990;
+ display:flex;gap:4px;background:var(--card,#fff);border:1px solid var(--line,#e5e8ec);
+ border-radius:22px;padding:5px;box-shadow:0 4px 16px rgba(0,0,0,.14)}
+#markBar button{border:0;background:transparent;padding:8px 14px;border-radius:17px;font-size:13px;
+ cursor:pointer;color:var(--txt,#333);font-family:inherit;white-space:nowrap}
+#markBar button.on{background:var(--blue,#2563eb);color:#fff}
+#markCanvas{position:fixed;inset:0;z-index:8980;pointer-events:none}
+#markCanvas.act{pointer-events:auto;cursor:crosshair;touch-action:none}</style>
 <noscript><style>
   .locked-sec{filter:none !important;opacity:1 !important;pointer-events:auto !important;user-select:auto !important;}
   #resultCard,#receiptCard{display:block !important;}
@@ -930,6 +939,57 @@ for (var qid in AL){
   var lh = line.querySelector(".lh");
   if (lh) lh.appendChild(t);
 }
+})();
+</script>
+<div id="markBar">
+  <button id="mkPen">✏️ 涂写</button>
+  <button id="mkErase">🧽 橡皮</button>
+  <button id="mkClear">🗑 清空</button>
+</div>
+<canvas id="markCanvas"></canvas>
+<script>
+(function(){
+  var cv = document.getElementById('markCanvas');
+  if (!cv) return;
+  var ctx = cv.getContext('2d');
+  function rz(){ cv.width = window.innerWidth; cv.height = window.innerHeight; }
+  rz(); window.addEventListener('resize', rz);
+  var pen = document.getElementById('mkPen'), era = document.getElementById('mkErase'), clr = document.getElementById('mkClear');
+  var mode = 'off', drawing = false, last = null;
+  function setMode(m){
+    mode = m;
+    cv.classList.toggle('act', m !== 'off');
+    pen.classList.toggle('on', m === 'pen');
+    era.classList.toggle('on', m === 'erase');
+  }
+  pen.addEventListener('click', function(){ setMode(mode === 'pen' ? 'off' : 'pen'); });
+  era.addEventListener('click', function(){ setMode(mode === 'erase' ? 'off' : 'erase'); });
+  clr.addEventListener('click', function(){ ctx.clearRect(0,0,cv.width,cv.height); });
+  cv.addEventListener('pointerdown', function(e){
+    if (mode === 'off') return;
+    drawing = true; last = [e.clientX, e.clientY];
+    try{ cv.setPointerCapture(e.pointerId); }catch(_){}
+    e.preventDefault();
+  });
+  cv.addEventListener('pointermove', function(e){
+    if (!drawing || mode === 'off') return;
+    var x = e.clientX, y = e.clientY;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.beginPath(); ctx.moveTo(last[0], last[1]); ctx.lineTo(x, y);
+    if (mode === 'erase'){
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.lineWidth = 26; ctx.strokeStyle = 'rgba(0,0,0,1)';
+    } else {
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.lineWidth = 2.6; ctx.strokeStyle = 'rgba(37,99,235,.92)';
+    }
+    ctx.stroke();
+    ctx.globalCompositeOperation = 'source-over';
+    last = [x, y];
+  });
+  ['pointerup','pointercancel'].forEach(function(ev){
+    cv.addEventListener(ev, function(){ drawing = false; });
+  });
 })();
 </script></body>
 </html>
