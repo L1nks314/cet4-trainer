@@ -5,15 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>四级听力精听训练包 · L1 听力篇章</title>
 <style>
-  :root{
-    --ink:#1a1a1a; --sub:#5f6368; --line:#e3e6ea; --bg:#f6f7f9;
-    --card:#ffffff; --accent:#c0392b; --accent-soft:#fdf0ee;
-    --blue:#1f6feb; --blue-soft:#eef4ff; --green:#1a7f4b; --green-soft:#eaf7f0;
-    --amber:#a16207; --amber-soft:#fdf6e3;
-  }
+  :root{ --bg:#f4f5f7; --card:#ffffff; --soft:#fafbfc; --grey:#f2f3f5;
+ --line:#e5e8ec; --line2:#eff1f4; --track:#e8ebef;
+ --txt:#1b1e23; --txt2:#2b303a; --txt3:#3d434e; --sub:#6b7280; --sub2:#a8b0bb;
+ --blue:#2563eb; --blue-soft:#eef3ff; --green:#0d8a52; --green-soft:#e8f7ef;
+ --red:#c0392b; --red-soft:#fdecea; --amber:#b45309; --amber-soft:#fef6e7;
+ --amber-line:#f0dfb8; --green-line:#bfe3cf;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05);
+ --shadow-lg:0 2px 4px rgba(16,24,40,.05), 0 8px 20px rgba(16,24,40,.07);  --blue-ink:#123a75; --red-ink:#8a2318; --amber-ink:#7a5b00; --purple:#7c5cff; --purple-soft:#f2eeff;}
+@media (prefers-color-scheme: dark){ :root{ --bg:#101216; --card:#191c21; --soft:#20242a; --grey:#22262c;
+ --line:#2c313a; --line2:#242930; --track:#2a2f38;
+ --txt:#e9ebee; --txt2:#d7dade; --txt3:#c3c8cf; --sub:#98a0aa; --sub2:#6b7280;
+ --blue:#6b96fb; --blue-soft:#1a2742; --green:#41d18f; --green-soft:#14301f;
+ --red:#ef7261; --red-soft:#371d19; --amber:#e0a53f; --amber-soft:#312713;
+ --amber-line:#4a3a1c; --green-line:#1f4530;
+ --shadow:0 1px 2px rgba(0,0,0,.35), 0 2px 8px rgba(0,0,0,.28);
+ --shadow-lg:0 2px 6px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.45);
+ color-scheme:dark;  --blue-ink:#a9c6ff; --red-ink:#ffa79a; --amber-ink:#f0c469; --purple:#a98cff; --purple-soft:#241c3d;} }
   *{box-sizing:border-box;}
   body{
-    margin:0; padding:20px 16px 60px; background:var(--bg); color:var(--ink);
+    margin:0; padding:20px 16px 60px; background:var(--bg); color:var(--txt);
     font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
     line-height:1.75; font-size:16px; -webkit-text-size-adjust:100%;
   }
@@ -23,13 +34,13 @@
   header .meta{font-size:13px;opacity:.85;}
   .badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
     border-radius:20px;padding:2px 11px;font-size:12px;margin-right:6px;margin-top:8px;}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 20px 18px;margin-bottom:16px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 20px 18px;margin-bottom:16px;box-shadow:var(--shadow);}
   h2{font-size:17px;margin:0 0 4px;display:flex;align-items:center;gap:8px;}
-  h2 .num{background:var(--ink);color:#fff;width:23px;height:23px;border-radius:50%;
+  h2 .num{background:var(--txt);color:#fff;width:23px;height:23px;border-radius:50%;
     display:inline-flex;align-items:center;justify-content:center;font-size:13px;flex:0 0 23px;}
   .hint{font-size:13px;color:var(--sub);margin:0 0 14px;}
   .tip{background:var(--amber-soft);border-left:3px solid #e0a800;border-radius:0 8px 8px 0;
-    padding:10px 14px;font-size:13.5px;color:#6b4e00;margin:12px 0 0;}
+    padding:10px 14px;font-size:13.5px;color:var(--amber-ink);margin:12px 0 0;}
   .tip b{color:#8a5a00;}
   /* 播放器 */
   .player{border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin-bottom:9px;background:#fbfcfd;}
@@ -56,7 +67,7 @@
   th{background:#f1f3f5;font-weight:600;font-size:13px;}
   td code{background:#f1f3f5;padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,Menlo,monospace;}
   .ans-key{font-size:14.5px;margin-bottom:12px;}
-  .ans-key b{color:var(--accent);}
+  .ans-key b{color:var(--purple);}
   details{border:1px solid var(--line);border-radius:10px;padding:0;margin-top:10px;overflow:hidden;}
   details[open]{background:#fbfcfd;}
   summary{cursor:pointer;padding:12px 15px;font-weight:600;font-size:14.5px;
@@ -66,13 +77,22 @@
   details[open] summary::before{content:"▾ ";}
   details .body{padding:14px 16px;font-size:14.5px;}
   details .body p{margin:0 0 9px;}
-  .why{background:var(--blue-soft);border-radius:8px;padding:9px 12px;font-size:13.5px;color:#123a75;margin-top:9px;}
-  .warn{background:var(--accent-soft);border-radius:8px;padding:9px 12px;font-size:13.5px;color:#8a2318;margin-top:9px;}
+  .why{background:var(--blue-soft);border-radius:8px;padding:9px 12px;font-size:13.5px;color:var(--blue-ink);margin-top:9px;}
+  .warn{background:var(--purple-soft);border-radius:8px;padding:9px 12px;font-size:13.5px;color:var(--red-ink);margin-top:9px;}
   ul.ck{list-style:none;padding:0;margin:8px 0 0;}
   ul.ck li{padding:7px 0 7px 30px;position:relative;font-size:14.5px;border-bottom:1px solid var(--line);}
   ul.ck li:last-child{border-bottom:none;}
   ul.ck li::before{content:"☐";position:absolute;left:4px;top:6px;font-size:17px;color:var(--sub);}
   footer{text-align:center;color:var(--sub);font-size:12.5px;margin-top:26px;}
+/* 亮底反色补偿：深色模式下高亮词保持深字，保证对比度 */
+
+@media (prefers-color-scheme: dark){
+  .w.mk{color:#1b1e23;}
+  .w.cur{color:#14161a;}
+  body.mk .w.mk{color:#1b1e23;}
+  body.mk .w.cur.mk{color:#14161a;}
+  .hl,.mark{color:#14161a;}
+}
 </style>
 </head>
 <body>
