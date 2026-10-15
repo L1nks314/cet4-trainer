@@ -52,9 +52,11 @@ h1{font-size:20px;margin:2px 0 16px;letter-spacing:.2px;font-weight:800;
 .btn{display:inline-block;margin-top:9px;padding:9px 16px;border-radius:9px;background:var(--blue);
  color:#fff;text-decoration:none;font-size:14px;font-weight:700}
 .btn.ghost{background:var(--blue-soft);color:var(--blue)}
-.streak{display:flex;gap:10px;margin-top:6px}
-.streak div{flex:1;background:var(--soft);border-radius:12px;padding:13px 14px;border:1px solid var(--line)}
-.streak b{font-size:26px;font-weight:800;letter-spacing:-.5px;color:var(--blue)}
+.streak{display:flex;gap:10px;margin-top:8px}
+.streak>div{flex:1;background:var(--soft);border-radius:12px;padding:14px 15px;border:1px solid var(--line)}
+.streak>b,.streak>div>b{font-size:28px;font-weight:800;letter-spacing:-.8px;color:var(--blue);
+ display:block;line-height:1.15}
+.streak .lb{font-size:12.5px;color:var(--sub);margin-top:3px}
 .note{font-size:13px;color:var(--amber);background:var(--amber-soft);border:1px solid var(--amber-line);
  border-radius:10px;padding:11px 13px;margin-top:12px;line-height:1.7}
 .lh{padding:12px 16px;border-bottom:1px solid var(--line);font-weight:700;font-size:14.5px;background:var(--card)}
@@ -71,12 +73,42 @@ a.it.now{background:var(--green-soft)}
 a.it.now .tx{font-weight:700;color:var(--green)}
 .tag{font-size:11.5px;padding:2px 7px;border-radius:20px;background:var(--blue-soft);color:var(--blue);margin-left:5px}
 .hint{color:var(--sub);font-size:12.5px;margin:16px 2px 0;line-height:1.85}
+
+  /* ── 顶部主视觉 ── */
+  .hero{background:linear-gradient(135deg,#2563eb 0%,#4f46e5 100%);color:#fff;
+    border-radius:18px;padding:20px;margin-bottom:14px;
+    box-shadow:0 8px 24px rgba(37,99,235,.28);position:relative;overflow:hidden;}
+  .hero::after{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;
+    border-radius:50%;background:rgba(255,255,255,.09);}
+  .hero .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;position:relative;}
+  .hero .days{font-size:44px;font-weight:800;letter-spacing:-2px;color:#fff;line-height:1.05;}
+  .hero .days small{font-size:13px;font-weight:500;color:rgba(255,255,255,.82);
+    margin-left:6px;letter-spacing:0;display:inline-block;}
+  .hero .stage{font-size:12.5px;padding:6px 13px;border-radius:20px;white-space:nowrap;
+    background:rgba(255,255,255,.2);color:#fff;font-weight:700;}
+  .hero .bar{height:8px;background:rgba(255,255,255,.25);border-radius:5px;
+    overflow:hidden;margin:15px 0 8px;position:relative;}
+  .hero .bar i{display:block;height:100%;background:#fff;border-radius:5px;min-width:6px;}
+  .hero .sub{font-size:12.5px;color:rgba(255,255,255,.88);position:relative;}
+  .hero .note{margin-top:13px;padding:11px 13px;border-radius:11px;position:relative;
+    background:rgba(255,255,255,.16);font-size:13.2px;color:#fff;line-height:1.65;}
+  @media (prefers-color-scheme: dark){
+    .hero{background:linear-gradient(135deg,#1e3a8a 0%,#312e81 100%);
+      box-shadow:0 8px 24px rgba(0,0,0,.5);}
+    .hero .note{background:rgba(255,255,255,.1);}
+  }
+
+  /* ── 任务卡左侧状态条 ── */
+  .task{position:relative;padding-left:14px;}
+  .task::before{content:"";position:absolute;left:0;top:15px;bottom:15px;width:3px;
+    border-radius:2px;background:var(--blue);opacity:.28;transition:background .2s,opacity .2s;}
+  .task.on::before{background:var(--green);opacity:1;}
 </style>
 </head>
 <body>
 <h1>四级备考作战台</h1>
 
-<div class="card" id="head"></div>
+<div class="hero" id="head"></div>
 <div class="card" id="tasks"></div>
 <div class="list"><div class="lh">全部训练（<span id="tot"></span> 节）</div><div id="list"></div></div>
 
@@ -181,8 +213,8 @@ tHtml+='<div class="task'+(done.o?" on":"")+'" data-k="o"><div class="box'+(done
 tHtml+='<div class="task'+(done.r?" on":"")+'" data-k="r"><div class="box'+(done.r?" on":"")+'"></div>'
  +'<div class="tk"><div class="tt">回对话交回执 · 2 分钟</div>'
  +'<div class="td">做完回到对话把回执发出来，我给出错因归因和明天的调整</div></div></div>';
-tHtml+='<div class="streak"><div><b id="sk">0</b><div class="sub">连续打卡（天）</div></div>'
- +'<div><b id="td">0</b><div class="sub">累计完成（天）</div></div></div>';
+tHtml+='<div class="streak"><div><b id="sk">0</b><div class="lb">连续打卡（天）</div></div>'
+ +'<div><b id="td">0</b><div class="lb">累计完成（天）</div></div></div>';
 document.getElementById("tasks").innerHTML=tHtml;
 
 // 勾选交互
