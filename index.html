@@ -164,103 +164,176 @@ var STAGES = [[new Date(2026,9,15), new Date(2026,10,3), "筑基期 · 解决「
               [new Date(2026,10,4), new Date(2026,10,24), "强化期 · 解决「跟不上+做不对」", "篇章正确率目标 50%"],
               [new Date(2026,10,25),new Date(2026,11,11), "冲刺期 · 考场保温", "盯稳定性，别再上新材料"]];
 
+/* ═══ 跨端同步 ═══
+   三层数据，加载时取并集，任何一层有记录就算完成：
+     ① localStorage  本机持久
+     ② ntfy 云端     跨端实时（约 12 小时有效期，打开页面会自动续期）
+     ③ BASE 权威基线 由教练在主对话维护，跟着页面一起发布
+*/
+var TOPIC = "cet4-l1nks314-da7731fc";
+var SYNC_URL = "https://ntfy.sh/" + TOPIC;
+var PROG_KEY = "cet4_prog_v1";
+var BASE = {};
+
 function d0(x){return new Date(x.getFullYear(),x.getMonth(),x.getDate());}
+function fmt(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+
+function loadLocal(){
+  try{ var o=JSON.parse(localStorage.getItem(PROG_KEY)||"{}"); return (o&&typeof o==="object")?o:{}; }
+  catch(e){ return {}; }
+}
+function saveLocal(p){ try{ localStorage.setItem(PROG_KEY, JSON.stringify(p)); }catch(e){} }
+
+function mergeProg(){                 // 并集：任一层标记完成即算完成
+  var out={}, keys={}, i;
+  for(i=0;i<arguments.length;i++){
+    var o=arguments[i]; if(!o) continue;
+    for(var k in o) keys[k]=1;
+  }
+  for(var k in keys){
+    var m={};
+    for(var j=0;j<arguments.length;j++){
+      var v=(arguments[j]||{})[k]||{};
+      m.l = m.l || v.l; m.o = m.o || v.o; m.r = m.r || v.r;
+    }
+    if(m.l||m.o||m.r) out[k]=m;
+  }
+  return out;
+}
+
+var synced = null;                    // null=未知 true=已同步 false=离线
+function setSync(ok){
+  synced = ok;
+  var el=document.getElementById("syncTag"); if(!el) return;
+  var t=new Date();
+  var hh=String(t.getHours()).padStart(2,"0"), mm=String(t.getMinutes()).padStart(2,"0");
+  if(ok===true){ el.textContent="☁ 已同步 "+hh+":"+mm; el.style.color=""; }
+  else if(ok===false){ el.textContent="⌂ 离线保存（本机）"; el.style.color="rgba(255,255,255,.72)"; }
+  else { el.textContent="☁ 同步中…"; }
+}
+
+function pull(){
+  if(!window.fetch) return Promise.resolve(null);
+  return fetch(SYNC_URL+"/json?poll=1&since=all", {cache:"no-store"})
+    .then(function(r){ return r.ok ? r.text() : ""; })
+    .then(function(t){
+      t=(t||"").trim(); if(!t) return null;
+      var lines=t.split("\n").filter(Boolean);
+      var d=JSON.parse(lines[lines.length-1]);
+      var p=JSON.parse(d.message);
+      return (p&&typeof p==="object")?p:null;
+    })
+    .catch(function(){ return undefined; });   // undefined = 网络失败
+}
+
+function push(p){
+  if(!window.fetch) return;
+  fetch(SYNC_URL, {method:"POST", body:JSON.stringify(p)})
+    .then(function(r){ setSync(r.ok); })
+    .catch(function(){ setSync(false); });
+}
+
+/* ── 计算 ── */
 var today=d0(new Date());
 var gap=Math.round((today-d0(START))/86400000);
 var idx=Math.min(Math.max(gap,0),LESSONS.length-1);
 var toExam=Math.round((d0(EXAMD)-today)/86400000);
 var dayNo=gap+1;
-var key="cet4_"+today.getFullYear()+"-"+String(today.getMonth()+1).padStart(2,"0")+"-"+String(today.getDate()).padStart(2,"0");
+var totalDays=Math.round((d0(EXAMD)-d0(START))/86400000);
+var pct=Math.min(100,Math.round((gap+1)/totalDays*100));
 
-// 阶段
 var st=null;
 for(var i=0;i<STAGES.length;i++){ if(today>=d0(STAGES[i][0])&&today<=d0(STAGES[i][1])) st=STAGES[i]; }
 if(!st) st = today<d0(STAGES[0][0]) ? STAGES[0] : STAGES[2];
 
-// 今日其他任务（按星期）
-var wd=today.getDay();  // 0=周日
+var wd=today.getDay();
 var OTHER={0:"本周复盘（30 分钟）",1:"翻译 1 段（20 分钟）",2:"仔细阅读 1 篇（20 分钟）",
            3:"翻译 1 段（20 分钟）",4:"仔细阅读 1 篇（20 分钟）",5:"写作 1 篇（20 分钟）",
            6:"整套模考（另抽 2.5 小时，不计入 60 分钟）"}[wd];
 
-// 读取勾选
-var done={};
-try{ done=JSON.parse(localStorage.getItem(key)||"{}"); }catch(e){ done={}; }
+/* ── 状态 ── */
+var PROG = mergeProg(BASE, loadLocal());
+var done = PROG[fmt(today)] || {};
 
-// 头部
-var totalDays=Math.round((d0(EXAMD)-d0(START))/86400000);
-var pct=Math.min(100,Math.round((gap+1)/totalDays*100));
-document.getElementById("head").innerHTML=
- '<div class="top"><div class="days">'+toExam+'<small>天后考试</small></div>'
- +'<div class="stage">'+st[2]+'</div></div>'
- +'<div class="bar"><i style="width:'+Math.max(pct,3)+'%"></i></div>'
- +'<div class="sub">集训第 '+dayNo+' 天 / 共 '+totalDays+' 天 · '+(today.getMonth()+1)+'月'+today.getDate()+'日 周'+'日一二三四五六'[wd]+'</div>'
- +'<div class="note">本阶段重点：'+st[3]+'</div>';
+/* ── 渲染 ── */
+function renderHead(){
+  document.getElementById("head").innerHTML=
+   '<div class="top"><div class="days">'+toExam+'<small>天后考试</small></div>'
+   +'<div class="stage">'+st[2]+'</div></div>'
+   +'<div class="bar"><i style="width:'+Math.max(pct,3)+'%"></i></div>'
+   +'<div class="sub">集训第 '+dayNo+' 天 / 共 '+totalDays+' 天 · '+(today.getMonth()+1)+'月'+today.getDate()+'日 周'+'日一二三四五六'[wd]
+   +' &nbsp;·&nbsp; <span id="syncTag" style="font-size:12px;opacity:.9">☁ 同步中…</span></div>'
+   +'<div class="note">本阶段重点：'+st[3]+'</div>';
+}
 
-// 任务
-var lessonTxt = (gap>=LESSONS.length) ? "全部 24 节已排完 · 请在对话里说「扩充题库」"
-                                       : LESSONS[idx].d;
-var tHtml='';
-tHtml+='<div class="task'+(done.l?" on":"")+'" data-k="l"><div class="box'+(done.l?" on":"")+'"></div>'
- +'<div class="tk"><div class="tt">听力精听 · 40 分钟</div>'
- +'<div class="td">'+lessonTxt+'</div>'
- +'<a class="btn" href="'+encodeURI(LESSONS[idx].f)+'">开始今天的训练 →</a></div></div>';
-var OLINK={2:"reading.html",4:"reading.html"}[wd];
-var obtn = OLINK ? '<a class="btn ghost" style="margin-top:9px;display:inline-block;padding:8px 16px;border-radius:9px;background:var(--blue-soft);color:var(--blue);font-size:13.5px;font-weight:700;text-decoration:none" href="'+OLINK+'">开始今天的阅读 →</a>' : '';
-tHtml+='<div class="task'+(done.o?" on":"")+'" data-k="o"><div class="box'+(done.o?" on":"")+'"></div>'
- +'<div class="tk"><div class="tt">'+OTHER+'</div>'
- +'<div class="td">'+(wd===6?"这 2.5 小时单独抽时间":"占每天 60 分钟里的后 20 分钟")+'</div>'+obtn+'</div></div>';
-tHtml+='<div class="task'+(done.r?" on":"")+'" data-k="r"><div class="box'+(done.r?" on":"")+'"></div>'
- +'<div class="tk"><div class="tt">回对话交回执 · 2 分钟</div>'
- +'<div class="td">做完回到对话把回执发出来，我给出错因归因和明天的调整</div></div></div>';
-tHtml+='<div class="streak"><div><b id="sk">0</b><div class="lb">连续打卡（天）</div></div>'
- +'<div><b id="td">0</b><div class="lb">累计完成（天）</div></div></div>';
-document.getElementById("tasks").innerHTML=tHtml;
+function renderTasks(){
+  done = PROG[fmt(today)] || {};
+  var lessonTxt = (gap>=LESSONS.length) ? "全部 24 节已排完 · 请在对话里说「扩充题库」" : LESSONS[idx].d;
+  var tHtml='';
+  tHtml+='<div class="task'+(done.l?" on":"")+'" data-k="l"><div class="box'+(done.l?" on":"")+'"></div>'
+   +'<div class="tk"><div class="tt">听力精听 · 40 分钟</div>'
+   +'<div class="td">'+lessonTxt+'</div>'
+   +'<a class="btn" href="'+encodeURI(LESSONS[idx].f)+'">开始今天的训练 →</a></div></div>';
+  var OLINK={2:"reading.html",4:"reading.html"}[wd];
+  var obtn = OLINK ? '<a class="btn ghost" style="margin-top:9px;display:inline-block;padding:8px 16px;border-radius:9px;background:rgba(37,99,235,.12);color:#2563eb;font-size:13.5px;font-weight:700;text-decoration:none" href="'+OLINK+'">开始今天的阅读 →</a>' : '';
+  tHtml+='<div class="task'+(done.o?" on":"")+'" data-k="o"><div class="box'+(done.o?" on":"")+'"></div>'
+   +'<div class="tk"><div class="tt">'+OTHER+'</div>'
+   +'<div class="td">'+(wd===6?"这 2.5 小时单独抽时间":"占每天 60 分钟里的后 20 分钟")+'</div>'+obtn+'</div></div>';
+  tHtml+='<div class="task'+(done.r?" on":"")+'" data-k="r"><div class="box'+(done.r?" on":"")+'"></div>'
+   +'<div class="tk"><div class="tt">回对话交回执 · 2 分钟</div>'
+   +'<div class="td">做完回到对话把回执发出来，我给出错因归因和明天的调整</div></div></div>';
+  tHtml+='<div class="streak"><div><b id="sk">0</b><div class="lb">连续打卡（天）</div></div>'
+   +'<div><b id="td">0</b><div class="lb">累计完成（天）</div></div></div>';
+  document.getElementById("tasks").innerHTML=tHtml;
 
-// 勾选交互
-document.querySelectorAll(".task").forEach(function(el){
- el.querySelector(".box").addEventListener("click",function(){
-   var k=el.dataset.k;
-   done[k]=!done[k];
-   localStorage.setItem(key,JSON.stringify(done));
-   el.classList.toggle("on",done[k]);
-   this.classList.toggle("on",done[k]);
-   refreshStats();
- });
-});
+  document.querySelectorAll(".task").forEach(function(el){
+    el.querySelector(".box").addEventListener("click",function(){
+      var k=el.dataset.k;
+      var cur = PROG[fmt(today)] || {};
+      cur[k] = !cur[k];
+      PROG[fmt(today)] = cur;
+      saveLocal(PROG);                 // ① 本机
+      push(PROG);                      // ② 云端
+      el.classList.toggle("on", cur[k]);
+      this.classList.toggle("on", cur[k]);
+      refreshStats();
+      setSync(synced===null?null:true);
+    });
+  });
+}
 
 function refreshStats(){
- var cnt=0,run=0;
- for(var d=0;d<400;d++){
-   var dd=new Date(START.getFullYear(),START.getMonth(),START.getDate()+d);
-   if(dd>today) break;
-   var kk="cet4_"+dd.getFullYear()+"-"+String(dd.getMonth()+1).padStart(2,"0")+"-"+String(dd.getDate()).padStart(2,"0");
-   var v=null; try{ v=JSON.parse(localStorage.getItem(kk)||"null"); }catch(e){}
-   var ok = v && v.l && v.o;
-   if(ok) cnt++;
- }
- // 连续
- for(var d=0;d<400;d++){
-   var dd=new Date(today.getFullYear(),today.getMonth(),today.getDate()-d);
-   var kk="cet4_"+dd.getFullYear()+"-"+String(dd.getMonth()+1).padStart(2,"0")+"-"+String(dd.getDate()).padStart(2,"0");
-   var v=null; try{ v=JSON.parse(localStorage.getItem(kk)||"null"); }catch(e){}
-   if(v && v.l && v.o) run++; else break;
- }
- document.getElementById("sk").textContent=run;
- document.getElementById("td").textContent=cnt;
+  var cnt=0,run=0,d,dd,v;
+  for(d=0;d<400;d++){
+    dd=new Date(START.getFullYear(),START.getMonth(),START.getDate()+d);
+    if(dd>today) break;
+    v=PROG[fmt(dd)];
+    if(v && (v.l||v.o)) cnt++;
+  }
+  for(d=0;d<400;d++){
+    dd=new Date(today.getFullYear(),today.getMonth(),today.getDate()-d);
+    v=PROG[fmt(dd)];
+    if(v && (v.l||v.o)) run++; else if(d>0) break; else { /* 今天未做不算断档 */ }
+    if(d>0 && !(v && (v.l||v.o))) break;
+  }
+  var a=document.getElementById("sk"), b=document.getElementById("td");
+  if(a) a.textContent=run; if(b) b.textContent=cnt;
 }
+
+/* ── 启动 ── */
+renderHead();
+renderTasks();
 refreshStats();
 
-// 列表
-document.getElementById("tot").textContent=LESSONS.length;
-var h="";
-for(var i=0;i<LESSONS.length;i++){
- var cls = i<idx ? "it done" : (i===idx ? "it now" : "it");
- var tag = i===idx ? '<span class="tag">今天</span>' : '';
- h+='<a class="'+cls+'" href="'+encodeURI(LESSONS[i].f)+'"><span class="no">'+(i+1)+'</span>'
-   +'<span class="tx">'+LESSONS[i].d+tag+'</span><span class="ar">›</span></a>';
-}
-document.getElementById("list").innerHTML=h;
+pull().then(function(remote){
+  if(remote === undefined){ setSync(false); return; }   // 网络不可用
+  var before = JSON.stringify(PROG);
+  PROG = mergeProg(BASE, loadLocal(), remote);
+  saveLocal(PROG);
+  if(JSON.stringify(PROG) !== before){ renderTasks(); refreshStats(); }
+  setSync(true);
+  push(PROG);                                            // 每次打开刷新云端有效期
+});
 </script>
 </body>
 </html>
