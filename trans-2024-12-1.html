@@ -68,27 +68,51 @@ details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
  border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
 .strat{display:inline-block;font-size:12px;color:var(--purple);
  background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
-.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
-.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
- background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+.chunk{display:flex;gap:9px;margin:8px 0;font-size:13.4px;line-height:1.75;align-items:flex-start}
+.chunk .k{flex:0 0 auto;min-width:60px;text-align:center;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:3px 9px;line-height:1.5;
  font-size:12px;white-space:nowrap}
-.chunk .v{flex:1;color:var(--txt2)}
-.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.chunk .v{flex:1;min-width:0;color:var(--txt2)}
+.row{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line2);align-items:flex-start}
 .row:last-child{border-bottom:0}
-.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
- background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
-.row .c{flex:1;font-size:13.8px;line-height:1.78}
-.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+.row .tag{flex:0 0 auto;min-width:48px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;padding:3px 9px;text-align:center;white-space:nowrap}
+.row .c{flex:1;min-width:0;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:4px}
+.row .c .sub2{font-weight:400;color:var(--sub);font-size:12.5px;margin-left:4px}
 table{width:100%;border-collapse:collapse;font-size:13.4px}
 th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
 tr:last-child td{border-bottom:0}
-.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid var(--line2);
+ font-size:13.4px;align-items:flex-start}
 .vocab:last-child{border-bottom:0}
-.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
-.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
-.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
- line-height:1.78;color:var(--red-ink);margin-top:10px}
+.vocab .w{flex:0 0 auto;min-width:96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;min-width:0;color:var(--txt2);line-height:1.72}
+.pit{border-radius:12px;background:var(--red-soft);padding:13px 14px;font-size:13.4px;
+ line-height:1.75;color:var(--red-ink);margin-top:10px}
+.pit-h{font-weight:700;font-size:13.6px;margin-bottom:10px}
+.pit-item{background:var(--card);border:1px solid var(--line);border-radius:10px;
+ padding:11px 12px;margin-top:9px}
+.pit-t{font-weight:700;font-size:13.4px;color:var(--red-ink);margin-bottom:6px;
+ display:flex;align-items:center;gap:7px;line-height:1.5}
+.pit-t::before{content:"";width:3px;height:13px;border-radius:2px;background:var(--red);
+ flex:0 0 auto}
+.pit-line{display:flex;gap:8px;margin-top:6px;font-size:13px;line-height:1.72;align-items:flex-start}
+.pit-line .tx{flex:1;min-width:0;color:var(--txt2)}
+.pill{flex:0 0 auto;font-size:11px;font-weight:700;border-radius:5px;padding:2px 7px;
+ line-height:1.5;white-space:nowrap}
+.pill.bad{background:var(--red-soft);color:var(--red-ink)}
+.pill.fix{background:var(--green-soft);color:var(--green-ink)}
+/* 折叠的语篇分析 */
+details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
+ background:var(--card)}
+details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px;color:var(--txt)}
+details.dig>summary::-webkit-details-marker{display:none}
+details.dig>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details.dig[open]>summary::before{content:"▾"}
+details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
@@ -113,11 +137,16 @@ tr:last-child td{border-bottom:0}
 
 <div class="card">
   <div class="chead"><h2>中文原文</h2><span class="cmeta">5 句</span></div>
-  <div class="tip b">【主旨】 中国环保举措与成效的客观介绍 全篇在客观介绍中国在环境保护方面的态度、做法与成果，属典型的「社会/政策介绍」语体。开篇 中国政府十分重视环境保护 就把基调定成「陈述当下事实与现状」，不是讲一个过去发生完就结束的故事。这类「介绍中国现状」的题正是四级汉译英最高频的一类，定调准了，时态与用词风格随之而定。 【时态】 一般现在时 通篇是对中国环保态度、做法、现状的客观陈述，讲的是「现在持续如此」的事实，故全篇默认一般现在时。如 中国政府十分重视环境保护、中国的城市和农村正在绿起来、美起来 都是当下状态。只有 取得了显著成效 与 做出了重要贡献 这种「到现在为止已完成」的动作，才偏离基调改用现在完成时。 【译法】 环境保护 统一译作 environmental protection。原文 中国政府十分重视环境保护 与 为全球环境保护做出了重要贡献 两处出现，全篇只用这一个译法，第二处可用代词或省略避免重复，但译名本身不变。属意译，是约定俗成的固定表达。 清洁能源 统一译作 clean energy。出自 大力发展清洁能源。意译，clean energy 为通用固定搭配，energy 此处不可数、不加 s。 共享单车 统一译作 shared bikes（或 bike-sharing）。出自 推广共享单车。意译，「共享」用 shared/sharing，「单车」用 bikes，需用复数表泛指。 垃圾分类 统一译作 garbage classification（或 garbage sorting）。出自 实施垃圾分类。意译，garbage 不可数、不加 s，classification/sorting 均为常见对应。</div>
+  
   <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
     <span class="zh">中国政府十分重视环境保护。近年来,中国在减少空气、水和土壤污染上取得了显著成效。为了不断改善人们的生活环境,中国采取了一系列有效措施,包括大力发展清洁能源,改善公共交通,推广共享单车,实施垃圾分类。通过这些措施,中国的城市和农村正在绿起来、美起来。中国还积极参与国际合作,为全球环境保护做出了重要贡献。</span></div>
   <div class="tip a"><b>先自己翻一遍再看下面。</b>用纸笔或另一个文档写，写完再逐句对照 ——
   直接看答案等于没练。</div>
+  <details class="dig"><summary>语篇分析 · 主旨 / 时态 / 译法（建议自己翻完再看）</summary><div class="dbody">
+        <div class="chunk"><span class="k">主旨</span><span class="v">中国环保举措与成效的客观介绍 全篇在客观介绍中国在环境保护方面的态度、做法与成果，属典型的「社会/政策介绍」语体。开篇 中国政府十分重视环境保护 就把基调定成「陈述当下事实与现状」，不是讲一个过去发生完就结束的故事。这类「介绍中国现状」的题正是四级汉译英最高频的一类，定调准了，时态与用词风格随之而定。</span></div>
+        <div class="chunk"><span class="k">时态</span><span class="v">一般现在时 通篇是对中国环保态度、做法、现状的客观陈述，讲的是「现在持续如此」的事实，故全篇默认一般现在时。如 中国政府十分重视环境保护、中国的城市和农村正在绿起来、美起来 都是当下状态。只有 取得了显著成效 与 做出了重要贡献 这种「到现在为止已完成」的动作，才偏离基调改用现在完成时。</span></div>
+        <div class="chunk"><span class="k">译法</span><span class="v">环境保护 统一译作 environmental protection。原文 中国政府十分重视环境保护 与 为全球环境保护做出了重要贡献 两处出现，全篇只用这一个译法，第二处可用代词或省略避免重复，但译名本身不变。属意译，是约定俗成的固定表达。 清洁能源 统一译作 clean energy。出自 大力发展清洁能源。意译，clean energy 为通用固定搭配，energy 此处不可数、不加 s。 共享单车 统一译作 shared bikes（或 bike-sharing）。出自 推广共享单车。意译，「共享」用 shared/sharing，「单车」用 bikes，需用复数表泛指。 垃圾分类 统一译作 garbage classification（或 garbage sorting）。出自 实施垃圾分类。意译，garbage 不可数、不加 s，classification/sorting 均为常见对应。</span></div>
+  </div></details>
 </div>
 
 <div class="card">

@@ -73,19 +73,21 @@ details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
  background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
  font-size:12px;white-space:nowrap}
 .chunk .v{flex:1;color:var(--txt2)}
-.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.row{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line2);align-items:flex-start}
 .row:last-child{border-bottom:0}
-.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
- background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
-.row .c{flex:1;font-size:13.8px;line-height:1.78}
-.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+.row .tag{flex:0 0 auto;min-width:48px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;padding:3px 9px;text-align:center;white-space:nowrap}
+.row .c{flex:1;min-width:0;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:4px}
+.row .c .sub2{font-weight:400;color:var(--sub);font-size:12.5px;margin-left:4px}
 table{width:100%;border-collapse:collapse;font-size:13.4px}
 th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
 tr:last-child td{border-bottom:0}
-.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px;
+ align-items:flex-start}
 .vocab:last-child{border-bottom:0}
-.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
+.vocab .w{flex:0 0 auto;min-width:96px;font-weight:700;color:var(--green)}
 .vocab .d{flex:1;color:var(--txt2);line-height:1.72}
 .pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
  line-height:1.78;color:var(--red-ink);margin-top:10px}
@@ -93,6 +95,32 @@ tr:last-child td{border-bottom:0}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+/* ── 今日卡片（与阅读总览页一致） ── */
+.today .k{font-size:12.5px;color:var(--sub);letter-spacing:.5px}
+.today .n{font-size:20px;font-weight:800;margin:7px 0 5px;line-height:1.4;letter-spacing:-.2px}
+.today .m{font-size:13.5px;color:var(--sub);line-height:1.7}
+.go{display:block;width:100%;margin-top:15px;padding:16px;border-radius:12px;
+ background:var(--blue);color:#fff;font-size:17px;font-weight:700;text-align:center;
+ text-decoration:none;letter-spacing:.5px;box-shadow:0 4px 14px rgba(37,99,235,.25)}
+.go:active{transform:scale(.985)}
+.go.ghost{background:var(--blue-soft);color:var(--blue);box-shadow:none;font-size:15px;padding:13px}
+/* ── 训练列表 ── */
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.lh{padding:13px 16px;border-bottom:1px solid var(--line);font-weight:700;font-size:14.5px;
+ display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.lh small{font-size:12px;font-weight:500;color:var(--sub)}
+a.it{display:flex;align-items:center;gap:11px;padding:15px 16px;border-bottom:1px solid var(--line);
+ text-decoration:none;color:var(--txt);font-size:14.8px}
+a.it:last-child{border-bottom:0}
+a.it:active{background:var(--blue-soft)}
+a.it .no{color:var(--sub);font-size:12.5px;min-width:26px;flex:0 0 auto;text-align:right}
+a.it .tx{flex:1;min-width:0}
+a.it .mt{font-size:12px;color:var(--sub);flex:0 0 auto}
+a.it .ar{color:#c3c8d0;flex:0 0 auto}
+a.it.now{background:var(--green-soft)}
+a.it.now .tx{font-weight:700;color:var(--green)}
+a.it.now .no{color:var(--green)}
 </style>
 </head>
 <body>
@@ -130,7 +158,7 @@ tr:last-child td{border-bottom:0}
 <div class="card">
   <h2>写作三段式模板</h2>
   <p class="hint">四级写作 120–180 词，30 分钟。这个结构对任何题目都能套。</p>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>第 1 段 · 引入表态　<span style="font-weight:400;color:var(--sub);font-size:12.5px">2–3 句</span></b>第一句点题（改写题目），第二句表明你的立场或态度。不要绕圈子，阅卷老师看的就是这一句。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>第 2 段 · 主体展开　<span style="font-weight:400;color:var(--sub);font-size:12.5px">4–6 句</span></b>写 2–3 个理由或建议。<b>每个理由走「观点句 + 理由/例子」两步</b>，不要只抛观点不给支撑。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>第 3 段 · 回扣收尾　<span style="font-weight:400;color:var(--sub);font-size:12.5px">2 句</span></b>重申立场 + 一句展望。**不要出现新的观点**，收尾段的作用是收口，不是展开。</div></div>
+  <div class="row"><span class="tag">第1段</span><div class="c"><b>第 1 段 · 引入表态　<span class="sub2">2–3 句</span></b>第一句点题（改写题目），第二句表明你的立场或态度。不要绕圈子，阅卷老师看的就是这一句。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>第 2 段 · 主体展开　<span class="sub2">4–6 句</span></b>写 2–3 个理由或建议。<b>每个理由走「观点句 + 理由/例子」两步</b>，不要只抛观点不给支撑。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>第 3 段 · 回扣收尾<span class="sub2">2 句</span></b>重申立场 + 一句展望。<b style="display:inline">不要出现新的观点</b>，收尾段的作用是收口，不是展开。</div></div>
   <div class="tip g">结构分是白送的 —— 只要三段功能清楚、每段第一句能读明白，就已经拿到结构分。</div>
 </div>
 
@@ -212,9 +240,11 @@ if(isT && ti<TL.length){
    +'<div class="m">第 '+(wi+1)+' 篇 / 共 '+WL.length+' 篇 · 自己写 25 分钟 + 对照 5 分钟</div>'
    +'<a class="go" href="'+encodeURI(WL[wi].f)+'">开始今天的写作 →</a>';
 } else {
+  var nx=Math.min(Math.max(ti,0)+1, TL.length-1);
   tb.innerHTML='<div class="k">'+ds+'</div>'
    +'<div class="n">今天不排写译</div>'
-   +'<div class="m">写译固定在<b>周一 / 周三翻译、周五写作</b>。想提前练可以从下面列表进。</div>';
+   +'<div class="m">写译固定在<b>周一 / 周三翻译、周五写作</b>。想提前练，直接从下面列表进。</div>'
+   +'<a class="go ghost" href="'+encodeURI(TL[nx].f)+'">接着练：'+TL[nx].d+' · 汉译英 →</a>';
 }
 </script>
 

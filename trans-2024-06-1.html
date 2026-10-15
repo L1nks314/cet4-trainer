@@ -68,27 +68,51 @@ details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
  border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
 .strat{display:inline-block;font-size:12px;color:var(--purple);
  background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
-.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
-.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
- background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+.chunk{display:flex;gap:9px;margin:8px 0;font-size:13.4px;line-height:1.75;align-items:flex-start}
+.chunk .k{flex:0 0 auto;min-width:60px;text-align:center;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:3px 9px;line-height:1.5;
  font-size:12px;white-space:nowrap}
-.chunk .v{flex:1;color:var(--txt2)}
-.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.chunk .v{flex:1;min-width:0;color:var(--txt2)}
+.row{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line2);align-items:flex-start}
 .row:last-child{border-bottom:0}
-.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
- background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
-.row .c{flex:1;font-size:13.8px;line-height:1.78}
-.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+.row .tag{flex:0 0 auto;min-width:48px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;padding:3px 9px;text-align:center;white-space:nowrap}
+.row .c{flex:1;min-width:0;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:4px}
+.row .c .sub2{font-weight:400;color:var(--sub);font-size:12.5px;margin-left:4px}
 table{width:100%;border-collapse:collapse;font-size:13.4px}
 th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
 tr:last-child td{border-bottom:0}
-.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid var(--line2);
+ font-size:13.4px;align-items:flex-start}
 .vocab:last-child{border-bottom:0}
-.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
-.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
-.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
- line-height:1.78;color:var(--red-ink);margin-top:10px}
+.vocab .w{flex:0 0 auto;min-width:96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;min-width:0;color:var(--txt2);line-height:1.72}
+.pit{border-radius:12px;background:var(--red-soft);padding:13px 14px;font-size:13.4px;
+ line-height:1.75;color:var(--red-ink);margin-top:10px}
+.pit-h{font-weight:700;font-size:13.6px;margin-bottom:10px}
+.pit-item{background:var(--card);border:1px solid var(--line);border-radius:10px;
+ padding:11px 12px;margin-top:9px}
+.pit-t{font-weight:700;font-size:13.4px;color:var(--red-ink);margin-bottom:6px;
+ display:flex;align-items:center;gap:7px;line-height:1.5}
+.pit-t::before{content:"";width:3px;height:13px;border-radius:2px;background:var(--red);
+ flex:0 0 auto}
+.pit-line{display:flex;gap:8px;margin-top:6px;font-size:13px;line-height:1.72;align-items:flex-start}
+.pit-line .tx{flex:1;min-width:0;color:var(--txt2)}
+.pill{flex:0 0 auto;font-size:11px;font-weight:700;border-radius:5px;padding:2px 7px;
+ line-height:1.5;white-space:nowrap}
+.pill.bad{background:var(--red-soft);color:var(--red-ink)}
+.pill.fix{background:var(--green-soft);color:var(--green-ink)}
+/* 折叠的语篇分析 */
+details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
+ background:var(--card)}
+details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px;color:var(--txt)}
+details.dig>summary::-webkit-details-marker{display:none}
+details.dig>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details.dig[open]>summary::before{content:"▾"}
+details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
@@ -113,11 +137,16 @@ tr:last-child td{border-bottom:0}
 
 <div class="card">
   <div class="chead"><h2>中文原文</h2><span class="cmeta">4 句</span></div>
-  <div class="tip b">【主旨】 客观介绍中国传统住宅四合院 整段在介绍一种中国传统民居：开篇 四合院(siheyuan)是中国一种传统的住宅建筑 就把它定义清楚，随后讲它的特点、舒适度、地域类型与文化意义。这属于「中国文化/民居介绍」类客观说明文，不是讲某段历史故事，语体平实、面向读者科普。 【时态】 一般现在时 全篇是在客观陈述四合院「现在仍然如此」的特征与现状——是什么、有什么特点、适合谁住、哪种最典型，都是不随时间变的事实性介绍，如 其特点是房屋建造在一个院子的四周、四合院通常冬暖夏凉，故以一般现在时为主时态。只有末句 传统的四合院已逐渐减少 表「已经发生并持续到现在的变化」，那一处才偏离基调改用现在完成时。 【译法】 四合院 原文已自带括号注音 四合院(siheyuan)，故全篇统一译为音译加同位语解释 the siheyuan (a traditional Chinese courtyard house)，首次出现时给出解释，之后统一用 siheyuan 或 courtyard house，不要一会儿 siheyuan 一会儿又另造别的拼法。 北京 对应 北京的四合院，用国际通用约定俗成译名 Beijing，全篇统一，不要写成 Peking 或拼错。 大家庭 对应 大家庭，指几代同堂的大家族，统一译为 large families（含老少几代人之意），不要误解成「伟大的家庭」。</div>
+  
   <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
     <span class="zh">四合院(siheyuan)是中国一种传统的住宅建筑，其特点是房屋建造在一个院子的四周，将院子合围在中间。四合院通常冬暖夏凉，环境舒适，尤其适合大家庭居住。四合院在中国各地有多种类型，其中以北京的四合院最为典型。如今，随着现代城市的发展，传统的四合院已逐渐减少，但因其独特的建筑风格，四合院对中国文化的传承和中国历史的研究具有重要意义。</span></div>
   <div class="tip a"><b>先自己翻一遍再看下面。</b>用纸笔或另一个文档写，写完再逐句对照 ——
   直接看答案等于没练。</div>
+  <details class="dig"><summary>语篇分析 · 主旨 / 时态 / 译法（建议自己翻完再看）</summary><div class="dbody">
+        <div class="chunk"><span class="k">主旨</span><span class="v">客观介绍中国传统住宅四合院 整段在介绍一种中国传统民居：开篇 四合院(siheyuan)是中国一种传统的住宅建筑 就把它定义清楚，随后讲它的特点、舒适度、地域类型与文化意义。这属于「中国文化/民居介绍」类客观说明文，不是讲某段历史故事，语体平实、面向读者科普。</span></div>
+        <div class="chunk"><span class="k">时态</span><span class="v">一般现在时 全篇是在客观陈述四合院「现在仍然如此」的特征与现状——是什么、有什么特点、适合谁住、哪种最典型，都是不随时间变的事实性介绍，如 其特点是房屋建造在一个院子的四周、四合院通常冬暖夏凉，故以一般现在时为主时态。只有末句 传统的四合院已逐渐减少 表「已经发生并持续到现在的变化」，那一处才偏离基调改用现在完成时。</span></div>
+        <div class="chunk"><span class="k">译法</span><span class="v">四合院 原文已自带括号注音 四合院(siheyuan)，故全篇统一译为音译加同位语解释 the siheyuan (a traditional Chinese courtyard house)，首次出现时给出解释，之后统一用 siheyuan 或 courtyard house，不要一会儿 siheyuan 一会儿又另造别的拼法。 北京 对应 北京的四合院，用国际通用约定俗成译名 Beijing，全篇统一，不要写成 Peking 或拼错。 大家庭 对应 大家庭，指几代同堂的大家族，统一译为 large families（含老少几代人之意），不要误解成「伟大的家庭」。</span></div>
+  </div></details>
 </div>
 
 <div class="card">

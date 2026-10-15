@@ -68,27 +68,51 @@ details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
  border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
 .strat{display:inline-block;font-size:12px;color:var(--purple);
  background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
-.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
-.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
- background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+.chunk{display:flex;gap:9px;margin:8px 0;font-size:13.4px;line-height:1.75;align-items:flex-start}
+.chunk .k{flex:0 0 auto;min-width:60px;text-align:center;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:3px 9px;line-height:1.5;
  font-size:12px;white-space:nowrap}
-.chunk .v{flex:1;color:var(--txt2)}
-.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.chunk .v{flex:1;min-width:0;color:var(--txt2)}
+.row{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line2);align-items:flex-start}
 .row:last-child{border-bottom:0}
-.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
- background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
-.row .c{flex:1;font-size:13.8px;line-height:1.78}
-.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+.row .tag{flex:0 0 auto;min-width:48px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;padding:3px 9px;text-align:center;white-space:nowrap}
+.row .c{flex:1;min-width:0;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:4px}
+.row .c .sub2{font-weight:400;color:var(--sub);font-size:12.5px;margin-left:4px}
 table{width:100%;border-collapse:collapse;font-size:13.4px}
 th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
 tr:last-child td{border-bottom:0}
-.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid var(--line2);
+ font-size:13.4px;align-items:flex-start}
 .vocab:last-child{border-bottom:0}
-.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
-.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
-.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
- line-height:1.78;color:var(--red-ink);margin-top:10px}
+.vocab .w{flex:0 0 auto;min-width:96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;min-width:0;color:var(--txt2);line-height:1.72}
+.pit{border-radius:12px;background:var(--red-soft);padding:13px 14px;font-size:13.4px;
+ line-height:1.75;color:var(--red-ink);margin-top:10px}
+.pit-h{font-weight:700;font-size:13.6px;margin-bottom:10px}
+.pit-item{background:var(--card);border:1px solid var(--line);border-radius:10px;
+ padding:11px 12px;margin-top:9px}
+.pit-t{font-weight:700;font-size:13.4px;color:var(--red-ink);margin-bottom:6px;
+ display:flex;align-items:center;gap:7px;line-height:1.5}
+.pit-t::before{content:"";width:3px;height:13px;border-radius:2px;background:var(--red);
+ flex:0 0 auto}
+.pit-line{display:flex;gap:8px;margin-top:6px;font-size:13px;line-height:1.72;align-items:flex-start}
+.pit-line .tx{flex:1;min-width:0;color:var(--txt2)}
+.pill{flex:0 0 auto;font-size:11px;font-weight:700;border-radius:5px;padding:2px 7px;
+ line-height:1.5;white-space:nowrap}
+.pill.bad{background:var(--red-soft);color:var(--red-ink)}
+.pill.fix{background:var(--green-soft);color:var(--green-ink)}
+/* 折叠的语篇分析 */
+details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
+ background:var(--card)}
+details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px;color:var(--txt)}
+details.dig>summary::-webkit-details-marker{display:none}
+details.dig>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details.dig[open]>summary::before{content:"▾"}
+details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
@@ -113,11 +137,16 @@ tr:last-child td{border-bottom:0}
 
 <div class="card">
   <div class="chead"><h2>中文原文</h2><span class="cmeta">5 句</span></div>
-  <div class="tip b">【主旨】 客观介绍中国民营经济近年的发展现状 全段是一篇客观陈述类的成就介绍：以 近年来，中国政府高度重视民营经济(private economy)的发展 开篇，围绕政策、数量、质量、研发、竞争力逐层铺陈中国民营经济的现状与趋势。这是四级汉译英的典型语体——中国社会经济介绍，用词偏正式书面，不带个人情感色彩，全篇陈述事实。 【时态】 一般现在时 全段在客观陈述民营经济的现状、特征与持续趋势，如 民营企业不仅数量稳步增长，质量和结构也在不断提升 讲的是当下仍在持续的状况，属于“现在的事实／常态”，故全篇默认一般现在时。仅 出台了一系列政策 这类已完成的具体动作，可局部用现在完成时承接。 【译法】 民营经济 民营经济(private economy) 原文已给出官方英译 private economy，直接采用、全篇统一，不要换成 private sector economy 或 folk economy 等自造说法。 民营企业 出台了一系列政策支持民营企业 中的“民营企业”全篇反复出现，统一译作 private enterprises（复数，泛指这一整类企业），不要时而 private companies、时而 private firms 来回换。 高质量发展 中国经济的高质量发展 是官方固定表述，统一译作 high-quality development，照意译直对即可，不必额外加注。</div>
+  
   <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
     <span class="zh">近年来，中国政府高度重视民营经济(private economy)的发展，出台了一系列政策支持民营企业。截至 2025 年 3 月底，全国民营企业数量超过 5700 万家，占企业总量的 92.3%。民营企业不仅数量稳步增长，质量和结构也在不断提升。民营企业的研发投入不断增加，在新一代信息技术、人工智能等领域发展迅速。民营企业核心竞争力的增强为中国经济的高质量发展提供了有力支撑。</span></div>
   <div class="tip a"><b>先自己翻一遍再看下面。</b>用纸笔或另一个文档写，写完再逐句对照 ——
   直接看答案等于没练。</div>
+  <details class="dig"><summary>语篇分析 · 主旨 / 时态 / 译法（建议自己翻完再看）</summary><div class="dbody">
+        <div class="chunk"><span class="k">主旨</span><span class="v">客观介绍中国民营经济近年的发展现状 全段是一篇客观陈述类的成就介绍：以 近年来，中国政府高度重视民营经济(private economy)的发展 开篇，围绕政策、数量、质量、研发、竞争力逐层铺陈中国民营经济的现状与趋势。这是四级汉译英的典型语体——中国社会经济介绍，用词偏正式书面，不带个人情感色彩，全篇陈述事实。</span></div>
+        <div class="chunk"><span class="k">时态</span><span class="v">一般现在时 全段在客观陈述民营经济的现状、特征与持续趋势，如 民营企业不仅数量稳步增长，质量和结构也在不断提升 讲的是当下仍在持续的状况，属于“现在的事实／常态”，故全篇默认一般现在时。仅 出台了一系列政策 这类已完成的具体动作，可局部用现在完成时承接。</span></div>
+        <div class="chunk"><span class="k">译法</span><span class="v">民营经济 民营经济(private economy) 原文已给出官方英译 private economy，直接采用、全篇统一，不要换成 private sector economy 或 folk economy 等自造说法。 民营企业 出台了一系列政策支持民营企业 中的“民营企业”全篇反复出现，统一译作 private enterprises（复数，泛指这一整类企业），不要时而 private companies、时而 private firms 来回换。 高质量发展 中国经济的高质量发展 是官方固定表述，统一译作 high-quality development，照意译直对即可，不必额外加注。</span></div>
+  </div></details>
 </div>
 
 <div class="card">
