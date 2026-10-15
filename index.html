@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>四级听力训练 · 入口</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--line:#e6e8ec;--txt:#1c1e21;--sub:#6b7280;
+      --blue:#2563eb;--blue-soft:#eff4ff;--green:#0d8a52;--green-soft:#e9f7ef;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+  font:15px/1.65 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  padding:18px 14px 40px;max-width:760px;margin:0 auto;}
+h1{font-size:20px;margin:4px 0 16px;letter-spacing:.3px}
+.today{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 16px;margin-bottom:16px;}
+.today .k{font-size:12.5px;color:var(--sub);letter-spacing:.5px}
+.today .n{font-size:19px;font-weight:700;margin:6px 0 4px;line-height:1.4}
+.today .m{font-size:13.5px;color:var(--sub)}
+.go{display:block;width:100%;margin-top:14px;padding:15px;border:0;border-radius:11px;
+  background:var(--blue);color:#fff;font-size:16.5px;font-weight:700;letter-spacing:.5px}
+.go:active{transform:scale(.985)}
+.warn{background:#fff8e6;border:1px solid #f2dfa8;color:#7a5b00;border-radius:11px;
+  padding:12px 14px;font-size:13.5px;margin-bottom:16px}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.lh{padding:13px 16px;border-bottom:1px solid var(--line);font-weight:700;font-size:14.5px}
+a.it{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:13px 16px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--txt);font-size:14.5px}
+a.it:last-child{border-bottom:0}
+a.it:active{background:var(--blue-soft)}
+a.it .no{color:var(--sub);font-size:12.5px;min-width:26px}
+a.it .tx{flex:1}
+a.it .ar{color:#c3c8d0}
+a.it.done{opacity:.52}
+a.it.now{background:var(--green-soft)}
+a.it.now .tx{font-weight:700;color:var(--green)}
+.tag{font-size:11.5px;padding:2px 7px;border-radius:20px;background:var(--blue-soft);color:var(--blue);margin-left:6px}
+.hint{color:var(--sub);font-size:12.5px;margin-top:14px;line-height:1.8}
+</style>
+</head>
+<body>
+<h1>四级听力训练 · 入口</h1>
+
+<div id="todayBox"></div>
+<div id="warnBox"></div>
+
+<div class="list">
+  <div class="lh">全部训练（<span id="tot"></span> 节）</div>
+  <div id="list"></div>
+</div>
+
+<div class="hint">
+  <b>怎么用：</b>打开本页 → 上面的按钮就是今天该练的 → 点进去做题。<br>
+  没做的那天不会消失：下面列表里可以手动补。<br>
+  进度只按日期推算，<b>你实际做到哪，以你自己的安排为准</b>。
+</div>
+
+<script>
+var START = new Date(2026, 9, 15);           // 2026-10-15 起算
+var LESSONS = [
+  {f:"2025-12-1_SectionA.html",d:"2025年12月 第1套 · Section A 短篇新闻"},
+  {f:"2025-12-1_SectionB.html",d:"2025年12月 第1套 · Section B 长对话"},
+  {f:"2025-12-1_SectionC.html",d:"2025年12月 第1套 · Section C 听力篇章"},
+  {f:"2025-06-2_SectionA.html",d:"2025年6月 第2套 · Section A 短篇新闻"},
+  {f:"2025-06-2_SectionB.html",d:"2025年6月 第2套 · Section B 长对话"},
+  {f:"2025-06-2_SectionC.html",d:"2025年6月 第2套 · Section C 听力篇章"},
+  {f:"2025-06-1_SectionA.html",d:"2025年6月 第1套 · Section A 短篇新闻"},
+  {f:"2025-06-1_SectionB.html",d:"2025年6月 第1套 · Section B 长对话"},
+  {f:"2025-06-1_SectionC.html",d:"2025年6月 第1套 · Section C 听力篇章"},
+  {f:"2024-06-1_SectionA.html",d:"2024年6月 第1套 · Section A 短篇新闻"},
+  {f:"2024-06-1_SectionB.html",d:"2024年6月 第1套 · Section B 长对话"},
+  {f:"2024-06-1_SectionC.html",d:"2024年6月 第1套 · Section C 听力篇章"},
+  {f:"2023-12-1_SectionA.html",d:"2023年12月 第1套 · Section A 短篇新闻"},
+  {f:"2023-12-1_SectionB.html",d:"2023年12月 第1套 · Section B 长对话"},
+  {f:"2023-12-1_SectionC.html",d:"2023年12月 第1套 · Section C 听力篇章"},
+  {f:"2023-06-1_SectionA.html",d:"2023年6月 第1套 · Section A 短篇新闻"},
+  {f:"2023-06-1_SectionB.html",d:"2023年6月 第1套 · Section B 长对话"},
+  {f:"2023-06-1_SectionC.html",d:"2023年6月 第1套 · Section C 听力篇章"},
+  {f:"2023-06-2_SectionA.html",d:"2023年6月 第2套 · Section A 短篇新闻"},
+  {f:"2023-06-2_SectionB.html",d:"2023年6月 第2套 · Section B 长对话"},
+  {f:"2023-06-2_SectionC.html",d:"2023年6月 第2套 · Section C 听力篇章"},
+  {f:"2022-12-1_SectionA.html",d:"2022年12月 第1套 · Section A 短篇新闻"},
+  {f:"2022-12-1_SectionB.html",d:"2022年12月 第1套 · Section B 长对话"},
+  {f:"2022-12-1_SectionC.html",d:"2022年12月 第1套 · Section C 听力篇章"}
+];
+
+function d0(x){ return new Date(x.getFullYear(), x.getMonth(), x.getDate()); }
+var today = d0(new Date());
+var gap = Math.round((today - d0(START)) / 86400000);   // 第几天（0 起）
+var idx = Math.min(Math.max(gap, 0), LESSONS.length - 1);
+var finished = gap >= LESSONS.length;
+
+document.getElementById('tot').textContent = LESSONS.length;
+
+// 今日卡片
+var tb = document.getElementById('todayBox');
+if (finished) {
+  tb.innerHTML = '<div class="today"><div class="k">全部 ' + LESSONS.length + ' 节已排完</div>'
+    + '<div class="n">该补充新的真题材料了</div>'
+    + '<div class="m">请在对话里说一句「扩充题库」，我会联网补上新的套次。</div></div>';
+} else {
+  var L = LESSONS[idx];
+  var dateStr = (today.getMonth()+1) + '月' + today.getDate() + '日';
+  tb.innerHTML = '<div class="today">'
+    + '<div class="k">' + dateStr + ' · 第 ' + (idx+1) + ' 节 / 共 ' + LESSONS.length + ' 节</div>'
+    + '<div class="n">' + L.d + '</div>'
+    + '<div class="m">约 25–35 分钟：盲听做题 → 逐句听写 → 点读精抠 → 跟读 3 遍</div>'
+    + '<button class="go" onclick="location.href=encodeURI(LESSONS[' + idx + '].f)">开始今天的训练 →</button>'
+    + '</div>';
+}
+
+// 超出范围提示
+if (gap > 0 && !finished) {
+  var miss = LESSONS.slice(0, idx).length;
+  document.getElementById('warnBox').innerHTML =
+    '<div class="warn">按日期算，今天应该是第 ' + (idx+1) + ' 节。'
+    + '如果前面还有没做完的（共 ' + miss + ' 节），从下面列表里手动进去补。</div>';
+}
+
+// 列表
+var h = '';
+for (var i = 0; i < LESSONS.length; i++) {
+  var cls = i < idx ? 'it done' : (i === idx && !finished ? 'it now' : 'it');
+  var tag = (i === idx && !finished) ? '<span class="tag">今天</span>' : '';
+  h += '<a class="' + cls + '" href="' + encodeURI(LESSONS[i].f) + '">'
+     + '<span class="no">' + (i+1) + '</span>'
+     + '<span class="tx">' + LESSONS[i].d + tag + '</span>'
+     + '<span class="ar">›</span></a>';
+}
+document.getElementById('list').innerHTML = h;
+</script>
+</body>
+</html>
