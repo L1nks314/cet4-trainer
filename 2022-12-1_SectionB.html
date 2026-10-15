@@ -604,6 +604,7 @@ var QUIZ = [{"id": "q8", "stem": "8. What do we learn about the woman from the c
     L.push('最难的一句：' + (document.getElementById('hardest').value || '（未填）'));
     L.push('—— 请据此给我出错因归因和改善方法');
     document.getElementById('receipt').value = L.join('\n');
+  if (window.__autoSync) window.__autoSync(false);
   }
   window.__rebuild = buildReceipt;
 
@@ -775,30 +776,38 @@ var QUIZ = [{"id": "q8", "stem": "8. What do we learn about the woman from the c
 </script>
 
 <div style="margin-top:12px">
-  <button class="syncbtn" id="syncBtn">☁ 同步回执</button>
+  <button class="syncbtn" id="syncBtn">☁ 重新同步</button>
   <span class="syncst" id="syncSt"></span>
 </div>
 <script>
 (function(){
   var TOPIC = "cet4-67f4d286a543c3aca5af06b1910625b0749ce20d4052";
   var btn = document.getElementById('syncBtn'), st = document.getElementById('syncSt');
-  if (!btn) return;
-  btn.addEventListener('click', function(){
+  var last = '';
+  function doSync(manual){
     var r = document.getElementById('receipt');
-    if (!r || !r.value.trim()){ st.style.color = 'var(--amber)'; st.textContent = '先做完题、生成回执后再同步'; return; }
-    btn.disabled = true; st.textContent = '同步中…';
+    if (!r) return;
+    if (!r.value.trim()){ if (manual){ st.style.color='var(--amber)'; st.textContent='先做完题、生成回执后再同步'; } return; }
+    if (r.value === last) return;
+    last = r.value;
+    if (btn) btn.disabled = true;
+    if (st) st.textContent = '同步中…';
     var d = new Date();
     var ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
     fetch('https://ntfy.sh/' + TOPIC, {
       method:'POST',
       body: JSON.stringify({t:'rep', kind:'listening', date:ds, page:document.title, text:r.value})
     }).then(function(x){
-      if (x.ok){ st.style.color='var(--green)'; st.textContent='✓ 已同步，回到对话说一句「看回执」即可'; }
-      else { st.style.color='var(--red)'; st.textContent='同步失败 —— 请直接截图发到对话'; btn.disabled=false; }
+      if (st){ if (x.ok){ st.style.color='var(--green)'; st.textContent='✓ 已自动同步到云端'; }
+               else { st.style.color='var(--red)'; st.textContent='同步失败 —— 截图发对话'; } }
+      if (btn) btn.disabled = false;
     }).catch(function(){
-      st.style.color='var(--red)'; st.textContent='离线 —— 请直接截图发到对话'; btn.disabled=false;
+      if (st){ st.style.color='var(--red)'; st.textContent='离线 —— 截图发对话'; }
+      if (btn) btn.disabled = false;
     });
-  });
+  }
+  window.__autoSync = doSync;
+  if (btn) btn.addEventListener('click', function(){ doSync(true); });
 })();
 </script>
 </body>
