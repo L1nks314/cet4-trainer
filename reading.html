@@ -101,6 +101,8 @@ details.fold .inner{padding:0 12px 10px;max-height:60vh;overflow:auto}
 
 <div class="list"><div class="lh">全部篇目（16 篇 / 80 题）</div><div id="list"></div></div>
 
+<div class="list"><div class="lh">长篇阅读 · 信息匹配（8 套 / 80 题）</div><div id="mlist"></div></div>
+
 <div class="card">
   <h2>同义替换本（104 组）</h2>
   <p class="hint">四级阅读的答案，<b>八成靠同义替换</b>。做完每篇回来对一遍这张表。</p>
@@ -167,6 +169,13 @@ document.getElementById('list').innerHTML = LESSONS.map(function(l,i){
   var tg=(i===idx&&!fin)?'<span class="tag">今天</span>':'';
   return '<a class="'+cls+'" href="'+encodeURI(l.f)+'"><span class="no">'+(i+1)+'</span>'
    +'<span class="tx">'+l.d+tg+'</span><span class="mt">'+l.n+' 题</span>'
+   +'<span class="ar">›</span></a>';
+}).join('');
+
+var MLEARNINGS = [{f:"matching-2025-12-1.html", d:"2025年12月 第1套", n:10},{f:"matching-2025-06-2.html", d:"2025年6月 第2套", n:10},{f:"matching-2025-06-1.html", d:"2025年6月 第1套", n:10},{f:"matching-2024-06-1.html", d:"2024年6月 第1套", n:10},{f:"matching-2023-12-1.html", d:"2023年12月 第1套", n:10},{f:"matching-2023-06-2.html", d:"2023年6月 第2套", n:10},{f:"matching-2023-06-1.html", d:"2023年6月 第1套", n:10},{f:"matching-2022-12-1.html", d:"2022年12月 第1套", n:10}];
+document.getElementById('mlist').innerHTML = MLEARNINGS.map(function(l,i){
+  return '<a class="it" href="'+encodeURI(l.f)+'"><span class="no">'+(i+1)+'</span>'
+   +'<span class="tx">'+l.d+' · 信息匹配</span><span class="mt">'+l.n+' 题</span>'
    +'<span class="ar">›</span></a>';
 }).join('');
 </script>

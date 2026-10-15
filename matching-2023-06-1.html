@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>长篇阅读 · 2023-06-1</title>
+<style>
+:root{ --bg:#f4f5f7; --card:#ffffff; --soft:#fafbfc; --grey:#f2f3f5;
+ --line:#e5e8ec; --line2:#eff1f4; --track:#e8ebef;
+ --txt:#1b1e23; --txt2:#2b303a; --txt3:#3d434e; --sub:#6b7280; --sub2:#a8b0bb;
+ --blue:#2563eb; --blue-soft:#eef3ff; --green:#0d8a52; --green-soft:#e8f7ef;
+ --red:#c0392b; --red-soft:#fdecea; --amber:#b45309; --amber-soft:#fef6e7;
+ --amber-line:#f0dfb8; --green-line:#bfe3cf;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05);
+ --shadow-lg:0 2px 4px rgba(16,24,40,.05), 0 8px 20px rgba(16,24,40,.07); }
+@media (prefers-color-scheme: dark){ :root{ --bg:#101216; --card:#191c21; --soft:#20242a; --grey:#22262c;
+ --line:#2c313a; --line2:#242930; --track:#2a2f38;
+ --txt:#e9ebee; --txt2:#d7dade; --txt3:#c3c8cf; --sub:#98a0aa; --sub2:#6b7280;
+ --blue:#6b96fb; --blue-soft:#1a2742; --green:#41d18f; --green-soft:#14301f;
+ --red:#ef7261; --red-soft:#371d19; --amber:#e0a53f; --amber-soft:#312713;
+ --amber-line:#4a3a1c; --green-line:#1f4530;
+ --shadow:0 1px 2px rgba(0,0,0,.35), 0 2px 8px rgba(0,0,0,.28);
+ --shadow-lg:0 2px 6px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.45);
+ color-scheme:dark; } }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto;}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:19px;margin:2px 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:14px;box-shadow:var(--shadow);}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.chead h2{font-size:16px;margin:0}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.tabs{display:flex;gap:7px;margin-bottom:13px;flex-wrap:wrap}
+.tab,.tbtn2{border:1.5px solid var(--line);background:var(--card);color:var(--sub);font-size:14px;
+ padding:9px 18px;border-radius:22px;cursor:pointer;font-family:inherit;font-weight:600}
+.tab.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+.tbtn2{margin-left:auto;color:var(--amber);border-color:var(--amber-line);background:var(--amber-soft)}
+.tbtn2.on{background:var(--amber);color:#fff;border-color:var(--amber)}
+.panel{display:none}.panel.on{display:block}
+.para{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line2)}
+.para:last-child{border-bottom:0}
+.pno{flex:0 0 32px;font-size:12.5px;color:#fff;background:var(--blue);border-radius:8px;
+ height:22px;line-height:22px;text-align:center;margin-top:3px;font-weight:700;letter-spacing:.3px}
+.para.hl .pno{background:var(--amber)}
+.para.hl{background:var(--amber-soft);border-radius:8px;margin:0 -9px;padding-left:9px;padding-right:9px}
+.ptx{flex:1;min-width:0}
+.ptx .en{margin:0;font-size:15.2px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.ptx .zh{margin:5px 0 0;font-size:13.2px;color:var(--sub);line-height:1.7;
+ display:none;border-left:2px solid var(--line);padding-left:10px}
+body.zh .ptx .zh,body.zh .oz{display:block}
+.q{padding:14px 0;border-bottom:1px solid var(--line)}
+.q:last-of-type{border-bottom:0}
+.qs{display:flex;gap:8px;font-size:15px;font-weight:600;line-height:1.6}
+.qse{flex:1;min-width:0}
+.qn{flex:0 0 auto;color:var(--blue)}
+.qsz{font-size:13px;color:var(--sub);margin:5px 0 0;display:none}
+body.zh .qsz{display:block}
+.opts{margin-top:10px;display:flex;flex-direction:column;gap:7px}
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;background:var(--soft);
+ border:1.5px solid var(--line);border-radius:11px;padding:13px 14px;cursor:pointer;
+ font-family:inherit;font-size:14.4px;color:var(--txt);line-height:1.65;width:100%;
+ transition:border-color .15s, background .15s}
+.opt:active{transform:scale(.995)}
+.opt .k{flex:0 0 20px;font-weight:700;color:var(--sub);padding-top:1px}
+.opt .ot{flex:1;min-width:0}
+.opt .oe{display:block}
+.opt .oz{display:none;font-size:12.8px;color:var(--sub);margin-top:4px}
+.opt.sel{border-color:var(--blue);background:var(--blue-soft)}
+.opt.right{border-color:var(--green);background:var(--green-soft)}
+.opt.wrong{border-color:var(--red);background:var(--red-soft)}
+.jump{margin-top:10px;font-size:13px;padding:7px 15px;border-radius:18px;
+ border:1px solid var(--line);background:var(--blue-soft);color:var(--blue);
+ cursor:pointer;font-family:inherit;font-weight:600}
+.subrow{margin-top:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.submit{padding:12px 24px;border:0;border-radius:11px;background:var(--blue);color:#fff;
+ font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.submit:disabled{background:var(--blue)}
+.score{font-size:15px;font-weight:700}
+.hint{font-size:13px;color:var(--sub);background:var(--soft);border:1px solid var(--line);
+ border-radius:10px;padding:10px 12px;margin:0 0 14px;line-height:1.7}
+.syncbtn{padding:12px 20px;border:0;border-radius:11px;background:var(--green);color:#fff;
+ font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit}
+.syncbtn:disabled{background:var(--sub2)}
+.syncst{font-size:12.5px;color:var(--green);margin:9px 0 0;min-height:18px}
+.ana{border:1px solid var(--line);border-radius:11px;margin-bottom:9px;overflow:hidden;background:#fff}
+.ana>summary{display:flex;gap:10px;align-items:center;padding:11px 13px;cursor:pointer;
+ font-size:14px;list-style:none;background:var(--soft)}
+.ana>summary::-webkit-details-marker{display:none}
+.ana .an{font-weight:700;color:var(--blue)}
+.ana .aa{color:var(--green);font-weight:700}
+.ana .at{font-size:12.5px;color:var(--sub);background:var(--grey);padding:2px 9px;border-radius:20px}
+.ana .ac{margin-left:auto;font-size:12.5px;color:var(--sub)}
+.ana[open] .ac::after{content:""}
+.ana[open] .ac{color:var(--blue)}
+.abody{padding:13px;border-top:1px solid var(--line)}
+.arow{display:flex;gap:10px;margin-bottom:11px}
+.arow:last-child{margin-bottom:0}
+.atag{flex:0 0 42px;font-size:12px;font-weight:700;color:var(--blue);background:var(--blue-soft);
+ border-radius:6px;height:21px;line-height:21px;text-align:center}
+.atx{flex:1;min-width:0;font-size:13.6px;line-height:1.75;color:var(--txt2)}
+.atx p{margin:0}
+.atx .lpara{display:inline-block;font-size:11.5px;background:var(--amber-soft);color:var(--amber);
+ border-radius:5px;padding:1px 8px;margin-bottom:5px;font-weight:700}
+.len{margin:0;font-size:13.8px;font-weight:600}
+.lzh{margin:4px 0 0;font-size:12.8px;color:var(--sub)}
+.vds{display:flex;flex-direction:column;gap:10px}
+.vd{border-radius:10px;padding:10px 12px;border:1px solid}
+.vd.ok{background:var(--green-soft);border-color:var(--green-line)}
+.vd.bad{background:var(--soft);border-color:var(--line)}
+.vdh{display:flex;gap:9px;align-items:center;margin-bottom:6px}
+.vdl{font-weight:700;font-size:14px}
+.vdf{font-size:12px;padding:2px 9px;border-radius:20px;font-weight:600}
+.vd.ok .vdf{background:var(--green);color:#fff}
+.vd.bad .vdf{background:var(--line);color:var(--sub)}
+.pairs{display:flex;flex-direction:column;gap:4px;margin:7px 0}
+.pair{display:flex;gap:8px;align-items:baseline;font-size:13px;flex-wrap:wrap}
+.po{color:var(--green);font-weight:600}
+.pa{color:var(--sub)}
+.pp{color:var(--blue);font-weight:600}
+.vdn{margin:7px 0 0;font-size:13.2px;color:var(--txt3);line-height:1.72}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:8px 7px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+td.c{text-align:center;white-space:nowrap;color:var(--sub);font-size:12.5px}
+tr:last-child td{border-bottom:0}
+.frow{display:flex;align-items:center;gap:11px;padding:7px 0}
+.fn{flex:0 0 88px;font-size:13.2px}
+.fbar{flex:1;height:8px;background:var(--track);border-radius:5px;overflow:hidden}
+.fbar i{display:block;height:100%;background:var(--red);border-radius:5px}
+.fv{flex:0 0 30px;text-align:right;font-size:13px;font-weight:700;color:var(--red)}
+.tip{background:var(--blue-soft);color:#123a75;border-radius:10px;padding:11px 13px;
+ font-size:13.2px;line-height:1.7;margin-top:12px}
+
+/* ═══ 同屏分栏 ═══ */
+.card.split .panels{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.card.split .panel[id$="-read"]{max-height:74vh;overflow:auto;position:sticky;top:8px;
+ padding-right:14px;border-right:1px solid var(--line2)}
+.card.split .panel[id$="-quiz"]{min-width:0}
+@media(max-width:900px){
+  .card.split .panels{grid-template-columns:1fr}
+  .card.split .panel[id$="-read"]{max-height:42vh;position:static;border-right:0;padding-right:0;
+   border-bottom:1px solid var(--line2);padding-bottom:10px}
+}
+/* 长篇阅读·段落字母作答 */
+.letteropts{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:9px;max-width:230px}
+.letteropts .opt{width:100%;height:34px;padding:0;display:flex;align-items:center;justify-content:center;
+ font-weight:700;font-size:14px;border-radius:9px}
+.pno{align-self:flex-start}
+/* 触控笔涂写 */
+#markBar{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:8990;
+ display:flex;flex-direction:column;gap:5px;background:var(--card,#fff);border:1px solid var(--line,#e5e8ec);
+ border-radius:16px;padding:8px 10px;box-shadow:0 4px 18px rgba(0,0,0,.16);max-width:94vw}
+#markBar .row{display:flex;gap:4px;align-items:center;justify-content:center;flex-wrap:wrap}
+#markBar button{border:0;background:transparent;padding:7px 11px;border-radius:14px;font-size:13px;
+ cursor:pointer;color:var(--txt,#333);font-family:inherit;white-space:nowrap;line-height:1.3}
+#markBar button.on{background:var(--blue,#2563eb);color:#fff}
+#markBar .sep{width:1px;height:18px;background:var(--line,#e5e8ec);margin:0 3px;flex:0 0 auto}
+#markBar .wd{min-width:30px;text-align:center}
+#markBar .wd i{display:inline-block;border-radius:50%;background:currentColor;vertical-align:middle}
+#markBar .sw{width:22px;height:22px;border-radius:50%;border:2px solid var(--line,#e5e8ec);
+ padding:0;cursor:pointer;flex:0 0 auto}
+#markBar .sw.on{border-color:var(--blue,#2563eb);box-shadow:0 0 0 2px rgba(37,99,235,.25)}
+#markCanvas{position:absolute;top:0;left:0;z-index:8980;pointer-events:none}
+#markCanvas.act{pointer-events:auto;cursor:crosshair;touch-action:pan-y}
+</style>
+</head>
+<body>
+
+<a class="back" href="reading.html">← 阅读训练</a>
+<h1>长篇阅读 · 信息匹配 · 2023-06-1</h1>
+<div class="tip b" style="margin-bottom:14px"><b>题型：</b>给下面 10 个句子各配一个段落字母（A–M）。
+先读句子划关键词，再回原文定位。原文见左侧，题目在右侧。</div>
+
+<div class="card split" id="m1">
+  <div class="chead"><h2>2023-06-1 长篇阅读</h2><span class="cmeta">13 段 · 10 题</span></div>
+  <div class="tabs">
+    <button class="tab on" data-panel="m1-split">📖 同屏</button>
+    <button class="tab" data-panel="m1-read">原文</button>
+    <button class="tab" data-panel="m1-quiz">答题</button>
+    <button class="tab" data-panel="m1-ana">解析</button>
+    <button class="tbtn2" data-zh="m1">中译</button>
+  </div>
+  <div class="panels">
+    <div class="panel on" id="m1-read"><div class="para" id="m-A-A"><span class="pno">A</span><div class="ptx"><p class="en">We&#x27;re growing more used to chatting to our computers, phones and smart speakers through voice assistants like Amazon&#x27;s Alexa, Apple&#x27;s Siri and Microsoft&#x27;s Cortana. Blind and partially sighted people have been using text-to-speech converters for decades.</p></div></div><div class="para" id="m-A-B"><span class="pno">B</span><div class="ptx"><p class="en">Out of these assistants, Siri is the most well-known. The assistant uses voice inquiries and a natural-language user interface(界面) to answer questions. The software adapts to users&#x27; individual language usages, searches, and preferences, with continuing use.</p></div></div><div class="para" id="m-A-C"><span class="pno">C</span><div class="ptx"><p class="en">Some think voice could soon take over from typing and clicking as the main way to interact online. But what are the challenges of moving to &quot;the spoken web&quot;?</p></div></div><div class="para" id="m-A-D"><span class="pno">D</span><div class="ptx"><p class="en">What use is written online content if you can&#x27;t read? That is the situation facing illiterate(不识字的) African farmers. They are often denied crucial information the web offers many others. With a literacy rate in some parts of Africa at only 22.6%, farmers are often &quot;underpaid for their produce because they might be unaware of the prevailing prices,&quot; says Francis Dittoh, a researcher behind Mr Meteo, a speech-based weather information service.</p></div></div><div class="para" id="m-A-E"><span class="pno">E</span><div class="ptx"><p class="en">&quot;The most frequently heard complaint is about rainfall predictions,&quot; says Mr Dittoh, who lives in Tamale, northern Ghana. &quot;They tell us the methods their forefathers used to predict the weather don&#x27;t seem to work as well these days.&quot; This is down to climate change, he believes. Yet knowing when it&#x27;s going to rain is vital for farmers wanting to sow seeds, irrigate crops or take their animals out to the fields to feed on grass.</p></div></div><div class="para" id="m-A-F"><span class="pno">F</span><div class="ptx"><p class="en">Mr Dittoh says the idea of converting online weather reports into speech came from the farmers themselves, after a workshop in the village of Guabuligah. &quot;They came up with this,&quot; he says. Mr Meteo takes the online weather forecast, converts it to a short recording in the appropriate language and makes it available on a basic phone. Farmers ring up to receive the information. The local language Dagbani is spoken by 1.2 million people but is not served by any online translation applications. The service was designed to be cheap and easy to run, says Mr Dittoh. He plans to begin field tests this month, working with Tamale&#x27;s Savanna Agricultural Research Institute.</p></div></div><div class="para" id="m-A-G"><span class="pno">G</span><div class="ptx"><p class="en">The spoken web could also help the one-in-five adults in Europe and the U.S. with poor reading skills. But building the spoken web—web-to-voice and voice-to-web—isn&#x27;t straightforward. For software to understand that pizza is served at Italian restaurants is easy. To cover multiple domains and to be able to have a conversation with users on every single topic is still a long way off.</p></div></div><div class="para" id="m-A-H"><span class="pno">H</span><div class="ptx"><p class="en">So although many computer assistants can answer simple questions about the weather and play music for us, anything resembling a wide-ranging human conversation is decades away. Artificial intelligence just isn&#x27;t smart enough yet. Even turning your voice into text—automatic speech recognition—is one of the hardest problems to solve, as there are as many ways to pronounce things as there are people on the planet.</p></div></div><div class="para" id="m-A-I"><span class="pno">I</span><div class="ptx"><p class="en">Siri has often been praised for its ability to interpret our casual language and deliver very specific and accurate results, sometimes even providing additional information. But it is still somewhat restricted, particularly when the language moves away from stiffer commands into more human interactions. In one example, the phrase &quot;Send a text to Jason, Clint, Sam, and Lee saying we&#x27;re having dinner at Silver Cloud restaurant&quot; was interpreted as sending a message to Jason only, containing the text &quot;Clint Sam and Lee saying we&#x27;re having dinner at Silver Cloud restaurant&quot;. It has also been noted that Siri lacks a proper editing function, as saying &quot;Edit message to say: we&#x27;re at Silver Cloud restaurant and you should come find us&quot; generates &quot;Clint Sam and Lee saying we&#x27;re having dinner at Silver Cloud restaurant to say we&#x27;re at Silver Cloud restaurant and you should come find us&quot;.</p></div></div><div class="para" id="m-A-J"><span class="pno">J</span><div class="ptx"><p class="en">Using voice interaction feels far more intimate than surfing the net the old-fashioned way. This is intentional as the informal tone of the assistant helps create an emotional attachment. But if something speaks, it must also listen. Our phones are always near us and they are collecting data about us all the time. This has already raised privacy concerns. The American Civil Liberties Union has stated that digital assistants create a threat to privacy from hackers. Some people have other concerns. They worry assistants will one day be used to deliver advertising directly to us.</p></div></div><div class="para" id="m-A-K"><span class="pno">K</span><div class="ptx"><p class="en">But digital voices need more personality to make them popular. Robots are not yet witty, Siri is boring. The benefits of using voice instead of tapping fingers obviously depend on the context. Doctors completing online forms about their patients by speech, for example, can dictate 150 words a minute, three times faster than typing on a keyboard. This enables them to spend less time on administration and more time with patients.</p></div></div><div class="para" id="m-A-L"><span class="pno">L</span><div class="ptx"><p class="en">Last year, speech recognition company Nuance helped a doctors&#x27; surgery in Dukinfield, near Manchester, set up a speech system for the practice&#x27;s six doctors. Now they can dictate notes on a patient&#x27;s health condition and treatment and a smart assistant automatically enters the information into the right fields on a web form. Previously, the doctors made voice recordings that were then transcribed by secretaries—a process that was costly and likely to cause delays. The new system means letters to patients now have more detail.</p></div></div><div class="para" id="m-A-M"><span class="pno">M</span><div class="ptx"><p class="en">Using voice also makes sense when you&#x27;re doing other things with your hands. Think about when you&#x27;re cooking, and you just want to know what the next step in the recipe is. Your hands are covered with oil; you&#x27;re not going to get on the iPad, so it&#x27;s a lot more natural to talk. And speech obviously makes sense when you&#x27;re driving. In the U.S., 29% of drivers admit they surf behind the wheel, according to insurance firm State Farm. This is up from 13% in 2009. No wonder using mobile phones while driving causes more crashes a year than drink driving, says the U.S. National Safety Council.</p></div></div></div>
+    <div class="panel on" id="m1-quiz">
+      <p class="hint">给每个句子选出它所在的段落字母。</p>
+      <div class="q" data-q="36"><div class="qs"><span class="qn">36.</span><span class="qse">According to Francis Dittoh, their speech-based weather information service was meant to be inexpensive and easy to use.</span></div><div class="qsz"></div><div class="opts letteropts"><button class="opt" data-q="36" data-k="A">A</button><button class="opt" data-q="36" data-k="B">B</button><button class="opt" data-q="36" data-k="C">C</button><button class="opt" data-q="36" data-k="D">D</button><button class="opt" data-q="36" data-k="E">E</button><button class="opt" data-q="36" data-k="F">F</button><button class="opt" data-q="36" data-k="G">G</button><button class="opt" data-q="36" data-k="H">H</button><button class="opt" data-q="36" data-k="I">I</button><button class="opt" data-q="36" data-k="J">J</button><button class="opt" data-q="36" data-k="K">K</button><button class="opt" data-q="36" data-k="L">L</button><button class="opt" data-q="36" data-k="M">M</button></div></div><div class="q" data-q="37"><div class="qs"><span class="qn">37.</span><span class="qse">Using voice instead of typing enables doctors to spend more time taking care of patients.</span></div><div class="qsz"></div><div class="opts letteropts"><button class="opt" data-q="37" data-k="A">A</button><button class="opt" data-q="37" data-k="B">B</button><button class="opt" data-q="37" data-k="C">C</button><button class="opt" data-q="37" data-k="D">D</button><button class="opt" data-q="37" data-k="E">E</button><button class="opt" data-q="37" data-k="F">F</button><button class="opt" data-q="37" data-k="G">G</button><button class="opt" data-q="37" data-k="H">H</button><button class="opt" data-q="37" data-k="I">I</button><button class="opt" data-q="37" data-k="J">J</button><button class="opt" data-q="37" data-k="K">K</button><button class="opt" data-q="37" data-k="L">L</button><button class="opt" data-q="37" data-k="M">M</button></div></div><div class="q" data-q="38"><div class="qs"><span class="qn">38.</span><span class="qse">It is extremely difficult to convert voice into text because of different pronunciations.</span></div><div class="qsz"></div><div class="opts letteropts"><button class="opt" data-q="38" data-k="A">A</button><button class="opt" data-q="38" data-k="B">B</button><button class="opt" data-q="38" data-k="C">C</button><button class="opt" data-q="38" data-k="D">D</button><button class="opt" data-q="38" data-k="E">E</button><button class="opt" data-q="38" data-k="F">F</button><button class="opt" data-q="38" data-k="G">G</button><button class="opt" data-q="38" data-k="H">H</button><button class="opt" data-q="38" data-k="I">I</button><button class="opt" data-q="38" data-k="J">J</button><button class="opt" data-q="38" data-k="K">K</button><button class="opt" data-q="38" data-k="L">L</button><button class="opt" data-q="38" data-k="M">M</button></div></div><div class="q" data-q="39"><div class="qs"><span class="qn">39.</span><span class="qse">African farmers unable to read often don&#x27;t have access to important information conveyed online.</span></div><div class="qsz"></div><div class="opts letteropts"><button class="opt" data-q="39" data-k="A">A</button><button class="opt" data-q="39" data-k="B">B</button><button class="opt" data-q="39" data-k="C">C</button><button class="opt" data-q="39" data-k="D">D</button><button class="opt" data-q="39" data-k="E">E</button><button class="opt" data-q="39" data-k="F">F</button><button class="opt" data-q="39" data-k="G">G</button><button class="opt" data-q="39" data-k="H">H</button><button class="opt" data-q="39" data-k="I">I</button><button class="opt" data-q="39" data-k="J">J</button><button class="opt" data-q="39" data-k="K">K</button><button class="opt" data-q="39" data-k="L">L</button><button class="opt" data-q="39" data-k="M">M</button></div></div><div class="q" data-q="40"><div class="qs"><span class="qn">40.</span><span class="qse">Some phone users worry advertisers will take advantage of voice assistants to send ads directly to them.</span></div><div class="qsz"></div><div class="opts letteropts"><button class="opt" data-q="40" data-k="A">A</button><button class="opt" data-q="40" data-k="B">B</button><button class="opt" data-q="40" data-k="C">C</button><button class="opt" data-q="40" data-k="D">D</button><button class="opt" data-q="40" data-k="E">E</button><button class="opt" data-q="40" data-k="F">F</button><button class="opt" data-q="40" data-k="G">G</button><button class="opt" data-q="40" data-k="H">H</button><button class="opt" data-q="40" data-k="I">I</button><button class="opt" data-q="40" data-k="J">J</button><button class="opt" data-q="40" data-k="K">K</button><button class="opt" data-q="40" data-k="L">L</button><button class="opt" data-q="40" data-k="M">M</button></div></div><div class="q" data-q="41"><div class="qs"><span class="qn">41.</span><span class="qse">The spoken web is helpful when one&#x27;s hands are occupied.</span></div><div class="qsz"></div><div class="opts letteropts"><button class="opt" data-q="41" data-k="A">A</button><button class="opt" data-q="41" data-k="B">B</button><button class="opt" data-q="41" data-k="C">C</button><button class="opt" data-q="41" data-k="D">D</button><button class="opt" data-q="41" data-k="E">E</button><button class="opt" data-q="41" data-k="F">F</button><button class="opt" data-q="41" data-k="G">G</button><button class="opt" data-q="41" data-k="H">H</button><button class="opt" data-q="41" data-k="I">I</button><button class="opt" data-q="41" data-k="J">J</button><button class="opt" data-q="41" data-k="K">K</button><button class="opt" data-q="41" data-k="L">L</button><button class="opt" data-q="41" data-k="M">M</button></div></div><div class="q" data-q="42"><div class="qs"><span class="qn">42.</span><span class="qse">Some people believe online interaction would soon depend mainly on voice.</span></div><div class="qsz"></div><div class="opts letteropts"><button class="opt" data-q="42" data-k="A">A</button><button class="opt" data-q="42" data-k="B">B</button><button class="opt" data-q="42" data-k="C">C</button><button class="opt" data-q="42" data-k="D">D</button><button class="opt" data-q="42" data-k="E">E</button><button class="opt" data-q="42" data-k="F">F</button><button class="opt" data-q="42" data-k="G">G</button><button class="opt" data-q="42" data-k="H">H</button><button class="opt" data-q="42" data-k="I">I</button><button class="opt" data-q="42" data-k="J">J</button><button class="opt" data-q="42" data-k="K">K</button><button class="opt" data-q="42" data-k="L">L</button><button class="opt" data-q="42" data-k="M">M</button></div></div><div class="q" data-q="43"><div class="qs"><span class="qn">43.</span><span class="qse">Setting up a spoken web is by no means an easy task.</span></div><div class="qsz"></div><div class="opts letteropts"><button class="opt" data-q="43" data-k="A">A</button><button class="opt" data-q="43" data-k="B">B</button><button class="opt" data-q="43" data-k="C">C</button><button class="opt" data-q="43" data-k="D">D</button><button class="opt" data-q="43" data-k="E">E</button><button class="opt" data-q="43" data-k="F">F</button><button class="opt" data-q="43" data-k="G">G</button><button class="opt" data-q="43" data-k="H">H</button><button class="opt" data-q="43" data-k="I">I</button><button class="opt" data-q="43" data-k="J">J</button><button class="opt" data-q="43" data-k="K">K</button><button class="opt" data-q="43" data-k="L">L</button><button class="opt" data-q="43" data-k="M">M</button></div></div><div class="q" data-q="44"><div class="qs"><span class="qn">44.</span><span class="qse">Weather information is extremely important to farmers.</span></div><div class="qsz"></div><div class="opts letteropts"><button class="opt" data-q="44" data-k="A">A</button><button class="opt" data-q="44" data-k="B">B</button><button class="opt" data-q="44" data-k="C">C</button><button class="opt" data-q="44" data-k="D">D</button><button class="opt" data-q="44" data-k="E">E</button><button class="opt" data-q="44" data-k="F">F</button><button class="opt" data-q="44" data-k="G">G</button><button class="opt" data-q="44" data-k="H">H</button><button class="opt" data-q="44" data-k="I">I</button><button class="opt" data-q="44" data-k="J">J</button><button class="opt" data-q="44" data-k="K">K</button><button class="opt" data-q="44" data-k="L">L</button><button class="opt" data-q="44" data-k="M">M</button></div></div><div class="q" data-q="45"><div class="qs"><span class="qn">45.</span><span class="qse">Some people are concerned about privacy because their phones are constantly collecting their personal information.</span></div><div class="qsz"></div><div class="opts letteropts"><button class="opt" data-q="45" data-k="A">A</button><button class="opt" data-q="45" data-k="B">B</button><button class="opt" data-q="45" data-k="C">C</button><button class="opt" data-q="45" data-k="D">D</button><button class="opt" data-q="45" data-k="E">E</button><button class="opt" data-q="45" data-k="F">F</button><button class="opt" data-q="45" data-k="G">G</button><button class="opt" data-q="45" data-k="H">H</button><button class="opt" data-q="45" data-k="I">I</button><button class="opt" data-q="45" data-k="J">J</button><button class="opt" data-q="45" data-k="K">K</button><button class="opt" data-q="45" data-k="L">L</button><button class="opt" data-q="45" data-k="M">M</button></div></div>
+      <button class="submit" data-sec="m1">提交答案 · 自动判分</button>
+      <div class="score" id="sc-m1" style="margin-top:10px"></div>
+      <button class="syncbtn" id="sy-m1" style="display:none">☁ 重新同步</button>
+      <div class="syncst" id="sst-m1"></div>
+    </div>
+    <div class="panel" id="m1-ana"><div class="row"><span class="tag">36</span><div class="c"><b>答案 F</b>According to Francis Dittoh, their speech-based weather information service was meant to be inexpensive and easy to use.<div class="hint" style="margin:6px 0 0">对应 F 段：Mr Dittoh says the idea of converting online weather reports into speech came from the farmers themselves, after a workshop in the village of Guabulig…</div></div></div><div class="row"><span class="tag">37</span><div class="c"><b>答案 K</b>Using voice instead of typing enables doctors to spend more time taking care of patients.<div class="hint" style="margin:6px 0 0">对应 K 段：But digital voices need more personality to make them popular. Robots are not yet witty, Siri is boring. The benefits of using voice instead of tappin…</div></div></div><div class="row"><span class="tag">38</span><div class="c"><b>答案 H</b>It is extremely difficult to convert voice into text because of different pronunciations.<div class="hint" style="margin:6px 0 0">对应 H 段：So although many computer assistants can answer simple questions about the weather and play music for us, anything resembling a wide-ranging human con…</div></div></div><div class="row"><span class="tag">39</span><div class="c"><b>答案 D</b>African farmers unable to read often don&#x27;t have access to important information conveyed online.<div class="hint" style="margin:6px 0 0">对应 D 段：What use is written online content if you can&#x27;t read? That is the situation facing illiterate(不识字的) African farmers. They are often denied crucial inf…</div></div></div><div class="row"><span class="tag">40</span><div class="c"><b>答案 J</b>Some phone users worry advertisers will take advantage of voice assistants to send ads directly to them.<div class="hint" style="margin:6px 0 0">对应 J 段：Using voice interaction feels far more intimate than surfing the net the old-fashioned way. This is intentional as the informal tone of the assistant …</div></div></div><div class="row"><span class="tag">41</span><div class="c"><b>答案 M</b>The spoken web is helpful when one&#x27;s hands are occupied.<div class="hint" style="margin:6px 0 0">对应 M 段：Using voice also makes sense when you&#x27;re doing other things with your hands. Think about when you&#x27;re cooking, and you just want to know what the next …</div></div></div><div class="row"><span class="tag">42</span><div class="c"><b>答案 C</b>Some people believe online interaction would soon depend mainly on voice.<div class="hint" style="margin:6px 0 0">对应 C 段：Some think voice could soon take over from typing and clicking as the main way to interact online. But what are the challenges of moving to &quot;the spoke…</div></div></div><div class="row"><span class="tag">43</span><div class="c"><b>答案 G</b>Setting up a spoken web is by no means an easy task.<div class="hint" style="margin:6px 0 0">对应 G 段：The spoken web could also help the one-in-five adults in Europe and the U.S. with poor reading skills. But building the spoken web—web-to-voice and vo…</div></div></div><div class="row"><span class="tag">44</span><div class="c"><b>答案 E</b>Weather information is extremely important to farmers.<div class="hint" style="margin:6px 0 0">对应 E 段：&quot;The most frequently heard complaint is about rainfall predictions,&quot; says Mr Dittoh, who lives in Tamale, northern Ghana. &quot;They tell us the methods th…</div></div></div><div class="row"><span class="tag">45</span><div class="c"><b>答案 J</b>Some people are concerned about privacy because their phones are constantly collecting their personal information.<div class="hint" style="margin:6px 0 0">对应 J 段：Using voice interaction feels far more intimate than surfing the net the old-fashioned way. This is intentional as the informal tone of the assistant …</div></div></div></div>
+  </div>
+</div>
+
+<div id="prepOverlay"></div>
+
+
+<script>
+var ANS = {"36": "F", "37": "K", "38": "H", "39": "D", "40": "J", "41": "M", "42": "C", "43": "G", "44": "E", "45": "J"};
+var TOPIC = "cet4-67f4d286a543c3aca5af06b1910625b0749ce20d4052";
+var REPORT = null, picked = {}, judged = {};
+function todayStr(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+document.querySelectorAll('.tab').forEach(function(t){
+  t.addEventListener('click', function(){
+    var box=t.closest('.card');
+    box.querySelectorAll('.tab').forEach(function(x){x.classList.toggle('on',x===t);});
+    var pid=t.dataset.panel||'';
+    box.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on');});
+    if(pid.slice(-6)==='-split'){box.classList.add('split');
+      box.querySelectorAll('.panel[id$="-read"],.panel[id$="-quiz"]').forEach(function(p){p.classList.add('on');});}
+    else{box.classList.remove('split');var el=document.getElementById(pid);if(el)el.classList.add('on');}
+  });
+});
+document.querySelectorAll('.tbtn2').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.body.classList.toggle('zh');
+    var on=document.body.classList.contains('zh');
+    document.querySelectorAll('.tbtn2').forEach(function(x){x.classList.toggle('on',on);x.textContent=on?'隐藏中译':'中译';});
+  });
+});
+document.querySelectorAll('.opt').forEach(function(o){
+  o.addEventListener('click',function(){
+    var q=o.dataset.q; if(judged[q])return;
+    picked[q]=o.dataset.k;
+    o.closest('.opts').querySelectorAll('.opt').forEach(function(x){x.classList.remove('sel');});
+    o.classList.add('sel');
+  });
+});
+document.querySelectorAll('.submit').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var total=0,right=0,wrongList=[];
+    document.querySelectorAll('#m1-quiz .q').forEach(function(qd){
+      var q=qd.dataset.q, ans=ANS[q]; total++;
+      qd.querySelectorAll('.opt').forEach(function(o){
+        o.classList.remove('sel','right','wrong');
+        if(o.dataset.k===ans)o.classList.add('right');
+        else if(o.dataset.k===picked[q])o.classList.add('wrong');
+      });
+      if(picked[q]===ans)right++; else wrongList.push(q);
+      judged[q]=true;
+    });
+    btn.disabled=true; btn.textContent='已提交';
+    var sc=document.getElementById('sc-m1');
+    sc.innerHTML='得分 <b>'+right+'/'+total+'</b> · 正确率 '+Math.round(right/total*100)+'%';
+    sc.style.color = right/total>=0.6?'var(--green)':'var(--red)';
+    REPORT={t:"rep",kind:"matching",date:todayStr(),page:document.title,score:right+"/"+total,pct:Math.round(right/total*100),wrong:wrongList};
+    var sb=document.getElementById('sy-m1'); if(sb)sb.style.display='inline-block';
+    syncReport();
+  });
+});
+function syncReport(){
+  if(!REPORT)return;
+  var st=document.getElementById('sst-m1');
+  if(st)st.textContent='同步中…';
+  fetch('https://ntfy.sh/'+TOPIC,{method:'POST',body:JSON.stringify(REPORT)})
+    .then(function(r){if(st){st.textContent=r.ok?'✓ 已自动同步到云端':'同步失败，请截图发到对话';if(!r.ok)st.style.color='var(--red)';}})
+    .catch(function(){if(st){st.textContent='离线，请截图发到对话';st.style.color='var(--red)';}});
+}
+var _sb=document.getElementById('sy-m1'); if(_sb)_sb.addEventListener('click',function(){syncReport();});
+</script>
+
+
+<div id="markBar">
+  <div class="row">
+    <button id="mkPen">🖊 涂写</button>
+    <button id="mkErase">🧽 橡皮</button>
+    <button id="mkClear">🗑 清空</button>
+    <span class="sep"></span>
+    <button class="wd" data-w="1.6" title="细"><i style="width:2px;height:2px"></i></button>
+    <button class="wd" data-w="3" title="中"><i style="width:4px;height:4px"></i></button>
+    <button class="wd" data-w="6" title="粗"><i style="width:7px;height:7px"></i></button>
+    <span class="sep"></span>
+    <button class="sw" data-c="#1b1e23" title="黑" style="background:#1b1e23"></button>
+    <button class="sw" data-c="#c0392b" title="红" style="background:#c0392b"></button>
+    <button class="sw" data-c="#2563eb" title="蓝" style="background:#2563eb"></button>
+    <button class="sw" data-c="#0d8a52" title="绿" style="background:#0d8a52"></button>
+  </div>
+</div>
+<canvas id="markCanvas"></canvas>
+
+<script>
+(function(){
+  var cv=document.getElementById('markCanvas'); if(!cv)return;
+  var ctx=cv.getContext('2d');
+  function rz(){
+    var w=document.documentElement.scrollWidth||window.innerWidth;
+    var h=document.documentElement.scrollHeight||window.innerHeight;
+    if(w!==cv.width||h!==cv.height){
+      var old=document.createElement('canvas');old.width=cv.width;old.height=cv.height;
+      old.getContext('2d').drawImage(cv,0,0);
+      cv.width=w;cv.height=h;ctx.drawImage(old,0,0);
+    }
+  }
+  rz(); window.addEventListener('resize',rz); setInterval(rz,2000);
+  var pen=document.getElementById('mkPen'),era=document.getElementById('mkErase'),clr=document.getElementById('mkClear');
+  var mode='off',color='#1b1e23',baseW=3,drawing=false,last=null,lastMid=null;
+  function setMode(m){mode=m;cv.classList.toggle('act',m!=='off');pen.classList.toggle('on',m==='draw');era.classList.toggle('on',m==='erase');}
+  pen.addEventListener('click',function(){setMode(mode==='draw'?'off':'draw');});
+  era.addEventListener('click',function(){setMode(mode==='erase'?'off':'erase');});
+  clr.addEventListener('click',function(){ctx.clearRect(0,0,cv.width,cv.height);});
+  var wds=document.querySelectorAll('#markBar .wd');
+  wds.forEach(function(b){b.addEventListener('click',function(){baseW=parseFloat(b.dataset.w);wds.forEach(function(x){x.classList.remove('on');});b.classList.add('on');if(mode==='erase')setMode('draw');});});
+  var sws=document.querySelectorAll('#markBar .sw');
+  sws.forEach(function(b){b.addEventListener('click',function(){color=b.dataset.c;sws.forEach(function(x){x.classList.remove('on');});b.classList.add('on');if(mode==='erase')setMode('draw');});});
+  var wdM=document.querySelector('#markBar .wd[data-w="3"]'),swK=document.querySelector('#markBar .sw[data-c="#1b1e23"]');
+  if(wdM)wdM.classList.add('on'); if(swK)swK.classList.add('on');
+  function pr(e){return (e.pointerType==='pen'&&typeof e.pressure==='number'&&e.pressure>0)?e.pressure:0.5;}
+  function wOf(e){if(mode==='erase')return Math.max(10,baseW*5);return Math.max(0.7,baseW*(0.35+pr(e)));}
+  function segTo(x,y,w){
+    var mx=(last[0]+x)/2,my=(last[1]+y)/2;
+    ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=w;
+    if(mode==='erase'){ctx.globalCompositeOperation='destination-out';ctx.strokeStyle='rgba(0,0,0,1)';}
+    else{ctx.globalCompositeOperation='source-over';ctx.strokeStyle=color;}
+    ctx.beginPath();ctx.moveTo(lastMid[0],lastMid[1]);ctx.quadraticCurveTo(last[0],last[1],mx,my);ctx.stroke();
+    ctx.globalCompositeOperation='source-over';lastMid=[mx,my];last=[x,y];
+  }
+  cv.addEventListener('pointerdown',function(e){
+    if(mode==='off')return; if(e.pointerType==='touch')return;
+    drawing=true;last=[e.pageX,e.pageY];lastMid=[e.pageX,e.pageY];
+    try{cv.setPointerCapture(e.pointerId);}catch(_){}
+    var w=wOf(e);
+    if(mode!=='erase'){ctx.fillStyle=color;ctx.beginPath();ctx.arc(e.pageX,e.pageY,w/2,0,Math.PI*2);ctx.fill();}
+    e.preventDefault();
+  });
+  cv.addEventListener('pointermove',function(e){
+    if(!drawing||mode==='off')return;
+    var evs=(typeof e.getCoalescedEvents==='function')?e.getCoalescedEvents():[];
+    if(evs&&evs.length){for(var i=0;i<evs.length;i++)segTo(evs[i].pageX,evs[i].pageY,wOf(evs[i]));}
+    else segTo(e.pageX,e.pageY,wOf(e));
+  });
+  ['pointerup','pointercancel'].forEach(function(ev){cv.addEventListener(ev,function(){drawing=false;});});
+})();
+</script>
+</body>
+</html>
