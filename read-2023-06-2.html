@@ -5,30 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>仔细阅读 · 2023年6月 第2套</title>
 <style>
-:root{ --bg:#f4f5f7; --card:#ffffff; --soft:#fafbfc; --grey:#f2f3f5;
- --line:#e5e8ec; --line2:#eff1f4; --track:#e8ebef;
- --txt:#1b1e23; --txt2:#2b303a; --txt3:#3d434e; --sub:#6b7280; --sub2:#a8b0bb;
- --blue:#2563eb; --blue-soft:#eef3ff; --green:#0d8a52; --green-soft:#e8f7ef;
- --red:#c0392b; --red-soft:#fdecea; --amber:#b45309; --amber-soft:#fef6e7;
- --amber-line:#f0dfb8; --green-line:#bfe3cf;
- --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05);
- --shadow-lg:0 2px 4px rgba(16,24,40,.05), 0 8px 20px rgba(16,24,40,.07);  --blue-ink:#123a75;}
-@media (prefers-color-scheme: dark){ :root{ --bg:#101216; --card:#191c21; --soft:#20242a; --grey:#22262c;
- --line:#2c313a; --line2:#242930; --track:#2a2f38;
- --txt:#e9ebee; --txt2:#d7dade; --txt3:#c3c8cf; --sub:#98a0aa; --sub2:#6b7280;
- --blue:#6b96fb; --blue-soft:#1a2742; --green:#41d18f; --green-soft:#14301f;
- --red:#ef7261; --red-soft:#371d19; --amber:#e0a53f; --amber-soft:#312713;
- --amber-line:#4a3a1c; --green-line:#1f4530;
- --shadow:0 1px 2px rgba(0,0,0,.35), 0 2px 8px rgba(0,0,0,.28);
- --shadow-lg:0 2px 6px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.45);
- color-scheme:dark;  --blue-ink:#a9c6ff;} }
+:root{--bg:#f5f6f8;--card:#fff;--line:#e6e8ec;--txt:#1c1e21;--sub:#6b7280;
+ --blue:#2563eb;--blue-soft:#eff4ff;--green:#0d8a52;--green-soft:#e9f7ef;--sub2:#a8b0bb;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;--grey:#f2f3f5;}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--txt);
  font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
  padding:14px 13px 48px;max-width:760px;margin:0 auto;}
 a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
 h1{font-size:19px;margin:2px 0 12px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:14px;box-shadow:var(--shadow);}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:14px}
 .chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .chead h2{font-size:16px;margin:0}
 .cmeta{font-size:12.5px;color:var(--sub)}
@@ -36,10 +22,10 @@ h1{font-size:19px;margin:2px 0 12px}
 .tab,.tbtn2{border:1.5px solid var(--line);background:var(--card);color:var(--sub);font-size:14px;
  padding:9px 18px;border-radius:22px;cursor:pointer;font-family:inherit;font-weight:600}
 .tab.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
-.tbtn2{margin-left:auto;color:var(--amber);border-color:var(--amber-line);background:var(--amber-soft)}
+.tbtn2{margin-left:auto;color:var(--amber);border-color:#f0dfb8;background:var(--amber-soft)}
 .tbtn2.on{background:var(--amber);color:#fff;border-color:var(--amber)}
 .panel{display:none}.panel.on{display:block}
-.para{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line2)}
+.para{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid #f0f2f5}
 .para:last-child{border-bottom:0}
 .pno{flex:0 0 32px;font-size:12.5px;color:#fff;background:var(--blue);border-radius:8px;
  height:22px;line-height:22px;text-align:center;margin-top:3px;font-weight:700;letter-spacing:.3px}
@@ -57,7 +43,7 @@ body.zh .ptx .zh,body.zh .oz{display:block}
 .qsz{font-size:13px;color:var(--sub);margin:5px 0 0;display:none}
 body.zh .qsz{display:block}
 .opts{margin-top:10px;display:flex;flex-direction:column;gap:7px}
-.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;background:var(--soft);
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;background:#fafbfc;
  border:1.5px solid var(--line);border-radius:11px;padding:13px 14px;cursor:pointer;
  font-family:inherit;font-size:14.4px;color:var(--txt);line-height:1.65;width:100%;
  transition:border-color .15s, background .15s}
@@ -75,13 +61,17 @@ body.zh .qsz{display:block}
 .subrow{margin-top:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .submit{padding:12px 24px;border:0;border-radius:11px;background:var(--blue);color:#fff;
  font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
-.submit:disabled{background:var(--blue)}
+.submit:disabled{background:#9fb4de}
 .score{font-size:15px;font-weight:700}
-.hint{font-size:13px;color:var(--sub);background:var(--soft);border:1px solid var(--line);
+.hint{font-size:13px;color:var(--sub);background:#fafbfc;border:1px solid var(--line);
  border-radius:10px;padding:10px 12px;margin:0 0 14px;line-height:1.7}
+.syncbtn{padding:12px 20px;border:0;border-radius:11px;background:var(--green);color:#fff;
+ font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit}
+.syncbtn:disabled{background:var(--sub2)}
+.syncst{font-size:12.5px;color:var(--green);margin:9px 0 0;min-height:18px}
 .ana{border:1px solid var(--line);border-radius:11px;margin-bottom:9px;overflow:hidden;background:#fff}
 .ana>summary{display:flex;gap:10px;align-items:center;padding:11px 13px;cursor:pointer;
- font-size:14px;list-style:none;background:var(--soft)}
+ font-size:14px;list-style:none;background:#fafbfc}
 .ana>summary::-webkit-details-marker{display:none}
 .ana .an{font-weight:700;color:var(--blue)}
 .ana .aa{color:var(--green);font-weight:700}
@@ -94,7 +84,7 @@ body.zh .qsz{display:block}
 .arow:last-child{margin-bottom:0}
 .atag{flex:0 0 42px;font-size:12px;font-weight:700;color:var(--blue);background:var(--blue-soft);
  border-radius:6px;height:21px;line-height:21px;text-align:center}
-.atx{flex:1;min-width:0;font-size:13.6px;line-height:1.75;color:var(--txt2)}
+.atx{flex:1;min-width:0;font-size:13.6px;line-height:1.75;color:#2b2f36}
 .atx p{margin:0}
 .atx .lpara{display:inline-block;font-size:11.5px;background:var(--amber-soft);color:var(--amber);
  border-radius:5px;padding:1px 8px;margin-bottom:5px;font-weight:700}
@@ -102,30 +92,30 @@ body.zh .qsz{display:block}
 .lzh{margin:4px 0 0;font-size:12.8px;color:var(--sub)}
 .vds{display:flex;flex-direction:column;gap:10px}
 .vd{border-radius:10px;padding:10px 12px;border:1px solid}
-.vd.ok{background:var(--green-soft);border-color:var(--green-line)}
-.vd.bad{background:var(--soft);border-color:var(--line)}
+.vd.ok{background:var(--green-soft);border-color:#bfe3cf}
+.vd.bad{background:#fafbfc;border-color:var(--line)}
 .vdh{display:flex;gap:9px;align-items:center;margin-bottom:6px}
 .vdl{font-weight:700;font-size:14px}
 .vdf{font-size:12px;padding:2px 9px;border-radius:20px;font-weight:600}
 .vd.ok .vdf{background:var(--green);color:#fff}
-.vd.bad .vdf{background:var(--line);color:var(--sub)}
+.vd.bad .vdf{background:#dde1e8;color:#4b5563}
 .pairs{display:flex;flex-direction:column;gap:4px;margin:7px 0}
 .pair{display:flex;gap:8px;align-items:baseline;font-size:13px;flex-wrap:wrap}
 .po{color:var(--green);font-weight:600}
 .pa{color:var(--sub)}
 .pp{color:var(--blue);font-weight:600}
-.vdn{margin:7px 0 0;font-size:13.2px;color:var(--txt3);line-height:1.72}
+.vdn{margin:7px 0 0;font-size:13.2px;color:#3a3f47;line-height:1.72}
 table{width:100%;border-collapse:collapse;font-size:13.4px}
 th,td{padding:8px 7px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+th{font-size:12.5px;color:var(--sub);background:#fafbfc;font-weight:600}
 td.c{text-align:center;white-space:nowrap;color:var(--sub);font-size:12.5px}
 tr:last-child td{border-bottom:0}
 .frow{display:flex;align-items:center;gap:11px;padding:7px 0}
 .fn{flex:0 0 88px;font-size:13.2px}
-.fbar{flex:1;height:8px;background:var(--track);border-radius:5px;overflow:hidden}
+.fbar{flex:1;height:8px;background:#eceef2;border-radius:5px;overflow:hidden}
 .fbar i{display:block;height:100%;background:var(--red);border-radius:5px}
 .fv{flex:0 0 30px;text-align:right;font-size:13px;font-weight:700;color:var(--red)}
-.tip{background:var(--blue-soft);color:var(--blue-ink);border-radius:10px;padding:11px 13px;
+.tip{background:var(--blue-soft);color:#123a75;border-radius:10px;padding:11px 13px;
  font-size:13.2px;line-height:1.7;margin-top:12px}
 </style>
 </head>
@@ -165,7 +155,9 @@ tr:last-child td{border-bottom:0}
     做完点下方提交，会自动判分。右上「中译」可一键显示题干与选项的中文。</p>
     <div class="q" data-q="46"><div class="qs"><span class="qn">46.</span><span class="qse">What problem have supermarkets been facing?</span></div><div class="qsz">超市一直面临什么问题?</div><div class="opts"><button class="opt" data-q="46" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">They are actually on the way to bankruptcy.</span><span class="oz">它们实际上正走向破产。</span></span></button><button class="opt" data-q="46" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">They have been losing customers and profits.</span><span class="oz">它们一直在流失顾客和利润。</span></span></button><button class="opt" data-q="46" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">They are forced to use e-commerce strategies.</span><span class="oz">它们被迫使用电子商务策略。</span></span></button><button class="opt" data-q="46" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">They have difficulty adapting to climate change.</span><span class="oz">它们难以适应气候变化。</span></span></button></div><button class="jump" data-go="p1-1" data-qnum="46">定位 P1</button></div><div class="q" data-q="47"><div class="qs"><span class="qn">47.</span><span class="qse">What does the passage say about the idea of a self-service grocery?</span></div><div class="qsz">文章对自助式杂货店这一理念有何评价?</div><div class="opts"><button class="opt" data-q="47" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">It was put forward by King Kullen.</span><span class="oz">它是由King Kullen提出的。</span></span></button><button class="opt" data-q="47" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">It originated in the United States.</span><span class="oz">它起源于美国。</span></span></button><button class="opt" data-q="47" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">It has been under constant debate.</span><span class="oz">它一直处于持续争论之中。</span></span></button><button class="opt" data-q="47" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">It proves revolutionary even today.</span><span class="oz">它即使在今天也被证明是革命性的。</span></span></button></div><button class="jump" data-go="p1-2" data-qnum="47">定位 P2</button></div><div class="q" data-q="48"><div class="qs"><span class="qn">48.</span><span class="qse">What did supermarkets do by adopting the Fordist factory approach?</span></div><div class="qsz">超市通过采用福特主义工厂方式做了什么?</div><div class="opts"><button class="opt" data-q="48" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">They modernized traditional groceries in many ways.</span><span class="oz">它们在许多方面使传统杂货店现代化。</span></span></button><button class="opt" data-q="48" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">They introduced cutting-edge layout of their stores.</span><span class="oz">它们引入了最前沿的店面布局。</span></span></button><button class="opt" data-q="48" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">They improved the quality of the food they sold.</span><span class="oz">它们提高了所售食品的质量。</span></span></button><button class="opt" data-q="48" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">They revolutionized the distribution of goods.</span><span class="oz">它们彻底改变了商品分销方式。</span></span></button></div><button class="jump" data-go="p1-3" data-qnum="48">定位 P3</button></div><div class="q" data-q="49"><div class="qs"><span class="qn">49.</span><span class="qse">What is the typical supermarket layout intended to do?</span></div><div class="qsz">典型的超市布局旨在做什么?</div><div class="opts"><button class="opt" data-q="49" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Arouse customers&#x27; appetite to buy flowers, fruit and vegetables.</span><span class="oz">激发顾客购买鲜花、水果和蔬菜的欲望。</span></span></button><button class="opt" data-q="49" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Provide customers easy access to items they want to buy.</span><span class="oz">为顾客提供便捷途径获取他们想购买的商品。</span></span></button><button class="opt" data-q="49" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">Induce customers to make more unplanned purchases.</span><span class="oz">诱导顾客进行更多计划外购买。</span></span></button><button class="opt" data-q="49" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Enable customers to have a more enjoyable shopping experience.</span><span class="oz">使顾客获得更愉快的购物体验。</span></span></button></div><button class="jump" data-go="p1-4" data-qnum="49">定位 P4</button></div><div class="q" data-q="50"><div class="qs"><span class="qn">50.</span><span class="qse">What have people long feared about supermarkets?</span></div><div class="qsz">人们长期以来对超市有什么担忧?</div><div class="opts"><button class="opt" data-q="50" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">They use tricky strategies to promote their business.</span><span class="oz">它们使用狡猾的策略来促进业务。</span></span></button><button class="opt" data-q="50" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">They are going to replace the local groceries entirely.</span><span class="oz">它们将完全取代当地杂货店。</span></span></button><button class="opt" data-q="50" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">They apply corporate black magic to the goods on display.</span><span class="oz">它们对陈列的商品施加企业黑魔法。</span></span></button><button class="opt" data-q="50" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">They take advantage of the weaknesses of women shoppers.</span><span class="oz">它们利用女性购物者的弱点。</span></span></button></div><button class="jump" data-go="p1-5" data-qnum="50">定位 P5</button></div>
     <div class="subrow"><button class="submit" data-sec="p1">提交答案 · 自动判分</button>
-      <span class="score" id="sc-p1"></span></div>
+      <span class="score" id="sc-p1"></span>
+      <button class="syncbtn" id="sy-p1" style="display:none">☁ 同步回执</button></div>
+    <p class="syncst" id="sst-p1"></p>
   </div>
 
   <div class="panel" id="p1-ana">
@@ -191,7 +183,9 @@ tr:last-child td{border-bottom:0}
     做完点下方提交，会自动判分。右上「中译」可一键显示题干与选项的中文。</p>
     <div class="q" data-q="51"><div class="qs"><span class="qn">51.</span><span class="qse">Why did America&#x27;s traditional school year have a three-month summer vacation?</span></div><div class="qsz">为什么美国传统学年有三个月的暑假?</div><div class="opts"><button class="opt" data-q="51" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Students needed to help with farm work.</span><span class="oz">学生需要帮助干农活。</span></span></button><button class="opt" data-q="51" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Students needed time to learn necessary farming skills.</span><span class="oz">学生需要时间学习必要的农业技能。</span></span></button><button class="opt" data-q="51" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">The agricultural society then attached less importance to academics.</span><span class="oz">当时的农业社会不太重视学业。</span></span></button><button class="opt" data-q="51" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">America lagged behind other countries in making a scientific school calendar.</span><span class="oz">美国在制定科学的校历方面落后于其他国家。</span></span></button></div><button class="jump" data-go="p2-1" data-qnum="51">定位 P1</button></div><div class="q" data-q="52"><div class="qs"><span class="qn">52.</span><span class="qse">What benefit will year-round schooling bring students in addition to improving their learning?</span></div><div class="qsz">除了提高学习成绩之外,全年制教育还会给学生带来什么好处?</div><div class="opts"><button class="opt" data-q="52" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">It will help them get back to where their lessons started.</span><span class="oz">它将帮助他们回到课程开始的地方。</span></span></button><button class="opt" data-q="52" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">It will enable them to absorb what they have learned.</span><span class="oz">它将使他们能够消化所学的知识。</span></span></button><button class="opt" data-q="52" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">It will familiarize them with the school environment.</span><span class="oz">它将使他们熟悉学校环境。</span></span></button><button class="opt" data-q="52" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">It will strengthen their relationship with teachers.</span><span class="oz">它将加强他们与教师的关系。</span></span></button></div><button class="jump" data-go="p2-3" data-qnum="52">定位 P3</button></div><div class="q" data-q="53"><div class="qs"><span class="qn">53.</span><span class="qse">What do some childhood development experts believe about the long summer vacation?</span></div><div class="qsz">一些儿童发展专家对漫长的暑假有什么看法?</div><div class="opts"><button class="opt" data-q="53" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">It meets students&#x27; need to study on their own.</span><span class="oz">它满足了学生自主学习的需求。</span></span></button><button class="opt" data-q="53" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">It enables students to learn about the outside world.</span><span class="oz">它使学生能够了解外部世界。</span></span></button><button class="opt" data-q="53" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">It satisfies students&#x27; desire to stay longer at home.</span><span class="oz">它满足了学生希望在家待更长时间的愿望。</span></span></button><button class="opt" data-q="53" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">It contributes to students&#x27; healthy growth.</span><span class="oz">它有助于学生的健康成长。</span></span></button></div><button class="jump" data-go="p2-4" data-qnum="53">定位 P4</button></div><div class="q" data-q="54"><div class="qs"><span class="qn">54.</span><span class="qse">What is the argument against the experts&#x27; idea of a long summer vacation?</span></div><div class="qsz">反对专家关于漫长暑假观点的论据是什么?</div><div class="opts"><button class="opt" data-q="54" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">It does little good to most students.</span><span class="oz">它对大多数学生没什么好处。</span></span></button><button class="opt" data-q="54" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">It benefits few students playing outside.</span><span class="oz">它只让少数在户外玩耍的学生受益。</span></span></button><button class="opt" data-q="54" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">It leads students to neglect their studies.</span><span class="oz">它导致学生忽视学业。</span></span></button><button class="opt" data-q="54" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">It makes students addicted to computer games.</span><span class="oz">它使学生沉迷于电脑游戏。</span></span></button></div><button class="jump" data-go="p2-4" data-qnum="54">定位 P4</button></div><div class="q" data-q="55"><div class="qs"><span class="qn">55.</span><span class="qse">What does the author think of the traditional school year in the U.S. today?</span></div><div class="qsz">作者如何看待当今美国的传统学年?</div><div class="opts"><button class="opt" data-q="55" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Well-grounded.</span><span class="oz">有充分根据的。</span></span></button><button class="opt" data-q="55" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Culture-bound.</span><span class="oz">受文化束缚的。</span></span></button><button class="opt" data-q="55" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">Outdated.</span><span class="oz">过时的。</span></span></button><button class="opt" data-q="55" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Welcomed.</span><span class="oz">受欢迎的。</span></span></button></div></div>
     <div class="subrow"><button class="submit" data-sec="p2">提交答案 · 自动判分</button>
-      <span class="score" id="sc-p2"></span></div>
+      <span class="score" id="sc-p2"></span>
+      <button class="syncbtn" id="sy-p2" style="display:none">☁ 同步回执</button></div>
+    <p class="syncst" id="sst-p2"></p>
   </div>
 
   <div class="panel" id="p2-ana">
@@ -215,7 +209,13 @@ tr:last-child td{border-bottom:0}
 
 <script>
 var ANS = {"c-1": {"46": "B", "47": "B", "48": "D", "49": "C", "50": "A"}, "c-2": {"51": "A", "52": "D", "53": "D", "54": "A", "55": "C"}};
+var TOPIC = "cet4-l1nks314-da7731fc";
+var REPORT = null;
 var picked = {}, judged = {};
+function todayStr(){
+  var d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
 
 document.querySelectorAll('.tab').forEach(function(t){
   t.addEventListener('click', function(){
@@ -270,7 +270,38 @@ document.querySelectorAll('.submit').forEach(function(btn){
     var sc = document.getElementById('sc-' + sec);
     sc.textContent = '得分 ' + right + '/' + total + '  ·  正确率 ' + Math.round(right/total*100) + '%';
     sc.style.color = right/total >= 0.6 ? 'var(--green)' : 'var(--red)';
+
+    // 生成回执
+    var wrongList = [];
+    box.querySelectorAll('.q').forEach(function(qd){
+      var q = qd.dataset.q, ans = null;
+      for (var k in ANS){ if (ANS[k][q]) ans = ANS[k][q]; }
+      if (picked[q] !== ans) wrongList.push(q);
+    });
+    REPORT = {
+      t: "rep", kind: "reading", date: todayStr(), page: TITLE,
+      score: right + "/" + total, pct: Math.round(right/total*100),
+      wrong: wrongList
+    };
+    var sb = document.getElementById('sy-' + sec);
+    if (sb) sb.style.display = 'inline-block';
   });
+});
+
+// ── 同步到云端 ──
+function syncReport(){
+  if (!REPORT) return;
+  var st = document.getElementById('sst-' + document.querySelector('.syncbtn').id.slice(3));
+  fetch('https://ntfy.sh/' + TOPIC, {method:'POST', body: JSON.stringify(REPORT)})
+    .then(function(r){
+      if (st) st.textContent = r.ok ? '✓ 已同步（教练能看到这条记录）' : '同步失败，请截图发到对话';
+      if (!r.ok && st) st.style.color = 'var(--red)';
+    })
+    .catch(function(){ if (st){ st.textContent = '离线，请截图发到对话'; st.style.color = 'var(--red)'; } });
+}
+
+document.querySelectorAll('.syncbtn').forEach(function(b){
+  b.addEventListener('click', function(){ syncReport(); });
 });
 
 document.querySelectorAll('.jump').forEach(function(b){

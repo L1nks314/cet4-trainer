@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>汉译英 · 2025年6月 第2套</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--soft:#fafbfc;--grey:#f2f3f5;--line:#e5e8ec;--line2:#eff1f4;
+ --track:#e8ebef;--txt:#1b1e23;--txt2:#2b303a;--txt3:#3d434e;--sub:#6b7280;--sub2:#a8b0bb;
+ --blue:#2563eb;--blue-soft:#eef3ff;--green:#0d8a52;--green-soft:#e8f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;
+ --amber-line:#f0dfb8;--green-line:#bfe3cf;--purple:#7c5cff;--purple-soft:#f2eeff;
+ --blue-ink:#123a75;--green-ink:#0d5232;--amber-ink:#7a5b00;--red-ink:#8a2318;--purple-ink:#3f2a7a;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05)}
+@media (prefers-color-scheme: dark){:root{--bg:#101216;--card:#191c21;--soft:#20242a;
+ --grey:#22262c;--line:#2c313a;--line2:#242930;--track:#2a2f38;--txt:#e9ebee;--txt2:#d7dade;
+ --txt3:#c3c8cf;--sub:#98a0aa;--sub2:#6b7280;--blue:#6b96fb;--blue-soft:#1a2742;
+ --green:#41d18f;--green-soft:#14301f;--red:#ef7261;--red-soft:#371d19;--amber:#e0a53f;
+ --amber-soft:#312713;--amber-line:#4a3a1c;--green-line:#1f4530;--purple:#a98cff;
+ --purple-soft:#241c3d;--blue-ink:#a9c6ff;--green-ink:#7fe0b0;--amber-ink:#f0c469;
+ --red-ink:#ffa79a;--purple-ink:#c3a9ff;--shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28);
+ color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:20px;margin:2px 0 14px;font-weight:800;padding-left:12px;
+ border-left:4px solid var(--blue);line-height:1.25;letter-spacing:.2px}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:12px;flex-wrap:wrap}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.hint{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 12px}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.72;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.big{display:flex;gap:9px;margin-bottom:12px}
+.big div{flex:1;background:var(--blue-soft);border-radius:10px;padding:10px 8px;text-align:center}
+.big b{display:block;font-size:18px;font-weight:800;color:var(--blue)}
+.big span{font-size:11.5px;color:var(--sub)}
+.prompt{font-size:14.6px;line-height:1.9;background:var(--soft);border-radius:11px;
+ padding:14px;border:1px solid var(--line);text-align:justify}
+.prompt .lbl{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue);
+ color:#fff;border-radius:6px;padding:2px 9px;margin-bottom:9px}
+.zh{font-size:15px;line-height:2;text-align:justify;letter-spacing:.2px}
+.en{font-size:14.6px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.essay p{margin:0 0 12px}
+.essay p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;
+ background:var(--card)}
+details>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:14.4px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details[open]>summary::before{content:"▾"}
+details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
+.sent{border-bottom:1px solid var(--line2);padding:13px 0}
+.sent:last-child{border-bottom:0}
+.snum{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue-soft);
+ color:var(--blue);border-radius:6px;padding:2px 9px;margin-bottom:7px}
+.szh{font-size:15px;line-height:1.9;margin:0 0 9px}
+.sen{font-size:14.6px;line-height:1.85;margin:0;padding:10px 12px;background:var(--green-soft);
+ border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
+.strat{display:inline-block;font-size:12px;color:var(--purple);
+ background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
+.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
+.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+ font-size:12px;white-space:nowrap}
+.chunk .v{flex:1;color:var(--txt2)}
+.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.row:last-child{border-bottom:0}
+.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
+.row .c{flex:1;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab:last-child{border-bottom:0}
+.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
+.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
+ line-height:1.78;color:var(--red-ink);margin-top:10px}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
+ border-radius:18px;padding:5px 13px;color:var(--sub)}
+.flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+</style>
+</head>
+<body>
+
+<a class="back" href="writing.html">← 返回写作与翻译</a>
+<h1>汉译英 · 2025年6月 第2套</h1>
+
+<div class="card">
+  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part IV</span></div>
+  <div class="big">
+    <div><b>142</b><span>中文字数</span></div>
+    <div><b>4</b><span>句</span></div>
+    <div><b>30</b><span>分钟</span></div>
+  </div>
+  <div class="tip b">翻译评分只看四件事：<b>意思说全、语法没错、表达通顺、用词准确</b>。
+  翻得漂亮不加分，翻错了狠狠扣 —— 所以目标是<b>不出错</b>，不是出彩。</div>
+</div>
+
+<div class="card">
+  <div class="chead"><h2>中文原文</h2><span class="cmeta">4 句</span></div>
+  <div class="tip b">【主旨】 介绍东北冰雪旅游开发的客观现状 这段在客观介绍中国东北近年开发冰雪资源、发展冰雪旅游的现状与成效，属&quot;社会/经济现象介绍&quot;语体。开篇 近年来,中国东北地区正在大力开发冰雪资源。 就点明是在陈述当下正在发生、且仍在持续的事实，不是讲历史故事，所以全篇用客观、平实的介绍性英文，不用文学化修辞。 【时态】 一般现在时 通篇是对当下事实与现状的客观介绍，主线讲&quot;现在正在做、现在已成为&quot;的状态，故以一般现在时为主时态。原文反复出现 正在大力开发、正吸引着四面八方的游客、正为当地的经济发展做出越来越大的贡献 这类&quot;正在进行&quot;的标志，逐句翻译时主时态默认一般现在时，强调&quot;此刻进行&quot;处可局部用现在进行时，已完成的动作（如哈尔滨&quot;打造了&quot;）才用现在完成/一般过去时。 【译法】 中国东北地区 拟定统一译法 Northeast China（或 the northeastern part of China）。取约定俗成的方位地名译法，专有方位名首字母大写。原文 中国东北地区 是全篇主体，须前后只用一种译法，别一会儿 Northeast China、一会儿 the northeast of China 混着用。 冰雪大世界 拟定统一译法 the Ice and Snow World（带引号或斜体均可，作为景区专名首字母大写）。这是哈尔滨的实有景区 冰雪大世界，采&quot;意译+约定俗成&quot;，直译其&quot;冰(Ice)雪(Snow)世界(World)&quot;之意；全篇只出现一次，但定下译法可避免临场乱译成 big world of ice 之类。 冰雪资源 拟定统一译法 ice and snow resources。原文 冰雪资源 出现两次（&quot;开发冰雪资源&quot;&quot;丰富的冰雪资源&quot;），是高频词，必须两处用同一译法 ice and snow resources（resources 用复数表&quot;各类资源&quot;），别一处 resources 一处 resource。</div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    <span class="zh">近年来,中国东北地区正在大力开发冰雪资源。例如,哈尔滨利用丰富的冰雪资源打造了极具地方特色的&quot;冰雪大世界&quot;,让游客在欣赏冰雪之美的同时也能体验当地独特的民俗文化。如今,曾令人畏惧的冰天雪地正吸引着四面八方的游客,成为深受欢迎的旅游胜地。冰雪旅游业正为当地的经济发展做出越来越大的贡献。</span></div>
+  <div class="tip a"><b>先自己翻一遍再看下面。</b>用纸笔或另一个文档写，写完再逐句对照 ——
+  直接看答案等于没练。</div>
+</div>
+
+<div class="card">
+  <h2>怎么用这份包</h2>
+  <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
+    <span>③ 抄下错处</span><span>④ 整篇通读</span></div>
+  <div class="tip g">第二步是全流程最有价值的一步：<b>看你漏译了什么、时态用错了哪里</b>。
+  每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
+</div>
+
+<div class="card">
+  <h2>逐句对照（4 句）</h2>
+  <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
+  <div class="sent"><span class="snum">第 1 句</span><p class="szh">近年来,中国东北地区正在大力开发冰雪资源。</p><p class="sen">In recent years, Northeast China has been vigorously developing its ice and snow resources.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调，但本句&quot;正在大力开发&quot;强调当下持续进行，用现在进行时 is developing 比一般现在时更贴 正在大力开发 的&quot;正在&quot;义；这是对基调的合理局部偏离。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">resources 用复数：&quot;冰雪资源&quot;指成片、多种的资源，不可数化为单数会失&quot;丰富&quot;之意，统一用 ice and snow resources。</span></div><div class="chunk"><span class="k">时间状语搭配</span><span class="v">&quot;近年来&quot;固定搭配 in recent years（recent + years 复数），别误写成 in recent year 或 these years 单独成句。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">例如,哈尔滨利用丰富的冰雪资源打造了极具地方特色的&quot;冰雪大世界&quot;,让游客在欣赏冰雪之美的同时也能体验当地独特的民俗文化。</p><p class="sen">For example, Harbin has built the Ice and Snow World with strong local characteristics by making full use of its rich ice and snow resources, allowing tourists to experience the unique local folk culture while enjoying the beauty of ice and snow.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">&quot;打造了&quot;是已完成的动作（景区已建成并仍在运营），用现在完成时 has built，对全篇一般现在时基调的合理偏离；从句内&quot;欣赏、体验&quot;是泛指经常性体验，用一般现在时 enjoy / experience。</span></div><div class="chunk"><span class="k">单复数与冠词</span><span class="v">tourists 用复数（泛指游客群体）；专名前 the Ice and Snow World 加定冠词 the（特指那一个景区）；民俗文化 local folk culture 作不可数名词，不加 s。</span></div><div class="chunk"><span class="k">介词搭配</span><span class="v">&quot;利用&quot;用 by making use of / by using；&quot;在……的同时&quot;用 while + doing；&quot;体验……文化&quot;用 experience the culture，别搭 feel。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语 Harbin 是单数第三人称，助动词用 has built；若用 allowing 非谓语则不涉及与主语数的一致问题。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">如今,曾令人畏惧的冰天雪地正吸引着四面八方的游客,成为深受欢迎的旅游胜地。</p><p class="sen">Today, the once-feared land of ice and snow is attracting tourists from all directions and has become a popular tourist destination.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">&quot;如今正吸引着&quot;用现在进行时 is attracting 扣&quot;正&quot;义；&quot;成为旅游胜地&quot;已发生且持续，用现在完成时 has become；定语&quot;曾令人畏惧&quot;指过去状态，用 once-feared 或 was once feared 带过去意味。三处时态分别对应&quot;现在进行/已完成/过去&quot;，是有依据的差异而非随意飘。</span></div><div class="chunk"><span class="k">今昔对比的措辞</span><span class="v">&quot;曾令人畏惧&quot;译 once feared / once daunting，&quot;如今……吸引&quot;用 now / today 起头，靠 once…now… 显出今昔反差，别把&quot;曾&quot;漏译。</span></div><div class="chunk"><span class="k">单复数与冠词</span><span class="v">tourists 复数（四面八方的游客是群体）；a popular tourist destination 加不定冠词 a（成为&quot;一处&quot;胜地，单数可数名词须带冠词）。</span></div></div><div class="sent"><span class="snum">第 4 句</span><p class="szh">冰雪旅游业正为当地的经济发展做出越来越大的贡献。</p><p class="sen">Ice and snow tourism is making an increasingly great contribution to the local economic development.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">&quot;正……做出&quot;用现在进行时 is making / is contributing 扣&quot;正&quot;的进行义，呼应全篇&quot;正在发生&quot;的基调。</span></div><div class="chunk"><span class="k">搭配与介词</span><span class="v">&quot;为……做出贡献&quot;固定搭配 make a contribution to sth. / contribute to sth.，介词是 to，别用 for；contribution 作可数名词时常用复数 contributions 表多方面贡献。</span></div><div class="chunk"><span class="v">单复数与不可数名词 tourism（旅游业）、economic development（经济发展）都是不可数名词，作主语谓语用单数（is），前面不加 a、不加 s。</span></div></div>
+</div>
+
+<div class="card">
+  <h2>整篇参考译文</h2>
+  <details><summary>展开整篇（自己翻完再看）</summary>
+    <div class="dbody"><p class="en">In recent years, Northeast China has been vigorously developing its ice and snow resources. For example, Harbin has built the Ice and Snow World with strong local characteristics by making full use of its rich ice and snow resources, allowing tourists to experience the unique local folk culture while enjoying the beauty of ice and snow. Today, the once-feared land of ice and snow is attracting tourists from all directions and has become a popular tourist destination. Ice and snow tourism is making an increasingly great contribution to the local economic development. 【衔接】 第1句与第2句之间：例证关系靠 For example 显化 第2句开头 例如 是对第1句&quot;东北开发冰雪资源&quot;的举例，英文第2句须以 For example 起头，把&quot;总述—举例&quot;的逻辑显化出来，别漏掉这个关联词让两句看起来各说各的。 第3句与前文之间：用 Today 接续并避免重复主语 第3句 如今 译 Today 起头，和第1句的 In recent years 形成&quot;近年来—如今&quot;的时间推进；主语&quot;冰天雪地&quot;是新信息，无需用代词承接，但 once-feared…now 的措辞本身就把它与前文&quot;开发资源、打造景区&quot;的成果串了起来。 第4句作结论：信息顺序由现象到经济意义 全篇信息流是&quot;开发资源（第1句）→ 具体做法哈尔滨案例（第2句）→ 如今成为旅游胜地（第3句）→ 拉动经济（第4句）&quot;，第4句 正为当地的经济发展做出越来越大的贡献 是升华到经济意义的收束句，保持这个由具体到意义的顺序，整篇读起来层层递进，不必额外补关联词。</p></div></details>
+  <div class="tip a">整篇译文是用来<b>感受节奏和衔接</b>的，不是用来背的。
+  重点看它怎么处理句间连接、怎么避免重复用词。</div>
+</div>
+
+<div class="card">
+  <h2>句间衔接（3 处）</h2>
+  <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
+  <div class="row"><span class="tag">衔接</span><div class="c"><b>第1句与第2句之间：例证关系靠 For example 显化</b>第2句开头 例如 是对第1句&quot;东北开发冰雪资源&quot;的举例，英文第2句须以 For example 起头，把&quot;总述—举例&quot;的逻辑显化出来，别漏掉这个关联词让两句看起来各说各的。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第3句与前文之间：用 Today 接续并避免重复主语</b>第3句 如今 译 Today 起头，和第1句的 In recent years 形成&quot;近年来—如今&quot;的时间推进；主语&quot;冰天雪地&quot;是新信息，无需用代词承接，但 once-feared…now 的措辞本身就把它与前文&quot;开发资源、打造景区&quot;的成果串了起来。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第4句作结论：信息顺序由现象到经济意义</b>全篇信息流是&quot;开发资源（第1句）→ 具体做法哈尔滨案例（第2句）→ 如今成为旅游胜地（第3句）→ 拉动经济（第4句）&quot;，第4句 正为当地的经济发展做出越来越大的贡献 是升华到经济意义的收束句，保持这个由具体到意义的顺序，整篇读起来层层递进，不必额外补关联词。</div></div>
+</div>
+
+<div class="card">
+  <h2>译法要点（16 条）</h2>
+  <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
+  <div class="vocab"><div class="w">中国东北地区</div><div class="d">拟定统一译法 Northeast China（或 the northeastern part of China）。取约定俗成的方位地名译法，专有方位名首字母大写。原文 中国东北地区 是全篇主体，须前后只用一种译法，别一会儿 Northeast China、一会儿 the northeast of China 混着用。</div></div><div class="vocab"><div class="w">冰雪大世界</div><div class="d">拟定统一译法 the Ice and Snow World（带引号或斜体均可，作为景区专名首字母大写）。这是哈尔滨的实有景区 冰雪大世界，采&quot;意译+约定俗成&quot;，直译其&quot;冰(Ice)雪(Snow)世界(World)&quot;之意；全篇只出现一次，但定下译法可避免临场乱译成 big world of ice 之类。</div></div><div class="vocab"><div class="w">冰雪资源</div><div class="d">拟定统一译法 ice and snow resources。原文 冰雪资源 出现两次（&quot;开发冰雪资源&quot;&quot;丰富的冰雪资源&quot;），是高频词，必须两处用同一译法 ice and snow resources（resources 用复数表&quot;各类资源&quot;），别一处 resources 一处 resource。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调，但本句&quot;正在大力开发&quot;强调当下持续进行，用现在进行时 is developing 比一般现在时更贴 正在大力开发 的&quot;正在&quot;义；这是对基调的合理局部偏离。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">resources 用复数：&quot;冰雪资源&quot;指成片、多种的资源，不可数化为单数会失&quot;丰富&quot;之意，统一用 ice and snow resources。</div></div><div class="vocab"><div class="w">时间状语搭配</div><div class="d">&quot;近年来&quot;固定搭配 in recent years（recent + years 复数），别误写成 in recent year 或 these years 单独成句。</div></div><div class="vocab"><div class="w">时态</div><div class="d">&quot;打造了&quot;是已完成的动作（景区已建成并仍在运营），用现在完成时 has built，对全篇一般现在时基调的合理偏离；从句内&quot;欣赏、体验&quot;是泛指经常性体验，用一般现在时 enjoy / experience。</div></div><div class="vocab"><div class="w">单复数与冠词</div><div class="d">tourists 用复数（泛指游客群体）；专名前 the Ice and Snow World 加定冠词 the（特指那一个景区）；民俗文化 local folk culture 作不可数名词，不加 s。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">&quot;利用&quot;用 by making use of / by using；&quot;在……的同时&quot;用 while + doing；&quot;体验……文化&quot;用 experience the culture，别搭 feel。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 Harbin 是单数第三人称，助动词用 has built；若用 allowing 非谓语则不涉及与主语数的一致问题。</div></div><div class="vocab"><div class="w">时态</div><div class="d">&quot;如今正吸引着&quot;用现在进行时 is attracting 扣&quot;正&quot;义；&quot;成为旅游胜地&quot;已发生且持续，用现在完成时 has become；定语&quot;曾令人畏惧&quot;指过去状态，用 once-feared 或 was once feared 带过去意味。三处时态分别对应&quot;现在进行/已完成/过去&quot;，是有依据的差异而非随意飘。</div></div><div class="vocab"><div class="w">今昔对比的措辞</div><div class="d">&quot;曾令人畏惧&quot;译 once feared / once daunting，&quot;如今……吸引&quot;用 now / today 起头，靠 once…now… 显出今昔反差，别把&quot;曾&quot;漏译。</div></div><div class="vocab"><div class="w">单复数与冠词</div><div class="d">tourists 复数（四面八方的游客是群体）；a popular tourist destination 加不定冠词 a（成为&quot;一处&quot;胜地，单数可数名词须带冠词）。</div></div><div class="vocab"><div class="w">时态</div><div class="d">&quot;正……做出&quot;用现在进行时 is making / is contributing 扣&quot;正&quot;的进行义，呼应全篇&quot;正在发生&quot;的基调。</div></div><div class="vocab"><div class="w">搭配与介词</div><div class="d">&quot;为……做出贡献&quot;固定搭配 make a contribution to sth. / contribute to sth.，介词是 to，别用 for；contribution 作可数名词时常用复数 contributions 表多方面贡献。</div></div><div class="vocab"><div class="w">单复数与不可数名词</div><div class="d">tourism（旅游业）、economic development（经济发展）都是不可数名词，作主语谓语用单数（is），前面不加 a、不加 s。</div></div>
+</div>
+
+<div class="card">
+  <h2>翻译四句口诀</h2>
+  <table>
+    <tr><th>步骤</th><th>做什么</th></tr>
+    <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
+    <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
+    <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
+    <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 > 用词花</b></td></tr>
+  </table>
+</div>
+
+</body>
+</html>

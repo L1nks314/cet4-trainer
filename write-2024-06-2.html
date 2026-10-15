@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>写作 · 2024年6月 第2套</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--soft:#fafbfc;--grey:#f2f3f5;--line:#e5e8ec;--line2:#eff1f4;
+ --track:#e8ebef;--txt:#1b1e23;--txt2:#2b303a;--txt3:#3d434e;--sub:#6b7280;--sub2:#a8b0bb;
+ --blue:#2563eb;--blue-soft:#eef3ff;--green:#0d8a52;--green-soft:#e8f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;
+ --amber-line:#f0dfb8;--green-line:#bfe3cf;--purple:#7c5cff;--purple-soft:#f2eeff;
+ --blue-ink:#123a75;--green-ink:#0d5232;--amber-ink:#7a5b00;--red-ink:#8a2318;--purple-ink:#3f2a7a;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05)}
+@media (prefers-color-scheme: dark){:root{--bg:#101216;--card:#191c21;--soft:#20242a;
+ --grey:#22262c;--line:#2c313a;--line2:#242930;--track:#2a2f38;--txt:#e9ebee;--txt2:#d7dade;
+ --txt3:#c3c8cf;--sub:#98a0aa;--sub2:#6b7280;--blue:#6b96fb;--blue-soft:#1a2742;
+ --green:#41d18f;--green-soft:#14301f;--red:#ef7261;--red-soft:#371d19;--amber:#e0a53f;
+ --amber-soft:#312713;--amber-line:#4a3a1c;--green-line:#1f4530;--purple:#a98cff;
+ --purple-soft:#241c3d;--blue-ink:#a9c6ff;--green-ink:#7fe0b0;--amber-ink:#f0c469;
+ --red-ink:#ffa79a;--purple-ink:#c3a9ff;--shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28);
+ color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:20px;margin:2px 0 14px;font-weight:800;padding-left:12px;
+ border-left:4px solid var(--blue);line-height:1.25;letter-spacing:.2px}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:12px;flex-wrap:wrap}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.hint{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 12px}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.72;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.big{display:flex;gap:9px;margin-bottom:12px}
+.big div{flex:1;background:var(--blue-soft);border-radius:10px;padding:10px 8px;text-align:center}
+.big b{display:block;font-size:18px;font-weight:800;color:var(--blue)}
+.big span{font-size:11.5px;color:var(--sub)}
+.prompt{font-size:14.6px;line-height:1.9;background:var(--soft);border-radius:11px;
+ padding:14px;border:1px solid var(--line);text-align:justify}
+.prompt .lbl{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue);
+ color:#fff;border-radius:6px;padding:2px 9px;margin-bottom:9px}
+.zh{font-size:15px;line-height:2;text-align:justify;letter-spacing:.2px}
+.en{font-size:14.6px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.essay p{margin:0 0 12px}
+.essay p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;
+ background:var(--card)}
+details>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:14.4px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details[open]>summary::before{content:"▾"}
+details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
+.sent{border-bottom:1px solid var(--line2);padding:13px 0}
+.sent:last-child{border-bottom:0}
+.snum{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue-soft);
+ color:var(--blue);border-radius:6px;padding:2px 9px;margin-bottom:7px}
+.szh{font-size:15px;line-height:1.9;margin:0 0 9px}
+.sen{font-size:14.6px;line-height:1.85;margin:0;padding:10px 12px;background:var(--green-soft);
+ border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
+.strat{display:inline-block;font-size:12px;color:var(--purple);
+ background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
+.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
+.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+ font-size:12px;white-space:nowrap}
+.chunk .v{flex:1;color:var(--txt2)}
+.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.row:last-child{border-bottom:0}
+.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
+.row .c{flex:1;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab:last-child{border-bottom:0}
+.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
+.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
+ line-height:1.78;color:var(--red-ink);margin-top:10px}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
+ border-radius:18px;padding:5px 13px;color:var(--sub)}
+.flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+</style>
+</head>
+<body>
+
+<a class="back" href="writing.html">← 返回写作与翻译</a>
+<h1>写作 · 2024年6月 第2套</h1>
+
+<div class="card">
+  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part I</span></div>
+  <div class="big">
+    <div><b>147</b><span>范文词数</span></div>
+    <div><b>3</b><span>段</span></div>
+    <div><b>30</b><span>分钟</span></div>
+  </div>
+  <div class="tip b">四级写作的命中点是<b>切题 + 结构清楚 + 语法不出错</b>。
+  用三段式（引入表态 / 主体展开 / 回扣收尾），比追求华丽句式稳得多。</div>
+</div>
+
+<div class="card">
+  <div class="chead"><h2>题目</h2><span class="cmeta">Directions</span></div>
+  <div class="prompt"><span class="lbl">Directions</span><br>Directions: Suppose your university is seeking students’ opinions on whether university sports facilities should be open to the public. You are now to write an essay to express your view. You will have 30 minutes for the task. You should write at least 120 words but no more than 180 words.</div>
+  <div class="tip a"><b>先自己在纸上写完，再看下面的范文。</b>写作的提分全靠"写—对照—改"这个循环，
+  光看范文不动笔，等于没练。</div>
+</div>
+
+<div class="card">
+  <h2>审题：这题到底要写什么</h2>
+  <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>该不该开放，选边表态 本题要写一篇议论文，就 whether university sports facilities should be open to the public 明确表明自己的态度，即真正落实 express your view，而不是把开放的利弊罗列一遍却不下结论。</div></div>
+  <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>支持向公众开放 本篇中心论点是：大学体育设施应当向公众开放。也就是对 whether university sports facilities should be open to the public 给出明确回答——应该。</div></div>
+  <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>公共资源不该闲置 设施多由公共资金建成，周末假期却常常空置，开放能把浪费变成共享，让纳税人受益。 补社区健身缺口 周边居民缺少可负担的锻炼场所，开放校园跑道与场馆能实实在在提升社区健康。 回应安全与成本顾虑 承认有人担心校园安全与运营成本，但可用固定开放时段、入场登记与小额收费来化解，让立场既坚定又不武断。</div></div>
+  <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 亮明立场并预告 开篇直接表态支持向公众开放，并说明下文将给出理由。 第 2 段 分论点论证＋让步 给出公共资源、社区健康两条理由并各配一句解释，再让步回应安全与成本顾虑。 第 3 段 重申立场加建议 重申应当开放，补一句加强管理的建议收尾。</div></div>
+</div>
+
+<div class="card">
+  <h2>谋篇：每段写什么（3 段）</h2>
+  <p class="hint">这是可以直接套用的框架 —— 换一道题，功能不变、内容替换。</p>
+  <div class="row"><span class="tag">第1段</span><div class="c"><b>支持开放，预告理由 明确写出『体育设施应向公众开放，而不是紧锁大门』，并预告后文将说明理由</b>亮明观点 In my view, ... should be opened to the public rather than ... .（先用 In my view 表态，再用 rather than 排除对立面） 预告全文 In the following paragraphs I will give my reasons.（承上启下，引出下文理由，留白处按需替换）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>两条理由＋让步回应 理由一——设施常由公共资金建成却周末空置，开放能变浪费为共享；理由二——社区缺可负担的锻炼场所，开放利于居民健康；让步——承认有安全与成本顾虑，但可用固定时段、登记与小额收费化解</b>首要理由 To begin with, ... , yet ... .（先给第一条理由，用 yet 点出矛盾或浪费） 递进补充 What is more, ... , so ... .（加第二条理由，用 so 带出效果，避免只用 and 堆叠） 让步转折 Admittedly, some people worry about ... . Nevertheless, ... .（先认下反面顾虑，再用 Nevertheless 转回立场）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申开放并提管理建议 重申大学应向公众开放设施，并建议先建立妥善管理，使学生与居民都能受益</b>总结收束 To sum up, I firmly believe that ... should ... .（重申立场，与首段照应） 提建议 It is advisable that they first set up ... , so that ... .（用 It is advisable that 引出建议，so that 交代目的）</div></div>
+</div>
+
+<div class="card">
+  <h2>参考范文（147 词）</h2>
+  <details><summary>展开范文（自己写完之后再看）</summary>
+    <div class="dbody">
+      <div class="essay"><p class='en'>In my view, university sports facilities should be opened to the public rather than kept behind closed gates. In the following paragraphs I will give my reasons.</p><p class='en'>To begin with, these facilities are usually built with public funding, yet they stand empty on weekends and holidays. Opening them turns a wasted resource into a shared benefit for taxpayers. What is more, many communities lack affordable places to exercise, so free access to a campus track or gym would clearly improve residents&#x27; health. Admittedly, some people worry about campus safety and extra costs. Nevertheless, these problems can be eased by fixed opening hours, an entry registration and a small fee.</p><p class='en'>To sum up, I firmly believe that universities should open their sports facilities to the public. It is advisable that they first set up proper management, so that both students and residents can enjoy the resource in harmony.</p></div>
+      <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>在我看来，大学的体育设施应当向公众开放，而不是紧锁大门。下面我将给出我的理由。</div>
+    </div></details>
+  <div class="tip a">看范文时不要「读」，要<b>拆</b>：每段第一句做什么？观点句和理由句怎么连？
+  结尾怎么回扣题目？</div>
+</div>
+
+<div class="card">
+  <h2>逐段解析（3 段）</h2>
+  <div class="row"><span class="tag">第1段</span><div class="c"><b>开门亮立场落地 </b>首段用 In my view ... should be opened to the public rather than kept behind closed gates 一句直接选边，再用 In the following paragraphs I will give my reasons 预告下文，正是『开门亮立场』方法的落地。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>两理由＋让步成段 </b>本段用 To begin with 给公共资源理由、What is more 给社区健康理由，各配一句解释，再用 Admittedly ... Nevertheless ... 回应安全与成本顾虑，兑现了『分层给理由并回应顾虑』。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申加建议收束 </b>结尾 To sum up, I firmly believe ... 重申立场与首段呼应，It is advisable that they first set up proper management 补一句建议收尾，完成『重申立场配建议』。</div></div>
+</div>
+
+<div class="card">
+  <h2>自检避坑</h2>
+  <div class="pit">典型低分写法 · 反面示例与改法 只列利弊不选边 反面示例：Opening the facilities has both advantages and disadvantages, so it is hard to say.（通篇罗列利弊、始终不表态，丢掉 express your view 的核心任务）。改：开篇写 In my view, university sports facilities should be opened to the public.，之后所有理由都服务这一立场。 理由空泛口号化 反面示例：It is good for the public and brings many benefits.（只有口号、没有支撑）。改：The facilities often stand empty on weekends, so opening them turns a wasted resource into a shared benefit. 回避安全成本顾虑 反面示例：全篇只谈开放的好处，对校园安全和管理成本只字不提。改：加一句让步——Admittedly, some worry about campus safety and costs. Nevertheless, fixed opening hours and registration can ease these problems. 中式英语逐字直译 反面示例：The people can very free to use the sports place.（Chinglish，very 修饰形容词错、用词生硬）。改：Local residents can use the sports facilities free of charge.</div>
+  <table style="margin-top:14px">
+    <tr><th>自查项</th><th>怎么查</th></tr>
+    <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+    <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+    <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+    <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+  </table>
+</div>
+
+</body>
+</html>

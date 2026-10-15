@@ -5,30 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>仔细阅读 · 2023年6月 第1套</title>
 <style>
-:root{ --bg:#f4f5f7; --card:#ffffff; --soft:#fafbfc; --grey:#f2f3f5;
- --line:#e5e8ec; --line2:#eff1f4; --track:#e8ebef;
- --txt:#1b1e23; --txt2:#2b303a; --txt3:#3d434e; --sub:#6b7280; --sub2:#a8b0bb;
- --blue:#2563eb; --blue-soft:#eef3ff; --green:#0d8a52; --green-soft:#e8f7ef;
- --red:#c0392b; --red-soft:#fdecea; --amber:#b45309; --amber-soft:#fef6e7;
- --amber-line:#f0dfb8; --green-line:#bfe3cf;
- --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05);
- --shadow-lg:0 2px 4px rgba(16,24,40,.05), 0 8px 20px rgba(16,24,40,.07);  --blue-ink:#123a75;}
-@media (prefers-color-scheme: dark){ :root{ --bg:#101216; --card:#191c21; --soft:#20242a; --grey:#22262c;
- --line:#2c313a; --line2:#242930; --track:#2a2f38;
- --txt:#e9ebee; --txt2:#d7dade; --txt3:#c3c8cf; --sub:#98a0aa; --sub2:#6b7280;
- --blue:#6b96fb; --blue-soft:#1a2742; --green:#41d18f; --green-soft:#14301f;
- --red:#ef7261; --red-soft:#371d19; --amber:#e0a53f; --amber-soft:#312713;
- --amber-line:#4a3a1c; --green-line:#1f4530;
- --shadow:0 1px 2px rgba(0,0,0,.35), 0 2px 8px rgba(0,0,0,.28);
- --shadow-lg:0 2px 6px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.45);
- color-scheme:dark;  --blue-ink:#a9c6ff;} }
+:root{--bg:#f5f6f8;--card:#fff;--line:#e6e8ec;--txt:#1c1e21;--sub:#6b7280;
+ --blue:#2563eb;--blue-soft:#eff4ff;--green:#0d8a52;--green-soft:#e9f7ef;--sub2:#a8b0bb;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;--grey:#f2f3f5;}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--txt);
  font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
  padding:14px 13px 48px;max-width:760px;margin:0 auto;}
 a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
 h1{font-size:19px;margin:2px 0 12px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:14px;box-shadow:var(--shadow);}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:14px}
 .chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .chead h2{font-size:16px;margin:0}
 .cmeta{font-size:12.5px;color:var(--sub)}
@@ -36,10 +22,10 @@ h1{font-size:19px;margin:2px 0 12px}
 .tab,.tbtn2{border:1.5px solid var(--line);background:var(--card);color:var(--sub);font-size:14px;
  padding:9px 18px;border-radius:22px;cursor:pointer;font-family:inherit;font-weight:600}
 .tab.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
-.tbtn2{margin-left:auto;color:var(--amber);border-color:var(--amber-line);background:var(--amber-soft)}
+.tbtn2{margin-left:auto;color:var(--amber);border-color:#f0dfb8;background:var(--amber-soft)}
 .tbtn2.on{background:var(--amber);color:#fff;border-color:var(--amber)}
 .panel{display:none}.panel.on{display:block}
-.para{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line2)}
+.para{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid #f0f2f5}
 .para:last-child{border-bottom:0}
 .pno{flex:0 0 32px;font-size:12.5px;color:#fff;background:var(--blue);border-radius:8px;
  height:22px;line-height:22px;text-align:center;margin-top:3px;font-weight:700;letter-spacing:.3px}
@@ -57,7 +43,7 @@ body.zh .ptx .zh,body.zh .oz{display:block}
 .qsz{font-size:13px;color:var(--sub);margin:5px 0 0;display:none}
 body.zh .qsz{display:block}
 .opts{margin-top:10px;display:flex;flex-direction:column;gap:7px}
-.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;background:var(--soft);
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;background:#fafbfc;
  border:1.5px solid var(--line);border-radius:11px;padding:13px 14px;cursor:pointer;
  font-family:inherit;font-size:14.4px;color:var(--txt);line-height:1.65;width:100%;
  transition:border-color .15s, background .15s}
@@ -75,13 +61,17 @@ body.zh .qsz{display:block}
 .subrow{margin-top:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .submit{padding:12px 24px;border:0;border-radius:11px;background:var(--blue);color:#fff;
  font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
-.submit:disabled{background:var(--blue)}
+.submit:disabled{background:#9fb4de}
 .score{font-size:15px;font-weight:700}
-.hint{font-size:13px;color:var(--sub);background:var(--soft);border:1px solid var(--line);
+.hint{font-size:13px;color:var(--sub);background:#fafbfc;border:1px solid var(--line);
  border-radius:10px;padding:10px 12px;margin:0 0 14px;line-height:1.7}
+.syncbtn{padding:12px 20px;border:0;border-radius:11px;background:var(--green);color:#fff;
+ font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit}
+.syncbtn:disabled{background:var(--sub2)}
+.syncst{font-size:12.5px;color:var(--green);margin:9px 0 0;min-height:18px}
 .ana{border:1px solid var(--line);border-radius:11px;margin-bottom:9px;overflow:hidden;background:#fff}
 .ana>summary{display:flex;gap:10px;align-items:center;padding:11px 13px;cursor:pointer;
- font-size:14px;list-style:none;background:var(--soft)}
+ font-size:14px;list-style:none;background:#fafbfc}
 .ana>summary::-webkit-details-marker{display:none}
 .ana .an{font-weight:700;color:var(--blue)}
 .ana .aa{color:var(--green);font-weight:700}
@@ -94,7 +84,7 @@ body.zh .qsz{display:block}
 .arow:last-child{margin-bottom:0}
 .atag{flex:0 0 42px;font-size:12px;font-weight:700;color:var(--blue);background:var(--blue-soft);
  border-radius:6px;height:21px;line-height:21px;text-align:center}
-.atx{flex:1;min-width:0;font-size:13.6px;line-height:1.75;color:var(--txt2)}
+.atx{flex:1;min-width:0;font-size:13.6px;line-height:1.75;color:#2b2f36}
 .atx p{margin:0}
 .atx .lpara{display:inline-block;font-size:11.5px;background:var(--amber-soft);color:var(--amber);
  border-radius:5px;padding:1px 8px;margin-bottom:5px;font-weight:700}
@@ -102,30 +92,30 @@ body.zh .qsz{display:block}
 .lzh{margin:4px 0 0;font-size:12.8px;color:var(--sub)}
 .vds{display:flex;flex-direction:column;gap:10px}
 .vd{border-radius:10px;padding:10px 12px;border:1px solid}
-.vd.ok{background:var(--green-soft);border-color:var(--green-line)}
-.vd.bad{background:var(--soft);border-color:var(--line)}
+.vd.ok{background:var(--green-soft);border-color:#bfe3cf}
+.vd.bad{background:#fafbfc;border-color:var(--line)}
 .vdh{display:flex;gap:9px;align-items:center;margin-bottom:6px}
 .vdl{font-weight:700;font-size:14px}
 .vdf{font-size:12px;padding:2px 9px;border-radius:20px;font-weight:600}
 .vd.ok .vdf{background:var(--green);color:#fff}
-.vd.bad .vdf{background:var(--line);color:var(--sub)}
+.vd.bad .vdf{background:#dde1e8;color:#4b5563}
 .pairs{display:flex;flex-direction:column;gap:4px;margin:7px 0}
 .pair{display:flex;gap:8px;align-items:baseline;font-size:13px;flex-wrap:wrap}
 .po{color:var(--green);font-weight:600}
 .pa{color:var(--sub)}
 .pp{color:var(--blue);font-weight:600}
-.vdn{margin:7px 0 0;font-size:13.2px;color:var(--txt3);line-height:1.72}
+.vdn{margin:7px 0 0;font-size:13.2px;color:#3a3f47;line-height:1.72}
 table{width:100%;border-collapse:collapse;font-size:13.4px}
 th,td{padding:8px 7px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+th{font-size:12.5px;color:var(--sub);background:#fafbfc;font-weight:600}
 td.c{text-align:center;white-space:nowrap;color:var(--sub);font-size:12.5px}
 tr:last-child td{border-bottom:0}
 .frow{display:flex;align-items:center;gap:11px;padding:7px 0}
 .fn{flex:0 0 88px;font-size:13.2px}
-.fbar{flex:1;height:8px;background:var(--track);border-radius:5px;overflow:hidden}
+.fbar{flex:1;height:8px;background:#eceef2;border-radius:5px;overflow:hidden}
 .fbar i{display:block;height:100%;background:var(--red);border-radius:5px}
 .fv{flex:0 0 30px;text-align:right;font-size:13px;font-weight:700;color:var(--red)}
-.tip{background:var(--blue-soft);color:var(--blue-ink);border-radius:10px;padding:11px 13px;
+.tip{background:var(--blue-soft);color:#123a75;border-radius:10px;padding:11px 13px;
  font-size:13.2px;line-height:1.7;margin-top:12px}
 </style>
 </head>
@@ -165,7 +155,9 @@ tr:last-child td{border-bottom:0}
     做完点下方提交，会自动判分。右上「中译」可一键显示题干与选项的中文。</p>
     <div class="q" data-q="46"><div class="qs"><span class="qn">46.</span><span class="qse">What are big houses promoted to be in the United States?</span></div><div class="qsz">在美国，大房子被宣传为什么？</div><div class="opts"><button class="opt" data-q="46" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">A luxury for the homeless.</span><span class="oz">无家可归者的奢侈品。</span></span></button><button class="opt" data-q="46" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">A reward for industriousness.</span><span class="oz">对勤劳的奖赏。</span></span></button><button class="opt" data-q="46" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">An abundant source of comforts.</span><span class="oz">舒适的丰富来源。</span></span></button><button class="opt" data-q="46" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">An absolute necessity for happiness.</span><span class="oz">幸福的绝对必需品。</span></span></button></div><button class="jump" data-go="p1-1" data-qnum="46">定位 P1</button></div><div class="q" data-q="47"><div class="qs"><span class="qn">47.</span><span class="qse">What is one of the consequences of living big?</span></div><div class="qsz">住大房子的后果之一是什么？</div><div class="opts"><button class="opt" data-q="47" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Many Americans&#x27; quality of life has become lower.</span><span class="oz">许多美国人的生活质量变得更低了。</span></span></button><button class="opt" data-q="47" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">People from diverse backgrounds no longer socialize.</span><span class="oz">来自不同背景的人们不再社交了。</span></span></button><button class="opt" data-q="47" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">People no longer have access to public swimming pools.</span><span class="oz">人们不再能使用公共游泳池了。</span></span></button><button class="opt" data-q="47" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Many Americans&#x27; private life has been negatively affected.</span><span class="oz">许多美国人的私人生活受到了负面影响。</span></span></button></div><button class="jump" data-go="p1-3" data-qnum="47">定位 P3</button></div><div class="q" data-q="48"><div class="qs"><span class="qn">48.</span><span class="qse">What questions arise from living big?</span></div><div class="qsz">住大房子引发了什么问题？</div><div class="opts"><button class="opt" data-q="48" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Questions related to moral principles.</span><span class="oz">与道德原则相关的问题。</span></span></button><button class="opt" data-q="48" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Questions having to do with labor cost.</span><span class="oz">与劳动力成本有关的问题。</span></span></button><button class="opt" data-q="48" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">Questions about what lifestyle to promote.</span><span class="oz">关于提倡什么样的生活方式的问题。</span></span></button><button class="opt" data-q="48" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Questions concerning housing development.</span><span class="oz">关于住房发展的问题。</span></span></button></div><button class="jump" data-go="p1-4" data-qnum="48">定位 P4</button></div><div class="q" data-q="49"><div class="qs"><span class="qn">49.</span><span class="qse">What kind of social system does the author think is unacceptable?</span></div><div class="qsz">作者认为什么样的社会制度是不可接受的？</div><div class="opts"><button class="opt" data-q="49" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">One in which the wealthy exploit the low-wage laborers building their houses.</span><span class="oz">一个富人剥削建造他们房屋的低工资劳动者的制度。</span></span></button><button class="opt" data-q="49" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">One in which the rich purchase amenities at an increasingly unjustifiable price.</span><span class="oz">一个富人以越来越难以证明合理的价格购买便利设施的制度。</span></span></button><button class="opt" data-q="49" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">One in which the upper classes deprive the lower classes of affordable housing.</span><span class="oz">一个上层阶级剥夺下层阶级负担得起的住房的制度。</span></span></button><button class="opt" data-q="49" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">One in which the affluent enjoy a more comfortable life at the expense of the poor.</span><span class="oz">一个富人以穷人为代价享受更舒适生活的制度。</span></span></button></div><button class="jump" data-go="p1-4" data-qnum="49">定位 P4</button></div><div class="q" data-q="50"><div class="qs"><span class="qn">50.</span><span class="qse">What does the author advocate for people to live well?</span></div><div class="qsz">作者提倡人们怎样才能生活得好？</div><div class="opts"><button class="opt" data-q="50" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Finding ways to turn private spaces into public ones.</span><span class="oz">找到将私人空间转变为公共空间的方法。</span></span></button><button class="opt" data-q="50" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Building more houses affordable to those less affluent.</span><span class="oz">建造更多那些不太富裕的人负担得起的房屋。</span></span></button><button class="opt" data-q="50" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">More public spaces created for everyone to enjoy.</span><span class="oz">创造更多供每个人享受的公共空间。</span></span></button><button class="opt" data-q="50" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">All amenities made accessible to the rich and the poor alike.</span><span class="oz">让所有便利设施对富人和穷人一样可及。</span></span></button></div><button class="jump" data-go="p1-5" data-qnum="50">定位 P5</button></div>
     <div class="subrow"><button class="submit" data-sec="p1">提交答案 · 自动判分</button>
-      <span class="score" id="sc-p1"></span></div>
+      <span class="score" id="sc-p1"></span>
+      <button class="syncbtn" id="sy-p1" style="display:none">☁ 同步回执</button></div>
+    <p class="syncst" id="sst-p1"></p>
   </div>
 
   <div class="panel" id="p1-ana">
@@ -191,7 +183,9 @@ tr:last-child td{border-bottom:0}
     做完点下方提交，会自动判分。右上「中译」可一键显示题干与选项的中文。</p>
     <div class="q" data-q="51"><div class="qs"><span class="qn">51.</span><span class="qse">What does the author think of most entrepreneurs?</span></div><div class="qsz">作者如何看待大多数企业家?</div><div class="opts"><button class="opt" data-q="51" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">They are more willing to risk their own lives.</span><span class="oz">他们更愿意冒自己生命的危险。</span></span></button><button class="opt" data-q="51" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">They are more ambitious than ordinary people.</span><span class="oz">他们比普通人更有雄心。</span></span></button><button class="opt" data-q="51" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">They achieve greater nonconventional success.</span><span class="oz">他们取得了更大的非传统成功。</span></span></button><button class="opt" data-q="51" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">They have more positive qualities than most of us.</span><span class="oz">他们比我们大多数人拥有更多积极品质。</span></span></button></div><button class="jump" data-go="p2-1" data-qnum="51">定位 P1</button></div><div class="q" data-q="52"><div class="qs"><span class="qn">52.</span><span class="qse">What does the author imply by saying &quot;this isn&#x27;t always the case&quot; (Line 1, Para. 3)?</span></div><div class="qsz">作者说&quot;情况并非总是如此&quot;(第3段第1行)意味着什么?</div><div class="opts"><button class="opt" data-q="52" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Ambitious people may not have a greater chance of success.</span><span class="oz">有雄心的人可能没有更大的成功机会。</span></span></button><button class="opt" data-q="52" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Ambitious people may not have more positive qualities.</span><span class="oz">有雄心的人可能没有更多积极品质。</span></span></button><button class="opt" data-q="52" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">Entrepreneurs&#x27; ambition does as much good as harm.</span><span class="oz">企业家的雄心带来的好处和坏处一样多。</span></span></button><button class="opt" data-q="52" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Entrepreneurs are more naturally driven to success.</span><span class="oz">企业家更天然地被驱使走向成功。</span></span></button></div><button class="jump" data-go="p2-3" data-qnum="52">定位 P3</button></div><div class="q" data-q="53"><div class="qs"><span class="qn">53.</span><span class="qse">What does the author say is of extreme importance for one to become a successful entrepreneur?</span></div><div class="qsz">作者认为对于成为成功的企业家来说,什么是极其重要的?</div><div class="opts"><button class="opt" data-q="53" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Holding on to one&#x27;s original vision.</span><span class="oz">坚持自己最初的愿景。</span></span></button><button class="opt" data-q="53" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Being able to adapt to new situations.</span><span class="oz">能够适应新的情况。</span></span></button><button class="opt" data-q="53" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">Focusing determinedly on one particular goal.</span><span class="oz">坚定地专注于某一特定目标。</span></span></button><button class="opt" data-q="53" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Avoiding radical change in one&#x27;s career direction.</span><span class="oz">避免在职业方向上发生剧烈变化。</span></span></button></div><button class="jump" data-go="p2-4" data-qnum="53">定位 P4</button></div><div class="q" data-q="54"><div class="qs"><span class="qn">54.</span><span class="qse">How do the most ambitious entrepreneurs regard failure in their endeavor?</span></div><div class="qsz">最有雄心的企业家如何看待他们事业中的失败?</div><div class="opts"><button class="opt" data-q="54" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">It will awaken them to reality.</span><span class="oz">失败会让他们认清现实。</span></span></button><button class="opt" data-q="54" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">It is a lesson they have to learn.</span><span class="oz">失败是他们必须学习的一课。</span></span></button><button class="opt" data-q="54" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">It means the end of their career.</span><span class="oz">失败意味着他们职业生涯的终结。</span></span></button><button class="opt" data-q="54" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">It will result in a slow recovery.</span><span class="oz">失败会导致缓慢的恢复。</span></span></button></div><button class="jump" data-go="p2-5" data-qnum="54">定位 P5</button></div><div class="q" data-q="55"><div class="qs"><span class="qn">55.</span><span class="qse">What does the author advise us to do concerning ambition?</span></div><div class="qsz">关于雄心,作者建议我们做什么?</div><div class="opts"><button class="opt" data-q="55" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Distinguish between conventional success and our life goal.</span><span class="oz">区分传统成功与我们的人生目标。</span></span></button><button class="opt" data-q="55" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Follow the example of the most ambitious entrepreneurs.</span><span class="oz">效仿最有雄心的企业家的榜样。</span></span></button><button class="opt" data-q="55" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">Avoid taking unnecessary risks when starting a business.</span><span class="oz">创业时避免承担不必要的风险。</span></span></button><button class="opt" data-q="55" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Prioritize health and happiness over material success.</span><span class="oz">将健康和幸福置于物质成功之上。</span></span></button></div></div>
     <div class="subrow"><button class="submit" data-sec="p2">提交答案 · 自动判分</button>
-      <span class="score" id="sc-p2"></span></div>
+      <span class="score" id="sc-p2"></span>
+      <button class="syncbtn" id="sy-p2" style="display:none">☁ 同步回执</button></div>
+    <p class="syncst" id="sst-p2"></p>
   </div>
 
   <div class="panel" id="p2-ana">
@@ -215,7 +209,13 @@ tr:last-child td{border-bottom:0}
 
 <script>
 var ANS = {"c-1": {"46": "B", "47": "A", "48": "A", "49": "D", "50": "C"}, "c-2": {"51": "B", "52": "A", "53": "B", "54": "C", "55": "D"}};
+var TOPIC = "cet4-l1nks314-da7731fc";
+var REPORT = null;
 var picked = {}, judged = {};
+function todayStr(){
+  var d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
 
 document.querySelectorAll('.tab').forEach(function(t){
   t.addEventListener('click', function(){
@@ -270,7 +270,38 @@ document.querySelectorAll('.submit').forEach(function(btn){
     var sc = document.getElementById('sc-' + sec);
     sc.textContent = '得分 ' + right + '/' + total + '  ·  正确率 ' + Math.round(right/total*100) + '%';
     sc.style.color = right/total >= 0.6 ? 'var(--green)' : 'var(--red)';
+
+    // 生成回执
+    var wrongList = [];
+    box.querySelectorAll('.q').forEach(function(qd){
+      var q = qd.dataset.q, ans = null;
+      for (var k in ANS){ if (ANS[k][q]) ans = ANS[k][q]; }
+      if (picked[q] !== ans) wrongList.push(q);
+    });
+    REPORT = {
+      t: "rep", kind: "reading", date: todayStr(), page: TITLE,
+      score: right + "/" + total, pct: Math.round(right/total*100),
+      wrong: wrongList
+    };
+    var sb = document.getElementById('sy-' + sec);
+    if (sb) sb.style.display = 'inline-block';
   });
+});
+
+// ── 同步到云端 ──
+function syncReport(){
+  if (!REPORT) return;
+  var st = document.getElementById('sst-' + document.querySelector('.syncbtn').id.slice(3));
+  fetch('https://ntfy.sh/' + TOPIC, {method:'POST', body: JSON.stringify(REPORT)})
+    .then(function(r){
+      if (st) st.textContent = r.ok ? '✓ 已同步（教练能看到这条记录）' : '同步失败，请截图发到对话';
+      if (!r.ok && st) st.style.color = 'var(--red)';
+    })
+    .catch(function(){ if (st){ st.textContent = '离线，请截图发到对话'; st.style.color = 'var(--red)'; } });
+}
+
+document.querySelectorAll('.syncbtn').forEach(function(b){
+  b.addEventListener('click', function(){ syncReport(); });
 });
 
 document.querySelectorAll('.jump').forEach(function(b){

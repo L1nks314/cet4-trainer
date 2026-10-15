@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>写作 · 2023年12月 第2套</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--soft:#fafbfc;--grey:#f2f3f5;--line:#e5e8ec;--line2:#eff1f4;
+ --track:#e8ebef;--txt:#1b1e23;--txt2:#2b303a;--txt3:#3d434e;--sub:#6b7280;--sub2:#a8b0bb;
+ --blue:#2563eb;--blue-soft:#eef3ff;--green:#0d8a52;--green-soft:#e8f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;
+ --amber-line:#f0dfb8;--green-line:#bfe3cf;--purple:#7c5cff;--purple-soft:#f2eeff;
+ --blue-ink:#123a75;--green-ink:#0d5232;--amber-ink:#7a5b00;--red-ink:#8a2318;--purple-ink:#3f2a7a;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05)}
+@media (prefers-color-scheme: dark){:root{--bg:#101216;--card:#191c21;--soft:#20242a;
+ --grey:#22262c;--line:#2c313a;--line2:#242930;--track:#2a2f38;--txt:#e9ebee;--txt2:#d7dade;
+ --txt3:#c3c8cf;--sub:#98a0aa;--sub2:#6b7280;--blue:#6b96fb;--blue-soft:#1a2742;
+ --green:#41d18f;--green-soft:#14301f;--red:#ef7261;--red-soft:#371d19;--amber:#e0a53f;
+ --amber-soft:#312713;--amber-line:#4a3a1c;--green-line:#1f4530;--purple:#a98cff;
+ --purple-soft:#241c3d;--blue-ink:#a9c6ff;--green-ink:#7fe0b0;--amber-ink:#f0c469;
+ --red-ink:#ffa79a;--purple-ink:#c3a9ff;--shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28);
+ color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:20px;margin:2px 0 14px;font-weight:800;padding-left:12px;
+ border-left:4px solid var(--blue);line-height:1.25;letter-spacing:.2px}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:12px;flex-wrap:wrap}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.hint{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 12px}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.72;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.big{display:flex;gap:9px;margin-bottom:12px}
+.big div{flex:1;background:var(--blue-soft);border-radius:10px;padding:10px 8px;text-align:center}
+.big b{display:block;font-size:18px;font-weight:800;color:var(--blue)}
+.big span{font-size:11.5px;color:var(--sub)}
+.prompt{font-size:14.6px;line-height:1.9;background:var(--soft);border-radius:11px;
+ padding:14px;border:1px solid var(--line);text-align:justify}
+.prompt .lbl{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue);
+ color:#fff;border-radius:6px;padding:2px 9px;margin-bottom:9px}
+.zh{font-size:15px;line-height:2;text-align:justify;letter-spacing:.2px}
+.en{font-size:14.6px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.essay p{margin:0 0 12px}
+.essay p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;
+ background:var(--card)}
+details>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:14.4px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details[open]>summary::before{content:"▾"}
+details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
+.sent{border-bottom:1px solid var(--line2);padding:13px 0}
+.sent:last-child{border-bottom:0}
+.snum{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue-soft);
+ color:var(--blue);border-radius:6px;padding:2px 9px;margin-bottom:7px}
+.szh{font-size:15px;line-height:1.9;margin:0 0 9px}
+.sen{font-size:14.6px;line-height:1.85;margin:0;padding:10px 12px;background:var(--green-soft);
+ border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
+.strat{display:inline-block;font-size:12px;color:var(--purple);
+ background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
+.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
+.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+ font-size:12px;white-space:nowrap}
+.chunk .v{flex:1;color:var(--txt2)}
+.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.row:last-child{border-bottom:0}
+.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
+.row .c{flex:1;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab:last-child{border-bottom:0}
+.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
+.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
+ line-height:1.78;color:var(--red-ink);margin-top:10px}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
+ border-radius:18px;padding:5px 13px;color:var(--sub)}
+.flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+</style>
+</head>
+<body>
+
+<a class="back" href="writing.html">← 返回写作与翻译</a>
+<h1>写作 · 2023年12月 第2套</h1>
+
+<div class="card">
+  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part I</span></div>
+  <div class="big">
+    <div><b>155</b><span>范文词数</span></div>
+    <div><b>3</b><span>段</span></div>
+    <div><b>30</b><span>分钟</span></div>
+  </div>
+  <div class="tip b">四级写作的命中点是<b>切题 + 结构清楚 + 语法不出错</b>。
+  用三段式（引入表态 / 主体展开 / 回扣收尾），比追求华丽句式稳得多。</div>
+</div>
+
+<div class="card">
+  <div class="chead"><h2>题目</h2><span class="cmeta">Directions</span></div>
+  <div class="prompt"><span class="lbl">Directions</span><br>Directions: Suppose the university newspaper is inviting submissions from the students for its coming edition on the recent development in their hometown.You are now to write an essay for submission. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.</div>
+  <div class="tip a"><b>先自己在纸上写完，再看下面的范文。</b>写作的提分全靠"写—对照—改"这个循环，
+  光看范文不动笔，等于没练。</div>
+</div>
+
+<div class="card">
+  <h2>审题：这题到底要写什么</h2>
+  <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>为校报写谈家乡发展的短文 任务被一句话钉死：write an essay for submission，主题是 the recent development in their hometown——即写一篇投给校报的短文，谈你家乡近来的发展变化。注意核心词是 recent development（近来的发展），要写的是「最近变了什么、变得怎样」，不是泛泛介绍家乡的地理风物。</div></div>
+  <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>家乡近年变化显著、生活更便利 中心立场定为：响应 the recent development in their hometown，我的家乡在近几年发生了显著而真切的变化，让生活变得更方便、更宜居。这一句既扣住「recent development」，又给后文留出可展开的方向。</div></div>
+  <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>交通：高铁/路网带来便利 选「交通」为第一个具体方面：过去去省城要颠簸数小时，如今高铁开通、公路拓宽，出行时间大幅缩短。这是最能体现 recent development 且人人有体感的切口。 环境：旧河整治、绿地增多 选「环境」为第二个方面：曾经污染的河道经过整治变清，新增公园绿地，居民傍晚有了散步休闲的去处。一交通一环境，一硬一软，互补且都易写出具体画面。</div></div>
+  <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 点题：家乡变化显著并预告方面 开篇呼应 the recent development in their hometown，点出家乡近年变化巨大，并预告下文要谈交通与环境两个方面。 第 2 段 主体：对比＋事例展开两点变化 用「过去—如今」对比，分别把交通和环境的具体变化与好处写实，让读者看到画面。 第 3 段 收束：抒发自豪并展望 总结这些变化带来的获得感，表达对家乡的自豪与对未来的期待，呼应校报投稿的场景。</div></div>
+</div>
+
+<div class="card">
+  <h2>谋篇：每段写什么（3 段）</h2>
+  <p class="hint">这是可以直接套用的框架 —— 换一道题，功能不变、内容替换。</p>
+  <div class="row"><span class="tag">第1段</span><div class="c"><b>总述近年变化大并预告交通、环境 落点：紧扣 the recent development in their hometown，写「这些年我家乡变化惊人」，并点明最打动我的是交通和环境两方面，引出主体</b>亮明总变化 Over the past few years, my hometown has undergone remarkable changes. （把 remarkable changes 换成你家乡的总体变化） 预告分点 Among them, the changes in ___ and ___ have impressed me the most. （横线填要谈的两个方面）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>交通与环境的前后对比及好处 落点：交通——过去去省城要颠簸数小时，如今高铁两小时直达、公路拓宽，出行省时省心；环境——曾经发臭的河道经整治变清，新建公园绿地，傍晚居民有了散步去处</b>两点都写出具体画面与好处。 引出过去情形 In the past, it used to ___. （填从前的不便或旧貌） 转到现在对比 Now, however, ___, which makes ___ much more convenient. （前空填新变化，后空填带来的好处） 再添一个方面 Another change worth mentioning is ___. （引出第二个方面，避免两段重复同一句式）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>为家乡自豪并展望更美好未来 落点：把交通、环境的改善收拢为「家乡越来越宜居」，表达身为家乡人的自豪，并相信它会发展得更好——给校报读者一个温暖的收束</b>总评收拢 All these changes have made my hometown a better place to live in. （可把 a better place 替换为你的总评） 展望未来 I firmly believe that it will become even more ___ in the years to come. （横线填对未来的期待）</div></div>
+</div>
+
+<div class="card">
+  <h2>参考范文（155 词）</h2>
+  <details><summary>展开范文（自己写完之后再看）</summary>
+    <div class="dbody">
+      <div class="essay"><p class='en'>Over the past few years, my hometown has undergone remarkable changes. As a student writing for our university newspaper, I would like to share two of them that have impressed me the most: transportation and the environment.</p><p class='en'>In the past, it used to take us hours of bumpy driving to reach the provincial capital. Now, however, a new high-speed railway gets us there in just two hours, and the widened roads have made daily travel far more convenient. Another change worth mentioning is the environment. The small river that once smelled terrible has been cleaned up, and several green parks have been built along its banks, where families now enjoy walking after dinner.</p><p class='en'>All these changes have made my hometown a much better place to live in. As someone who grew up there, I feel truly proud, and I firmly believe that it will become even more beautiful and livable in the years to come.</p></div>
+      <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>在过去几年里，我的家乡发生了惊人的变化。作为一名为校报投稿的学生，我想分享其中最打动我的两点：交通和环境。</div>
+    </div></details>
+  <div class="tip a">看范文时不要「读」，要<b>拆</b>：每段第一句做什么？观点句和理由句怎么连？
+  结尾怎么回扣题目？</div>
+</div>
+
+<div class="card">
+  <h2>逐段解析（3 段）</h2>
+  <div class="row"><span class="tag">第1段</span><div class="c"><b>总述＋点明投稿身份并预告两点 </b>开头用 Over the past few years, my hometown has undergone remarkable changes 亮出总变化，落实了「亮明总变化」句架；再用 share two of them ... transportation and the environment 预告分点，同时 writing for our university newspaper 点明投稿身份，扣住 the university newspaper is inviting submissions from the students 的场景。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>两组过去→如今→好处的对比 </b>交通用 In the past, it used to ... / Now, however ... 的对比句架写出高铁与拓路；环境用 Another change worth mentioning is the environment 自然过渡，再以 once smelled terrible 对 has been cleaned up 形成对比，families now enjoy walking after dinner 给出具体画面，落实了「对比展开」方法。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>总评收拢＋自豪展望 </b>用 All these changes have made my hometown a much better place to live in 把两点收拢，再以 I feel truly proud 与 I firmly believe that it will become even more beautiful and livable 抒发自豪并展望，落实「收尾＝总评感受＋展望」，给校报读者一个情感落点。</div></div>
+</div>
+
+<div class="card">
+  <h2>自检避坑</h2>
+  <div class="pit">典型低分写法 · 反面示例与改法 只喊口号无事例 反面示例：My hometown has developed very fast. Everything is much better now. The economy is good and people are happy.（全是抽象判断，读者看不到任何变化）。改：补上「高铁两小时直达省城」「臭河整治后建成公园」这类具体场景。 罗列十项各一句 反面示例：The roads are wider. The schools are bigger. The hospital is new. The Internet is faster. The shops are more.（十项流水账，无重点无展开）。改：砍到交通＋环境两点，各自展开成「过去→如今→好处」。 写成私人日记 反面示例：Dear diary, today I went back home and felt so happy. I miss my mom&#x27;s food so much.（私人日记口吻，与家乡发展和校报读者都无关）。改：改成 As a student writing for our university newspaper, I would like to share... 并聚焦家乡的客观变化。</div>
+  <table style="margin-top:14px">
+    <tr><th>自查项</th><th>怎么查</th></tr>
+    <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+    <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+    <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+    <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+  </table>
+</div>
+
+</body>
+</html>

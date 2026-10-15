@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>写作 · 2024年12月 第3套</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--soft:#fafbfc;--grey:#f2f3f5;--line:#e5e8ec;--line2:#eff1f4;
+ --track:#e8ebef;--txt:#1b1e23;--txt2:#2b303a;--txt3:#3d434e;--sub:#6b7280;--sub2:#a8b0bb;
+ --blue:#2563eb;--blue-soft:#eef3ff;--green:#0d8a52;--green-soft:#e8f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;
+ --amber-line:#f0dfb8;--green-line:#bfe3cf;--purple:#7c5cff;--purple-soft:#f2eeff;
+ --blue-ink:#123a75;--green-ink:#0d5232;--amber-ink:#7a5b00;--red-ink:#8a2318;--purple-ink:#3f2a7a;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05)}
+@media (prefers-color-scheme: dark){:root{--bg:#101216;--card:#191c21;--soft:#20242a;
+ --grey:#22262c;--line:#2c313a;--line2:#242930;--track:#2a2f38;--txt:#e9ebee;--txt2:#d7dade;
+ --txt3:#c3c8cf;--sub:#98a0aa;--sub2:#6b7280;--blue:#6b96fb;--blue-soft:#1a2742;
+ --green:#41d18f;--green-soft:#14301f;--red:#ef7261;--red-soft:#371d19;--amber:#e0a53f;
+ --amber-soft:#312713;--amber-line:#4a3a1c;--green-line:#1f4530;--purple:#a98cff;
+ --purple-soft:#241c3d;--blue-ink:#a9c6ff;--green-ink:#7fe0b0;--amber-ink:#f0c469;
+ --red-ink:#ffa79a;--purple-ink:#c3a9ff;--shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28);
+ color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:20px;margin:2px 0 14px;font-weight:800;padding-left:12px;
+ border-left:4px solid var(--blue);line-height:1.25;letter-spacing:.2px}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:12px;flex-wrap:wrap}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.hint{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 12px}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.72;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.big{display:flex;gap:9px;margin-bottom:12px}
+.big div{flex:1;background:var(--blue-soft);border-radius:10px;padding:10px 8px;text-align:center}
+.big b{display:block;font-size:18px;font-weight:800;color:var(--blue)}
+.big span{font-size:11.5px;color:var(--sub)}
+.prompt{font-size:14.6px;line-height:1.9;background:var(--soft);border-radius:11px;
+ padding:14px;border:1px solid var(--line);text-align:justify}
+.prompt .lbl{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue);
+ color:#fff;border-radius:6px;padding:2px 9px;margin-bottom:9px}
+.zh{font-size:15px;line-height:2;text-align:justify;letter-spacing:.2px}
+.en{font-size:14.6px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.essay p{margin:0 0 12px}
+.essay p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;
+ background:var(--card)}
+details>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:14.4px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details[open]>summary::before{content:"▾"}
+details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
+.sent{border-bottom:1px solid var(--line2);padding:13px 0}
+.sent:last-child{border-bottom:0}
+.snum{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue-soft);
+ color:var(--blue);border-radius:6px;padding:2px 9px;margin-bottom:7px}
+.szh{font-size:15px;line-height:1.9;margin:0 0 9px}
+.sen{font-size:14.6px;line-height:1.85;margin:0;padding:10px 12px;background:var(--green-soft);
+ border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
+.strat{display:inline-block;font-size:12px;color:var(--purple);
+ background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
+.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
+.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+ font-size:12px;white-space:nowrap}
+.chunk .v{flex:1;color:var(--txt2)}
+.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.row:last-child{border-bottom:0}
+.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
+.row .c{flex:1;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab:last-child{border-bottom:0}
+.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
+.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
+ line-height:1.78;color:var(--red-ink);margin-top:10px}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
+ border-radius:18px;padding:5px 13px;color:var(--sub)}
+.flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+</style>
+</head>
+<body>
+
+<a class="back" href="writing.html">← 返回写作与翻译</a>
+<h1>写作 · 2024年12月 第3套</h1>
+
+<div class="card">
+  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part I</span></div>
+  <div class="big">
+    <div><b>152</b><span>范文词数</span></div>
+    <div><b>3</b><span>段</span></div>
+    <div><b>30</b><span>分钟</span></div>
+  </div>
+  <div class="tip b">四级写作的命中点是<b>切题 + 结构清楚 + 语法不出错</b>。
+  用三段式（引入表态 / 主体展开 / 回扣收尾），比追求华丽句式稳得多。</div>
+</div>
+
+<div class="card">
+  <div class="chead"><h2>题目</h2><span class="cmeta">Directions</span></div>
+  <div class="prompt"><span class="lbl">Directions</span><br>Directions: Suppose the university newspaper is inviting submissions from the students for its coming edition on how the students can contribute to a green campus. You are now to write an essay for submission. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.</div>
+  <div class="tip a"><b>先自己在纸上写完，再看下面的范文。</b>写作的提分全靠"写—对照—改"这个循环，
+  光看范文不动笔，等于没练。</div>
+</div>
+
+<div class="card">
+  <h2>审题：这题到底要写什么</h2>
+  <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>写学生怎样建设绿色校园的投稿短文 是写一篇投稿校报的短文，主题被 how the students can contribute to a green campus 一句钉死：写的是学生能为绿色校园做什么，而不是泛谈环保重要性。要求明确说 write an essay for submission，所以产物是一篇 essay，不是别的文体。</div></div>
+  <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>绿色校园靠学生日常行动建成 本篇中心：绿色校园不是空话，而是由每个学生可落地的日常行动汇聚而成——正面回应 how the students can contribute to a green campus，把焦点牢牢放在学生自己能做的事上。</div></div>
+  <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>垃圾分类与回收 分类投放垃圾、回收纸张瓶罐，减少浪费、节约资源——这是学生每天举手之劳就能做到的第一条具体行动。 节水节电 随手关灯关电脑、节约用水，直接降低校园能耗——配上「用完就关」这样的具体场景，理由清楚。 绿色出行与二手书循环 短途步行、骑车或共享单车减少碳排放，把用过的教材传给学弟学妹循环使用——两条小而实的做法，扣紧学生身份。</div></div>
+  <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 总起点题 开篇点明绿色校园的意义，引出「学生能贡献什么」这个话题，为下文铺路。 第 2 段 分述具体做法 主体段集中给出 2-3 条学生可落地的具体行动，每条配一句理由或效果，用过渡词串联。 第 3 段 总结呼吁升华 重申中心、发出行动号召，把落点从个人小事升华到共同的绿色校园。</div></div>
+</div>
+
+<div class="card">
+  <h2>谋篇：每段写什么（3 段）</h2>
+  <p class="hint">这是可以直接套用的框架 —— 换一道题，功能不变、内容替换。</p>
+  <div class="row"><span class="tag">第1段</span><div class="c"><b>点明绿色校园是学生的共同责任 落点：绿色校园不再是口号而是共同责任，学生在其中扮演关键角色，日常小习惯能汇成真正的改变——直接引出 how the students can contribute to a green campus 这一话题</b>点明意义 ... is no longer a slogan but a shared responsibility, and ... play a key role in ...（用来一句话拔高话题的重要性） 引出话题 As members of ..., we can turn ... into ...（把宏大意义落回「我们能做」，自然带出下文）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>垃圾分类、节水节电、绿色出行加二手书 落点：分类回收纸瓶罐以减少浪费；随手关灯关电脑、节约用水以降低能耗；步行骑车共享单车减碳、旧教材传给学弟学妹循环使用——每条做法都配一句效果，覆盖立意里的三条要点</b>总起引出做法 There are several practical things we can do.（一句话领起主体段，告诉读者下面要分点） 分点过渡 First, we should ...; Second, ...; Moreover, ...（用序数词与递进词把并列做法串成有序的一段） 动作配效果 ..., which cuts ... and saves ... / ... can greatly reduce ...（在做法后补一句它带来的好处，让要点不空洞）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>小行动汇成更绿更宜居的校园 落点：绿色校园源于这些日常行动而非空谈，只要每个学生迈出一小步，校园就会更干净、更绿色、更宜居——把主题从个人小事升华到共同家园</b>收束回扣 In short, ... grows out of these everyday actions rather than empty talk.（一句话把中心拎回来，与开头呼应） 条件式号召 If every ... takes one small step, ... will surely become ...（用假设句发出行动倡议并给出积极前景）</div></div>
+</div>
+
+<div class="card">
+  <h2>参考范文（152 词）</h2>
+  <details><summary>展开范文（自己写完之后再看）</summary>
+    <div class="dbody">
+      <div class="essay"><p class='en'>A green campus is no longer a slogan but a shared responsibility, and students play a key role in making it real. As members of the campus, we can turn small daily habits into real changes.</p><p class='en'>There are several practical things we can do. First, we should sort our rubbish and recycle paper, bottles and cans, which cuts waste and saves resources. Second, saving water and switching off lights and computers when they are not in use can greatly reduce the energy our campus consumes. Moreover, choosing to walk, cycle or share bikes for short trips lowers carbon emissions, and passing used textbooks on to younger students gives them a second life instead of being thrown away.</p><p class='en'>In short, a green campus grows out of these everyday actions rather than empty talk. If every student takes one small step, our campus will surely become cleaner, greener and more livable for us all.</p></div>
+      <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>绿色校园不再是一句口号，而是一份共同的责任，学生在把它变为现实的过程中扮演着关键角色。作为校园的一员，我们能把日常的小习惯变成真正的改变。</div>
+    </div></details>
+  <div class="tip a">看范文时不要「读」，要<b>拆</b>：每段第一句做什么？观点句和理由句怎么连？
+  结尾怎么回扣题目？</div>
+</div>
+
+<div class="card">
+  <h2>逐段解析（3 段）</h2>
+  <div class="row"><span class="tag">第1段</span><div class="c"><b>两句总起点题 </b>本段落实第一段「总起点题」的功能：用 &quot;A green campus is no longer a slogan but a shared responsibility&quot; 一句拔高意义，再用 &quot;we can turn small daily habits into real changes&quot; 引出学生能做的事，正好套用了『点明意义』与『引出话题』两条句架。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>分点加效果的主体 </b>本段落实「分述具体做法」：先 &quot;There are several practical things we can do&quot; 总起，再用 First / Second / Moreover 领出垃圾分类、节水节电、绿色出行与二手书三条做法，每条都跟一句效果如 &quot;which cuts waste and saves resources&quot;，做到动作配效果、不空洞。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>收束加号召 </b>本段落实「总结呼吁升华」：&quot;In short, a green campus grows out of these everyday actions rather than empty talk&quot; 回扣开头的行动主题，末句 &quot;If every student takes one small step&quot; 用条件句发出号召并给出更宜居的前景。</div></div>
+</div>
+
+<div class="card">
+  <h2>自检避坑</h2>
+  <div class="pit">典型低分写法 · 反面示例与改法 误加称呼署名当书信 反面示例：开头写 &quot;Dear Editor,&quot; 结尾署 &quot;Yours sincerely, Li Ming&quot;。这偏离了 essay 体裁。改法：删掉称呼和落款，直接以 &quot;A green campus is no longer a slogan but a shared responsibility&quot; 这样的正文开篇。 只谈重要性不落行动 反面示例：&quot;Environmental protection is very important. We should all pay attention to it and love our green campus.&quot; 全是口号无行动。改法：&quot;We should sort our rubbish and switch off lights when they are not in use.&quot; 给出具体可做的动作。 做法堆砌成清单无衔接 反面示例：&quot;We can recycle. We can save water. We can ride bikes.&quot; 三个短句并列、无理由无过渡。改法：&quot;First, we should recycle paper and bottles, which cuts waste and saves resources.&quot; 加序数词与效果，逻辑立刻连贯。 重复同一观点注水 反面示例：&quot;A green campus is important. Yes, a green campus is really very important for us all.&quot; 同一意思重复凑数。改法：删掉重复句，换成新内容 &quot;Moreover, we can pass used textbooks on to younger students to give them a second life.&quot;</div>
+  <table style="margin-top:14px">
+    <tr><th>自查项</th><th>怎么查</th></tr>
+    <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+    <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+    <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+    <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+  </table>
+</div>
+
+</body>
+</html>

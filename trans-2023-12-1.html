@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>汉译英 · 2023年12月 第1套</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--soft:#fafbfc;--grey:#f2f3f5;--line:#e5e8ec;--line2:#eff1f4;
+ --track:#e8ebef;--txt:#1b1e23;--txt2:#2b303a;--txt3:#3d434e;--sub:#6b7280;--sub2:#a8b0bb;
+ --blue:#2563eb;--blue-soft:#eef3ff;--green:#0d8a52;--green-soft:#e8f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;
+ --amber-line:#f0dfb8;--green-line:#bfe3cf;--purple:#7c5cff;--purple-soft:#f2eeff;
+ --blue-ink:#123a75;--green-ink:#0d5232;--amber-ink:#7a5b00;--red-ink:#8a2318;--purple-ink:#3f2a7a;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05)}
+@media (prefers-color-scheme: dark){:root{--bg:#101216;--card:#191c21;--soft:#20242a;
+ --grey:#22262c;--line:#2c313a;--line2:#242930;--track:#2a2f38;--txt:#e9ebee;--txt2:#d7dade;
+ --txt3:#c3c8cf;--sub:#98a0aa;--sub2:#6b7280;--blue:#6b96fb;--blue-soft:#1a2742;
+ --green:#41d18f;--green-soft:#14301f;--red:#ef7261;--red-soft:#371d19;--amber:#e0a53f;
+ --amber-soft:#312713;--amber-line:#4a3a1c;--green-line:#1f4530;--purple:#a98cff;
+ --purple-soft:#241c3d;--blue-ink:#a9c6ff;--green-ink:#7fe0b0;--amber-ink:#f0c469;
+ --red-ink:#ffa79a;--purple-ink:#c3a9ff;--shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28);
+ color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:20px;margin:2px 0 14px;font-weight:800;padding-left:12px;
+ border-left:4px solid var(--blue);line-height:1.25;letter-spacing:.2px}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:12px;flex-wrap:wrap}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.hint{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 12px}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.72;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.big{display:flex;gap:9px;margin-bottom:12px}
+.big div{flex:1;background:var(--blue-soft);border-radius:10px;padding:10px 8px;text-align:center}
+.big b{display:block;font-size:18px;font-weight:800;color:var(--blue)}
+.big span{font-size:11.5px;color:var(--sub)}
+.prompt{font-size:14.6px;line-height:1.9;background:var(--soft);border-radius:11px;
+ padding:14px;border:1px solid var(--line);text-align:justify}
+.prompt .lbl{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue);
+ color:#fff;border-radius:6px;padding:2px 9px;margin-bottom:9px}
+.zh{font-size:15px;line-height:2;text-align:justify;letter-spacing:.2px}
+.en{font-size:14.6px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.essay p{margin:0 0 12px}
+.essay p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;
+ background:var(--card)}
+details>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:14.4px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details[open]>summary::before{content:"▾"}
+details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
+.sent{border-bottom:1px solid var(--line2);padding:13px 0}
+.sent:last-child{border-bottom:0}
+.snum{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue-soft);
+ color:var(--blue);border-radius:6px;padding:2px 9px;margin-bottom:7px}
+.szh{font-size:15px;line-height:1.9;margin:0 0 9px}
+.sen{font-size:14.6px;line-height:1.85;margin:0;padding:10px 12px;background:var(--green-soft);
+ border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
+.strat{display:inline-block;font-size:12px;color:var(--purple);
+ background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
+.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
+.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+ font-size:12px;white-space:nowrap}
+.chunk .v{flex:1;color:var(--txt2)}
+.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.row:last-child{border-bottom:0}
+.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
+.row .c{flex:1;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab:last-child{border-bottom:0}
+.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
+.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
+ line-height:1.78;color:var(--red-ink);margin-top:10px}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
+ border-radius:18px;padding:5px 13px;color:var(--sub)}
+.flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+</style>
+</head>
+<body>
+
+<a class="back" href="writing.html">← 返回写作与翻译</a>
+<h1>汉译英 · 2023年12月 第1套</h1>
+
+<div class="card">
+  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part IV</span></div>
+  <div class="big">
+    <div><b>152</b><span>中文字数</span></div>
+    <div><b>4</b><span>句</span></div>
+    <div><b>30</b><span>分钟</span></div>
+  </div>
+  <div class="tip b">翻译评分只看四件事：<b>意思说全、语法没错、表达通顺、用词准确</b>。
+  翻得漂亮不加分，翻错了狠狠扣 —— 所以目标是<b>不出错</b>，不是出彩。</div>
+</div>
+
+<div class="card">
+  <div class="chead"><h2>中文原文</h2><span class="cmeta">4 句</span></div>
+  <div class="tip b">【主旨】 中国政府重视健康饮食的现状介绍 全篇围绕中国政府对健康饮食的态度与举措展开，开篇即点明 中国政府十分重视人民的健康饮食，结尾讲 各级政府都在采取多种举措确保人民饮食健康。属典型的社会/政策类客观介绍语体，讲的是当下的事实与正在进行的行动，不是讲历史故事。这类四级翻译多为中国文化或社会政策介绍，定调后用词偏正式、客观。 【时态】 一般现在时 通篇是对当下事实与现状的客观介绍：政府现在重视、现在的人们有认识、现在政府在采取举措。如 中国政府十分重视人民的健康饮食 和 目前，各级政府都在采取多种举措，说的都是现在的状态与行动，故全篇默认一般现在时；仅末句&quot;正在采取&quot;这一正在进行的动作可用现在进行时强调当下进行。 【译法】 健康饮食 拟定统一译法 healthy diet（diet 已在原文括注 健康饮食(diet) 给出，按约定用 diet 表&quot;饮食&quot;）。全篇&quot;饮食/吃&quot;相关均围绕这一核心词展开，确保 diet 一词贯穿到底，不要一会儿 eating、一会儿 food 乱换。 健康中国 拟定统一译法 a Healthy China（专有政策名，意译并首字母大写以示其为专名）。出现在 推进健康中国的建设，属国家战略名，全篇只用这一种译法。 各级政府 拟定统一译法 governments at all levels（约定俗成的固定译法）。出现在 各级政府都在采取多种举措，注意 governments 用复数（含中央到地方多级），全篇统一此译。</div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    <span class="zh">中国政府十分重视人民的健康饮食(diet)。通过大力提倡健康饮食，人们对合理营养增进健康的重要性有了更加深刻的认识。&quot;吃得安全、吃得营养、吃得健康&quot;是人民对美好生活的基本需要，是提升人民幸福感的必然要求，也为食品产业的发展提供了新机遇。目前，各级政府都在采取多种举措确保人民饮食健康，推进健康中国的建设。</span></div>
+  <div class="tip a"><b>先自己翻一遍再看下面。</b>用纸笔或另一个文档写，写完再逐句对照 ——
+  直接看答案等于没练。</div>
+</div>
+
+<div class="card">
+  <h2>怎么用这份包</h2>
+  <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
+    <span>③ 抄下错处</span><span>④ 整篇通读</span></div>
+  <div class="tip g">第二步是全流程最有价值的一步：<b>看你漏译了什么、时态用错了哪里</b>。
+  每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
+</div>
+
+<div class="card">
+  <h2>逐句对照（4 句）</h2>
+  <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
+  <div class="sent"><span class="snum">第 1 句</span><p class="szh">中国政府十分重视人民的健康饮食(diet)。</p><p class="sen">The Chinese government attaches great importance to people&#x27;s healthy diet.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调用一般现在时，表政府一贯的态度：attaches。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语 the Chinese government 是第三人称单数，谓语动词加 s：attaches。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">&quot;重视&quot;用 attach importance to（importance 不可数、不加 s），to 后接名词 people&#x27;s healthy diet；切忌写成 pay attention very。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">通过大力提倡健康饮食，人们对合理营养增进健康的重要性有了更加深刻的认识。</p><p class="sen">Through the vigorous promotion of a healthy diet, people have come to better understand the importance of balanced nutrition in improving health.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">&quot;有了更加深刻的认识&quot;强调从过去到现在累积出的认识结果，用现在完成时 have come to better understand / have gained a deeper understanding，与全篇现在时基调相容。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">主语 people 本身即复数概念，谓语用 have（不加 s）。</span></div><div class="chunk"><span class="k">搭配与介词</span><span class="v">&quot;对……的重要性&quot;用 the importance of...; &quot;营养增进健康&quot;用 nutrition in improving health（in doing 表在某方面的作用）。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">&quot;吃得安全、吃得营养、吃得健康&quot;是人民对美好生活的基本需要，是提升人民幸福感的必然要求，也为食品产业的发展提供了新机遇。</p><p class="sen">Eating safely, nutritiously and healthily is a basic need of the people for a better life, an inevitable requirement for enhancing their sense of happiness, and also offers new opportunities for the development of the food industry.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">全句陈述客观事实，用一般现在时：is..., and also offers...（&quot;提供了&quot;虽有&quot;了&quot;，但表的是一种持续成立的事实，仍用现在时 offers，回指全篇基调）。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语是&quot;吃&quot;这一单一行为（动名词短语），视作单数，谓语用 is、offers（第三人称单数加 s）。</span></div><div class="chunk"><span class="k">冠词与单复数</span><span class="v">&quot;一项基本需要&quot;&quot;一项必然要求&quot;用单数加冠词 a basic need / an inevitable requirement；&quot;新机遇&quot;是泛指多个，用复数 new opportunities。</span></div></div><div class="sent"><span class="snum">第 4 句</span><p class="szh">目前，各级政府都在采取多种举措确保人民饮食健康，推进健康中国的建设。</p><p class="sen">At present, governments at all levels are taking various measures to ensure people&#x27;s dietary health and promote the building of a Healthy China.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态/语态</span><span class="v">目前+&quot;都在采取&quot;表当下正在进行的行动，用现在进行时 are taking，比一般现在时更贴&quot;正在&quot;之意，且与全篇现在时基调相容。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">&quot;各级政府&quot;含多级，用复数 governments，谓语相应用 are（不是 is）；&quot;多种举措&quot;用复数 various measures。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">&quot;采取举措&quot;=take measures；&quot;推进……建设&quot;=promote the building/construction of...；&quot;确保&quot;=ensure 后直接接宾语。</span></div></div>
+</div>
+
+<div class="card">
+  <h2>整篇参考译文</h2>
+  <details><summary>展开整篇（自己翻完再看）</summary>
+    <div class="dbody"><p class="en">The Chinese government attaches great importance to people&#x27;s healthy diet. Through the vigorous promotion of a healthy diet, people have come to better understand the importance of balanced nutrition in improving health. Eating safely, nutritiously and healthily is a basic need of the people for a better life, an inevitable requirement for enhancing their sense of happiness, and also offers new opportunities for the development of the food industry. At present, governments at all levels are taking various measures to ensure people&#x27;s dietary health and promote the building of a Healthy China. 【衔接】 第1、2句之间：补因果衔接 第1句讲政府重视，第2句讲&quot;通过大力提倡&quot;使人们有了认识，两句是政府行动带来的结果。第2句已用 Through the vigorous promotion... 自带衔接，与第1句的&quot;重视&quot;形成自然的因→果承接，读者能顺下来，无需再硬加关联词。 第3、4句之间：用 At present 转入现状举措 第3句讲&quot;吃得三好&quot;的意义，第4句 目前 转入政府当下的具体行动。保留句首 At present 作时间标志，自然地把笔锋从&quot;意义&quot;切换到&quot;举措&quot;，让整篇从&quot;为什么重要&quot;过渡到&quot;现在怎么做&quot;，信息流清楚。</p></div></details>
+  <div class="tip a">整篇译文是用来<b>感受节奏和衔接</b>的，不是用来背的。
+  重点看它怎么处理句间连接、怎么避免重复用词。</div>
+</div>
+
+<div class="card">
+  <h2>句间衔接（2 处）</h2>
+  <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
+  <div class="row"><span class="tag">衔接</span><div class="c"><b>第1、2句之间：补因果衔接</b>第1句讲政府重视，第2句讲&quot;通过大力提倡&quot;使人们有了认识，两句是政府行动带来的结果。第2句已用 Through the vigorous promotion... 自带衔接，与第1句的&quot;重视&quot;形成自然的因→果承接，读者能顺下来，无需再硬加关联词。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第3、4句之间：用 At present 转入现状举措</b>第3句讲&quot;吃得三好&quot;的意义，第4句 目前 转入政府当下的具体行动。保留句首 At present 作时间标志，自然地把笔锋从&quot;意义&quot;切换到&quot;举措&quot;，让整篇从&quot;为什么重要&quot;过渡到&quot;现在怎么做&quot;，信息流清楚。</div></div>
+</div>
+
+<div class="card">
+  <h2>译法要点（15 条）</h2>
+  <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
+  <div class="vocab"><div class="w">健康饮食</div><div class="d">拟定统一译法 healthy diet（diet 已在原文括注 健康饮食(diet) 给出，按约定用 diet 表&quot;饮食&quot;）。全篇&quot;饮食/吃&quot;相关均围绕这一核心词展开，确保 diet 一词贯穿到底，不要一会儿 eating、一会儿 food 乱换。</div></div><div class="vocab"><div class="w">健康中国</div><div class="d">拟定统一译法 a Healthy China（专有政策名，意译并首字母大写以示其为专名）。出现在 推进健康中国的建设，属国家战略名，全篇只用这一种译法。</div></div><div class="vocab"><div class="w">各级政府</div><div class="d">拟定统一译法 governments at all levels（约定俗成的固定译法）。出现在 各级政府都在采取多种举措，注意 governments 用复数（含中央到地方多级），全篇统一此译。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调用一般现在时，表政府一贯的态度：attaches。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 the Chinese government 是第三人称单数，谓语动词加 s：attaches。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">&quot;重视&quot;用 attach importance to（importance 不可数、不加 s），to 后接名词 people&#x27;s healthy diet；切忌写成 pay attention very。</div></div><div class="vocab"><div class="w">时态</div><div class="d">&quot;有了更加深刻的认识&quot;强调从过去到现在累积出的认识结果，用现在完成时 have come to better understand / have gained a deeper understanding，与全篇现在时基调相容。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">主语 people 本身即复数概念，谓语用 have（不加 s）。</div></div><div class="vocab"><div class="w">搭配与介词</div><div class="d">&quot;对……的重要性&quot;用 the importance of...; &quot;营养增进健康&quot;用 nutrition in improving health（in doing 表在某方面的作用）。</div></div><div class="vocab"><div class="w">时态</div><div class="d">全句陈述客观事实，用一般现在时：is..., and also offers...（&quot;提供了&quot;虽有&quot;了&quot;，但表的是一种持续成立的事实，仍用现在时 offers，回指全篇基调）。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语是&quot;吃&quot;这一单一行为（动名词短语），视作单数，谓语用 is、offers（第三人称单数加 s）。</div></div><div class="vocab"><div class="w">冠词与单复数</div><div class="d">&quot;一项基本需要&quot;&quot;一项必然要求&quot;用单数加冠词 a basic need / an inevitable requirement；&quot;新机遇&quot;是泛指多个，用复数 new opportunities。</div></div><div class="vocab"><div class="w">时态/语态</div><div class="d">目前+&quot;都在采取&quot;表当下正在进行的行动，用现在进行时 are taking，比一般现在时更贴&quot;正在&quot;之意，且与全篇现在时基调相容。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;各级政府&quot;含多级，用复数 governments，谓语相应用 are（不是 is）；&quot;多种举措&quot;用复数 various measures。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">&quot;采取举措&quot;=take measures；&quot;推进……建设&quot;=promote the building/construction of...；&quot;确保&quot;=ensure 后直接接宾语。</div></div>
+</div>
+
+<div class="card">
+  <h2>翻译四句口诀</h2>
+  <table>
+    <tr><th>步骤</th><th>做什么</th></tr>
+    <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
+    <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
+    <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
+    <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 > 用词花</b></td></tr>
+  </table>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>汉译英 · 2022年12月 第2套</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--soft:#fafbfc;--grey:#f2f3f5;--line:#e5e8ec;--line2:#eff1f4;
+ --track:#e8ebef;--txt:#1b1e23;--txt2:#2b303a;--txt3:#3d434e;--sub:#6b7280;--sub2:#a8b0bb;
+ --blue:#2563eb;--blue-soft:#eef3ff;--green:#0d8a52;--green-soft:#e8f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;
+ --amber-line:#f0dfb8;--green-line:#bfe3cf;--purple:#7c5cff;--purple-soft:#f2eeff;
+ --blue-ink:#123a75;--green-ink:#0d5232;--amber-ink:#7a5b00;--red-ink:#8a2318;--purple-ink:#3f2a7a;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05)}
+@media (prefers-color-scheme: dark){:root{--bg:#101216;--card:#191c21;--soft:#20242a;
+ --grey:#22262c;--line:#2c313a;--line2:#242930;--track:#2a2f38;--txt:#e9ebee;--txt2:#d7dade;
+ --txt3:#c3c8cf;--sub:#98a0aa;--sub2:#6b7280;--blue:#6b96fb;--blue-soft:#1a2742;
+ --green:#41d18f;--green-soft:#14301f;--red:#ef7261;--red-soft:#371d19;--amber:#e0a53f;
+ --amber-soft:#312713;--amber-line:#4a3a1c;--green-line:#1f4530;--purple:#a98cff;
+ --purple-soft:#241c3d;--blue-ink:#a9c6ff;--green-ink:#7fe0b0;--amber-ink:#f0c469;
+ --red-ink:#ffa79a;--purple-ink:#c3a9ff;--shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28);
+ color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:20px;margin:2px 0 14px;font-weight:800;padding-left:12px;
+ border-left:4px solid var(--blue);line-height:1.25;letter-spacing:.2px}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:12px;flex-wrap:wrap}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.hint{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 12px}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.72;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.big{display:flex;gap:9px;margin-bottom:12px}
+.big div{flex:1;background:var(--blue-soft);border-radius:10px;padding:10px 8px;text-align:center}
+.big b{display:block;font-size:18px;font-weight:800;color:var(--blue)}
+.big span{font-size:11.5px;color:var(--sub)}
+.prompt{font-size:14.6px;line-height:1.9;background:var(--soft);border-radius:11px;
+ padding:14px;border:1px solid var(--line);text-align:justify}
+.prompt .lbl{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue);
+ color:#fff;border-radius:6px;padding:2px 9px;margin-bottom:9px}
+.zh{font-size:15px;line-height:2;text-align:justify;letter-spacing:.2px}
+.en{font-size:14.6px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.essay p{margin:0 0 12px}
+.essay p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;
+ background:var(--card)}
+details>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:14.4px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details[open]>summary::before{content:"▾"}
+details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
+.sent{border-bottom:1px solid var(--line2);padding:13px 0}
+.sent:last-child{border-bottom:0}
+.snum{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue-soft);
+ color:var(--blue);border-radius:6px;padding:2px 9px;margin-bottom:7px}
+.szh{font-size:15px;line-height:1.9;margin:0 0 9px}
+.sen{font-size:14.6px;line-height:1.85;margin:0;padding:10px 12px;background:var(--green-soft);
+ border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
+.strat{display:inline-block;font-size:12px;color:var(--purple);
+ background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
+.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
+.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+ font-size:12px;white-space:nowrap}
+.chunk .v{flex:1;color:var(--txt2)}
+.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.row:last-child{border-bottom:0}
+.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
+.row .c{flex:1;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab:last-child{border-bottom:0}
+.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
+.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
+ line-height:1.78;color:var(--red-ink);margin-top:10px}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
+ border-radius:18px;padding:5px 13px;color:var(--sub)}
+.flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+</style>
+</head>
+<body>
+
+<a class="back" href="writing.html">← 返回写作与翻译</a>
+<h1>汉译英 · 2022年12月 第2套</h1>
+
+<div class="card">
+  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part IV</span></div>
+  <div class="big">
+    <div><b>178</b><span>中文字数</span></div>
+    <div><b>6</b><span>句</span></div>
+    <div><b>30</b><span>分钟</span></div>
+  </div>
+  <div class="tip b">翻译评分只看四件事：<b>意思说全、语法没错、表达通顺、用词准确</b>。
+  翻得漂亮不加分，翻错了狠狠扣 —— 所以目标是<b>不出错</b>，不是出彩。</div>
+</div>
+
+<div class="card">
+  <div class="chead"><h2>中文原文</h2><span class="cmeta">6 句</span></div>
+  <div class="tip b">【主旨】 介绍中国传统节气立春 本篇是一段典型的中国文化介绍——围绕节气&quot;立春&quot;展开,先解释其含义(立春 (Start of Spring )在中国农历中表示春天的开始。),再描述立春后的自然与农事变化,最后讲到三千年的庆祝传统与今日的迎春习俗(数百年来，迎春一直是民间的重要习俗。)。语体属客观介绍说明文,而非个人叙事或新闻报道,这一定调直接决定下面的时态基调:讲事物的固有属性与至今仍在延续的习俗,默认用一般现在时。 【时态】 一般现在时 全篇核心信息是&quot;立春这一节气是什么、立春后会发生什么、人们一直怎么过&quot;——既包括客观自然规律(立春之后， 白天变得更长，天气也愈发温暖),也包括延续至今的习俗(数百年来，迎春一直是民间的重要习俗。),都是&quot;现在仍然成立的事实&quot;,所以全篇主时态定为一般现在时;只有讲&quot;三千年前就已开始&quot;这种已完成动作时,才偏离基调改用现在完成时。 【译法】 立春 全篇反复出现的核心专名,采用&quot;音译 + 括注&quot;的约定俗成译法:Lichun (Start of Spring)。依据是原文已自带英文括注 立春 (Start of Spring ),等于把官方译法递给了考生;后续句子里再次提到时,统一用 Lichun 或 the Start of Spring,不再重复括注,避免全篇&quot;Lichun / Beginning of Spring / Spring Begins&quot;译法跳来跳去。 中国农历 统一译作 the Chinese lunar calendar。这是文化负载词的常用约定译法;&quot;农历&quot;既不要漏掉 the(特指中国这一套历法),也不要随手译成 Chinese calendar 而丢掉 lunar 这层含义。锚回原文 中国农历。 一年之计在于春 汉语谚语,统一译法采用意译加引号:&quot;The whole year&#x27;s work depends on a good start in spring.&quot; 依据是引号内的内容在中文里也是被引述的成句(&quot;一年之计在于春&quot;),英文应同样用引号保留&quot;被引述&quot;的语用色彩;不要硬直译成 &quot;A year&#x27;s plan lies in spring&quot; 这种意思不完整的字面句。 迎春 民俗术语,统一译作 welcoming spring(动名词短语,可作主语/宾语)。原文 迎春一直是民间的重要习俗 中&quot;迎春&quot;是一个名物化的习俗名,英文用 welcoming spring 既保留动作含义又能作名词使用;全篇不要一会儿 welcome spring、一会儿 greeting spring 地换。</div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    <span class="zh">立春 (Start of Spring )在中国农历中表示春天的开始。立春之后， 白天变得更长，天气也愈发温暖，万物开始复苏，大地充满生机。人们常说&quot;一年之计在于春&quot;，农民在这个时节开始播种，为全年的丰收打下基础。中国人早在三千年前就己开始在立春这一天举行庆祝活动。数百年来，迎春一直是民间的重要习俗。在春暖花开的日子里，人们常常外出游玩，欣赏春天的美景。</span></div>
+  <div class="tip a"><b>先自己翻一遍再看下面。</b>用纸笔或另一个文档写，写完再逐句对照 ——
+  直接看答案等于没练。</div>
+</div>
+
+<div class="card">
+  <h2>怎么用这份包</h2>
+  <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
+    <span>③ 抄下错处</span><span>④ 整篇通读</span></div>
+  <div class="tip g">第二步是全流程最有价值的一步：<b>看你漏译了什么、时态用错了哪里</b>。
+  每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
+</div>
+
+<div class="card">
+  <h2>逐句对照（6 句）</h2>
+  <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
+  <div class="sent"><span class="snum">第 1 句</span><p class="szh">立春 (Start of Spring )在中国农历中表示春天的开始。</p><p class="sen">Lichun (Start of Spring) marks the beginning of spring in the Chinese lunar calendar.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调,用一般现在时 marks——这是节气的固有含义、现在仍然成立。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语 Lichun 是单数(一个节气名),谓语用第三人称单数 marks,不能写成 mark。</span></div><div class="chunk"><span class="k">冠词</span><span class="v">&quot;春天的开始&quot;特指春天这唯一一次开始,用定冠词:the beginning of spring;spring 作季节名,泛指时不加冠词。</span></div><div class="chunk"><span class="k">专名格式</span><span class="v">首次出现时按 glossary 约定写成 Lichun (Start of Spring),保留括注;后文再提即可省括注。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">立春之后， 白天变得更长，天气也愈发温暖，万物开始复苏，大地充满生机。</p><p class="sen">After Lichun, the days grow longer and the weather becomes warmer; everything comes back to life, and the earth is full of vitality.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调,用一般现在时(grow, becomes, comes, is)——讲的是立春后每年都会发生的规律性现象,不是某一年的过去事件。</span></div><div class="chunk"><span class="k">比较级</span><span class="v">&quot;变得更长&quot;= grow longer,&quot;愈发温暖&quot;= becomes warmer;两处都用形容词比较级,不要写成 more long / more warm。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">&quot;白天&quot;作为反复发生的概念用复数 the days(白天们都在变长);&quot;万物&quot;译作 everything(不可数,谓语用单数 comes)或 all things(复数,谓语用 come),两者择一,别混用。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">&quot;充满生机&quot;固定搭配 be full of vitality / be full of life;&quot;复苏&quot;用 come back to life 或 revive 都可,别写成 wake up 这种偏口语的儿童化表达。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">人们常说&quot;一年之计在于春&quot;，农民在这个时节开始播种，为全年的丰收打下基础。</p><p class="sen">As people often say, &quot;The whole year&#x27;s work depends on a good start in spring.&quot; At this time of year, farmers start sowing to lay the foundation for a good harvest throughout the whole year.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">全篇基调一般现在时:say、start、lay 全用现在时;主语 farmers 是复数,动词用原形 start,不要加 -s。</span></div><div class="chunk"><span class="k">引用标点</span><span class="v">汉语谚语英文应放进双引号,且引号内首字母大写、句末标点处理利落:As people often say, &quot;The whole year&#x27;s work depends on a good start in spring.&quot;</span></div><div class="chunk"><span class="k">搭配</span><span class="v">&quot;播种&quot;= sow seeds 或 start sowing;&quot;打下基础&quot;= lay the foundation for / lay a solid foundation for,后面跟名词,不直接跟 do 类动词。</span></div><div class="chunk"><span class="k">冠词与单复数</span><span class="v">&quot;农民&quot;泛指这一群体,用复数 farmers,前不加冠词;&quot;全年的丰收&quot;特指那一年的总收成,用 the whole year&#x27;s harvest 或 a good harvest for the whole year。</span></div></div><div class="sent"><span class="snum">第 4 句</span><p class="szh">中国人早在三千年前就己开始在立春这一天举行庆祝活动。</p><p class="sen">The Chinese have started to hold celebrations on this day as early as 3,000 years ago.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态(偏离基调)</span><span class="v">本句是全篇唯一可偏离&quot;一般现在时&quot;基调的句子:用现在完成时 have started/begun to hold,呼应&quot;早在三千年前就已开始&quot;的&quot;始于过去、延续至今&quot;;写成一般过去时 started 会丢掉&quot;至今仍在做&quot;的隐含意。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">the Chinese 作复数(代指中国人这一群体),助动词用 have,不是 has。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">&quot;庆祝活动&quot;是反复举行的多场活动,用复数 celebrations 或 celebration activities,不要写成 a celebration activity 这种单数特指。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">&quot;举行庆祝活动&quot;= hold celebrations / hold celebration activities,不是 make 或 do;&quot;在……这一天&quot;日期前用 on,不要写 at this day。</span></div></div><div class="sent"><span class="snum">第 5 句</span><p class="szh">数百年来，迎春一直是民间的重要习俗。</p><p class="sen">For centuries, welcoming spring has been an important folk custom.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">现在完成时 has been——&quot;数百年来一直是&quot;是典型的&quot;从过去某点延续到现在仍在持续&quot;的状态,与第 4 句同属偏离全篇基调的合理用法,不要错写成 was 或 is。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">动名词主语 welcoming spring 作单数,助动词用 has,不要写成 have。</span></div><div class="chunk"><span class="k">冠词</span><span class="v">&quot;一个重要习俗&quot;是&quot;重要习俗之一&quot;的语义,用不定冠词 an important folk custom;an 用于元音音素开头的 important。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">&quot;民间习俗&quot;= folk custom,不要译成 people&#x27;s custom 或 civilian custom;&quot;重要习俗&quot;= important custom,自然搭配。</span></div></div><div class="sent"><span class="snum">第 6 句</span><p class="szh">在春暖花开的日子里，人们常常外出游玩，欣赏春天的美景。</p><p class="sen">On warm spring days when flowers are in full bloom, people often go out for outings to enjoy the beautiful scenery of spring.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调,用一般现在时 go out / enjoy——讲的是&quot;人们每到春暖花开常常做的事&quot;,是反复发生的习惯性动作。</span></div><div class="chunk"><span class="k">频率副词位置</span><span class="v">&quot;常常&quot;= often,放在 go 之前:people often go out,不要写成 often people go 或 people go often。</span></div><div class="chunk"><span class="k">单复数与冠词</span><span class="v">people 作集合复数,谓语 go(不加 s);&quot;美景&quot;= scenery 是不可数名词,前用 the 特指春天的景:the beautiful scenery of spring,不要写成 a beautiful scenery 或 sceneries。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">&quot;外出游玩&quot;= go out for outings / go out for fun / go outdoors;&quot;春暖花开&quot;是固定表达,常译作 when spring is warm and flowers are in bloom 或 in the warm days when flowers bloom,别字字硬翻成 spring warm flower bloom。</span></div></div>
+</div>
+
+<div class="card">
+  <h2>整篇参考译文</h2>
+  <details><summary>展开整篇（自己翻完再看）</summary>
+    <div class="dbody"><p class="en">Lichun (Start of Spring) marks the beginning of spring in the Chinese lunar calendar. After Lichun, the days grow longer and the weather becomes warmer; everything comes back to life, and the earth is full of vitality. As people often say, &quot;The whole year&#x27;s work depends on a good start in spring.&quot; At this time of year, farmers start sowing to lay the foundation for a good harvest throughout the whole year. In fact, the Chinese have started to hold celebrations on this day as early as 3,000 years ago. For centuries, welcoming spring has been an important folk custom. Today, on warm spring days when flowers are in full bloom, people often go out for outings to enjoy the beautiful scenery of spring. 【衔接】 第 1 句到第 2 句:用 After Lichun 自然衔接 第 1 句末尾给出&quot;立春&quot;的定义,第 2 句紧接着讲&quot;立春之后&quot;发生的变化。第 2 句句首直接用 After Lichun 承接前句的关键词 Lichun,既显示时间承接,又避免重复&quot;the Start of Spring&quot;。原文 立春之后 已天然提示了这一衔接。 第 2 句到第 3 句:补&quot;As people often say&quot;显出引述 中文 人们常说&quot;一年之计在于春&quot; 是顺承前句&quot;春天景象&quot;展开评论,英文用 As people often say 这一插入式衔接把谚语自然引入,不要写成生硬的 People often say...&quot;...&quot;.然后用 At this time of year 把话题从谚语拉回到&quot;农事&quot;,避免谚语和播种两层意思衔接突兀。 第 3 句到第 4 句:用 In fact 类话题转换 第 3 句讲今天的农事与谚语,第 4 句突然回溯三千年前的庆祝——是从&quot;现在&quot;切到&quot;历史溯源&quot;。建议第 4 句句首补 In fact 或 As a matter of fact,或直接用 In fact, the Chinese have started to hold celebrations...,让&quot;历史背书&quot;的语用显出来。 第 4 句到第 5 句:用 Over the centuries 或保留 for centuries 承接 第 4 句末给出&quot;三千年前就已开始&quot;,第 5 句紧接讲&quot;数百年来一直是重要习俗&quot;。两句时间维度连贯,第 5 句用 For centuries / Over the centuries 句首即可顺接,不必硬补 Therefore 等因果词——它本身就是&quot;延续这一传统&quot;的延伸说明。 第 5 句到第 6 句:用 Today / Even today 把视角拉回当下 第 5 句讲&quot;数百年来一直是习俗&quot;,第 6 句说&quot;在春暖花开时人们外出游玩&quot;是当下的具体表现。句首补 Today 或 Even today 把视角从&quot;历史习俗&quot;切回&quot;当下生活&quot;,并与全篇主时态&quot;一般现在时&quot;呼应,读起来不再像两段不相干的事。</p></div></details>
+  <div class="tip a">整篇译文是用来<b>感受节奏和衔接</b>的，不是用来背的。
+  重点看它怎么处理句间连接、怎么避免重复用词。</div>
+</div>
+
+<div class="card">
+  <h2>句间衔接（5 处）</h2>
+  <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
+  <div class="row"><span class="tag">衔接</span><div class="c"><b>第 1 句到第 2 句:用 After Lichun 自然衔接</b>第 1 句末尾给出&quot;立春&quot;的定义,第 2 句紧接着讲&quot;立春之后&quot;发生的变化。第 2 句句首直接用 After Lichun 承接前句的关键词 Lichun,既显示时间承接,又避免重复&quot;the Start of Spring&quot;。原文 立春之后 已天然提示了这一衔接。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第 2 句到第 3 句:补&quot;As people often say&quot;显出引述</b>中文 人们常说&quot;一年之计在于春&quot; 是顺承前句&quot;春天景象&quot;展开评论,英文用 As people often say 这一插入式衔接把谚语自然引入,不要写成生硬的 People often say...&quot;...&quot;.然后用 At this time of year 把话题从谚语拉回到&quot;农事&quot;,避免谚语和播种两层意思衔接突兀。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第 3 句到第 4 句:用 In fact 类话题转换</b>第 3 句讲今天的农事与谚语,第 4 句突然回溯三千年前的庆祝——是从&quot;现在&quot;切到&quot;历史溯源&quot;。建议第 4 句句首补 In fact 或 As a matter of fact,或直接用 In fact, the Chinese have started to hold celebrations...,让&quot;历史背书&quot;的语用显出来。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第 4 句到第 5 句:用 Over the centuries 或保留 for centuries 承接</b>第 4 句末给出&quot;三千年前就已开始&quot;,第 5 句紧接讲&quot;数百年来一直是重要习俗&quot;。两句时间维度连贯,第 5 句用 For centuries / Over the centuries 句首即可顺接,不必硬补 Therefore 等因果词——它本身就是&quot;延续这一传统&quot;的延伸说明。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第 5 句到第 6 句:用 Today / Even today 把视角拉回当下</b>第 5 句讲&quot;数百年来一直是习俗&quot;,第 6 句说&quot;在春暖花开时人们外出游玩&quot;是当下的具体表现。句首补 Today 或 Even today 把视角从&quot;历史习俗&quot;切回&quot;当下生活&quot;,并与全篇主时态&quot;一般现在时&quot;呼应,读起来不再像两段不相干的事。</div></div>
+</div>
+
+<div class="card">
+  <h2>译法要点（28 条）</h2>
+  <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
+  <div class="vocab"><div class="w">立春</div><div class="d">全篇反复出现的核心专名,采用&quot;音译 + 括注&quot;的约定俗成译法:Lichun (Start of Spring)。依据是原文已自带英文括注 立春 (Start of Spring ),等于把官方译法递给了考生;后续句子里再次提到时,统一用 Lichun 或 the Start of Spring,不再重复括注,避免全篇&quot;Lichun / Beginning of Spring / Spring Begins&quot;译法跳来跳去。</div></div><div class="vocab"><div class="w">中国农历</div><div class="d">统一译作 the Chinese lunar calendar。这是文化负载词的常用约定译法;&quot;农历&quot;既不要漏掉 the(特指中国这一套历法),也不要随手译成 Chinese calendar 而丢掉 lunar 这层含义。锚回原文 中国农历。</div></div><div class="vocab"><div class="w">一年之计在于春</div><div class="d">汉语谚语,统一译法采用意译加引号:&quot;The whole year&#x27;s work depends on a good start in spring.&quot; 依据是引号内的内容在中文里也是被引述的成句(&quot;一年之计在于春&quot;),英文应同样用引号保留&quot;被引述&quot;的语用色彩;不要硬直译成 &quot;A year&#x27;s plan lies in spring&quot; 这种意思不完整的字面句。</div></div><div class="vocab"><div class="w">迎春</div><div class="d">民俗术语,统一译作 welcoming spring(动名词短语,可作主语/宾语)。原文 迎春一直是民间的重要习俗 中&quot;迎春&quot;是一个名物化的习俗名,英文用 welcoming spring 既保留动作含义又能作名词使用;全篇不要一会儿 welcome spring、一会儿 greeting spring 地换。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调,用一般现在时 marks——这是节气的固有含义、现在仍然成立。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 Lichun 是单数(一个节气名),谓语用第三人称单数 marks,不能写成 mark。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">&quot;春天的开始&quot;特指春天这唯一一次开始,用定冠词:the beginning of spring;spring 作季节名,泛指时不加冠词。</div></div><div class="vocab"><div class="w">专名格式</div><div class="d">首次出现时按 glossary 约定写成 Lichun (Start of Spring),保留括注;后文再提即可省括注。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调,用一般现在时(grow, becomes, comes, is)——讲的是立春后每年都会发生的规律性现象,不是某一年的过去事件。</div></div><div class="vocab"><div class="w">比较级</div><div class="d">&quot;变得更长&quot;= grow longer,&quot;愈发温暖&quot;= becomes warmer;两处都用形容词比较级,不要写成 more long / more warm。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;白天&quot;作为反复发生的概念用复数 the days(白天们都在变长);&quot;万物&quot;译作 everything(不可数,谓语用单数 comes)或 all things(复数,谓语用 come),两者择一,别混用。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">&quot;充满生机&quot;固定搭配 be full of vitality / be full of life;&quot;复苏&quot;用 come back to life 或 revive 都可,别写成 wake up 这种偏口语的儿童化表达。</div></div><div class="vocab"><div class="w">时态</div><div class="d">全篇基调一般现在时:say、start、lay 全用现在时;主语 farmers 是复数,动词用原形 start,不要加 -s。</div></div><div class="vocab"><div class="w">引用标点</div><div class="d">汉语谚语英文应放进双引号,且引号内首字母大写、句末标点处理利落:As people often say, &quot;The whole year&#x27;s work depends on a good start in spring.&quot;</div></div><div class="vocab"><div class="w">搭配</div><div class="d">&quot;播种&quot;= sow seeds 或 start sowing;&quot;打下基础&quot;= lay the foundation for / lay a solid foundation for,后面跟名词,不直接跟 do 类动词。</div></div><div class="vocab"><div class="w">冠词与单复数</div><div class="d">&quot;农民&quot;泛指这一群体,用复数 farmers,前不加冠词;&quot;全年的丰收&quot;特指那一年的总收成,用 the whole year&#x27;s harvest 或 a good harvest for the whole year。</div></div><div class="vocab"><div class="w">时态(偏离基调)</div><div class="d">本句是全篇唯一可偏离&quot;一般现在时&quot;基调的句子:用现在完成时 have started/begun to hold,呼应&quot;早在三千年前就已开始&quot;的&quot;始于过去、延续至今&quot;;写成一般过去时 started 会丢掉&quot;至今仍在做&quot;的隐含意。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">the Chinese 作复数(代指中国人这一群体),助动词用 have,不是 has。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;庆祝活动&quot;是反复举行的多场活动,用复数 celebrations 或 celebration activities,不要写成 a celebration activity 这种单数特指。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">&quot;举行庆祝活动&quot;= hold celebrations / hold celebration activities,不是 make 或 do;&quot;在……这一天&quot;日期前用 on,不要写 at this day。</div></div><div class="vocab"><div class="w">时态</div><div class="d">现在完成时 has been——&quot;数百年来一直是&quot;是典型的&quot;从过去某点延续到现在仍在持续&quot;的状态,与第 4 句同属偏离全篇基调的合理用法,不要错写成 was 或 is。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">动名词主语 welcoming spring 作单数,助动词用 has,不要写成 have。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">&quot;一个重要习俗&quot;是&quot;重要习俗之一&quot;的语义,用不定冠词 an important folk custom;an 用于元音音素开头的 important。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">&quot;民间习俗&quot;= folk custom,不要译成 people&#x27;s custom 或 civilian custom;&quot;重要习俗&quot;= important custom,自然搭配。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调,用一般现在时 go out / enjoy——讲的是&quot;人们每到春暖花开常常做的事&quot;,是反复发生的习惯性动作。</div></div><div class="vocab"><div class="w">频率副词位置</div><div class="d">&quot;常常&quot;= often,放在 go 之前:people often go out,不要写成 often people go 或 people go often。</div></div><div class="vocab"><div class="w">单复数与冠词</div><div class="d">people 作集合复数,谓语 go(不加 s);&quot;美景&quot;= scenery 是不可数名词,前用 the 特指春天的景:the beautiful scenery of spring,不要写成 a beautiful scenery 或 sceneries。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">&quot;外出游玩&quot;= go out for outings / go out for fun / go outdoors;&quot;春暖花开&quot;是固定表达,常译作 when spring is warm and flowers are in bloom 或 in the warm days when flowers bloom,别字字硬翻成 spring warm flower bloom。</div></div>
+</div>
+
+<div class="card">
+  <h2>翻译四句口诀</h2>
+  <table>
+    <tr><th>步骤</th><th>做什么</th></tr>
+    <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
+    <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
+    <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
+    <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 > 用词花</b></td></tr>
+  </table>
+</div>
+
+</body>
+</html>

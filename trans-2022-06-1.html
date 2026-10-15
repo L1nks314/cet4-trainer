@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>汉译英 · 2022年6月 第1套</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--soft:#fafbfc;--grey:#f2f3f5;--line:#e5e8ec;--line2:#eff1f4;
+ --track:#e8ebef;--txt:#1b1e23;--txt2:#2b303a;--txt3:#3d434e;--sub:#6b7280;--sub2:#a8b0bb;
+ --blue:#2563eb;--blue-soft:#eef3ff;--green:#0d8a52;--green-soft:#e8f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;
+ --amber-line:#f0dfb8;--green-line:#bfe3cf;--purple:#7c5cff;--purple-soft:#f2eeff;
+ --blue-ink:#123a75;--green-ink:#0d5232;--amber-ink:#7a5b00;--red-ink:#8a2318;--purple-ink:#3f2a7a;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05)}
+@media (prefers-color-scheme: dark){:root{--bg:#101216;--card:#191c21;--soft:#20242a;
+ --grey:#22262c;--line:#2c313a;--line2:#242930;--track:#2a2f38;--txt:#e9ebee;--txt2:#d7dade;
+ --txt3:#c3c8cf;--sub:#98a0aa;--sub2:#6b7280;--blue:#6b96fb;--blue-soft:#1a2742;
+ --green:#41d18f;--green-soft:#14301f;--red:#ef7261;--red-soft:#371d19;--amber:#e0a53f;
+ --amber-soft:#312713;--amber-line:#4a3a1c;--green-line:#1f4530;--purple:#a98cff;
+ --purple-soft:#241c3d;--blue-ink:#a9c6ff;--green-ink:#7fe0b0;--amber-ink:#f0c469;
+ --red-ink:#ffa79a;--purple-ink:#c3a9ff;--shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28);
+ color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:20px;margin:2px 0 14px;font-weight:800;padding-left:12px;
+ border-left:4px solid var(--blue);line-height:1.25;letter-spacing:.2px}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:12px;flex-wrap:wrap}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.hint{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 12px}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.72;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.big{display:flex;gap:9px;margin-bottom:12px}
+.big div{flex:1;background:var(--blue-soft);border-radius:10px;padding:10px 8px;text-align:center}
+.big b{display:block;font-size:18px;font-weight:800;color:var(--blue)}
+.big span{font-size:11.5px;color:var(--sub)}
+.prompt{font-size:14.6px;line-height:1.9;background:var(--soft);border-radius:11px;
+ padding:14px;border:1px solid var(--line);text-align:justify}
+.prompt .lbl{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue);
+ color:#fff;border-radius:6px;padding:2px 9px;margin-bottom:9px}
+.zh{font-size:15px;line-height:2;text-align:justify;letter-spacing:.2px}
+.en{font-size:14.6px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.essay p{margin:0 0 12px}
+.essay p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;
+ background:var(--card)}
+details>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:14.4px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details[open]>summary::before{content:"▾"}
+details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
+.sent{border-bottom:1px solid var(--line2);padding:13px 0}
+.sent:last-child{border-bottom:0}
+.snum{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue-soft);
+ color:var(--blue);border-radius:6px;padding:2px 9px;margin-bottom:7px}
+.szh{font-size:15px;line-height:1.9;margin:0 0 9px}
+.sen{font-size:14.6px;line-height:1.85;margin:0;padding:10px 12px;background:var(--green-soft);
+ border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
+.strat{display:inline-block;font-size:12px;color:var(--purple);
+ background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
+.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
+.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+ font-size:12px;white-space:nowrap}
+.chunk .v{flex:1;color:var(--txt2)}
+.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.row:last-child{border-bottom:0}
+.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
+.row .c{flex:1;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab:last-child{border-bottom:0}
+.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
+.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
+ line-height:1.78;color:var(--red-ink);margin-top:10px}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
+ border-radius:18px;padding:5px 13px;color:var(--sub)}
+.flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+</style>
+</head>
+<body>
+
+<a class="back" href="writing.html">← 返回写作与翻译</a>
+<h1>汉译英 · 2022年6月 第1套</h1>
+
+<div class="card">
+  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part IV</span></div>
+  <div class="big">
+    <div><b>158</b><span>中文字数</span></div>
+    <div><b>5</b><span>句</span></div>
+    <div><b>30</b><span>分钟</span></div>
+  </div>
+  <div class="tip b">翻译评分只看四件事：<b>意思说全、语法没错、表达通顺、用词准确</b>。
+  翻得漂亮不加分，翻错了狠狠扣 —— 所以目标是<b>不出错</b>，不是出彩。</div>
+</div>
+
+<div class="card">
+  <div class="chead"><h2>中文原文</h2><span class="cmeta">5 句</span></div>
+  <div class="tip b">【主旨】 借&quot;拔苗助长&quot;寓言劝家长让孩子自然成长 本段先用&quot;从前有个农夫&quot;开头讲一则寓言（从前有个农夫嫌他种的禾苗长得慢，就到地里把禾苗一株株地拔高了一点。），再用&quot;现在有些家长&quot;把寓言映射到当下教育现象（现在有些家长急于让孩子成功，往往步那个农夫的后尘）。前半属&quot;历史叙述&quot;、后半属&quot;客观陈述当下&quot;，整体是&quot;故事+议论&quot;的劝喻语体。 【时态】 一般过去时为主、一般现在时为辅 由语体推出：寓言部分（从&quot;从前有个农夫&quot;到&quot;禾苗都已死光了&quot;）是讲过去的故事，主用一般过去时；议论部分（现在有些家长急于让孩子成功）是陈述当下普遍现象，主用一般现在时。逐句翻译时以&quot;叙述句过去、议论句现在&quot;为默认。 【译法】 禾苗 统一译为 rice seedlings（也可用 the seedlings 回指）。依据：禾苗 在中文里特指水稻的幼苗，译 seedlings 太宽，加 rice 把农作物种类点明；全篇出现多次，统一用 rice seedlings / the seedlings，不要一会儿 sprouts 一会儿 plants。 拔苗助长（寓意） 全文未出现成语字面，但 把禾苗一株株地拔高了一点 正是&quot;拔苗助长&quot;原型；动作统一译为 pull up the seedlings one by one，避免一会儿 pull、一会儿 lift、一会儿 raise 造成动作不统一。 步那个农夫的后尘 步那个农夫的后尘 是文化负载表达，统一意译为 follow in the farmer&#x27;s footsteps（不要直译 step on the farmer&#x27;s dust）；全篇只用这一种译法。</div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    <span class="zh">从前有个农夫嫌他种的禾苗长得慢，就到地里把禾苗一株株地拔高了一点。回家后他对家人说：&quot;今天可真把我累坏了！但我总算让禾苗一下子长高了。&quot;他儿子到地里去一看，禾苗都已死光了。 现在有些家长急于让孩子成功，往往步那个农夫的后尘，搞得孩子苦不堪言，却不见孩子学业长进。这样的家长是否该对这个问题有所醒悟，让孩子自然成长呢？</span></div>
+  <div class="tip a"><b>先自己翻一遍再看下面。</b>用纸笔或另一个文档写，写完再逐句对照 ——
+  直接看答案等于没练。</div>
+</div>
+
+<div class="card">
+  <h2>怎么用这份包</h2>
+  <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
+    <span>③ 抄下错处</span><span>④ 整篇通读</span></div>
+  <div class="tip g">第二步是全流程最有价值的一步：<b>看你漏译了什么、时态用错了哪里</b>。
+  每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
+</div>
+
+<div class="card">
+  <h2>逐句对照（5 句）</h2>
+  <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
+  <div class="sent"><span class="snum">第 1 句</span><p class="szh">从前有个农夫嫌他种的禾苗长得慢，就到地里把禾苗一株株地拔高了一点。</p><p class="sen">Once upon a time, a farmer, thinking that the rice seedlings he had planted were growing too slowly, went into the field and pulled them up one by one to make each a little taller.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调：寓言部分用一般过去时，所以 pulled up、were growing 都用过去式；&quot;他种禾苗&quot;发生在&quot;嫌&quot;之前，用过去完成时 had planted，把时间先后理清。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">禾苗不止一株（一株株地 已暗示复数），译 rice seedlings 用复数；谓语 were growing 跟复数主语一致。</span></div><div class="chunk"><span class="k">冠词</span><span class="v">首次引入这个人物，用不定冠词 a farmer；回指他种的那批禾苗时用定冠词 the rice seedlings。</span></div><div class="chunk"><span class="k">短语搭配</span><span class="v">&quot;长得慢&quot; → grow slowly（不要 grow slow）；&quot;一株株地&quot; → one by one，不要逐字 one plant one plant 这种中式表达。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">回家后他对家人说：&quot;今天可真把我累坏了！但我总算让禾苗一下子长高了。&quot;</p><p class="sen">After returning home, he told his family, &quot;I&#x27;m really worn out today, but I have finally made the rice seedlings grow taller all at once!&quot;</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">叙述部分 he told 用一般过去时（回指全篇寓言基调）；引语内是农夫此刻的话，用一般现在时 I&#x27;m worn out 和现在完成时 have made the seedlings grow（表&quot;已经让它们长高了&quot;这一已完成动作对当下的影响）。</span></div><div class="chunk"><span class="k">使役结构</span><span class="v">&quot;让禾苗长高&quot; → make the seedlings grow taller（make + 宾语 + 动词原形）。不要写成 make the seedlings to grow（make 后接不带 to 的不定式）。</span></div><div class="chunk"><span class="k">短语搭配</span><span class="v">&quot;累坏了&quot; → worn out / exhausted（不要 very tired，程度不够）；&quot;一下子&quot; → all at once / in one go，不要硬译 one time。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">他儿子到地里去一看，禾苗都已死光了。</p><p class="sen">When his son went to the field, he found that all the rice seedlings had already withered.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">叙述主干 went、found 用一般过去时跟基调；&quot;禾苗都已死光了&quot;发生在&quot;儿子看到&quot;之前，用过去完成时 had withered / had all died，把&quot;先死、后被发现&quot;的时间先后理清。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">&quot;禾苗都&quot;是复数，用 all the seedlings；谓语 had withered 跟复数主语一致。</span></div><div class="chunk"><span class="k">用词</span><span class="v">&quot;死光了&quot;不要直译 all dead（dead 是形容词、状态平淡），用 wither (枯萎) 这个动词更贴禾苗这种植物的死法，也更书面。</span></div></div><div class="sent"><span class="snum">第 4 句</span><p class="szh">现在有些家长急于让孩子成功，往往步那个农夫的后尘，搞得孩子苦不堪言，却不见孩子学业长进。</p><p class="sen">Nowadays, some parents, eager to see their children succeed, often follow in the farmer&#x27;s footsteps, causing their children great suffering, yet seeing no progress in their studies.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调：议论部分用一般现在时，所以 follow、cause、see 都用一般现在时；主语 some parents 是复数，动词用原形不加 -s。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">some parents 复数主语 → follow（无 -s）、cause（无 -s），别因为单数习惯加 -s。</span></div><div class="chunk"><span class="k">用词</span><span class="v">&quot;苦不堪言&quot; → great suffering / unbearable misery；&quot;步……后尘&quot; → follow in sb.&#x27;s footsteps（注意 footsteps 复数、in 不要丢）；&quot;学业长进&quot; → progress in their studies（progress 不可数）。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">&quot;急于做某事&quot; → be eager / anxious to do（不要 eager for doing）；&quot;看不见&quot; → see no progress（动名词作宾语，简洁地道）。</span></div></div><div class="sent"><span class="snum">第 5 句</span><p class="szh">这样的家长是否该对这个问题有所醒悟，让孩子自然成长呢？</p><p class="sen">Shouldn&#x27;t such parents wake up to this problem and let their children grow naturally?</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">议论现状，回指全篇基调用一般现在时；情态动词 should（这里用否定缩写 shouldn&#x27;t）后接动词原形 wake up、let。</span></div><div class="chunk"><span class="k">使役结构</span><span class="v">&quot;让孩子自然成长&quot; → let their children grow naturally（let + 宾语 + 动词原形），不要 let their children to grow。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">&quot;对……有所醒悟&quot; → wake up to sth.（to 不能丢）；&quot;自然成长&quot; → grow naturally / grow up naturally（用副词 naturally 修饰动词，不要 grow natural）。</span></div><div class="chunk"><span class="k">标点</span><span class="v">整句是问句，末尾用问号，不要丢；句首 Shouldn&#x27;t 是反问句标志，主语前移。</span></div></div>
+</div>
+
+<div class="card">
+  <h2>整篇参考译文</h2>
+  <details><summary>展开整篇（自己翻完再看）</summary>
+    <div class="dbody"><p class="en">Once upon a time, a farmer, thinking that the rice seedlings he had planted were growing too slowly, went into the field and pulled them up one by one to make each a little taller. After returning home, he told his family, &quot;I&#x27;m really worn out today, but I have finally made the rice seedlings grow taller all at once!&quot; When his son went to the field, he found that all the rice seedlings had already withered. Nowadays, some parents, eager to see their children succeed, often follow in the farmer&#x27;s footsteps, causing their children great suffering, yet seeing no progress in their studies. Shouldn&#x27;t such parents wake up to this problem and let their children grow naturally? 【衔接】 句1→句2 用时间副词 Then 串起回家这一动作 句1结束于&quot;拔高了一点&quot;，句2开头 回家后 已经做了时间过渡。英文译文 After returning home 本身就是衔接词；若想更口语化也可用 Then he went home and told his family，但 After returning home 更书面、更紧凑。 句2→句3 用 his son 而非 the son 承接 句2主语是&quot;他&quot;（the farmer），句3 他儿子 用所有格 his son 自然承接前句的 he，避免重复&quot;the farmer&#x27;s son&quot;。这是英文用代词承接避重复的典型做法。 句3→句4 用 Nowadays 切换时间层 前三句是寓言（过去时），句4起转到当下议论（现在时）。中文 现在 已是切换信号，英文用 Nowadays 提到句首，把&quot;故事讲完、转入现实&quot;挑明，读者一眼看出语体转换。 句4→句5 用 such parents 回指避免重复 句4说了 some parents...，句5 这样的家长 用 such parents 回指、不重复 some parents；such 比 these 更显&quot;这一类&quot;的概括义，跟反问劝告的语气也更契合。</p></div></details>
+  <div class="tip a">整篇译文是用来<b>感受节奏和衔接</b>的，不是用来背的。
+  重点看它怎么处理句间连接、怎么避免重复用词。</div>
+</div>
+
+<div class="card">
+  <h2>句间衔接（4 处）</h2>
+  <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
+  <div class="row"><span class="tag">衔接</span><div class="c"><b>句1→句2 用时间副词 Then 串起回家这一动作</b>句1结束于&quot;拔高了一点&quot;，句2开头 回家后 已经做了时间过渡。英文译文 After returning home 本身就是衔接词；若想更口语化也可用 Then he went home and told his family，但 After returning home 更书面、更紧凑。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>句2→句3 用 his son 而非 the son 承接</b>句2主语是&quot;他&quot;（the farmer），句3 他儿子 用所有格 his son 自然承接前句的 he，避免重复&quot;the farmer&#x27;s son&quot;。这是英文用代词承接避重复的典型做法。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>句3→句4 用 Nowadays 切换时间层</b>前三句是寓言（过去时），句4起转到当下议论（现在时）。中文 现在 已是切换信号，英文用 Nowadays 提到句首，把&quot;故事讲完、转入现实&quot;挑明，读者一眼看出语体转换。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>句4→句5 用 such parents 回指避免重复</b>句4说了 some parents...，句5 这样的家长 用 such parents 回指、不重复 some parents；such 比 these 更显&quot;这一类&quot;的概括义，跟反问劝告的语气也更契合。</div></div>
+</div>
+
+<div class="card">
+  <h2>译法要点（21 条）</h2>
+  <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
+  <div class="vocab"><div class="w">禾苗</div><div class="d">统一译为 rice seedlings（也可用 the seedlings 回指）。依据：禾苗 在中文里特指水稻的幼苗，译 seedlings 太宽，加 rice 把农作物种类点明；全篇出现多次，统一用 rice seedlings / the seedlings，不要一会儿 sprouts 一会儿 plants。</div></div><div class="vocab"><div class="w">拔苗助长（寓意）</div><div class="d">全文未出现成语字面，但 把禾苗一株株地拔高了一点 正是&quot;拔苗助长&quot;原型；动作统一译为 pull up the seedlings one by one，避免一会儿 pull、一会儿 lift、一会儿 raise 造成动作不统一。</div></div><div class="vocab"><div class="w">步那个农夫的后尘</div><div class="d">步那个农夫的后尘 是文化负载表达，统一意译为 follow in the farmer&#x27;s footsteps（不要直译 step on the farmer&#x27;s dust）；全篇只用这一种译法。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调：寓言部分用一般过去时，所以 pulled up、were growing 都用过去式；&quot;他种禾苗&quot;发生在&quot;嫌&quot;之前，用过去完成时 had planted，把时间先后理清。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">禾苗不止一株（一株株地 已暗示复数），译 rice seedlings 用复数；谓语 were growing 跟复数主语一致。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">首次引入这个人物，用不定冠词 a farmer；回指他种的那批禾苗时用定冠词 the rice seedlings。</div></div><div class="vocab"><div class="w">短语搭配</div><div class="d">&quot;长得慢&quot; → grow slowly（不要 grow slow）；&quot;一株株地&quot; → one by one，不要逐字 one plant one plant 这种中式表达。</div></div><div class="vocab"><div class="w">时态</div><div class="d">叙述部分 he told 用一般过去时（回指全篇寓言基调）；引语内是农夫此刻的话，用一般现在时 I&#x27;m worn out 和现在完成时 have made the seedlings grow（表&quot;已经让它们长高了&quot;这一已完成动作对当下的影响）。</div></div><div class="vocab"><div class="w">使役结构</div><div class="d">&quot;让禾苗长高&quot; → make the seedlings grow taller（make + 宾语 + 动词原形）。不要写成 make the seedlings to grow（make 后接不带 to 的不定式）。</div></div><div class="vocab"><div class="w">短语搭配</div><div class="d">&quot;累坏了&quot; → worn out / exhausted（不要 very tired，程度不够）；&quot;一下子&quot; → all at once / in one go，不要硬译 one time。</div></div><div class="vocab"><div class="w">时态</div><div class="d">叙述主干 went、found 用一般过去时跟基调；&quot;禾苗都已死光了&quot;发生在&quot;儿子看到&quot;之前，用过去完成时 had withered / had all died，把&quot;先死、后被发现&quot;的时间先后理清。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;禾苗都&quot;是复数，用 all the seedlings；谓语 had withered 跟复数主语一致。</div></div><div class="vocab"><div class="w">用词</div><div class="d">&quot;死光了&quot;不要直译 all dead（dead 是形容词、状态平淡），用 wither (枯萎) 这个动词更贴禾苗这种植物的死法，也更书面。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调：议论部分用一般现在时，所以 follow、cause、see 都用一般现在时；主语 some parents 是复数，动词用原形不加 -s。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">some parents 复数主语 → follow（无 -s）、cause（无 -s），别因为单数习惯加 -s。</div></div><div class="vocab"><div class="w">用词</div><div class="d">&quot;苦不堪言&quot; → great suffering / unbearable misery；&quot;步……后尘&quot; → follow in sb.&#x27;s footsteps（注意 footsteps 复数、in 不要丢）；&quot;学业长进&quot; → progress in their studies（progress 不可数）。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">&quot;急于做某事&quot; → be eager / anxious to do（不要 eager for doing）；&quot;看不见&quot; → see no progress（动名词作宾语，简洁地道）。</div></div><div class="vocab"><div class="w">时态</div><div class="d">议论现状，回指全篇基调用一般现在时；情态动词 should（这里用否定缩写 shouldn&#x27;t）后接动词原形 wake up、let。</div></div><div class="vocab"><div class="w">使役结构</div><div class="d">&quot;让孩子自然成长&quot; → let their children grow naturally（let + 宾语 + 动词原形），不要 let their children to grow。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">&quot;对……有所醒悟&quot; → wake up to sth.（to 不能丢）；&quot;自然成长&quot; → grow naturally / grow up naturally（用副词 naturally 修饰动词，不要 grow natural）。</div></div><div class="vocab"><div class="w">标点</div><div class="d">整句是问句，末尾用问号，不要丢；句首 Shouldn&#x27;t 是反问句标志，主语前移。</div></div>
+</div>
+
+<div class="card">
+  <h2>翻译四句口诀</h2>
+  <table>
+    <tr><th>步骤</th><th>做什么</th></tr>
+    <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
+    <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
+    <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
+    <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 > 用词花</b></td></tr>
+  </table>
+</div>
+
+</body>
+</html>

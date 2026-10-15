@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>汉译英 · 2024年12月 第1套</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--soft:#fafbfc;--grey:#f2f3f5;--line:#e5e8ec;--line2:#eff1f4;
+ --track:#e8ebef;--txt:#1b1e23;--txt2:#2b303a;--txt3:#3d434e;--sub:#6b7280;--sub2:#a8b0bb;
+ --blue:#2563eb;--blue-soft:#eef3ff;--green:#0d8a52;--green-soft:#e8f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;
+ --amber-line:#f0dfb8;--green-line:#bfe3cf;--purple:#7c5cff;--purple-soft:#f2eeff;
+ --blue-ink:#123a75;--green-ink:#0d5232;--amber-ink:#7a5b00;--red-ink:#8a2318;--purple-ink:#3f2a7a;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05)}
+@media (prefers-color-scheme: dark){:root{--bg:#101216;--card:#191c21;--soft:#20242a;
+ --grey:#22262c;--line:#2c313a;--line2:#242930;--track:#2a2f38;--txt:#e9ebee;--txt2:#d7dade;
+ --txt3:#c3c8cf;--sub:#98a0aa;--sub2:#6b7280;--blue:#6b96fb;--blue-soft:#1a2742;
+ --green:#41d18f;--green-soft:#14301f;--red:#ef7261;--red-soft:#371d19;--amber:#e0a53f;
+ --amber-soft:#312713;--amber-line:#4a3a1c;--green-line:#1f4530;--purple:#a98cff;
+ --purple-soft:#241c3d;--blue-ink:#a9c6ff;--green-ink:#7fe0b0;--amber-ink:#f0c469;
+ --red-ink:#ffa79a;--purple-ink:#c3a9ff;--shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28);
+ color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:20px;margin:2px 0 14px;font-weight:800;padding-left:12px;
+ border-left:4px solid var(--blue);line-height:1.25;letter-spacing:.2px}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:12px;flex-wrap:wrap}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.hint{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 12px}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.72;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.big{display:flex;gap:9px;margin-bottom:12px}
+.big div{flex:1;background:var(--blue-soft);border-radius:10px;padding:10px 8px;text-align:center}
+.big b{display:block;font-size:18px;font-weight:800;color:var(--blue)}
+.big span{font-size:11.5px;color:var(--sub)}
+.prompt{font-size:14.6px;line-height:1.9;background:var(--soft);border-radius:11px;
+ padding:14px;border:1px solid var(--line);text-align:justify}
+.prompt .lbl{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue);
+ color:#fff;border-radius:6px;padding:2px 9px;margin-bottom:9px}
+.zh{font-size:15px;line-height:2;text-align:justify;letter-spacing:.2px}
+.en{font-size:14.6px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.essay p{margin:0 0 12px}
+.essay p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;
+ background:var(--card)}
+details>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:14.4px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details[open]>summary::before{content:"▾"}
+details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
+.sent{border-bottom:1px solid var(--line2);padding:13px 0}
+.sent:last-child{border-bottom:0}
+.snum{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue-soft);
+ color:var(--blue);border-radius:6px;padding:2px 9px;margin-bottom:7px}
+.szh{font-size:15px;line-height:1.9;margin:0 0 9px}
+.sen{font-size:14.6px;line-height:1.85;margin:0;padding:10px 12px;background:var(--green-soft);
+ border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
+.strat{display:inline-block;font-size:12px;color:var(--purple);
+ background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
+.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
+.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+ font-size:12px;white-space:nowrap}
+.chunk .v{flex:1;color:var(--txt2)}
+.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.row:last-child{border-bottom:0}
+.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
+.row .c{flex:1;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab:last-child{border-bottom:0}
+.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
+.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
+ line-height:1.78;color:var(--red-ink);margin-top:10px}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
+ border-radius:18px;padding:5px 13px;color:var(--sub)}
+.flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+</style>
+</head>
+<body>
+
+<a class="back" href="writing.html">← 返回写作与翻译</a>
+<h1>汉译英 · 2024年12月 第1套</h1>
+
+<div class="card">
+  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part IV</span></div>
+  <div class="big">
+    <div><b>151</b><span>中文字数</span></div>
+    <div><b>5</b><span>句</span></div>
+    <div><b>30</b><span>分钟</span></div>
+  </div>
+  <div class="tip b">翻译评分只看四件事：<b>意思说全、语法没错、表达通顺、用词准确</b>。
+  翻得漂亮不加分，翻错了狠狠扣 —— 所以目标是<b>不出错</b>，不是出彩。</div>
+</div>
+
+<div class="card">
+  <div class="chead"><h2>中文原文</h2><span class="cmeta">5 句</span></div>
+  <div class="tip b">【主旨】 中国环保举措与成效的客观介绍 全篇在客观介绍中国在环境保护方面的态度、做法与成果，属典型的「社会/政策介绍」语体。开篇 中国政府十分重视环境保护 就把基调定成「陈述当下事实与现状」，不是讲一个过去发生完就结束的故事。这类「介绍中国现状」的题正是四级汉译英最高频的一类，定调准了，时态与用词风格随之而定。 【时态】 一般现在时 通篇是对中国环保态度、做法、现状的客观陈述，讲的是「现在持续如此」的事实，故全篇默认一般现在时。如 中国政府十分重视环境保护、中国的城市和农村正在绿起来、美起来 都是当下状态。只有 取得了显著成效 与 做出了重要贡献 这种「到现在为止已完成」的动作，才偏离基调改用现在完成时。 【译法】 环境保护 统一译作 environmental protection。原文 中国政府十分重视环境保护 与 为全球环境保护做出了重要贡献 两处出现，全篇只用这一个译法，第二处可用代词或省略避免重复，但译名本身不变。属意译，是约定俗成的固定表达。 清洁能源 统一译作 clean energy。出自 大力发展清洁能源。意译，clean energy 为通用固定搭配，energy 此处不可数、不加 s。 共享单车 统一译作 shared bikes（或 bike-sharing）。出自 推广共享单车。意译，「共享」用 shared/sharing，「单车」用 bikes，需用复数表泛指。 垃圾分类 统一译作 garbage classification（或 garbage sorting）。出自 实施垃圾分类。意译，garbage 不可数、不加 s，classification/sorting 均为常见对应。</div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    <span class="zh">中国政府十分重视环境保护。近年来,中国在减少空气、水和土壤污染上取得了显著成效。为了不断改善人们的生活环境,中国采取了一系列有效措施,包括大力发展清洁能源,改善公共交通,推广共享单车,实施垃圾分类。通过这些措施,中国的城市和农村正在绿起来、美起来。中国还积极参与国际合作,为全球环境保护做出了重要贡献。</span></div>
+  <div class="tip a"><b>先自己翻一遍再看下面。</b>用纸笔或另一个文档写，写完再逐句对照 ——
+  直接看答案等于没练。</div>
+</div>
+
+<div class="card">
+  <h2>怎么用这份包</h2>
+  <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
+    <span>③ 抄下错处</span><span>④ 整篇通读</span></div>
+  <div class="tip g">第二步是全流程最有价值的一步：<b>看你漏译了什么、时态用错了哪里</b>。
+  每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
+</div>
+
+<div class="card">
+  <h2>逐句对照（5 句）</h2>
+  <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
+  <div class="sent"><span class="snum">第 1 句</span><p class="szh">中国政府十分重视环境保护。</p><p class="sen">The Chinese government attaches great importance to environmental protection.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调用一般现在时：陈述「中国政府一贯重视」这一持续事实，谓语用 attaches（第三人称单数）。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语 The Chinese government 是单数第三人称，谓语动词须加 s → attaches / values，别漏掉这个 s。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">「重视」的地道搭配是 attach importance to（to 后接名词）或直接用 value；用 attach 时勿丢介词 to。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">近年来,中国在减少空气、水和土壤污染上取得了显著成效。</p><p class="sen">In recent years, China has made remarkable progress in reducing air, water and soil pollution.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">偏离基调改用现在完成时：近年来 配 取得了，是「过去到现在已经取得、且影响延续至今」，标准用 has made / has achieved，不能用一般过去时 made。</span></div><div class="chunk"><span class="k">名词并列</span><span class="v">「空气、水和土壤污染」是三类污染共用一个 pollution → air, water and soil pollution，三个修饰词并列、pollution 不可数不加 s。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">「取得成效/进展」固定搭配 make progress（progress 不可数）或 achieve achievements；用 make progress 时 progress 前不加 a、不加 s。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">为了不断改善人们的生活环境,中国采取了一系列有效措施,包括大力发展清洁能源,改善公共交通,推广共享单车,实施垃圾分类。</p><p class="sen">To continuously improve people&#x27;s living environment, China has taken a series of effective measures, including developing clean energy, improving public transportation, promoting shared bikes and implementing garbage classification.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">采取了 是已完成并影响至今，用现在完成时 has taken；与第2句的 has made 保持一致。</span></div><div class="chunk"><span class="k">非谓语一致</span><span class="v">including 后四个动作必须同为动名词且形式整齐：developing / improving / promoting / implementing，不可混入 to develop 或原形 develop。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">measures 是可数复数（一系列措施）→ measures 加 s；shared bikes 表泛指用复数；clean energy、public transportation、garbage classification 均不可数，不加 s。</span></div></div><div class="sent"><span class="snum">第 4 句</span><p class="szh">通过这些措施,中国的城市和农村正在绿起来、美起来。</p><p class="sen">Thanks to these measures, both urban and rural areas in China are becoming greener and more beautiful.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">正在 明确表「此刻正在进行的变化」，用现在进行时 are becoming，这是本句正当偏离一般现在时基调之处。</span></div><div class="chunk"><span class="k">比较级</span><span class="v">「绿起来、美起来」表程度加深：green → greener（短词加 er），beautiful → more beautiful（长词加 more），别写成 more greener 之类双重比较。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语 cities and rural areas 是复数，系动词用 are，不用 is。</span></div></div><div class="sent"><span class="snum">第 5 句</span><p class="szh">中国还积极参与国际合作,为全球环境保护做出了重要贡献。</p><p class="sen">China also actively participates in international cooperation, making important contributions to global environmental protection.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">主干 积极参与 是持续性事实，用一般现在时 participates（回归全篇基调）；分词 making 不带时态，但其内含的 做出了 是已完成结果，分词形式 making contributions 不与主句时态冲突，自然衔接。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语 China 单数第三人称，主干谓语 participates 加 s。</span></div><div class="chunk"><span class="k">搭配与单复数</span><span class="v">「参与」用 participate in（勿丢 in）；「做出贡献」用 make contributions to，contribution 可数、贡献不止一项可用复数 contributions。</span></div></div>
+</div>
+
+<div class="card">
+  <h2>整篇参考译文</h2>
+  <details><summary>展开整篇（自己翻完再看）</summary>
+    <div class="dbody"><p class="en">The Chinese government attaches great importance to environmental protection. In recent years, China has made remarkable progress in reducing air, water and soil pollution. To continuously improve people&#x27;s living environment, China has taken a series of effective measures, including developing clean energy, improving public transportation, promoting shared bikes and implementing garbage classification. Thanks to these measures, both urban and rural areas in China are becoming greener and more beautiful. China also actively participates in international cooperation, making important contributions to global environmental protection. 【衔接】 第3句句首用目的状语自然承接第2句 第2句讲已取得成效，第3句 为了不断改善人们的生活环境 用 To continuously improve... 的目的状语开头，顺势说明「为达成进一步改善而采取措施」，与前句的成效形成「已有成绩—继续努力」的递进，无需再额外加关联词。 第4句用Thanks to these measures回指第3句的措施 第4句 通过这些措施 译为 Thanks to these measures，其中 these measures 直接回指第3句末尾的 a series of effective measures，用指示词承接避免重复罗列，把「采取措施」与「城乡变美」串成因果链。 第5句用also标出中国的另一项行动 第5句 中国还积极参与国际合作 的「还」译为 also，提示这是在国内措施之外、中国在国际层面的又一作为，与前文国内行动形成「对内＋对外」的并列层次，让整篇逻辑更清楚。</p></div></details>
+  <div class="tip a">整篇译文是用来<b>感受节奏和衔接</b>的，不是用来背的。
+  重点看它怎么处理句间连接、怎么避免重复用词。</div>
+</div>
+
+<div class="card">
+  <h2>句间衔接（3 处）</h2>
+  <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
+  <div class="row"><span class="tag">衔接</span><div class="c"><b>第3句句首用目的状语自然承接第2句</b>第2句讲已取得成效，第3句 为了不断改善人们的生活环境 用 To continuously improve... 的目的状语开头，顺势说明「为达成进一步改善而采取措施」，与前句的成效形成「已有成绩—继续努力」的递进，无需再额外加关联词。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第4句用Thanks to these measures回指第3句的措施</b>第4句 通过这些措施 译为 Thanks to these measures，其中 these measures 直接回指第3句末尾的 a series of effective measures，用指示词承接避免重复罗列，把「采取措施」与「城乡变美」串成因果链。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第5句用also标出中国的另一项行动</b>第5句 中国还积极参与国际合作 的「还」译为 also，提示这是在国内措施之外、中国在国际层面的又一作为，与前文国内行动形成「对内＋对外」的并列层次，让整篇逻辑更清楚。</div></div>
+</div>
+
+<div class="card">
+  <h2>译法要点（19 条）</h2>
+  <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
+  <div class="vocab"><div class="w">环境保护</div><div class="d">统一译作 environmental protection。原文 中国政府十分重视环境保护 与 为全球环境保护做出了重要贡献 两处出现，全篇只用这一个译法，第二处可用代词或省略避免重复，但译名本身不变。属意译，是约定俗成的固定表达。</div></div><div class="vocab"><div class="w">清洁能源</div><div class="d">统一译作 clean energy。出自 大力发展清洁能源。意译，clean energy 为通用固定搭配，energy 此处不可数、不加 s。</div></div><div class="vocab"><div class="w">共享单车</div><div class="d">统一译作 shared bikes（或 bike-sharing）。出自 推广共享单车。意译，「共享」用 shared/sharing，「单车」用 bikes，需用复数表泛指。</div></div><div class="vocab"><div class="w">垃圾分类</div><div class="d">统一译作 garbage classification（或 garbage sorting）。出自 实施垃圾分类。意译，garbage 不可数、不加 s，classification/sorting 均为常见对应。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调用一般现在时：陈述「中国政府一贯重视」这一持续事实，谓语用 attaches（第三人称单数）。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 The Chinese government 是单数第三人称，谓语动词须加 s → attaches / values，别漏掉这个 s。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">「重视」的地道搭配是 attach importance to（to 后接名词）或直接用 value；用 attach 时勿丢介词 to。</div></div><div class="vocab"><div class="w">时态</div><div class="d">偏离基调改用现在完成时：近年来 配 取得了，是「过去到现在已经取得、且影响延续至今」，标准用 has made / has achieved，不能用一般过去时 made。</div></div><div class="vocab"><div class="w">名词并列</div><div class="d">「空气、水和土壤污染」是三类污染共用一个 pollution → air, water and soil pollution，三个修饰词并列、pollution 不可数不加 s。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">「取得成效/进展」固定搭配 make progress（progress 不可数）或 achieve achievements；用 make progress 时 progress 前不加 a、不加 s。</div></div><div class="vocab"><div class="w">时态</div><div class="d">采取了 是已完成并影响至今，用现在完成时 has taken；与第2句的 has made 保持一致。</div></div><div class="vocab"><div class="w">非谓语一致</div><div class="d">including 后四个动作必须同为动名词且形式整齐：developing / improving / promoting / implementing，不可混入 to develop 或原形 develop。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">measures 是可数复数（一系列措施）→ measures 加 s；shared bikes 表泛指用复数；clean energy、public transportation、garbage classification 均不可数，不加 s。</div></div><div class="vocab"><div class="w">时态</div><div class="d">正在 明确表「此刻正在进行的变化」，用现在进行时 are becoming，这是本句正当偏离一般现在时基调之处。</div></div><div class="vocab"><div class="w">比较级</div><div class="d">「绿起来、美起来」表程度加深：green → greener（短词加 er），beautiful → more beautiful（长词加 more），别写成 more greener 之类双重比较。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 cities and rural areas 是复数，系动词用 are，不用 is。</div></div><div class="vocab"><div class="w">时态</div><div class="d">主干 积极参与 是持续性事实，用一般现在时 participates（回归全篇基调）；分词 making 不带时态，但其内含的 做出了 是已完成结果，分词形式 making contributions 不与主句时态冲突，自然衔接。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 China 单数第三人称，主干谓语 participates 加 s。</div></div><div class="vocab"><div class="w">搭配与单复数</div><div class="d">「参与」用 participate in（勿丢 in）；「做出贡献」用 make contributions to，contribution 可数、贡献不止一项可用复数 contributions。</div></div>
+</div>
+
+<div class="card">
+  <h2>翻译四句口诀</h2>
+  <table>
+    <tr><th>步骤</th><th>做什么</th></tr>
+    <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
+    <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
+    <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
+    <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 > 用词花</b></td></tr>
+  </table>
+</div>
+
+</body>
+</html>

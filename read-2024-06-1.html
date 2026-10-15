@@ -5,30 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>仔细阅读 · 2024年6月 第1套</title>
 <style>
-:root{ --bg:#f4f5f7; --card:#ffffff; --soft:#fafbfc; --grey:#f2f3f5;
- --line:#e5e8ec; --line2:#eff1f4; --track:#e8ebef;
- --txt:#1b1e23; --txt2:#2b303a; --txt3:#3d434e; --sub:#6b7280; --sub2:#a8b0bb;
- --blue:#2563eb; --blue-soft:#eef3ff; --green:#0d8a52; --green-soft:#e8f7ef;
- --red:#c0392b; --red-soft:#fdecea; --amber:#b45309; --amber-soft:#fef6e7;
- --amber-line:#f0dfb8; --green-line:#bfe3cf;
- --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05);
- --shadow-lg:0 2px 4px rgba(16,24,40,.05), 0 8px 20px rgba(16,24,40,.07);  --blue-ink:#123a75;}
-@media (prefers-color-scheme: dark){ :root{ --bg:#101216; --card:#191c21; --soft:#20242a; --grey:#22262c;
- --line:#2c313a; --line2:#242930; --track:#2a2f38;
- --txt:#e9ebee; --txt2:#d7dade; --txt3:#c3c8cf; --sub:#98a0aa; --sub2:#6b7280;
- --blue:#6b96fb; --blue-soft:#1a2742; --green:#41d18f; --green-soft:#14301f;
- --red:#ef7261; --red-soft:#371d19; --amber:#e0a53f; --amber-soft:#312713;
- --amber-line:#4a3a1c; --green-line:#1f4530;
- --shadow:0 1px 2px rgba(0,0,0,.35), 0 2px 8px rgba(0,0,0,.28);
- --shadow-lg:0 2px 6px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.45);
- color-scheme:dark;  --blue-ink:#a9c6ff;} }
+:root{--bg:#f5f6f8;--card:#fff;--line:#e6e8ec;--txt:#1c1e21;--sub:#6b7280;
+ --blue:#2563eb;--blue-soft:#eff4ff;--green:#0d8a52;--green-soft:#e9f7ef;--sub2:#a8b0bb;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;--grey:#f2f3f5;}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--txt);
  font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
  padding:14px 13px 48px;max-width:760px;margin:0 auto;}
 a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
 h1{font-size:19px;margin:2px 0 12px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:14px;box-shadow:var(--shadow);}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:14px}
 .chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .chead h2{font-size:16px;margin:0}
 .cmeta{font-size:12.5px;color:var(--sub)}
@@ -36,10 +22,10 @@ h1{font-size:19px;margin:2px 0 12px}
 .tab,.tbtn2{border:1.5px solid var(--line);background:var(--card);color:var(--sub);font-size:14px;
  padding:9px 18px;border-radius:22px;cursor:pointer;font-family:inherit;font-weight:600}
 .tab.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
-.tbtn2{margin-left:auto;color:var(--amber);border-color:var(--amber-line);background:var(--amber-soft)}
+.tbtn2{margin-left:auto;color:var(--amber);border-color:#f0dfb8;background:var(--amber-soft)}
 .tbtn2.on{background:var(--amber);color:#fff;border-color:var(--amber)}
 .panel{display:none}.panel.on{display:block}
-.para{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line2)}
+.para{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid #f0f2f5}
 .para:last-child{border-bottom:0}
 .pno{flex:0 0 32px;font-size:12.5px;color:#fff;background:var(--blue);border-radius:8px;
  height:22px;line-height:22px;text-align:center;margin-top:3px;font-weight:700;letter-spacing:.3px}
@@ -57,7 +43,7 @@ body.zh .ptx .zh,body.zh .oz{display:block}
 .qsz{font-size:13px;color:var(--sub);margin:5px 0 0;display:none}
 body.zh .qsz{display:block}
 .opts{margin-top:10px;display:flex;flex-direction:column;gap:7px}
-.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;background:var(--soft);
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;background:#fafbfc;
  border:1.5px solid var(--line);border-radius:11px;padding:13px 14px;cursor:pointer;
  font-family:inherit;font-size:14.4px;color:var(--txt);line-height:1.65;width:100%;
  transition:border-color .15s, background .15s}
@@ -75,13 +61,17 @@ body.zh .qsz{display:block}
 .subrow{margin-top:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .submit{padding:12px 24px;border:0;border-radius:11px;background:var(--blue);color:#fff;
  font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
-.submit:disabled{background:var(--blue)}
+.submit:disabled{background:#9fb4de}
 .score{font-size:15px;font-weight:700}
-.hint{font-size:13px;color:var(--sub);background:var(--soft);border:1px solid var(--line);
+.hint{font-size:13px;color:var(--sub);background:#fafbfc;border:1px solid var(--line);
  border-radius:10px;padding:10px 12px;margin:0 0 14px;line-height:1.7}
+.syncbtn{padding:12px 20px;border:0;border-radius:11px;background:var(--green);color:#fff;
+ font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit}
+.syncbtn:disabled{background:var(--sub2)}
+.syncst{font-size:12.5px;color:var(--green);margin:9px 0 0;min-height:18px}
 .ana{border:1px solid var(--line);border-radius:11px;margin-bottom:9px;overflow:hidden;background:#fff}
 .ana>summary{display:flex;gap:10px;align-items:center;padding:11px 13px;cursor:pointer;
- font-size:14px;list-style:none;background:var(--soft)}
+ font-size:14px;list-style:none;background:#fafbfc}
 .ana>summary::-webkit-details-marker{display:none}
 .ana .an{font-weight:700;color:var(--blue)}
 .ana .aa{color:var(--green);font-weight:700}
@@ -94,7 +84,7 @@ body.zh .qsz{display:block}
 .arow:last-child{margin-bottom:0}
 .atag{flex:0 0 42px;font-size:12px;font-weight:700;color:var(--blue);background:var(--blue-soft);
  border-radius:6px;height:21px;line-height:21px;text-align:center}
-.atx{flex:1;min-width:0;font-size:13.6px;line-height:1.75;color:var(--txt2)}
+.atx{flex:1;min-width:0;font-size:13.6px;line-height:1.75;color:#2b2f36}
 .atx p{margin:0}
 .atx .lpara{display:inline-block;font-size:11.5px;background:var(--amber-soft);color:var(--amber);
  border-radius:5px;padding:1px 8px;margin-bottom:5px;font-weight:700}
@@ -102,30 +92,30 @@ body.zh .qsz{display:block}
 .lzh{margin:4px 0 0;font-size:12.8px;color:var(--sub)}
 .vds{display:flex;flex-direction:column;gap:10px}
 .vd{border-radius:10px;padding:10px 12px;border:1px solid}
-.vd.ok{background:var(--green-soft);border-color:var(--green-line)}
-.vd.bad{background:var(--soft);border-color:var(--line)}
+.vd.ok{background:var(--green-soft);border-color:#bfe3cf}
+.vd.bad{background:#fafbfc;border-color:var(--line)}
 .vdh{display:flex;gap:9px;align-items:center;margin-bottom:6px}
 .vdl{font-weight:700;font-size:14px}
 .vdf{font-size:12px;padding:2px 9px;border-radius:20px;font-weight:600}
 .vd.ok .vdf{background:var(--green);color:#fff}
-.vd.bad .vdf{background:var(--line);color:var(--sub)}
+.vd.bad .vdf{background:#dde1e8;color:#4b5563}
 .pairs{display:flex;flex-direction:column;gap:4px;margin:7px 0}
 .pair{display:flex;gap:8px;align-items:baseline;font-size:13px;flex-wrap:wrap}
 .po{color:var(--green);font-weight:600}
 .pa{color:var(--sub)}
 .pp{color:var(--blue);font-weight:600}
-.vdn{margin:7px 0 0;font-size:13.2px;color:var(--txt3);line-height:1.72}
+.vdn{margin:7px 0 0;font-size:13.2px;color:#3a3f47;line-height:1.72}
 table{width:100%;border-collapse:collapse;font-size:13.4px}
 th,td{padding:8px 7px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+th{font-size:12.5px;color:var(--sub);background:#fafbfc;font-weight:600}
 td.c{text-align:center;white-space:nowrap;color:var(--sub);font-size:12.5px}
 tr:last-child td{border-bottom:0}
 .frow{display:flex;align-items:center;gap:11px;padding:7px 0}
 .fn{flex:0 0 88px;font-size:13.2px}
-.fbar{flex:1;height:8px;background:var(--track);border-radius:5px;overflow:hidden}
+.fbar{flex:1;height:8px;background:#eceef2;border-radius:5px;overflow:hidden}
 .fbar i{display:block;height:100%;background:var(--red);border-radius:5px}
 .fv{flex:0 0 30px;text-align:right;font-size:13px;font-weight:700;color:var(--red)}
-.tip{background:var(--blue-soft);color:var(--blue-ink);border-radius:10px;padding:11px 13px;
+.tip{background:var(--blue-soft);color:#123a75;border-radius:10px;padding:11px 13px;
  font-size:13.2px;line-height:1.7;margin-top:12px}
 </style>
 </head>
@@ -165,7 +155,9 @@ tr:last-child td{border-bottom:0}
     做完点下方提交，会自动判分。右上「中译」可一键显示题干与选项的中文。</p>
     <div class="q" data-q="46"><div class="qs"><span class="qn">46.</span><span class="qse">What can we conclude from Lao Zi&#x27;s quotation?</span></div><div class="qsz">我们能从老子的引文中得出什么结论?</div><div class="opts"><button class="opt" data-q="46" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">We should see through other people&#x27;s attempt to make a prisoner of us.</span><span class="oz">我们应该看穿他人试图囚禁我们的企图。</span></span></button><button class="opt" data-q="46" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">We can never really please other people even if we try as hard as we can.</span><span class="oz">即使我们竭尽全力,也永远无法真正取悦他人。</span></span></button><button class="opt" data-q="46" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">We can never be truly free if taking to heart others&#x27; opinion of us.</span><span class="oz">如果我们把他人对我们的看法放在心上,就永远无法获得真正的自由。</span></span></button><button class="opt" data-q="46" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">We should care about other people&#x27;s view as much as they care about our own.</span><span class="oz">我们应该像他人关心我们的看法一样关心他人的看法。</span></span></button></div><button class="jump" data-go="p1-1" data-qnum="46">定位 P1</button></div><div class="q" data-q="47"><div class="qs"><span class="qn">47.</span><span class="qse">What will happen if we base our self-worth on other people&#x27;s approval?</span></div><div class="qsz">如果我们将自我价值建立在他人的认可之上,会发生什么?</div><div class="opts"><button class="opt" data-q="47" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Our desire to be loved will be fulfilled.</span><span class="oz">我们被爱的渴望将得到满足。</span></span></button><button class="opt" data-q="47" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Our life will be unfruitful and exhausting.</span><span class="oz">我们的生活将变得毫无成果且令人疲惫。</span></span></button><button class="opt" data-q="47" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">Our identity as social beings will be affected.</span><span class="oz">我们作为社会存在的身份将受到影响。</span></span></button><button class="opt" data-q="47" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Our sense of self will be sharpened and enhanced.</span><span class="oz">我们的自我意识将被强化和增强。</span></span></button></div><button class="jump" data-go="p1-2" data-qnum="47">定位 P2</button></div><div class="q" data-q="48"><div class="qs"><span class="qn">48.</span><span class="qse">What may account for our need to be liked or approved of?</span></div><div class="qsz">什么可以解释我们需要被喜欢或认可?</div><div class="opts"><button class="opt" data-q="48" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Our desperate longing for interactions with others.</span><span class="oz">我们对与他人互动的强烈渴望。</span></span></button><button class="opt" data-q="48" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Our understanding of the workings of the world.</span><span class="oz">我们对世界运作方式的理解。</span></span></button><button class="opt" data-q="48" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">Our knowledge about the pain of abandonment.</span><span class="oz">我们对被抛弃之痛的认知。</span></span></button><button class="opt" data-q="48" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Our early childhood fear of being deserted.</span><span class="oz">我们早期童年时对被遗弃的恐惧。</span></span></button></div><button class="jump" data-go="p1-4" data-qnum="48">定位 P4</button></div><div class="q" data-q="49"><div class="qs"><span class="qn">49.</span><span class="qse">What can we do when we become better able to provide ourselves with the desired approval?</span></div><div class="qsz">当我们更有能力为自己提供所渴望的认可时,我们能做什么?</div><div class="opts"><button class="opt" data-q="49" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Enjoy a happier life.</span><span class="oz">享受更幸福的生活。</span></span></button><button class="opt" data-q="49" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Exercise self-restraint.</span><span class="oz">实行自我克制。</span></span></button><button class="opt" data-q="49" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">Receive more external validation.</span><span class="oz">获得更多外部认可。</span></span></button><button class="opt" data-q="49" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Strengthen our power of imagination.</span><span class="oz">增强我们的想象力。</span></span></button></div><button class="jump" data-go="p1-5" data-qnum="49">定位 P5</button></div><div class="q" data-q="50"><div class="qs"><span class="qn">50.</span><span class="qse">What does the author advise us to do in the last paragraph?</span></div><div class="qsz">作者在最后一段建议我们做什么?</div><div class="opts"><button class="opt" data-q="50" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Embrace life for ourselves and for others.</span><span class="oz">为自己和他人拥抱生活。</span></span></button><button class="opt" data-q="50" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Base our worth on others&#x27; opinions.</span><span class="oz">将我们的价值建立在他人的看法之上。</span></span></button><button class="opt" data-q="50" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">See our experiences as assets.</span><span class="oz">将我们的经历视为财富。</span></span></button><button class="opt" data-q="50" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Love ourselves as we are.</span><span class="oz">爱现在的自己。</span></span></button></div><button class="jump" data-go="p1-6" data-qnum="50">定位 P6</button></div>
     <div class="subrow"><button class="submit" data-sec="p1">提交答案 · 自动判分</button>
-      <span class="score" id="sc-p1"></span></div>
+      <span class="score" id="sc-p1"></span>
+      <button class="syncbtn" id="sy-p1" style="display:none">☁ 同步回执</button></div>
+    <p class="syncst" id="sst-p1"></p>
   </div>
 
   <div class="panel" id="p1-ana">
@@ -191,7 +183,9 @@ tr:last-child td{border-bottom:0}
     做完点下方提交，会自动判分。右上「中译」可一键显示题干与选项的中文。</p>
     <div class="q" data-q="51"><div class="qs"><span class="qn">51.</span><span class="qse">What do some people think of aging adults?</span></div><div class="qsz">有些人对老年人有什么看法?</div><div class="opts"><button class="opt" data-q="51" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Their wisdom grows as time goes by.</span><span class="oz">他们的智慧随着时间推移而增长。</span></span></button><button class="opt" data-q="51" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Their memory gradually deteriorates.</span><span class="oz">他们的记忆力逐渐衰退。</span></span></button><button class="opt" data-q="51" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">They can benefit from late-in-life learning.</span><span class="oz">他们可以从晚年学习中获益。</span></span></button><button class="opt" data-q="51" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">They are likely to have mental health issues.</span><span class="oz">他们很可能出现心理健康问题。</span></span></button></div><button class="jump" data-go="p2-1" data-qnum="51">定位 P1</button></div><div class="q" data-q="52"><div class="qs"><span class="qn">52.</span><span class="qse">What can we conclude from Geoffrey Raisman&#x27;s finding?</span></div><div class="qsz">我们能从Geoffrey Raisman的发现中得出什么结论?</div><div class="opts"><button class="opt" data-q="52" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Brain damage seriously hinders one&#x27;s learning.</span><span class="oz">大脑损伤严重阻碍人的学习。</span></span></button><button class="opt" data-q="52" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Brain power weakens slower than we imagine.</span><span class="oz">脑力衰退的速度比我们想象的要慢。</span></span></button><button class="opt" data-q="52" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">Brains can refresh and improve with learning.</span><span class="oz">大脑可以通过学习得到更新和改善。</span></span></button><button class="opt" data-q="52" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Brains forge connections under new conditions.</span><span class="oz">大脑在新条件下建立连接。</span></span></button></div><button class="jump" data-go="p2-2" data-qnum="52">定位 P2</button></div><div class="q" data-q="53"><div class="qs"><span class="qn">53.</span><span class="qse">What is one thing that helps maintain the health of our brain even as it shrinks?</span></div><div class="qsz">即使大脑萎缩,有什么能帮助维持大脑健康?</div><div class="opts"><button class="opt" data-q="53" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Doing daily routines by conventional means.</span><span class="oz">用传统方式进行日常事务。</span></span></button><button class="opt" data-q="53" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Avoiding worrying about our mental durability.</span><span class="oz">避免担心我们的心智持久性。</span></span></button><button class="opt" data-q="53" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">Imitating old dogs&#x27; way of learning new tricks.</span><span class="oz">模仿老狗学新把戏的方式。</span></span></button><button class="opt" data-q="53" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Approaching everyday tasks in novel ways.</span><span class="oz">用新颖的方式处理日常任务。</span></span></button></div><button class="jump" data-go="p2-5" data-qnum="53">定位 P5</button></div><div class="q" data-q="54"><div class="qs"><span class="qn">54.</span><span class="qse">What does the author say can contribute to the improvement of brain function?</span></div><div class="qsz">作者认为什么有助于改善大脑功能?</div><div class="opts"><button class="opt" data-q="54" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Being curious and desiring knowledge.</span><span class="oz">保持好奇心和求知欲。</span></span></button><button class="opt" data-q="54" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Being eager to pass brain tests at an old age.</span><span class="oz">渴望在年老时通过大脑测试。</span></span></button><button class="opt" data-q="54" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">Rising to life&#x27;s challenges and avoiding risks.</span><span class="oz">迎接生活挑战并避免风险。</span></span></button><button class="opt" data-q="54" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Boosting immunity to serious mental diseases.</span><span class="oz">增强对严重精神疾病的免疫力。</span></span></button></div><button class="jump" data-go="p2-6" data-qnum="54">定位 P6</button></div><div class="q" data-q="55"><div class="qs"><span class="qn">55.</span><span class="qse">What is the finding of the 2012 study in the journal Psychology and Aging?</span></div><div class="qsz">2012年《心理学与衰老》期刊研究的发现是什么?</div><div class="opts"><button class="opt" data-q="55" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Wishing to solve puzzles enhances one&#x27;s reasoning power.</span><span class="oz">想要解决谜题能增强人的推理能力。</span></span></button><button class="opt" data-q="55" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Playing number games unexpectedly stimulates one&#x27;s memory.</span><span class="oz">玩数字游戏会意外刺激人的记忆力。</span></span></button><button class="opt" data-q="55" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">Desiring new experiences can help to renovate the brain.</span><span class="oz">渴望新体验有助于更新大脑。</span></span></button><button class="opt" data-q="55" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Learning new tricks should not be confined to old dogs only.</span><span class="oz">学习新把戏不应该只限于老狗。</span></span></button></div><button class="jump" data-go="p2-6" data-qnum="55">定位 P6</button></div>
     <div class="subrow"><button class="submit" data-sec="p2">提交答案 · 自动判分</button>
-      <span class="score" id="sc-p2"></span></div>
+      <span class="score" id="sc-p2"></span>
+      <button class="syncbtn" id="sy-p2" style="display:none">☁ 同步回执</button></div>
+    <p class="syncst" id="sst-p2"></p>
   </div>
 
   <div class="panel" id="p2-ana">
@@ -215,7 +209,13 @@ tr:last-child td{border-bottom:0}
 
 <script>
 var ANS = {"c-1": {"46": "C", "47": "B", "48": "D", "49": "A", "50": "D"}, "c-2": {"51": "B", "52": "C", "53": "D", "54": "A", "55": "C"}};
+var TOPIC = "cet4-l1nks314-da7731fc";
+var REPORT = null;
 var picked = {}, judged = {};
+function todayStr(){
+  var d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
 
 document.querySelectorAll('.tab').forEach(function(t){
   t.addEventListener('click', function(){
@@ -270,7 +270,38 @@ document.querySelectorAll('.submit').forEach(function(btn){
     var sc = document.getElementById('sc-' + sec);
     sc.textContent = '得分 ' + right + '/' + total + '  ·  正确率 ' + Math.round(right/total*100) + '%';
     sc.style.color = right/total >= 0.6 ? 'var(--green)' : 'var(--red)';
+
+    // 生成回执
+    var wrongList = [];
+    box.querySelectorAll('.q').forEach(function(qd){
+      var q = qd.dataset.q, ans = null;
+      for (var k in ANS){ if (ANS[k][q]) ans = ANS[k][q]; }
+      if (picked[q] !== ans) wrongList.push(q);
+    });
+    REPORT = {
+      t: "rep", kind: "reading", date: todayStr(), page: TITLE,
+      score: right + "/" + total, pct: Math.round(right/total*100),
+      wrong: wrongList
+    };
+    var sb = document.getElementById('sy-' + sec);
+    if (sb) sb.style.display = 'inline-block';
   });
+});
+
+// ── 同步到云端 ──
+function syncReport(){
+  if (!REPORT) return;
+  var st = document.getElementById('sst-' + document.querySelector('.syncbtn').id.slice(3));
+  fetch('https://ntfy.sh/' + TOPIC, {method:'POST', body: JSON.stringify(REPORT)})
+    .then(function(r){
+      if (st) st.textContent = r.ok ? '✓ 已同步（教练能看到这条记录）' : '同步失败，请截图发到对话';
+      if (!r.ok && st) st.style.color = 'var(--red)';
+    })
+    .catch(function(){ if (st){ st.textContent = '离线，请截图发到对话'; st.style.color = 'var(--red)'; } });
+}
+
+document.querySelectorAll('.syncbtn').forEach(function(b){
+  b.addEventListener('click', function(){ syncReport(); });
 });
 
 document.querySelectorAll('.jump').forEach(function(b){

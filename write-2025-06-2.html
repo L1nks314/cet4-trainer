@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>写作 · 2025年6月 第2套</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--soft:#fafbfc;--grey:#f2f3f5;--line:#e5e8ec;--line2:#eff1f4;
+ --track:#e8ebef;--txt:#1b1e23;--txt2:#2b303a;--txt3:#3d434e;--sub:#6b7280;--sub2:#a8b0bb;
+ --blue:#2563eb;--blue-soft:#eef3ff;--green:#0d8a52;--green-soft:#e8f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;
+ --amber-line:#f0dfb8;--green-line:#bfe3cf;--purple:#7c5cff;--purple-soft:#f2eeff;
+ --blue-ink:#123a75;--green-ink:#0d5232;--amber-ink:#7a5b00;--red-ink:#8a2318;--purple-ink:#3f2a7a;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05)}
+@media (prefers-color-scheme: dark){:root{--bg:#101216;--card:#191c21;--soft:#20242a;
+ --grey:#22262c;--line:#2c313a;--line2:#242930;--track:#2a2f38;--txt:#e9ebee;--txt2:#d7dade;
+ --txt3:#c3c8cf;--sub:#98a0aa;--sub2:#6b7280;--blue:#6b96fb;--blue-soft:#1a2742;
+ --green:#41d18f;--green-soft:#14301f;--red:#ef7261;--red-soft:#371d19;--amber:#e0a53f;
+ --amber-soft:#312713;--amber-line:#4a3a1c;--green-line:#1f4530;--purple:#a98cff;
+ --purple-soft:#241c3d;--blue-ink:#a9c6ff;--green-ink:#7fe0b0;--amber-ink:#f0c469;
+ --red-ink:#ffa79a;--purple-ink:#c3a9ff;--shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28);
+ color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:20px;margin:2px 0 14px;font-weight:800;padding-left:12px;
+ border-left:4px solid var(--blue);line-height:1.25;letter-spacing:.2px}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:12px;flex-wrap:wrap}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.hint{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 12px}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.72;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.big{display:flex;gap:9px;margin-bottom:12px}
+.big div{flex:1;background:var(--blue-soft);border-radius:10px;padding:10px 8px;text-align:center}
+.big b{display:block;font-size:18px;font-weight:800;color:var(--blue)}
+.big span{font-size:11.5px;color:var(--sub)}
+.prompt{font-size:14.6px;line-height:1.9;background:var(--soft);border-radius:11px;
+ padding:14px;border:1px solid var(--line);text-align:justify}
+.prompt .lbl{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue);
+ color:#fff;border-radius:6px;padding:2px 9px;margin-bottom:9px}
+.zh{font-size:15px;line-height:2;text-align:justify;letter-spacing:.2px}
+.en{font-size:14.6px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.essay p{margin:0 0 12px}
+.essay p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;
+ background:var(--card)}
+details>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:14.4px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details[open]>summary::before{content:"▾"}
+details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
+.sent{border-bottom:1px solid var(--line2);padding:13px 0}
+.sent:last-child{border-bottom:0}
+.snum{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue-soft);
+ color:var(--blue);border-radius:6px;padding:2px 9px;margin-bottom:7px}
+.szh{font-size:15px;line-height:1.9;margin:0 0 9px}
+.sen{font-size:14.6px;line-height:1.85;margin:0;padding:10px 12px;background:var(--green-soft);
+ border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
+.strat{display:inline-block;font-size:12px;color:var(--purple);
+ background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
+.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
+.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+ font-size:12px;white-space:nowrap}
+.chunk .v{flex:1;color:var(--txt2)}
+.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.row:last-child{border-bottom:0}
+.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
+.row .c{flex:1;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab:last-child{border-bottom:0}
+.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
+.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
+ line-height:1.78;color:var(--red-ink);margin-top:10px}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
+ border-radius:18px;padding:5px 13px;color:var(--sub)}
+.flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+</style>
+</head>
+<body>
+
+<a class="back" href="writing.html">← 返回写作与翻译</a>
+<h1>写作 · 2025年6月 第2套</h1>
+
+<div class="card">
+  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part I</span></div>
+  <div class="big">
+    <div><b>156</b><span>范文词数</span></div>
+    <div><b>3</b><span>段</span></div>
+    <div><b>30</b><span>分钟</span></div>
+  </div>
+  <div class="tip b">四级写作的命中点是<b>切题 + 结构清楚 + 语法不出错</b>。
+  用三段式（引入表态 / 主体展开 / 回扣收尾），比追求华丽句式稳得多。</div>
+</div>
+
+<div class="card">
+  <div class="chead"><h2>题目</h2><span class="cmeta">Directions</span></div>
+  <div class="prompt"><span class="lbl">Directions</span><br>Directions: Suppose your university is conducting a survey to collect students&#x27; opinions on the appropriate use of AI technology in assisting learning. You are now to write an essay to express your view. You will have 30 minutes for the task. You should write at least 120 words but no more than 180 words.</div>
+  <div class="tip a"><b>先自己在纸上写完，再看下面的范文。</b>写作的提分全靠"写—对照—改"这个循环，
+  光看范文不动笔，等于没练。</div>
+</div>
+
+<div class="card">
+  <h2>审题：这题到底要写什么</h2>
+  <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>就AI合理辅助学习表明看法的议论文 题目要求 write an essay to express your view，谈的对象被限定在 the appropriate use of AI technology in assisting learning。所以本题不是泛泛评AI好坏，而是要对「在学习中合理/适度地用AI」这一件事亮出并论证你的立场——题眼是 appropriate（合理），必须体现出「用得对/有边界」这层意思。</div></div>
+  <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>赞同在合理边界内用AI辅助学习 中心立场：我支持 appropriate use of AI technology——把AI当作学习的得力助手而非替代思考的捷径，用得合理它就利大于弊。这一句既回应了 survey 的语境，又扣住了 appropriate 这个题眼。</div></div>
+  <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>好处一：提升学习效率 AI能即时答疑、批改语法、快速查找资料，把过去耗时的环节大大压缩，让学习更高效。 好处二：提供个性化辅导 AI能按学生自己的节奏和薄弱点调整讲解，相当于一个随叫随到、因人而异的私人辅导。 边界：警惕过度依赖 若把思考完全交给AI，学生自身的分析能力会逐渐退化，因此必须限定在「合理使用」的边界内，这正是收束全文、扣回题眼的一笔。</div></div>
+  <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 表态段：亮立场＋点价值 回应 survey 语境，一句话表明赞同在合理边界内用AI辅助学习，并点出它对学习是有价值的助手。 第 2 段 论证段：讲好处＋让步谈风险 用效率与个性化两条具体理由撑起支持立场，再让步指出过度依赖的风险，体现辩证。 第 3 段 收束段：回扣题眼给边界 回到 appropriate，明确把AI当助手而非答案机器的使用边界，呼应开头、收拢全文。</div></div>
+</div>
+
+<div class="card">
+  <h2>谋篇：每段写什么（3 段）</h2>
+  <p class="hint">这是可以直接套用的框架 —— 换一道题，功能不变、内容替换。</p>
+  <div class="row"><span class="tag">第1段</span><div class="c"><b>亮明支持合理用AI并接住调查背景 表态：合理使用时AI是学习的得力助手、而非替代努力的捷径；再接一句——既然学校在 conducting a survey to collect students&#x27; opinions，我愿表达对以理性、平衡方式拥抱AI的支持</b>亮明观点 In my view, ___, when used ___, is ___ rather than ___.（用 rather than 一次性摆出「是什么/不是什么」，立场更鲜明） 回应语境 Since ___ is surveying students on this issue, I would like to voice my support for ___.（把题目给的背景接进来，扣住「回应反馈」）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>效率与个性化两条好处＋过度依赖的风险 理由一效率：AI能即时讲清一个绕人的语法点、帮我检查作文错误、几分钟找到过去要泡图书馆才有的资料；理由二个性化：AI按我的节奏和弱点调整讲解；让步：但过度依赖是真实危险，若让AI代替思考，自身分析力会慢慢退化</b>分点铺理由 First, ___. Second, ___.（用序数词把两条理由切开，结构一目了然） 举例落地 A ___ can ___, ___, or ___.（把抽象好处换成一串能想象的具体动作，避免空喊） 让步转折 Admittedly, however, ___ is a real danger; if ___, ___ will ___.（先退一步再点风险，体现辩证、扣住「合理」）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>点明关键在合理并划定使用边界 回扣 appropriate 的用法：关键在于「合理」——把AI当作引导和启发的助手，而不是直接给现成答案的机器；在这条边界之内使用，AI才能真正让学习变得更聪明</b>回扣题眼 Therefore, the key lies in ___.（用 Therefore 收束并把落点钉回题目核心词） 收束升华 Used within this boundary, ___ can truly ___.（用条件状语划出「合理」边界后再给正面结论）</div></div>
+</div>
+
+<div class="card">
+  <h2>参考范文（156 词）</h2>
+  <details><summary>展开范文（自己写完之后再看）</summary>
+    <div class="dbody">
+      <div class="essay"><p class='en'>In my view, AI technology, when used appropriately, is a valuable ally in learning rather than a shortcut that replaces genuine effort. Since our university is surveying students on this issue, I would like to voice my support for embracing AI in a sensible, balanced way.</p><p class='en'>There are solid reasons for this position. First, AI tools raise learning efficiency: a chatbot can explain a confusing grammar point instantly, check my essay for mistakes, or gather background material that once took hours in the library. Second, AI offers personalized tutoring, adjusting its explanations to my own pace and weak spots. Admittedly, however, over-reliance is a real danger; if students let AI think for them, their own analytical skills will gradually wither.</p><p class='en'>Therefore, the key lies in &quot;appropriate&quot; use. We should treat AI as an assistant that guides and inspires, not a machine that hands us ready-made answers. Used within this boundary, AI can truly make learning smarter.</p></div>
+      <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>在我看来，只要使用得当，人工智能技术就是学习中的得力伙伴，而不是替代真正努力的捷径。既然我们学校正就这一问题向学生征集意见，我愿表达自己的支持——以理性、平衡的方式拥抱AI。</div>
+    </div></details>
+  <div class="tip a">看范文时不要「读」，要<b>拆</b>：每段第一句做什么？观点句和理由句怎么连？
+  结尾怎么回扣题目？</div>
+</div>
+
+<div class="card">
+  <h2>逐段解析（3 段）</h2>
+  <div class="row"><span class="tag">第1段</span><div class="c"><b>两句完成表态与扣题 </b>首句 In my view... rather than a shortcut 用「亮明观点」句架一句站队，第二句 Since our university is surveying students... 用「回应语境」句架接住调查背景，落实了表态段「亮立场＋点价值」的功能。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>分点举例加让步显辩证 </b>There are solid reasons 领起后，First / Second 切出效率与个性化两条理由，explain... check... or gather 用「举例落地」把好处具象化；Admittedly, however, over-reliance is a real danger 用「让步转折」补上风险，正扣 appropriate 的边界感。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>回扣题眼并划边界收口 </b>Therefore, the key lies in &quot;appropriate&quot; use 用「回扣题眼」把落点钉回核心词，an assistant... not a machine 给出具体边界，末句 Used within this boundary... 升华作结，与开头立场首尾呼应。</div></div>
+</div>
+
+<div class="card">
+  <h2>自检避坑</h2>
+  <div class="pit">典型低分写法 · 反面示例与改法 写成AI利弊大讨论 反面示例：「AI has many advantages and disadvantages. It is fast and convenient, but it can also be wrong and make people lazy.」——只罗列利弊、没有立场也没提「合理使用」，跑题。改法：开门见山表态，如「I support using AI in learning as long as it stays within reasonable limits.」，全程扣住「合理」。 堆大词无实例 反面示例：「AI is very important and useful. It can bring many benefits to our study and improve our ability greatly.」——全是空泛评价、没有一个实例。改法：换成具体场景，如「AI can check my essay for grammar mistakes and explain a confusing point in seconds.」 误加称呼落款 反面示例：开头写「Dear university, I want to say...」结尾写「Yours sincerely, Li Ming」。题目要的是 write an essay to express your view，是议论文不需书信格式。改法：去掉称呼与落款，用「In my view, ...」这样的表态句直接进入正文。 中式逐字直译 反面示例：「AI can help us open our eyes and let our study become more easy.」（open our eyes、become more easy 均为直译且语法有误）。改法：「AI can broaden our horizons and make studying easier.」</div>
+  <table style="margin-top:14px">
+    <tr><th>自查项</th><th>怎么查</th></tr>
+    <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+    <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+    <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+    <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+  </table>
+</div>
+
+</body>
+</html>

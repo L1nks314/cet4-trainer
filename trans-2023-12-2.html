@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>汉译英 · 2023年12月 第2套</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--soft:#fafbfc;--grey:#f2f3f5;--line:#e5e8ec;--line2:#eff1f4;
+ --track:#e8ebef;--txt:#1b1e23;--txt2:#2b303a;--txt3:#3d434e;--sub:#6b7280;--sub2:#a8b0bb;
+ --blue:#2563eb;--blue-soft:#eef3ff;--green:#0d8a52;--green-soft:#e8f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;
+ --amber-line:#f0dfb8;--green-line:#bfe3cf;--purple:#7c5cff;--purple-soft:#f2eeff;
+ --blue-ink:#123a75;--green-ink:#0d5232;--amber-ink:#7a5b00;--red-ink:#8a2318;--purple-ink:#3f2a7a;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05)}
+@media (prefers-color-scheme: dark){:root{--bg:#101216;--card:#191c21;--soft:#20242a;
+ --grey:#22262c;--line:#2c313a;--line2:#242930;--track:#2a2f38;--txt:#e9ebee;--txt2:#d7dade;
+ --txt3:#c3c8cf;--sub:#98a0aa;--sub2:#6b7280;--blue:#6b96fb;--blue-soft:#1a2742;
+ --green:#41d18f;--green-soft:#14301f;--red:#ef7261;--red-soft:#371d19;--amber:#e0a53f;
+ --amber-soft:#312713;--amber-line:#4a3a1c;--green-line:#1f4530;--purple:#a98cff;
+ --purple-soft:#241c3d;--blue-ink:#a9c6ff;--green-ink:#7fe0b0;--amber-ink:#f0c469;
+ --red-ink:#ffa79a;--purple-ink:#c3a9ff;--shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28);
+ color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:20px;margin:2px 0 14px;font-weight:800;padding-left:12px;
+ border-left:4px solid var(--blue);line-height:1.25;letter-spacing:.2px}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:12px;flex-wrap:wrap}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.hint{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 12px}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.72;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.big{display:flex;gap:9px;margin-bottom:12px}
+.big div{flex:1;background:var(--blue-soft);border-radius:10px;padding:10px 8px;text-align:center}
+.big b{display:block;font-size:18px;font-weight:800;color:var(--blue)}
+.big span{font-size:11.5px;color:var(--sub)}
+.prompt{font-size:14.6px;line-height:1.9;background:var(--soft);border-radius:11px;
+ padding:14px;border:1px solid var(--line);text-align:justify}
+.prompt .lbl{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue);
+ color:#fff;border-radius:6px;padding:2px 9px;margin-bottom:9px}
+.zh{font-size:15px;line-height:2;text-align:justify;letter-spacing:.2px}
+.en{font-size:14.6px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.essay p{margin:0 0 12px}
+.essay p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;
+ background:var(--card)}
+details>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:14.4px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details[open]>summary::before{content:"▾"}
+details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
+.sent{border-bottom:1px solid var(--line2);padding:13px 0}
+.sent:last-child{border-bottom:0}
+.snum{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue-soft);
+ color:var(--blue);border-radius:6px;padding:2px 9px;margin-bottom:7px}
+.szh{font-size:15px;line-height:1.9;margin:0 0 9px}
+.sen{font-size:14.6px;line-height:1.85;margin:0;padding:10px 12px;background:var(--green-soft);
+ border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
+.strat{display:inline-block;font-size:12px;color:var(--purple);
+ background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
+.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
+.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+ font-size:12px;white-space:nowrap}
+.chunk .v{flex:1;color:var(--txt2)}
+.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.row:last-child{border-bottom:0}
+.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
+.row .c{flex:1;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab:last-child{border-bottom:0}
+.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
+.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
+ line-height:1.78;color:var(--red-ink);margin-top:10px}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
+ border-radius:18px;padding:5px 13px;color:var(--sub)}
+.flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+</style>
+</head>
+<body>
+
+<a class="back" href="writing.html">← 返回写作与翻译</a>
+<h1>汉译英 · 2023年12月 第2套</h1>
+
+<div class="card">
+  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part IV</span></div>
+  <div class="big">
+    <div><b>156</b><span>中文字数</span></div>
+    <div><b>5</b><span>句</span></div>
+    <div><b>30</b><span>分钟</span></div>
+  </div>
+  <div class="tip b">翻译评分只看四件事：<b>意思说全、语法没错、表达通顺、用词准确</b>。
+  翻得漂亮不加分，翻错了狠狠扣 —— 所以目标是<b>不出错</b>，不是出彩。</div>
+</div>
+
+<div class="card">
+  <div class="chead"><h2>中文原文</h2><span class="cmeta">5 句</span></div>
+  <div class="tip b">【主旨】 改革开放后中国人饮食变化 本段是一篇典型的四级社会变化类介绍文，主线是 改革开放以来，中国人的饮食(diet)发生了显著变化，随后按&quot;过去—如今—随着生活水平提升—因此&quot;的顺序，客观陈述饮食从&quot;吃得饱&quot;到&quot;吃得营养健康&quot;的演变。语体是中性、客观的现状叙述，用词不必华丽，但要准确、连贯。 【时态】 一般现在时 全篇主体在讲&quot;中国现在的饮食状况与人们如今的态度&quot;这一持续到当下的事实，如 如今中国经济快速发展 与 目前市场上推出的低脂、低糖、有机食品受到人们的普遍欢迎，故主时态用一般现在时。只有专讲&quot;过去&quot;那一句（过去由于经济落后）才偏离到一般过去时，开篇&quot;发生了显著变化&quot;这一已完成的结果可用现在完成时。 【译法】 改革开放 改革开放 是有约定俗成英译的政治经济术语，统一译作 the reform and opening-up；&quot;改革开放以来&quot;用 since the reform and opening-up，全篇只用这一种译法，不要一会儿 reform and open，一会儿 the open policy。 饮食 饮食(diet) 原文已给出括注 diet，统一用 diet 这个名词；它兼指&quot;吃的东西&quot;和&quot;饮食习惯&quot;，全篇凡指&quot;饮食&quot;都用 diet，避免和 food（食品）混用导致前后不一致。 食品 食品 反复出现（食品种类、食品不仅更加丰富），统一译作 food（不可数，作&quot;食物&quot;总称时不加 s），与上面的 diet 区分开：diet 指饮食结构/习惯，food 指具体食物。 有机食品 有机食品 译作 organic food，与 low-fat、low-sugar 并列时统一用 &quot;low-fat, low-sugar and organic food&quot; 的形容词修饰结构，不要写成 organic foods 或 the organic。</div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    <span class="zh">改革开放以来，中国人的饮食(diet)发生了显著变化。过去由于经济落后，食品种类有限、数量不足 ，人们仅仅满足于吃得饱。如今中国经济快速发展，食品不仅更加丰富多样，质量也大幅提高。随着生活水平不断提升，人们对饮食的要求越来越高，更加注重吃得营养健康。因此，目前市场上推出的低脂、低糖、有机食品受到人们的普遍欢迎。</span></div>
+  <div class="tip a"><b>先自己翻一遍再看下面。</b>用纸笔或另一个文档写，写完再逐句对照 ——
+  直接看答案等于没练。</div>
+</div>
+
+<div class="card">
+  <h2>怎么用这份包</h2>
+  <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
+    <span>③ 抄下错处</span><span>④ 整篇通读</span></div>
+  <div class="tip g">第二步是全流程最有价值的一步：<b>看你漏译了什么、时态用错了哪里</b>。
+  每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
+</div>
+
+<div class="card">
+  <h2>逐句对照（5 句）</h2>
+  <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
+  <div class="sent"><span class="snum">第 1 句</span><p class="szh">改革开放以来，中国人的饮食(diet)发生了显著变化。</p><p class="sen">Since the reform and opening-up, the diet of Chinese people has undergone significant changes.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">&quot;自改革开放以来……发生了变化&quot;是从过去持续到现在的结果，用现在完成时 has changed / has undergone，这与 since 引导的时间状语正好搭配；这是本篇唯一适合用完成时的地方，不必硬套全篇基调的一般现在时。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语 the diet（单数）或 Chinese people&#x27;s diet 都是单数，谓语用 has，不要写成 have。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">&quot;显著变化&quot;指多方面变化，change 用复数 changes（undergo significant changes），或用 changed significantly 的动词写法。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">过去由于经济落后，食品种类有限、数量不足 ，人们仅仅满足于吃得饱。</p><p class="sen">In the past, due to the backward economy, food was limited in variety and insufficient in quantity, so people were content with merely having enough to eat.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">本句明确讲 过去，偏离全篇一般现在时基调，整句用一般过去时：was limited、was insufficient、were content。这是全篇唯一整句用过去时的地方，与下一句&quot;如今&quot;的现在时形成今昔对比。</span></div><div class="chunk"><span class="k">单复数与主谓一致</span><span class="v">food 作&quot;食物&quot;总称不可数，谓语用 was；people 是复数概念，谓语用 were content（不是 was）。</span></div><div class="chunk"><span class="k">短语搭配</span><span class="v">&quot;满足于&quot;用 be content with / be satisfied with；&quot;仅仅&quot;用 merely / only 修饰；&quot;吃得饱&quot;译 having enough to eat 或 being able to eat their fill，不要直译成 eat full。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">如今中国经济快速发展，食品不仅更加丰富多样，质量也大幅提高。</p><p class="sen">Today, with China&#x27;s economy developing rapidly, food is not only more abundant and diverse but also greatly improved in quality.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调用一般现在时：develops / is developing、is not only... but also...，讲的是当下持续的状况。</span></div><div class="chunk"><span class="k">程度词</span><span class="v">&quot;更加&quot;用比较级 more abundant / more diverse；&quot;大幅提高&quot;用 greatly / significantly improved，程度副词要跟上，体现&quot;大幅&quot;。</span></div><div class="chunk"><span class="k">单复数与冠词</span><span class="v">food 作总称不可数、不加冠词不加 s；China&#x27;s economy 特指中国经济，用所有格或 the economy of China。</span></div></div><div class="sent"><span class="snum">第 4 句</span><p class="szh">随着生活水平不断提升，人们对饮食的要求越来越高，更加注重吃得营养健康。</p><p class="sen">As living standards keep rising, people have increasingly higher demands for their diet and pay more attention to eating in a nutritious and healthy way.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调一般现在时：rise / keep rising、have、pay，讲的是当下持续趋势。</span></div><div class="chunk"><span class="k">介词搭配</span><span class="v">&quot;对……的要求&quot;用 demands for；&quot;注重&quot;用 pay attention to / attach importance to，介词 to 后接名词或动名词，不接原形。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">living standards 习惯用复数；demands 表多方面要求用复数；their diet 用代词 their 承接 people，diet 不可数不加 s。</span></div><div class="chunk"><span class="k">副词形式</span><span class="v">&quot;营养健康&quot;修饰&quot;吃&quot;这个动作，用副词 nutritiously and healthily，或用介词短语 in a nutritious and healthy way，不要用形容词直接修饰动词。</span></div></div><div class="sent"><span class="snum">第 5 句</span><p class="szh">因此，目前市场上推出的低脂、低糖、有机食品受到人们的普遍欢迎。</p><p class="sen">Therefore, the low-fat, low-sugar and organic food launched on the market today is widely welcomed by people.</p><div class="strat">主语策略：转被动</div><div class="chunk"><span class="k">时态语态</span><span class="v">回指全篇基调一般现在时 + 被动语态：is widely welcomed / are generally popular，讲当下现状。</span></div><div class="chunk"><span class="k">单复数与主谓一致</span><span class="v">low-fat, low-sugar and organic food 作总称视为不可数单数，谓语用 is；若理解为&quot;各类食品&quot;用 foods/products 则谓语用 are——本句两种处理都行，但主谓单复数务必一致。</span></div><div class="chunk"><span class="k">短语搭配</span><span class="v">&quot;受到普遍欢迎&quot;用 be widely welcomed / be generally popular among people；&quot;市场上&quot;用 on the market；&quot;因此&quot;用 therefore / as a result 作过渡。</span></div></div>
+</div>
+
+<div class="card">
+  <h2>整篇参考译文</h2>
+  <details><summary>展开整篇（自己翻完再看）</summary>
+    <div class="dbody"><p class="en">Since the reform and opening-up, the diet of Chinese people has undergone significant changes. In the past, due to the backward economy, food was limited in variety and insufficient in quantity, so people were content with merely having enough to eat. Today, with China&#x27;s economy developing rapidly, food is not only more abundant and diverse but also greatly improved in quality. As living standards keep rising, people have increasingly higher demands for their diet and pay more attention to eating in a nutritious and healthy way. Therefore, the low-fat, low-sugar and organic food launched on the market today is widely welcomed by people. 【衔接】 第2句与第3句：今昔对比补对照 第2句讲 过去、第3句讲 如今，是鲜明的今昔对照。第3句句首已用 Today 接住时间转换；可进一步在第3句开头用 Today / Nowadays 与第2句的 In the past 形成明确对照，时态也由过去时切回现在时，让读者一眼看出&quot;过去如何—现在如何&quot;的转折。 第3、4句：避免 food / people 主语重复生硬 第3句主语是 food、第4句主语是 people，两句视角自然切换（食物变好—人的要求变高），衔接顺畅，无需额外关联词；但要确保 diet 与 food 的用词区分一致，第4句承接&quot;饮食&quot;统一用 diet，不要又换回 food。 第4句与第5句：因果用 Therefore 显化 因此 是明确的因果信号，第5句句首译出 Therefore / As a result，把&quot;人们越来越注重营养健康&quot;（因）与&quot;低脂低糖有机食品受欢迎&quot;（果）的逻辑显化出来，避免两句各说各的、读着断裂。</p></div></details>
+  <div class="tip a">整篇译文是用来<b>感受节奏和衔接</b>的，不是用来背的。
+  重点看它怎么处理句间连接、怎么避免重复用词。</div>
+</div>
+
+<div class="card">
+  <h2>句间衔接（3 处）</h2>
+  <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
+  <div class="row"><span class="tag">衔接</span><div class="c"><b>第2句与第3句：今昔对比补对照</b>第2句讲 过去、第3句讲 如今，是鲜明的今昔对照。第3句句首已用 Today 接住时间转换；可进一步在第3句开头用 Today / Nowadays 与第2句的 In the past 形成明确对照，时态也由过去时切回现在时，让读者一眼看出&quot;过去如何—现在如何&quot;的转折。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第3、4句：避免 food / people 主语重复生硬</b>第3句主语是 food、第4句主语是 people，两句视角自然切换（食物变好—人的要求变高），衔接顺畅，无需额外关联词；但要确保 diet 与 food 的用词区分一致，第4句承接&quot;饮食&quot;统一用 diet，不要又换回 food。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第4句与第5句：因果用 Therefore 显化</b>因此 是明确的因果信号，第5句句首译出 Therefore / As a result，把&quot;人们越来越注重营养健康&quot;（因）与&quot;低脂低糖有机食品受欢迎&quot;（果）的逻辑显化出来，避免两句各说各的、读着断裂。</div></div>
+</div>
+
+<div class="card">
+  <h2>译法要点（20 条）</h2>
+  <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
+  <div class="vocab"><div class="w">改革开放</div><div class="d">改革开放 是有约定俗成英译的政治经济术语，统一译作 the reform and opening-up；&quot;改革开放以来&quot;用 since the reform and opening-up，全篇只用这一种译法，不要一会儿 reform and open，一会儿 the open policy。</div></div><div class="vocab"><div class="w">饮食</div><div class="d">饮食(diet) 原文已给出括注 diet，统一用 diet 这个名词；它兼指&quot;吃的东西&quot;和&quot;饮食习惯&quot;，全篇凡指&quot;饮食&quot;都用 diet，避免和 food（食品）混用导致前后不一致。</div></div><div class="vocab"><div class="w">食品</div><div class="d">食品 反复出现（食品种类、食品不仅更加丰富），统一译作 food（不可数，作&quot;食物&quot;总称时不加 s），与上面的 diet 区分开：diet 指饮食结构/习惯，food 指具体食物。</div></div><div class="vocab"><div class="w">有机食品</div><div class="d">有机食品 译作 organic food，与 low-fat、low-sugar 并列时统一用 &quot;low-fat, low-sugar and organic food&quot; 的形容词修饰结构，不要写成 organic foods 或 the organic。</div></div><div class="vocab"><div class="w">时态</div><div class="d">&quot;自改革开放以来……发生了变化&quot;是从过去持续到现在的结果，用现在完成时 has changed / has undergone，这与 since 引导的时间状语正好搭配；这是本篇唯一适合用完成时的地方，不必硬套全篇基调的一般现在时。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 the diet（单数）或 Chinese people&#x27;s diet 都是单数，谓语用 has，不要写成 have。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;显著变化&quot;指多方面变化，change 用复数 changes（undergo significant changes），或用 changed significantly 的动词写法。</div></div><div class="vocab"><div class="w">时态</div><div class="d">本句明确讲 过去，偏离全篇一般现在时基调，整句用一般过去时：was limited、was insufficient、were content。这是全篇唯一整句用过去时的地方，与下一句&quot;如今&quot;的现在时形成今昔对比。</div></div><div class="vocab"><div class="w">单复数与主谓一致</div><div class="d">food 作&quot;食物&quot;总称不可数，谓语用 was；people 是复数概念，谓语用 were content（不是 was）。</div></div><div class="vocab"><div class="w">短语搭配</div><div class="d">&quot;满足于&quot;用 be content with / be satisfied with；&quot;仅仅&quot;用 merely / only 修饰；&quot;吃得饱&quot;译 having enough to eat 或 being able to eat their fill，不要直译成 eat full。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调用一般现在时：develops / is developing、is not only... but also...，讲的是当下持续的状况。</div></div><div class="vocab"><div class="w">程度词</div><div class="d">&quot;更加&quot;用比较级 more abundant / more diverse；&quot;大幅提高&quot;用 greatly / significantly improved，程度副词要跟上，体现&quot;大幅&quot;。</div></div><div class="vocab"><div class="w">单复数与冠词</div><div class="d">food 作总称不可数、不加冠词不加 s；China&#x27;s economy 特指中国经济，用所有格或 the economy of China。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调一般现在时：rise / keep rising、have、pay，讲的是当下持续趋势。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">&quot;对……的要求&quot;用 demands for；&quot;注重&quot;用 pay attention to / attach importance to，介词 to 后接名词或动名词，不接原形。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">living standards 习惯用复数；demands 表多方面要求用复数；their diet 用代词 their 承接 people，diet 不可数不加 s。</div></div><div class="vocab"><div class="w">副词形式</div><div class="d">&quot;营养健康&quot;修饰&quot;吃&quot;这个动作，用副词 nutritiously and healthily，或用介词短语 in a nutritious and healthy way，不要用形容词直接修饰动词。</div></div><div class="vocab"><div class="w">时态语态</div><div class="d">回指全篇基调一般现在时 + 被动语态：is widely welcomed / are generally popular，讲当下现状。</div></div><div class="vocab"><div class="w">单复数与主谓一致</div><div class="d">low-fat, low-sugar and organic food 作总称视为不可数单数，谓语用 is；若理解为&quot;各类食品&quot;用 foods/products 则谓语用 are——本句两种处理都行，但主谓单复数务必一致。</div></div><div class="vocab"><div class="w">短语搭配</div><div class="d">&quot;受到普遍欢迎&quot;用 be widely welcomed / be generally popular among people；&quot;市场上&quot;用 on the market；&quot;因此&quot;用 therefore / as a result 作过渡。</div></div>
+</div>
+
+<div class="card">
+  <h2>翻译四句口诀</h2>
+  <table>
+    <tr><th>步骤</th><th>做什么</th></tr>
+    <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
+    <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
+    <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
+    <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 > 用词花</b></td></tr>
+  </table>
+</div>
+
+</body>
+</html>

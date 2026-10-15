@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>写作 · 2024年12月 第1套</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--soft:#fafbfc;--grey:#f2f3f5;--line:#e5e8ec;--line2:#eff1f4;
+ --track:#e8ebef;--txt:#1b1e23;--txt2:#2b303a;--txt3:#3d434e;--sub:#6b7280;--sub2:#a8b0bb;
+ --blue:#2563eb;--blue-soft:#eef3ff;--green:#0d8a52;--green-soft:#e8f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;
+ --amber-line:#f0dfb8;--green-line:#bfe3cf;--purple:#7c5cff;--purple-soft:#f2eeff;
+ --blue-ink:#123a75;--green-ink:#0d5232;--amber-ink:#7a5b00;--red-ink:#8a2318;--purple-ink:#3f2a7a;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05)}
+@media (prefers-color-scheme: dark){:root{--bg:#101216;--card:#191c21;--soft:#20242a;
+ --grey:#22262c;--line:#2c313a;--line2:#242930;--track:#2a2f38;--txt:#e9ebee;--txt2:#d7dade;
+ --txt3:#c3c8cf;--sub:#98a0aa;--sub2:#6b7280;--blue:#6b96fb;--blue-soft:#1a2742;
+ --green:#41d18f;--green-soft:#14301f;--red:#ef7261;--red-soft:#371d19;--amber:#e0a53f;
+ --amber-soft:#312713;--amber-line:#4a3a1c;--green-line:#1f4530;--purple:#a98cff;
+ --purple-soft:#241c3d;--blue-ink:#a9c6ff;--green-ink:#7fe0b0;--amber-ink:#f0c469;
+ --red-ink:#ffa79a;--purple-ink:#c3a9ff;--shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28);
+ color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:20px;margin:2px 0 14px;font-weight:800;padding-left:12px;
+ border-left:4px solid var(--blue);line-height:1.25;letter-spacing:.2px}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:12px;flex-wrap:wrap}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.hint{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 12px}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.72;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.big{display:flex;gap:9px;margin-bottom:12px}
+.big div{flex:1;background:var(--blue-soft);border-radius:10px;padding:10px 8px;text-align:center}
+.big b{display:block;font-size:18px;font-weight:800;color:var(--blue)}
+.big span{font-size:11.5px;color:var(--sub)}
+.prompt{font-size:14.6px;line-height:1.9;background:var(--soft);border-radius:11px;
+ padding:14px;border:1px solid var(--line);text-align:justify}
+.prompt .lbl{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue);
+ color:#fff;border-radius:6px;padding:2px 9px;margin-bottom:9px}
+.zh{font-size:15px;line-height:2;text-align:justify;letter-spacing:.2px}
+.en{font-size:14.6px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.essay p{margin:0 0 12px}
+.essay p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;
+ background:var(--card)}
+details>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:14.4px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details[open]>summary::before{content:"▾"}
+details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
+.sent{border-bottom:1px solid var(--line2);padding:13px 0}
+.sent:last-child{border-bottom:0}
+.snum{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue-soft);
+ color:var(--blue);border-radius:6px;padding:2px 9px;margin-bottom:7px}
+.szh{font-size:15px;line-height:1.9;margin:0 0 9px}
+.sen{font-size:14.6px;line-height:1.85;margin:0;padding:10px 12px;background:var(--green-soft);
+ border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
+.strat{display:inline-block;font-size:12px;color:var(--purple);
+ background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
+.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
+.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+ font-size:12px;white-space:nowrap}
+.chunk .v{flex:1;color:var(--txt2)}
+.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.row:last-child{border-bottom:0}
+.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
+.row .c{flex:1;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab:last-child{border-bottom:0}
+.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
+.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
+ line-height:1.78;color:var(--red-ink);margin-top:10px}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
+ border-radius:18px;padding:5px 13px;color:var(--sub)}
+.flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+</style>
+</head>
+<body>
+
+<a class="back" href="writing.html">← 返回写作与翻译</a>
+<h1>写作 · 2024年12月 第1套</h1>
+
+<div class="card">
+  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part I</span></div>
+  <div class="big">
+    <div><b>161</b><span>范文词数</span></div>
+    <div><b>4</b><span>段</span></div>
+    <div><b>30</b><span>分钟</span></div>
+  </div>
+  <div class="tip b">四级写作的命中点是<b>切题 + 结构清楚 + 语法不出错</b>。
+  用三段式（引入表态 / 主体展开 / 回扣收尾），比追求华丽句式稳得多。</div>
+</div>
+
+<div class="card">
+  <div class="chead"><h2>题目</h2><span class="cmeta">Directions</span></div>
+  <div class="prompt"><span class="lbl">Directions</span><br>Directions: Suppose the business school of your university is conducting a survey to collect students&#x27; opinions on the express delivery service industry in China. You are to write a response about its recent development and its impact on people&#x27;s lives. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.</div>
+  <div class="tip a"><b>先自己在纸上写完，再看下面的范文。</b>写作的提分全靠"写—对照—改"这个循环，
+  光看范文不动笔，等于没练。</div>
+</div>
+
+<div class="card">
+  <h2>审题：这题到底要写什么</h2>
+  <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>写快递业发展加影响 本题要写一篇就中国快递业发表看法的短文，任务是双份的：既要写 its recent development，又要写 its impact on people&#x27;s lives，两件事缺一不可，只写一件直接丢分。</div></div>
+  <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>发展迅猛且惠及生活 中心论点：中国快递业近年发展迅猛，并实实在在改善了人们的生活——正好一句话同时回应 its recent development and its impact on people&#x27;s lives。</div></div>
+  <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>发展：快、广、智能 第一个要点落实 its recent development：快递网络覆盖到偏远乡村、包裹次日达、智能快递柜与大数据分拣提高效率，用可验证的事实而非空泛形容词。 影响：网购便利加就业 第二个要点落实 its impact on people&#x27;s lives：人们足不出户就能网购、省时省力，行业还为社会创造大量就业岗位。 整体评价与展望 第三个要点用于收尾：把发展与影响合起来给一句整体评价，并展望它会让生活更便利。</div></div>
+  <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 应邀点题加亮中心 呼应 conducting a survey 的情境，表明受邀作答，并用一句话端出中心论点。 第 2 段 专写行业发展 集中笔墨落实 its recent development，用具体事实支撑。 第 3 段 专写生活影响 把镜头转到普通人身上，落实 its impact on people&#x27;s lives。 第 4 段 总评加展望 合并两任务重申中心，并以一句展望收尾。</div></div>
+</div>
+
+<div class="card">
+  <h2>谋篇：每段写什么（4 段）</h2>
+  <p class="hint">这是可以直接套用的框架 —— 换一道题，功能不变、内容替换。</p>
+  <div class="row"><span class="tag">第1段</span><div class="c"><b>受邀作答加总起发展快 点明应 the business school of your university 之邀，就 express delivery service industry in China 发表看法，并总起一句：这个行业近年发展惊人</b>应景表态句架 As a student invited to share my views in this survey, I am glad to comment on ...（填本题要评论的对象） 定语从句总起 ..., which has grown at an astonishing pace in recent years.（用 which 从句给对象补一句总评）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>网络广加次日达加智能分拣 落实 its recent development：网络覆盖到偏远乡村、包裹从一周变次日达、智能快递柜与大数据分拣提高效率</b>主题句领起 To begin with, the recent development of ... is remarkable.（一句话点出本段谈发展） 今昔对比举例 Parcels that once took a week can now be delivered overnight.（用 once ... now ... 做前后对比，让变化可感）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>网购便利加创造就业 落实 its impact on people&#x27;s lives：人们足不出户就能网购、省时省力，行业还为快递从业者创造大量岗位</b>递进过渡 More importantly, this development has reshaped our daily lives.（用 More importantly 把话题从发展递进到影响） 凭借状语引好处 With reliable next-day delivery, people can ...（用 With 引出条件，再说它带来的具体好处）</div></div><div class="row"><span class="tag">第4段</span><div class="c"><b>重申中心加展望更便利 收束：快递业发展快、给普通人带来实惠，并展望它会让生活更方便，呼应开头中心</b>总结提示语 In conclusion, ... has advanced rapidly and brought real benefits to ...（用 In conclusion 收束并合并两个要点） 表态展望 I firmly believe it will continue to make our lives even more convenient.（用 I firmly believe 加将来时展望收尾）</div></div>
+</div>
+
+<div class="card">
+  <h2>参考范文（161 词）</h2>
+  <details><summary>展开范文（自己写完之后再看）</summary>
+    <div class="dbody">
+      <div class="essay"><p class='en'>As a student invited to share my views in this survey, I am glad to comment on the express delivery industry in China, which has grown at an astonishing pace in recent years.</p><p class='en'>To begin with, the recent development of this industry is remarkable. Delivery networks now reach even remote villages, and parcels that once took a week can be delivered overnight. Smart lockers and automated sorting centres, powered by big data, have made the whole process faster and more accurate than ever before.</p><p class='en'>More importantly, this development has reshaped our daily lives. With reliable next-day delivery, people can shop online for almost anything, from food to books, without leaving home. Such convenience saves us time and energy, and it has also created millions of jobs for delivery workers across the country.</p><p class='en'>In conclusion, China&#x27;s express delivery industry has advanced rapidly and brought real benefits to ordinary people. I firmly believe it will continue to make our lives even more convenient.</p></div>
+      <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>作为一名受邀在本次调查中分享看法的学生，我很乐意就中国的快递行业谈谈自己的观点——这个行业近年来以惊人的速度成长。</div>
+    </div></details>
+  <div class="tip a">看范文时不要「读」，要<b>拆</b>：每段第一句做什么？观点句和理由句怎么连？
+  结尾怎么回扣题目？</div>
+</div>
+
+<div class="card">
+  <h2>逐段解析（4 段）</h2>
+  <div class="row"><span class="tag">第1段</span><div class="c"><b>开头即应景亮中心 </b>本段用 As a student invited to share my views in this survey 呼应调查情境、点明应答身份，再以 which has grown at an astonishing pace 的定语从句总起中心，落实了首段『应邀点题加亮中心』的功能。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>发展段有具体支撑 </b>本段用 parcels that once took a week can be delivered overnight 做今昔对比，又举 Smart lockers and automated sorting centres 的智能技术，把『发展』写得具体可信，而非空喊『很发达』。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>影响落到普通人 </b>本段以 More importantly 递进到影响，用 people can shop online for almost anything 写个人便利，再以 created millions of jobs 补社会层面的就业影响，从个人到社会有层次。</div></div><div class="row"><span class="tag">第4段</span><div class="c"><b>总评加展望收尾 </b>本段用 In conclusion 合并发展与影响重申中心，再以 I firmly believe it will continue 表态展望收尾，干净呼应开头。</div></div>
+</div>
+
+<div class="card">
+  <h2>自检避坑</h2>
+  <div class="pit">典型低分写法 · 反面示例与改法 空喊方便无支撑 反面示例（劣质写法）：Express delivery is very fast and very convenient. It is very good for us and makes us happy. 改后：Parcels that once took a week now arrive overnight, so people can receive online orders without leaving home. 只写发展漏影响 反面示例：通篇都在讲行业多先进、快递多快，却一句没提对人们生活的影响，直接漏掉 its impact on people&#x27;s lives。修正：单列一段写网购便利、省时省力与就业带动。 错当书信套格式 反面示例：开头写 Dear Sir, 结尾写 Yours sincerely, Li Ming。本题是 write a response 形式的 essay，不需要称呼与署名，套信件格式反而失分。</div>
+  <table style="margin-top:14px">
+    <tr><th>自查项</th><th>怎么查</th></tr>
+    <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+    <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+    <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+    <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+  </table>
+</div>
+
+</body>
+</html>

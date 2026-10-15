@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>写作 · 2023年6月 第3套</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--soft:#fafbfc;--grey:#f2f3f5;--line:#e5e8ec;--line2:#eff1f4;
+ --track:#e8ebef;--txt:#1b1e23;--txt2:#2b303a;--txt3:#3d434e;--sub:#6b7280;--sub2:#a8b0bb;
+ --blue:#2563eb;--blue-soft:#eef3ff;--green:#0d8a52;--green-soft:#e8f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;
+ --amber-line:#f0dfb8;--green-line:#bfe3cf;--purple:#7c5cff;--purple-soft:#f2eeff;
+ --blue-ink:#123a75;--green-ink:#0d5232;--amber-ink:#7a5b00;--red-ink:#8a2318;--purple-ink:#3f2a7a;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05)}
+@media (prefers-color-scheme: dark){:root{--bg:#101216;--card:#191c21;--soft:#20242a;
+ --grey:#22262c;--line:#2c313a;--line2:#242930;--track:#2a2f38;--txt:#e9ebee;--txt2:#d7dade;
+ --txt3:#c3c8cf;--sub:#98a0aa;--sub2:#6b7280;--blue:#6b96fb;--blue-soft:#1a2742;
+ --green:#41d18f;--green-soft:#14301f;--red:#ef7261;--red-soft:#371d19;--amber:#e0a53f;
+ --amber-soft:#312713;--amber-line:#4a3a1c;--green-line:#1f4530;--purple:#a98cff;
+ --purple-soft:#241c3d;--blue-ink:#a9c6ff;--green-ink:#7fe0b0;--amber-ink:#f0c469;
+ --red-ink:#ffa79a;--purple-ink:#c3a9ff;--shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28);
+ color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:20px;margin:2px 0 14px;font-weight:800;padding-left:12px;
+ border-left:4px solid var(--blue);line-height:1.25;letter-spacing:.2px}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:12px;flex-wrap:wrap}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.hint{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 12px}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.72;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.big{display:flex;gap:9px;margin-bottom:12px}
+.big div{flex:1;background:var(--blue-soft);border-radius:10px;padding:10px 8px;text-align:center}
+.big b{display:block;font-size:18px;font-weight:800;color:var(--blue)}
+.big span{font-size:11.5px;color:var(--sub)}
+.prompt{font-size:14.6px;line-height:1.9;background:var(--soft);border-radius:11px;
+ padding:14px;border:1px solid var(--line);text-align:justify}
+.prompt .lbl{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue);
+ color:#fff;border-radius:6px;padding:2px 9px;margin-bottom:9px}
+.zh{font-size:15px;line-height:2;text-align:justify;letter-spacing:.2px}
+.en{font-size:14.6px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.essay p{margin:0 0 12px}
+.essay p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;
+ background:var(--card)}
+details>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:14.4px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details[open]>summary::before{content:"▾"}
+details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
+.sent{border-bottom:1px solid var(--line2);padding:13px 0}
+.sent:last-child{border-bottom:0}
+.snum{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue-soft);
+ color:var(--blue);border-radius:6px;padding:2px 9px;margin-bottom:7px}
+.szh{font-size:15px;line-height:1.9;margin:0 0 9px}
+.sen{font-size:14.6px;line-height:1.85;margin:0;padding:10px 12px;background:var(--green-soft);
+ border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
+.strat{display:inline-block;font-size:12px;color:var(--purple);
+ background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
+.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
+.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+ font-size:12px;white-space:nowrap}
+.chunk .v{flex:1;color:var(--txt2)}
+.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.row:last-child{border-bottom:0}
+.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
+.row .c{flex:1;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab:last-child{border-bottom:0}
+.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
+.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
+ line-height:1.78;color:var(--red-ink);margin-top:10px}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
+ border-radius:18px;padding:5px 13px;color:var(--sub)}
+.flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+</style>
+</head>
+<body>
+
+<a class="back" href="writing.html">← 返回写作与翻译</a>
+<h1>写作 · 2023年6月 第3套</h1>
+
+<div class="card">
+  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part I</span></div>
+  <div class="big">
+    <div><b>162</b><span>范文词数</span></div>
+    <div><b>3</b><span>段</span></div>
+    <div><b>30</b><span>分钟</span></div>
+  </div>
+  <div class="tip b">四级写作的命中点是<b>切题 + 结构清楚 + 语法不出错</b>。
+  用三段式（引入表态 / 主体展开 / 回扣收尾），比追求华丽句式稳得多。</div>
+</div>
+
+<div class="card">
+  <div class="chead"><h2>题目</h2><span class="cmeta">Directions</span></div>
+  <div class="prompt"><span class="lbl">Directions</span><br>Directions: Suppose the student union of your university is organizing an online discussion on college students doing community service. You are to write an essay on its benefits and the service you can provide to the community. You will have 30 minutes for the task. You should write at least 120 words but no more than 180 words.</div>
+  <div class="tip a"><b>先自己在纸上写完，再看下面的范文。</b>写作的提分全靠"写—对照—改"这个循环，
+  光看范文不动笔，等于没练。</div>
+</div>
+
+<div class="card">
+  <h2>审题：这题到底要写什么</h2>
+  <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>好处＋我能提供的服务 本题要写一篇议论短文，围绕大学生做社区服务这件事，讲清楚两件事：its benefits（社区服务有什么好处）和 the service you can provide to the community（你个人能为社区提供什么服务）。这是一道双落点题，两面都要写到、缺一即偏题。</div></div>
+  <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>社区服务利人也利己 中心立场：大学生参与 community service 既能回馈社会、帮助他人，又能促进自身成长，因此值得每位同学投身其中——并由此自然引出『我能提供什么』。</div></div>
+  <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>好处一·惠及他人与社会 第一层好处面向外部：社区服务把帮助送到真正需要的人手里，例如陪伴独居老人、辅导社区孩子功课，让社区更温暖。这一条回应 its benefits 中『对他人/社会』的一面。 好处二·促进自身成长 第二层好处面向自身：在服务中锻炼沟通、责任感与解决问题的能力，把课堂学到的东西用到真实场景。这一条同样属于 its benefits，与第一层形成『利人—利己』两层，避免单薄。 我能提供的服务·英语支教辅导 落实第二个落点 the service you can provide to the community：结合自己是英语专业/英语较好的身份，每周末去社区为孩子免费辅导英语。挂钩自身专长，体现可行性，避免笼统的『帮助别人』。</div></div>
+  <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 亮立场·点题 开门见山表明态度：大学生做 community service 很有意义、值得参与，引出下文要谈的好处与自己能做的服务。 第 2 段 论好处＋亮出我能提供的服务 主体段：先分两层说清 its benefits（惠及他人、提升自己），再顺势给出 the service you can provide to the community 的具体一件事。 第 3 段 重申·呼吁收束 简短总结社区服务利人利己，呼应学生会的线上讨论，发出号召作结。</div></div>
+</div>
+
+<div class="card">
+  <h2>谋篇：每段写什么（3 段）</h2>
+  <p class="hint">这是可以直接套用的框架 —— 换一道题，功能不变、内容替换。</p>
+  <div class="row"><span class="tag">第1段</span><div class="c"><b>话题＋『值得参与』立场 点出当下越来越多大学生投身 community service，并亮明立场：这是一件兼具社会价值和个人价值的好事，值得每个人参与</b>引出话题 These days, more and more college students are getting involved in ______. 亮明立场 In my view, this is a meaningful practice that benefits both ______ and ______.</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>利人＋利己＋我教孩子英语 先说好处惠及他人与社会（陪伴老人、温暖社区），再说锻炼自身能力与责任感；然后落到 the service you can provide to the community——结合自己英语较好，每周末去社区免费辅导孩子英语</b>段首主题句 ______ brings benefits to both society and ourselves. 举例支撑 For example, by ______, we can ______. 由好处转到自己 As for me, the service I can provide is ______.</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>总结利人利己＋号召参与 重申社区服务既帮助他人又成就自己，呼应 an online discussion，号召更多同学行动起来</b>重申立场 In short, ______ is well worth our effort. 发出号召 I sincerely hope that more of us will ______.</div></div>
+</div>
+
+<div class="card">
+  <h2>参考范文（162 词）</h2>
+  <details><summary>展开范文（自己写完之后再看）</summary>
+    <div class="dbody">
+      <div class="essay"><p class='en'>These days, more and more college students are getting involved in community service. In my view, this is a meaningful practice that benefits both the community and ourselves.</p><p class='en'>Community service brings benefits to both society and the people who offer it. On the one hand, it warms our neighborhood: by visiting lonely elderly people or helping local children with their studies, we deliver real care to those in need. On the other hand, it shapes us as individuals, since serving others trains our communication skills and sense of responsibility. As for me, the service I can provide is teaching English. Being good at this subject, I plan to offer free English lessons to children in my community every weekend, so that they can enjoy learning and grow with confidence.</p><p class='en'>In short, doing community service is well worth our effort, as it helps others and improves ourselves at the same time. I sincerely hope that more of us will step out and act.</p></div>
+      <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>如今，越来越多的大学生开始参与社区服务。在我看来，这是一件有意义的事，它既造福社区，也成就我们自己。</div>
+    </div></details>
+  <div class="tip a">看范文时不要「读」，要<b>拆</b>：每段第一句做什么？观点句和理由句怎么连？
+  结尾怎么回扣题目？</div>
+</div>
+
+<div class="card">
+  <h2>逐段解析（3 段）</h2>
+  <div class="row"><span class="tag">第1段</span><div class="c"><b>一句引题＋一句表态 </b>落实首段蓝图：第一句 These days, more and more college students are getting involved in community service 引出话题；第二句 In my view, this is a meaningful practice that benefits both the community and ourselves 直接亮立场并预告『利人利己』两条线，对应 its benefits。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>主题句＋两层好处＋落地服务 </b>用主题句 Community service brings benefits to both society and the people who offer it 统起本段，再以 On the one hand / On the other hand 分出惠及他人与提升自己两层（各配老人、孩子的小场景），随后用 As for me 转到 the service you can provide to the community，落到每周末免费教孩子英语这件具体可行的事。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申＋号召闭环 </b>用 In short 重申『利人利己』立场，再用 I sincerely hope that more of us will step out and act 发出号召，呼应学生会的 online discussion，结构收口。</div></div>
+</div>
+
+<div class="card">
+  <h2>自检避坑</h2>
+  <div class="pit">典型低分写法 · 反面示例与改法 漏写『我能提供的服务』 反面示例：全文洋洋洒洒讲社区服务多有意义，结尾只一句 So community service is good. 却始终没说自己能做什么——这把双任务写成了单任务。改法：在主体段加一句 As for me, I can teach English to children in my community every weekend，把第二个落点坐实。 服务内容笼统空泛 反面示例：The service I can provide is to help people and make society better. 谁都能写、毫无信息。改法：落到具体一件事——offer free English lessons to children in my community every weekend，挂钩自身专长，体现可行。 万能模板凑字 反面示例：As the saying goes, every coin has two sides. With the development of society, community service becomes more and more important. 两句套话占了开头却没传递立场。改法：These days, more and more college students are getting involved in community service. In my view, it is well worth our effort，一句引题一句表态。</div>
+  <table style="margin-top:14px">
+    <tr><th>自查项</th><th>怎么查</th></tr>
+    <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+    <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+    <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+    <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+  </table>
+</div>
+
+</body>
+</html>

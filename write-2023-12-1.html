@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>写作 · 2023年12月 第1套</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--soft:#fafbfc;--grey:#f2f3f5;--line:#e5e8ec;--line2:#eff1f4;
+ --track:#e8ebef;--txt:#1b1e23;--txt2:#2b303a;--txt3:#3d434e;--sub:#6b7280;--sub2:#a8b0bb;
+ --blue:#2563eb;--blue-soft:#eef3ff;--green:#0d8a52;--green-soft:#e8f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;
+ --amber-line:#f0dfb8;--green-line:#bfe3cf;--purple:#7c5cff;--purple-soft:#f2eeff;
+ --blue-ink:#123a75;--green-ink:#0d5232;--amber-ink:#7a5b00;--red-ink:#8a2318;--purple-ink:#3f2a7a;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05)}
+@media (prefers-color-scheme: dark){:root{--bg:#101216;--card:#191c21;--soft:#20242a;
+ --grey:#22262c;--line:#2c313a;--line2:#242930;--track:#2a2f38;--txt:#e9ebee;--txt2:#d7dade;
+ --txt3:#c3c8cf;--sub:#98a0aa;--sub2:#6b7280;--blue:#6b96fb;--blue-soft:#1a2742;
+ --green:#41d18f;--green-soft:#14301f;--red:#ef7261;--red-soft:#371d19;--amber:#e0a53f;
+ --amber-soft:#312713;--amber-line:#4a3a1c;--green-line:#1f4530;--purple:#a98cff;
+ --purple-soft:#241c3d;--blue-ink:#a9c6ff;--green-ink:#7fe0b0;--amber-ink:#f0c469;
+ --red-ink:#ffa79a;--purple-ink:#c3a9ff;--shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28);
+ color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:20px;margin:2px 0 14px;font-weight:800;padding-left:12px;
+ border-left:4px solid var(--blue);line-height:1.25;letter-spacing:.2px}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:12px;flex-wrap:wrap}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.hint{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 12px}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.72;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.big{display:flex;gap:9px;margin-bottom:12px}
+.big div{flex:1;background:var(--blue-soft);border-radius:10px;padding:10px 8px;text-align:center}
+.big b{display:block;font-size:18px;font-weight:800;color:var(--blue)}
+.big span{font-size:11.5px;color:var(--sub)}
+.prompt{font-size:14.6px;line-height:1.9;background:var(--soft);border-radius:11px;
+ padding:14px;border:1px solid var(--line);text-align:justify}
+.prompt .lbl{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue);
+ color:#fff;border-radius:6px;padding:2px 9px;margin-bottom:9px}
+.zh{font-size:15px;line-height:2;text-align:justify;letter-spacing:.2px}
+.en{font-size:14.6px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.essay p{margin:0 0 12px}
+.essay p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;
+ background:var(--card)}
+details>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:14.4px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details[open]>summary::before{content:"▾"}
+details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
+.sent{border-bottom:1px solid var(--line2);padding:13px 0}
+.sent:last-child{border-bottom:0}
+.snum{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue-soft);
+ color:var(--blue);border-radius:6px;padding:2px 9px;margin-bottom:7px}
+.szh{font-size:15px;line-height:1.9;margin:0 0 9px}
+.sen{font-size:14.6px;line-height:1.85;margin:0;padding:10px 12px;background:var(--green-soft);
+ border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
+.strat{display:inline-block;font-size:12px;color:var(--purple);
+ background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
+.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
+.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+ font-size:12px;white-space:nowrap}
+.chunk .v{flex:1;color:var(--txt2)}
+.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.row:last-child{border-bottom:0}
+.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
+.row .c{flex:1;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab:last-child{border-bottom:0}
+.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
+.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
+ line-height:1.78;color:var(--red-ink);margin-top:10px}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
+ border-radius:18px;padding:5px 13px;color:var(--sub)}
+.flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+</style>
+</head>
+<body>
+
+<a class="back" href="writing.html">← 返回写作与翻译</a>
+<h1>写作 · 2023年12月 第1套</h1>
+
+<div class="card">
+  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part I</span></div>
+  <div class="big">
+    <div><b>159</b><span>范文词数</span></div>
+    <div><b>3</b><span>段</span></div>
+    <div><b>30</b><span>分钟</span></div>
+  </div>
+  <div class="tip b">四级写作的命中点是<b>切题 + 结构清楚 + 语法不出错</b>。
+  用三段式（引入表态 / 主体展开 / 回扣收尾），比追求华丽句式稳得多。</div>
+</div>
+
+<div class="card">
+  <div class="chead"><h2>题目</h2><span class="cmeta">Directions</span></div>
+  <div class="prompt"><span class="lbl">Directions</span><br>Directions : Suppose the university newspaper is inviting submissions from the students for its coming edition on a campus event that has impressed them most. You are now to write an essay for submission. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.</div>
+  <div class="tip a"><b>先自己在纸上写完，再看下面的范文。</b>写作的提分全靠"写—对照—改"这个循环，
+  光看范文不动笔，等于没练。</div>
+</div>
+
+<div class="card">
+  <h2>审题：这题到底要写什么</h2>
+  <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>写印象最深的校园活动 本题要写的是一篇 essay，围绕 a campus event that has impressed them most 来写——核心不是流水账式复述活动，而是要把『为什么这个活动最打动我』讲出来。交际目的是投给校报让同学读，所以要写得具体、有画面、有真情实感。</div></div>
+  <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>志愿支教最打动我 本篇中心：一次面向乡村小学的志愿支教活动是 a campus event that has impressed them most，因为它让我第一次感到自己的知识能真正帮到别人。围绕这个中心展开，既具体又能写出真情实感。</div></div>
+  <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>点题并表态 开门点出这个志愿支教活动，并直接表态它是 a campus event that has impressed them most，让首段就扣住题眼。 活动场景与我的参与 描述具体场景——我在乡村教室给孩子们上英语课、他们眼里的光、课后围着我问问题，写出我做了什么、看到了什么、当下的感受。 它对我的意义 升华：这次活动让我懂得知识与陪伴的价值，呼应『最打动我』，收束主题。</div></div>
+  <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 点题表态 开门点出这个志愿支教活动，明确它是 a campus event that has impressed them most，定下全文基调。 第 2 段 场景与参与 用过去时具体描述活动场景、我的参与和当下感受，是全文的画面与情感主体。 第 3 段 升华收束 点出这次活动对我的意义与启示，呼应『最打动我』作结。</div></div>
+</div>
+
+<div class="card">
+  <h2>谋篇：每段写什么（3 段）</h2>
+  <p class="hint">这是可以直接套用的框架 —— 换一道题，功能不变、内容替换。</p>
+  <div class="row"><span class="tag">第1段</span><div class="c"><b>去年的志愿支教 点出去年随学校志愿队去乡村小学支教这件事，并表态在大学的所有活动里它最令我难忘，因为它改变了我看待知识的方式</b>点题开篇 Among all the campus events I have taken part in, ___ impressed me the most.（填具体活动名） 时间引入 It was last ___ that I joined ___.（填时间 + 活动）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>教室里的那一课 我给孩子们上英语课，他们坐得笔直、眼睛发亮，课后围上来追问单词怎么读；那一刻我感到自己的知识第一次被真正需要</b>切入场景 I still remember the moment when ___.（填一个具体画面） 感受收束 At that moment, I felt ___ for the first time.（填情感）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>知识的价值 这次支教让我懂得知识不只是用来考试，更能照亮别人；这正是它至今仍最打动我的原因</b>升华意义 This experience taught me that ___.（填启示） 回扣收尾 That is exactly why ___ remains the event that touches me most.（填活动）</div></div>
+</div>
+
+<div class="card">
+  <h2>参考范文（159 词）</h2>
+  <details><summary>展开范文（自己写完之后再看）</summary>
+    <div class="dbody">
+      <div class="essay"><p class='en'>Among all the campus events I have taken part in, a volunteer teaching trip impressed me the most. It was last autumn that I joined our university volunteer team and traveled to a small rural primary school.</p><p class='en'>I still remember the moment when I walked into that simple classroom and began my first English lesson. The children sat straight, their eyes shining with curiosity, and they repeated every new word after me as loudly as they could. When the bell rang, instead of running out to play, they crowded around my desk, asking how to pronounce the words on their notebooks. At that moment, I felt truly needed for the first time, and a warm sense of responsibility rose in my heart.</p><p class='en'>This experience taught me that knowledge is not only something for exams, but also a light that can warm and guide others. That is exactly why this volunteer trip remains the campus event that touches me most.</p></div>
+      <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>在我参加过的所有校园活动中，一次志愿支教之行最令我印象深刻。去年秋天，我加入了学校的志愿队，前往一所偏远的乡村小学。</div>
+    </div></details>
+  <div class="tip a">看范文时不要「读」，要<b>拆</b>：每段第一句做什么？观点句和理由句怎么连？
+  结尾怎么回扣题目？</div>
+</div>
+
+<div class="card">
+  <h2>逐段解析（3 段）</h2>
+  <div class="row"><span class="tag">第1段</span><div class="c"><b>点题表态到位 </b>首句 Among all the campus events... impressed me the most 直接套用首段『点题开篇』句架，一句锁定 a campus event that has impressed them most；第二句用 It was last autumn that... 交代时间地点，开门见山不空转。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>细节加感受成画面 </b>用 their eyes shining、repeated every new word、crowded around my desk 三个感官细节铺出画面，结尾 I felt truly needed for the first time 落到情感，正是『感官细节铺场景』方法的落地，避免了流水账。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>升华并回扣 </b>This experience taught me that... 把经历提升为对知识价值的认识，末句 remains the campus event that touches me most 回扣 a campus event that has impressed them most，首尾闭环。</div></div>
+</div>
+
+<div class="card">
+  <h2>自检避坑</h2>
+  <div class="pit">典型低分写法 · 反面示例与改法 误加称呼署名 反面示例：开头写 Dear editor, I want to share an event... 结尾写 Yours sincerely, Li Ming。改法：删掉称呼与落款，首句直接点题——Among all the campus events I have joined, ___ impressed me the most. 选材空泛 反面示例：My colorful campus life is full of meaningful and unforgettable events that make me grow.（全是空话）改法：聚焦一件事——去年秋天的一次乡村支教，写出教室里孩子追问单词的具体画面。 流水账无感受 反面示例：We went to the school. We taught English. Then we left.（只有流程）改法：加细节与感受——their eyes shining with curiosity... At that moment, I felt truly needed for the first time.</div>
+  <table style="margin-top:14px">
+    <tr><th>自查项</th><th>怎么查</th></tr>
+    <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+    <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+    <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+    <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+  </table>
+</div>
+
+</body>
+</html>

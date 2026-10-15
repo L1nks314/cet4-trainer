@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>汉译英 · 2024年6月 第3套</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--soft:#fafbfc;--grey:#f2f3f5;--line:#e5e8ec;--line2:#eff1f4;
+ --track:#e8ebef;--txt:#1b1e23;--txt2:#2b303a;--txt3:#3d434e;--sub:#6b7280;--sub2:#a8b0bb;
+ --blue:#2563eb;--blue-soft:#eef3ff;--green:#0d8a52;--green-soft:#e8f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;
+ --amber-line:#f0dfb8;--green-line:#bfe3cf;--purple:#7c5cff;--purple-soft:#f2eeff;
+ --blue-ink:#123a75;--green-ink:#0d5232;--amber-ink:#7a5b00;--red-ink:#8a2318;--purple-ink:#3f2a7a;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05)}
+@media (prefers-color-scheme: dark){:root{--bg:#101216;--card:#191c21;--soft:#20242a;
+ --grey:#22262c;--line:#2c313a;--line2:#242930;--track:#2a2f38;--txt:#e9ebee;--txt2:#d7dade;
+ --txt3:#c3c8cf;--sub:#98a0aa;--sub2:#6b7280;--blue:#6b96fb;--blue-soft:#1a2742;
+ --green:#41d18f;--green-soft:#14301f;--red:#ef7261;--red-soft:#371d19;--amber:#e0a53f;
+ --amber-soft:#312713;--amber-line:#4a3a1c;--green-line:#1f4530;--purple:#a98cff;
+ --purple-soft:#241c3d;--blue-ink:#a9c6ff;--green-ink:#7fe0b0;--amber-ink:#f0c469;
+ --red-ink:#ffa79a;--purple-ink:#c3a9ff;--shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28);
+ color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:20px;margin:2px 0 14px;font-weight:800;padding-left:12px;
+ border-left:4px solid var(--blue);line-height:1.25;letter-spacing:.2px}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:12px;flex-wrap:wrap}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.hint{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 12px}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.72;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.big{display:flex;gap:9px;margin-bottom:12px}
+.big div{flex:1;background:var(--blue-soft);border-radius:10px;padding:10px 8px;text-align:center}
+.big b{display:block;font-size:18px;font-weight:800;color:var(--blue)}
+.big span{font-size:11.5px;color:var(--sub)}
+.prompt{font-size:14.6px;line-height:1.9;background:var(--soft);border-radius:11px;
+ padding:14px;border:1px solid var(--line);text-align:justify}
+.prompt .lbl{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue);
+ color:#fff;border-radius:6px;padding:2px 9px;margin-bottom:9px}
+.zh{font-size:15px;line-height:2;text-align:justify;letter-spacing:.2px}
+.en{font-size:14.6px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.essay p{margin:0 0 12px}
+.essay p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;
+ background:var(--card)}
+details>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:14.4px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details[open]>summary::before{content:"▾"}
+details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
+.sent{border-bottom:1px solid var(--line2);padding:13px 0}
+.sent:last-child{border-bottom:0}
+.snum{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue-soft);
+ color:var(--blue);border-radius:6px;padding:2px 9px;margin-bottom:7px}
+.szh{font-size:15px;line-height:1.9;margin:0 0 9px}
+.sen{font-size:14.6px;line-height:1.85;margin:0;padding:10px 12px;background:var(--green-soft);
+ border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
+.strat{display:inline-block;font-size:12px;color:var(--purple);
+ background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
+.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
+.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+ font-size:12px;white-space:nowrap}
+.chunk .v{flex:1;color:var(--txt2)}
+.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.row:last-child{border-bottom:0}
+.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
+.row .c{flex:1;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab:last-child{border-bottom:0}
+.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
+.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
+ line-height:1.78;color:var(--red-ink);margin-top:10px}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
+ border-radius:18px;padding:5px 13px;color:var(--sub)}
+.flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+</style>
+</head>
+<body>
+
+<a class="back" href="writing.html">← 返回写作与翻译</a>
+<h1>汉译英 · 2024年6月 第3套</h1>
+
+<div class="card">
+  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part IV</span></div>
+  <div class="big">
+    <div><b>193</b><span>中文字数</span></div>
+    <div><b>5</b><span>句</span></div>
+    <div><b>30</b><span>分钟</span></div>
+  </div>
+  <div class="tip b">翻译评分只看四件事：<b>意思说全、语法没错、表达通顺、用词准确</b>。
+  翻得漂亮不加分，翻错了狠狠扣 —— 所以目标是<b>不出错</b>，不是出彩。</div>
+</div>
+
+<div class="card">
+  <div class="chead"><h2>中文原文</h2><span class="cmeta">5 句</span></div>
+  <div class="tip b">【主旨】 介绍&quot;福&quot;字的吉祥寓意与春节贴福习俗 全段在客观介绍一个中国文化符号——开篇 汉语中的 &quot;福&quot;字 (the character fu)表示幸福和好运,是中国传统文化中最常用的吉祥(auspicious) 符号之一 就给一个文化事物下定义、讲它的含义与用法，属典型的&quot;中国文化介绍&quot;语体。这正是四级汉译英最高频的题材：不讲故事、不叙事件，只客观陈述一个事物&quot;是什么、人们怎么用它&quot;，所以全篇基调应是平实、客观的说明文。 【时态】 一般现在时 通篇讲的是&quot;福&quot;字&quot;现在仍然如此&quot;的含义与习俗：表示幸福和好运、人们通常将一个大大的福字写在红纸上、春节贴福字是民间由来已久的习俗 都是当下成立、反复发生的客观事实与习惯性动作，不是某一次过去发生的事，故全篇以一般现在时为基调。只有&quot;幸福已到、好运已到&quot;这种&quot;已完成&quot;语义处才偏离用现在完成时。 【译法】 福字 拟统一译为 the character &quot;Fu&quot;（首字母大写、加引号，必要处补 a Chinese character meaning happiness and good fortune 作解释）。原文 汉语中的 &quot;福&quot;字 (the character fu)表示幸福和好运 已经给出 the character fu，这是出题人给的约定译法，全篇都沿用 character Fu，不要一会儿写 Fu 一会儿写 the word happiness，保持同一个词同一种译法。 春节 拟统一译为 the Spring Festival（也可加注 (Chinese New Year)）。原文 春节贴福字是民间由来已久的习俗 与 为了欢庆春节 两处都出现，全篇统一用 the Spring Festival，别一处 Spring Festival、一处 Chinese New Year 混用。 吉祥 原文已在括号里给出 auspicious：中国传统文化中最常用的吉祥(auspicious) 符号之一。这是出题人贴心给的提示词，直接用 auspicious symbol，不必自己另想 lucky/fortunate，照搬给定词最稳。</div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    <span class="zh">汉语中的 &quot;福&quot;字 (the character fu)表示幸福和好运,是中国传统文化中最常用的吉祥(auspicious) 符号之一。人们通常将一个大大的福字写在红纸上, 寓意期盼家庭幸福、社会安定、国家昌盛。春节贴福字是民间由来已久的习俗。为了欢庆春节, 家家户户都会将福字贴在门上或墙上, 表达对幸福生活的向往、对美好未来的期待。人们有时还将福字倒过来贴，表示幸福已到、好运已到。</span></div>
+  <div class="tip a"><b>先自己翻一遍再看下面。</b>用纸笔或另一个文档写，写完再逐句对照 ——
+  直接看答案等于没练。</div>
+</div>
+
+<div class="card">
+  <h2>怎么用这份包</h2>
+  <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
+    <span>③ 抄下错处</span><span>④ 整篇通读</span></div>
+  <div class="tip g">第二步是全流程最有价值的一步：<b>看你漏译了什么、时态用错了哪里</b>。
+  每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
+</div>
+
+<div class="card">
+  <h2>逐句对照（5 句）</h2>
+  <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
+  <div class="sent"><span class="snum">第 1 句</span><p class="szh">汉语中的&quot;福&quot;字(the character fu)表示幸福和好运,是中国传统文化中最常用的吉祥(auspicious)符号之一。</p><p class="sen">The Chinese character &quot;Fu&quot; means happiness and good fortune, and is one of the most commonly used auspicious symbols in traditional Chinese culture.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调用一般现在时：means、is 都用现在时，因为这是&quot;福字&quot;一直成立的含义，不是过去某次。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">符号之一 → one of the ... symbols，symbols 必须复数；主语 the character &quot;Fu&quot; 是单数第三人称，所以谓语用 means / is（不是 mean / are）。</span></div><div class="chunk"><span class="k">冠词</span><span class="v">特指汉语里那个独一无二的福字，用定冠词 the character &quot;Fu&quot;；&quot;最常用的…之一&quot;前的 the 也不能漏：one of the most...。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">人们通常将一个大大的福字写在红纸上,寓意期盼家庭幸福、社会安定、国家昌盛。</p><p class="sen">People usually write a large character &quot;Fu&quot; on red paper, expressing their wish for family happiness, social stability and national prosperity.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">通常 提示这是习惯性动作，回指基调用一般现在时 write，并配 usually。</span></div><div class="chunk"><span class="k">冠词与单复数</span><span class="v">&quot;一个大大的福字&quot;特指一个，用不定冠词 a large character &quot;Fu&quot;；red paper 作材料是不可数名词，不加 a、不加 s。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">&quot;写在…上&quot;用 write... on red paper（介词 on）；&quot;期盼&quot;用名词搭配 wish for / hope for 引出愿望对象，比硬译动词更顺。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">春节贴福字是民间由来已久的习俗。</p><p class="sen">Pasting the character &quot;Fu&quot; during the Spring Festival is a long-standing folk custom.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指基调用一般现在时 is——这是当下仍成立的习俗，不是过去的事。&quot;由来已久&quot;靠形容词 long-standing 表达，不必为它改成完成时。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语是动名词短语 Pasting...（视作单数），谓语用 is，不是 are。</span></div><div class="chunk"><span class="k">冠词</span><span class="v">&quot;一种习俗&quot;译 a long-standing folk custom，custom 可数、泛指一种，用不定冠词 a；the Spring Festival 是约定俗成的专名，固定带 the。</span></div></div><div class="sent"><span class="snum">第 4 句</span><p class="szh">为了欢庆春节,家家户户都会将福字贴在门上或墙上,表达对幸福生活的向往、对美好未来的期待。</p><p class="sen">To celebrate the Spring Festival, every household pastes the character &quot;Fu&quot; on doors or walls, expressing their longing for a happy life and their expectation for a better future.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">都会 表习惯性，回指基调用一般现在时 pastes，不必硬译成 will。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">&quot;家家户户&quot; 用 every household（every + 单数名词），谓语第三人称单数 pastes；后面物主代词为统一可用 their（指 households/people），或主语改 all households 用 paste。本句选 every household... pastes... 时主谓须配单数。</span></div><div class="chunk"><span class="k">单复数与搭配</span><span class="v">&quot;门上或墙上&quot;门、墙不止一处，用复数 on doors or walls；&quot;对…的向往/期待&quot;搭配用 longing for / expectation for（介词 for）。</span></div></div><div class="sent"><span class="snum">第 5 句</span><p class="szh">人们有时还将福字倒过来贴，表示幸福已到、好运已到。</p><p class="sen">Sometimes people also paste the character &quot;Fu&quot; upside down to indicate that happiness and good fortune have arrived.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">主句 paste 跟基调用一般现在时；但&quot;幸福已到、好运已到&quot;含&quot;已经完成、到了&quot;的语义，这里偏离基调用现在完成时 have arrived——这正是 globalPlan 里预留的&quot;已完成处偏离&quot;。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">合并主语 happiness and good fortune 是两样、视作复数，谓语用 have arrived（不是 has）。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">&quot;倒过来&quot;地道说法是 upside down；&quot;贴&quot;承接前文统一用 paste，不要换成别的词。</span></div></div>
+</div>
+
+<div class="card">
+  <h2>整篇参考译文</h2>
+  <details><summary>展开整篇（自己翻完再看）</summary>
+    <div class="dbody"><p class="en">The Chinese character &quot;Fu&quot; means happiness and good fortune, and is one of the most commonly used auspicious symbols in traditional Chinese culture. People usually write a large character &quot;Fu&quot; on red paper, expressing their wish for family happiness, social stability and national prosperity. Pasting the character &quot;Fu&quot; during the Spring Festival is a long-standing folk custom. To celebrate the Spring Festival, every household pastes the character &quot;Fu&quot; on doors or walls, expressing their longing for a happy life and their expectation for a better future. Sometimes people also paste the character &quot;Fu&quot; upside down to indicate that happiness and good fortune have arrived. 【衔接】 第1句到第2句：从&quot;福字是什么&quot;过渡到&quot;人们怎么用它&quot; 第1句定义福字、第2句讲人们写福字，主题自然承接，第2句主语 People 直接引出新动作即可，无需硬加关联词。注意第2句的 the character &quot;Fu&quot; 与第1句译法保持一致，靠同一专名复现实现衔接。 第3句到第4句：习俗总述到具体做法，补 During 第3句 春节贴福字是民间由来已久的习俗 是总述，第4句 为了欢庆春节,家家户户都会将福字贴在门上或墙上 是这一习俗的具体落实。第4句以 To celebrate the Spring Festival 开头，与第3句的 Spring Festival 呼应，读者能感到&quot;由总到分&quot;，衔接自然。 第5句：用 also 标出&quot;另一种贴法&quot; 第5句 人们有时还将福字倒过来贴 的&quot;还&quot;是相对第4句&quot;贴在门上墙上&quot;的又一种做法，英文用 also（Sometimes people also paste...）把这层&quot;补充、递进&quot;关系显出来，避免读者觉得这句突兀。</p></div></details>
+  <div class="tip a">整篇译文是用来<b>感受节奏和衔接</b>的，不是用来背的。
+  重点看它怎么处理句间连接、怎么避免重复用词。</div>
+</div>
+
+<div class="card">
+  <h2>句间衔接（3 处）</h2>
+  <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
+  <div class="row"><span class="tag">衔接</span><div class="c"><b>第1句到第2句：从&quot;福字是什么&quot;过渡到&quot;人们怎么用它&quot;</b>第1句定义福字、第2句讲人们写福字，主题自然承接，第2句主语 People 直接引出新动作即可，无需硬加关联词。注意第2句的 the character &quot;Fu&quot; 与第1句译法保持一致，靠同一专名复现实现衔接。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第3句到第4句：习俗总述到具体做法，补 During</b>第3句 春节贴福字是民间由来已久的习俗 是总述，第4句 为了欢庆春节,家家户户都会将福字贴在门上或墙上 是这一习俗的具体落实。第4句以 To celebrate the Spring Festival 开头，与第3句的 Spring Festival 呼应，读者能感到&quot;由总到分&quot;，衔接自然。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第5句：用 also 标出&quot;另一种贴法&quot;</b>第5句 人们有时还将福字倒过来贴 的&quot;还&quot;是相对第4句&quot;贴在门上墙上&quot;的又一种做法，英文用 also（Sometimes people also paste...）把这层&quot;补充、递进&quot;关系显出来，避免读者觉得这句突兀。</div></div>
+</div>
+
+<div class="card">
+  <h2>译法要点（18 条）</h2>
+  <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
+  <div class="vocab"><div class="w">福字</div><div class="d">拟统一译为 the character &quot;Fu&quot;（首字母大写、加引号，必要处补 a Chinese character meaning happiness and good fortune 作解释）。原文 汉语中的 &quot;福&quot;字 (the character fu)表示幸福和好运 已经给出 the character fu，这是出题人给的约定译法，全篇都沿用 character Fu，不要一会儿写 Fu 一会儿写 the word happiness，保持同一个词同一种译法。</div></div><div class="vocab"><div class="w">春节</div><div class="d">拟统一译为 the Spring Festival（也可加注 (Chinese New Year)）。原文 春节贴福字是民间由来已久的习俗 与 为了欢庆春节 两处都出现，全篇统一用 the Spring Festival，别一处 Spring Festival、一处 Chinese New Year 混用。</div></div><div class="vocab"><div class="w">吉祥</div><div class="d">原文已在括号里给出 auspicious：中国传统文化中最常用的吉祥(auspicious) 符号之一。这是出题人贴心给的提示词，直接用 auspicious symbol，不必自己另想 lucky/fortunate，照搬给定词最稳。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调用一般现在时：means、is 都用现在时，因为这是&quot;福字&quot;一直成立的含义，不是过去某次。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">符号之一 → one of the ... symbols，symbols 必须复数；主语 the character &quot;Fu&quot; 是单数第三人称，所以谓语用 means / is（不是 mean / are）。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">特指汉语里那个独一无二的福字，用定冠词 the character &quot;Fu&quot;；&quot;最常用的…之一&quot;前的 the 也不能漏：one of the most...。</div></div><div class="vocab"><div class="w">时态</div><div class="d">通常 提示这是习惯性动作，回指基调用一般现在时 write，并配 usually。</div></div><div class="vocab"><div class="w">冠词与单复数</div><div class="d">&quot;一个大大的福字&quot;特指一个，用不定冠词 a large character &quot;Fu&quot;；red paper 作材料是不可数名词，不加 a、不加 s。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">&quot;写在…上&quot;用 write... on red paper（介词 on）；&quot;期盼&quot;用名词搭配 wish for / hope for 引出愿望对象，比硬译动词更顺。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指基调用一般现在时 is——这是当下仍成立的习俗，不是过去的事。&quot;由来已久&quot;靠形容词 long-standing 表达，不必为它改成完成时。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语是动名词短语 Pasting...（视作单数），谓语用 is，不是 are。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">&quot;一种习俗&quot;译 a long-standing folk custom，custom 可数、泛指一种，用不定冠词 a；the Spring Festival 是约定俗成的专名，固定带 the。</div></div><div class="vocab"><div class="w">时态</div><div class="d">都会 表习惯性，回指基调用一般现在时 pastes，不必硬译成 will。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">&quot;家家户户&quot; 用 every household（every + 单数名词），谓语第三人称单数 pastes；后面物主代词为统一可用 their（指 households/people），或主语改 all households 用 paste。本句选 every household... pastes... 时主谓须配单数。</div></div><div class="vocab"><div class="w">单复数与搭配</div><div class="d">&quot;门上或墙上&quot;门、墙不止一处，用复数 on doors or walls；&quot;对…的向往/期待&quot;搭配用 longing for / expectation for（介词 for）。</div></div><div class="vocab"><div class="w">时态</div><div class="d">主句 paste 跟基调用一般现在时；但&quot;幸福已到、好运已到&quot;含&quot;已经完成、到了&quot;的语义，这里偏离基调用现在完成时 have arrived——这正是 globalPlan 里预留的&quot;已完成处偏离&quot;。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">合并主语 happiness and good fortune 是两样、视作复数，谓语用 have arrived（不是 has）。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">&quot;倒过来&quot;地道说法是 upside down；&quot;贴&quot;承接前文统一用 paste，不要换成别的词。</div></div>
+</div>
+
+<div class="card">
+  <h2>翻译四句口诀</h2>
+  <table>
+    <tr><th>步骤</th><th>做什么</th></tr>
+    <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
+    <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
+    <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
+    <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 > 用词花</b></td></tr>
+  </table>
+</div>
+
+</body>
+</html>

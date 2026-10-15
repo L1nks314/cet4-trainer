@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>汉译英 · 2023年6月 第2套</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--soft:#fafbfc;--grey:#f2f3f5;--line:#e5e8ec;--line2:#eff1f4;
+ --track:#e8ebef;--txt:#1b1e23;--txt2:#2b303a;--txt3:#3d434e;--sub:#6b7280;--sub2:#a8b0bb;
+ --blue:#2563eb;--blue-soft:#eef3ff;--green:#0d8a52;--green-soft:#e8f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;
+ --amber-line:#f0dfb8;--green-line:#bfe3cf;--purple:#7c5cff;--purple-soft:#f2eeff;
+ --blue-ink:#123a75;--green-ink:#0d5232;--amber-ink:#7a5b00;--red-ink:#8a2318;--purple-ink:#3f2a7a;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05)}
+@media (prefers-color-scheme: dark){:root{--bg:#101216;--card:#191c21;--soft:#20242a;
+ --grey:#22262c;--line:#2c313a;--line2:#242930;--track:#2a2f38;--txt:#e9ebee;--txt2:#d7dade;
+ --txt3:#c3c8cf;--sub:#98a0aa;--sub2:#6b7280;--blue:#6b96fb;--blue-soft:#1a2742;
+ --green:#41d18f;--green-soft:#14301f;--red:#ef7261;--red-soft:#371d19;--amber:#e0a53f;
+ --amber-soft:#312713;--amber-line:#4a3a1c;--green-line:#1f4530;--purple:#a98cff;
+ --purple-soft:#241c3d;--blue-ink:#a9c6ff;--green-ink:#7fe0b0;--amber-ink:#f0c469;
+ --red-ink:#ffa79a;--purple-ink:#c3a9ff;--shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28);
+ color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:20px;margin:2px 0 14px;font-weight:800;padding-left:12px;
+ border-left:4px solid var(--blue);line-height:1.25;letter-spacing:.2px}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:12px;flex-wrap:wrap}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.hint{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 12px}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.72;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.big{display:flex;gap:9px;margin-bottom:12px}
+.big div{flex:1;background:var(--blue-soft);border-radius:10px;padding:10px 8px;text-align:center}
+.big b{display:block;font-size:18px;font-weight:800;color:var(--blue)}
+.big span{font-size:11.5px;color:var(--sub)}
+.prompt{font-size:14.6px;line-height:1.9;background:var(--soft);border-radius:11px;
+ padding:14px;border:1px solid var(--line);text-align:justify}
+.prompt .lbl{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue);
+ color:#fff;border-radius:6px;padding:2px 9px;margin-bottom:9px}
+.zh{font-size:15px;line-height:2;text-align:justify;letter-spacing:.2px}
+.en{font-size:14.6px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.essay p{margin:0 0 12px}
+.essay p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;
+ background:var(--card)}
+details>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:14.4px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details[open]>summary::before{content:"▾"}
+details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
+.sent{border-bottom:1px solid var(--line2);padding:13px 0}
+.sent:last-child{border-bottom:0}
+.snum{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue-soft);
+ color:var(--blue);border-radius:6px;padding:2px 9px;margin-bottom:7px}
+.szh{font-size:15px;line-height:1.9;margin:0 0 9px}
+.sen{font-size:14.6px;line-height:1.85;margin:0;padding:10px 12px;background:var(--green-soft);
+ border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
+.strat{display:inline-block;font-size:12px;color:var(--purple);
+ background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
+.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
+.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+ font-size:12px;white-space:nowrap}
+.chunk .v{flex:1;color:var(--txt2)}
+.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.row:last-child{border-bottom:0}
+.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
+.row .c{flex:1;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab:last-child{border-bottom:0}
+.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
+.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
+ line-height:1.78;color:var(--red-ink);margin-top:10px}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
+ border-radius:18px;padding:5px 13px;color:var(--sub)}
+.flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+</style>
+</head>
+<body>
+
+<a class="back" href="writing.html">← 返回写作与翻译</a>
+<h1>汉译英 · 2023年6月 第2套</h1>
+
+<div class="card">
+  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part IV</span></div>
+  <div class="big">
+    <div><b>159</b><span>中文字数</span></div>
+    <div><b>4</b><span>句</span></div>
+    <div><b>30</b><span>分钟</span></div>
+  </div>
+  <div class="tip b">翻译评分只看四件事：<b>意思说全、语法没错、表达通顺、用词准确</b>。
+  翻得漂亮不加分，翻错了狠狠扣 —— 所以目标是<b>不出错</b>，不是出彩。</div>
+</div>
+
+<div class="card">
+  <div class="chead"><h2>中文原文</h2><span class="cmeta">4 句</span></div>
+  <div class="tip b">【主旨】 改革开放后中国高等教育发展现状介绍 这是一段客观介绍中国高等教育发展状况的说明性文字，属于四级最常见的「社会/经济现状介绍」语体。开篇 改革开放40多年以来，中国政府对高等教育越来越重视 定下基调：讲的是一个延续到今天、并仍在继续的整体趋势与现状，而非一段封闭的历史故事。语体客观、平实，用词宜正式书面，避免口语化。 【时态】 一般现在时 通篇在陈述「现在的事实与现状」——政府重视、学生总数、人数上升、质量改进，都是延续至今的状态，故全篇以一般现在时为基调。仅 高等教育已经进入稳步发展阶段 与 高校学生总数已接近4,700万人 这类含「已经/已」、强调对现在影响的已完成结果，可偏离用现在完成时。 【译法】 改革开放 改革开放 是有约定俗成官方译名的文化负载词，统一译作 &quot;reform and opening-up&quot;（或 &quot;the reform and opening-up&quot;），不要逐字直译成 &quot;reform and open the door&quot;。全篇只用这一种译法。 高等教育 高等教育 反复出现，统一译作 &quot;higher education&quot;（不可数，不加冠词、不加 s），避免一会儿 higher education、一会儿 high education 或 college education 来回换。 高校 高校 即「高等院校/大学」，统一译作 &quot;colleges and universities&quot;（或简洁用 &quot;universities&quot;）。后文 我国高校的数量 的「高校」沿用同一译法，保持前后一致。</div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    <span class="zh">改革开放40多年以来，中国政府对高等教育越来越重视，高等教育已经进入稳步发展阶段。高校学生总数已接近4,700万人，位居世界第一。随着我国经济的快速发展，人民生活水平不断提高，越来越多的人渴望接受高等教育。我国高校的数量和学科专业持续增加，招生人数逐年上升，教学质量也在不断改进，为更多年轻人创造了接受高等教育的机会。</span></div>
+  <div class="tip a"><b>先自己翻一遍再看下面。</b>用纸笔或另一个文档写，写完再逐句对照 ——
+  直接看答案等于没练。</div>
+</div>
+
+<div class="card">
+  <h2>怎么用这份包</h2>
+  <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
+    <span>③ 抄下错处</span><span>④ 整篇通读</span></div>
+  <div class="tip g">第二步是全流程最有价值的一步：<b>看你漏译了什么、时态用错了哪里</b>。
+  每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
+</div>
+
+<div class="card">
+  <h2>逐句对照（4 句）</h2>
+  <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
+  <div class="sent"><span class="snum">第 1 句</span><p class="szh">改革开放40多年以来，中国政府对高等教育越来越重视，高等教育已经进入稳步发展阶段。</p><p class="sen">Since the reform and opening-up over 40 years ago, the Chinese government has attached increasing importance to higher education, which has now entered a stage of steady development.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">「中国政府越来越重视」是延续至今的现状，回指全篇基调用一般现在时 attaches increasing importance；「已经进入稳步发展阶段」含「已经」、强调对现在的结果，偏离用现在完成时 has entered。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">「重视」用动词短语 attach importance to sth / pay attention to sth，介词 to 不能丢；&quot;importance&quot; 前用 increasing 表「越来越」。</span></div><div class="chunk"><span class="k">冠词</span><span class="v">higher education 作不可数抽象名词，泛指时不加冠词、不加 s；a steady development stage 中 stage 可数、首次提及用不定冠词 a。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">高校学生总数已接近4,700万人，位居世界第一。</p><p class="sen">The total number of college students has reached nearly 47 million, ranking first in the world.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">「已接近」含「已」、是累积到现在的结果，用现在完成时 has reached / has neared；若理解为持续逼近的现状，用一般现在时 is approaching 亦可，但全句须自洽。</span></div><div class="chunk"><span class="k">数字表达</span><span class="v">「4,700万」译成 47 million，million 在这里不加 s（前面有具体数字时 million 用单数）；不要写成 4700 万的直译 &quot;4700 thousand&quot; 这类中式数字。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语中心词是 The total number（单数），谓语用第三人称单数 has / is，不要被后面的 students 带成复数。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">随着我国经济的快速发展，人民生活水平不断提高，越来越多的人渴望接受高等教育。</p><p class="sen">With the rapid development of China&#x27;s economy and the steady improvement of people&#x27;s living standards, more and more people are eager to receive higher education.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">全句讲普遍现状趋势，回指基调用一般现在时：people desire / are eager to receive。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">「渴望接受高等教育」用 be eager / desire to receive (gain / have access to) higher education；「接受教育」地道说法是 receive education，不要写成 accept education。</span></div><div class="chunk"><span class="k">名词化</span><span class="v">With 短语里把动词转成名词：发展→development、提高→improvement / rise，介词 of 连接（the development of the economy / the improvement of living standards）。</span></div></div><div class="sent"><span class="snum">第 4 句</span><p class="szh">我国高校的数量和学科专业持续增加，招生人数逐年上升，教学质量也在不断改进，为更多年轻人创造了接受高等教育的机会。</p><p class="sen">The number of colleges and universities in China and the disciplines they offer continue to increase, and student enrollment rises year by year while teaching quality is constantly improving, creating opportunities for more young people to receive higher education.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">全句讲持续进行的现状，回指基调用一般现在时；「持续/不断/逐年」可配现在进行时强调进行中（is constantly improving）或一般现在时（continue to increase）。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">「数量和学科专业」是两样东西，作主语谓语用复数 continue（the number ... and the disciplines ... continue）；opportunities 为更多年轻人提供的机会不止一个，用复数。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">「招生人数」用 enrollment / the number of students enrolled；「逐年上升」用 rises year by year / increases annually；「创造机会」用 create / provide opportunities for sb to do sth。</span></div></div>
+</div>
+
+<div class="card">
+  <h2>整篇参考译文</h2>
+  <details><summary>展开整篇（自己翻完再看）</summary>
+    <div class="dbody"><p class="en">Since the reform and opening-up over 40 years ago, the Chinese government has attached increasing importance to higher education, which has now entered a stage of steady development. Today, the total number of college students has reached nearly 47 million, ranking first in the world. With the rapid development of China&#x27;s economy and the steady improvement of people&#x27;s living standards, more and more people are eager to receive higher education. Meanwhile, the number of colleges and universities in China and the disciplines they offer continue to increase, student enrollment rises year by year, and teaching quality is constantly improving, creating opportunities for more young people to receive such education. 【衔接】 第1、2句之间：补承接显「现状」逻辑 第1句讲政府重视、高教进入稳步发展，第2句紧接着抛出学生总数数据，二者是「总—分」关系。可在第2句句首补一个 &quot;Today&quot; 或 &quot;At present&quot; 点明这是当下数据，让从「趋势」到「具体数字」的过渡更自然，避免两句生硬并排。 第3、4句之间：补 Meanwhile 显并进 第3句讲「需求侧」（越来越多人渴望接受高教），第4句讲「供给侧」（高校数量、招生、质量都在提升）。两句是同时并进的关系，可在第4句句首补 &quot;Meanwhile&quot; 或 &quot;In response&quot;，把「需求增长—供给随之扩大」的逻辑显化出来，整篇读起来是有脉络的一篇，而非四句孤立陈述。 全篇避免 higher education 过度重复 高等教育 在原文出现多次，英文若每处都写 higher education 会显啰嗦。可在后文用 it 或 such education 承接，或第4句末的「接受高等教育的机会」简化为 &quot;such opportunities&quot;，减少同词反复，提升连贯度。</p></div></details>
+  <div class="tip a">整篇译文是用来<b>感受节奏和衔接</b>的，不是用来背的。
+  重点看它怎么处理句间连接、怎么避免重复用词。</div>
+</div>
+
+<div class="card">
+  <h2>句间衔接（3 处）</h2>
+  <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
+  <div class="row"><span class="tag">衔接</span><div class="c"><b>第1、2句之间：补承接显「现状」逻辑</b>第1句讲政府重视、高教进入稳步发展，第2句紧接着抛出学生总数数据，二者是「总—分」关系。可在第2句句首补一个 &quot;Today&quot; 或 &quot;At present&quot; 点明这是当下数据，让从「趋势」到「具体数字」的过渡更自然，避免两句生硬并排。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第3、4句之间：补 Meanwhile 显并进</b>第3句讲「需求侧」（越来越多人渴望接受高教），第4句讲「供给侧」（高校数量、招生、质量都在提升）。两句是同时并进的关系，可在第4句句首补 &quot;Meanwhile&quot; 或 &quot;In response&quot;，把「需求增长—供给随之扩大」的逻辑显化出来，整篇读起来是有脉络的一篇，而非四句孤立陈述。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>全篇避免 higher education 过度重复</b>高等教育 在原文出现多次，英文若每处都写 higher education 会显啰嗦。可在后文用 it 或 such education 承接，或第4句末的「接受高等教育的机会」简化为 &quot;such opportunities&quot;，减少同词反复，提升连贯度。</div></div>
+</div>
+
+<div class="card">
+  <h2>译法要点（15 条）</h2>
+  <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
+  <div class="vocab"><div class="w">改革开放</div><div class="d">改革开放 是有约定俗成官方译名的文化负载词，统一译作 &quot;reform and opening-up&quot;（或 &quot;the reform and opening-up&quot;），不要逐字直译成 &quot;reform and open the door&quot;。全篇只用这一种译法。</div></div><div class="vocab"><div class="w">高等教育</div><div class="d">高等教育 反复出现，统一译作 &quot;higher education&quot;（不可数，不加冠词、不加 s），避免一会儿 higher education、一会儿 high education 或 college education 来回换。</div></div><div class="vocab"><div class="w">高校</div><div class="d">高校 即「高等院校/大学」，统一译作 &quot;colleges and universities&quot;（或简洁用 &quot;universities&quot;）。后文 我国高校的数量 的「高校」沿用同一译法，保持前后一致。</div></div><div class="vocab"><div class="w">时态</div><div class="d">「中国政府越来越重视」是延续至今的现状，回指全篇基调用一般现在时 attaches increasing importance；「已经进入稳步发展阶段」含「已经」、强调对现在的结果，偏离用现在完成时 has entered。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">「重视」用动词短语 attach importance to sth / pay attention to sth，介词 to 不能丢；&quot;importance&quot; 前用 increasing 表「越来越」。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">higher education 作不可数抽象名词，泛指时不加冠词、不加 s；a steady development stage 中 stage 可数、首次提及用不定冠词 a。</div></div><div class="vocab"><div class="w">时态</div><div class="d">「已接近」含「已」、是累积到现在的结果，用现在完成时 has reached / has neared；若理解为持续逼近的现状，用一般现在时 is approaching 亦可，但全句须自洽。</div></div><div class="vocab"><div class="w">数字表达</div><div class="d">「4,700万」译成 47 million，million 在这里不加 s（前面有具体数字时 million 用单数）；不要写成 4700 万的直译 &quot;4700 thousand&quot; 这类中式数字。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语中心词是 The total number（单数），谓语用第三人称单数 has / is，不要被后面的 students 带成复数。</div></div><div class="vocab"><div class="w">时态</div><div class="d">全句讲普遍现状趋势，回指基调用一般现在时：people desire / are eager to receive。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">「渴望接受高等教育」用 be eager / desire to receive (gain / have access to) higher education；「接受教育」地道说法是 receive education，不要写成 accept education。</div></div><div class="vocab"><div class="w">名词化</div><div class="d">With 短语里把动词转成名词：发展→development、提高→improvement / rise，介词 of 连接（the development of the economy / the improvement of living standards）。</div></div><div class="vocab"><div class="w">时态</div><div class="d">全句讲持续进行的现状，回指基调用一般现在时；「持续/不断/逐年」可配现在进行时强调进行中（is constantly improving）或一般现在时（continue to increase）。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">「数量和学科专业」是两样东西，作主语谓语用复数 continue（the number ... and the disciplines ... continue）；opportunities 为更多年轻人提供的机会不止一个，用复数。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">「招生人数」用 enrollment / the number of students enrolled；「逐年上升」用 rises year by year / increases annually；「创造机会」用 create / provide opportunities for sb to do sth。</div></div>
+</div>
+
+<div class="card">
+  <h2>翻译四句口诀</h2>
+  <table>
+    <tr><th>步骤</th><th>做什么</th></tr>
+    <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
+    <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
+    <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
+    <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 > 用词花</b></td></tr>
+  </table>
+</div>
+
+</body>
+</html>

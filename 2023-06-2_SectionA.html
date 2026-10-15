@@ -172,6 +172,12 @@
   body.mk .w.cur.mk{color:#14161a;}
   .hl,.mark{color:#14161a;}
 }
+
+.syncbtn{margin-left:10px;padding:11px 20px;border:0;border-radius:11px;background:var(--green);
+ color:#fff;font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit;vertical-align:middle}
+.syncbtn:active{transform:scale(.98)}
+.syncbtn:disabled{background:var(--sub2)}
+.syncst{font-size:12.5px;color:var(--green);margin-top:9px;min-height:18px}
 </style>
 <noscript><style>
   .locked-sec{filter:none !important;opacity:1 !important;pointer-events:auto !important;user-select:auto !important;}
@@ -765,6 +771,34 @@ var QUIZ = [{"id": "q1", "stem": "1. What do we learn from the police report?", 
   buildIndex();
   load(false);
   
+})();
+</script>
+
+<div style="margin-top:12px">
+  <button class="syncbtn" id="syncBtn">☁ 同步回执</button>
+  <span class="syncst" id="syncSt"></span>
+</div>
+<script>
+(function(){
+  var TOPIC = "cet4-l1nks314-da7731fc";
+  var btn = document.getElementById('syncBtn'), st = document.getElementById('syncSt');
+  if (!btn) return;
+  btn.addEventListener('click', function(){
+    var r = document.getElementById('receipt');
+    if (!r || !r.value.trim()){ st.style.color = 'var(--amber)'; st.textContent = '先做完题、生成回执后再同步'; return; }
+    btn.disabled = true; st.textContent = '同步中…';
+    var d = new Date();
+    var ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    fetch('https://ntfy.sh/' + TOPIC, {
+      method:'POST',
+      body: JSON.stringify({t:'rep', kind:'listening', date:ds, page:document.title, text:r.value})
+    }).then(function(x){
+      if (x.ok){ st.style.color='var(--green)'; st.textContent='✓ 已同步，回到对话说一句「看回执」即可'; }
+      else { st.style.color='var(--red)'; st.textContent='同步失败 —— 请直接截图发到对话'; btn.disabled=false; }
+    }).catch(function(){
+      st.style.color='var(--red)'; st.textContent='离线 —— 请直接截图发到对话'; btn.disabled=false;
+    });
+  });
 })();
 </script>
 </body>

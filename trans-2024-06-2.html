@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>汉译英 · 2024年6月 第2套</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--soft:#fafbfc;--grey:#f2f3f5;--line:#e5e8ec;--line2:#eff1f4;
+ --track:#e8ebef;--txt:#1b1e23;--txt2:#2b303a;--txt3:#3d434e;--sub:#6b7280;--sub2:#a8b0bb;
+ --blue:#2563eb;--blue-soft:#eef3ff;--green:#0d8a52;--green-soft:#e8f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;
+ --amber-line:#f0dfb8;--green-line:#bfe3cf;--purple:#7c5cff;--purple-soft:#f2eeff;
+ --blue-ink:#123a75;--green-ink:#0d5232;--amber-ink:#7a5b00;--red-ink:#8a2318;--purple-ink:#3f2a7a;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05)}
+@media (prefers-color-scheme: dark){:root{--bg:#101216;--card:#191c21;--soft:#20242a;
+ --grey:#22262c;--line:#2c313a;--line2:#242930;--track:#2a2f38;--txt:#e9ebee;--txt2:#d7dade;
+ --txt3:#c3c8cf;--sub:#98a0aa;--sub2:#6b7280;--blue:#6b96fb;--blue-soft:#1a2742;
+ --green:#41d18f;--green-soft:#14301f;--red:#ef7261;--red-soft:#371d19;--amber:#e0a53f;
+ --amber-soft:#312713;--amber-line:#4a3a1c;--green-line:#1f4530;--purple:#a98cff;
+ --purple-soft:#241c3d;--blue-ink:#a9c6ff;--green-ink:#7fe0b0;--amber-ink:#f0c469;
+ --red-ink:#ffa79a;--purple-ink:#c3a9ff;--shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28);
+ color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:20px;margin:2px 0 14px;font-weight:800;padding-left:12px;
+ border-left:4px solid var(--blue);line-height:1.25;letter-spacing:.2px}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:12px;flex-wrap:wrap}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.hint{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 12px}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.72;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.big{display:flex;gap:9px;margin-bottom:12px}
+.big div{flex:1;background:var(--blue-soft);border-radius:10px;padding:10px 8px;text-align:center}
+.big b{display:block;font-size:18px;font-weight:800;color:var(--blue)}
+.big span{font-size:11.5px;color:var(--sub)}
+.prompt{font-size:14.6px;line-height:1.9;background:var(--soft);border-radius:11px;
+ padding:14px;border:1px solid var(--line);text-align:justify}
+.prompt .lbl{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue);
+ color:#fff;border-radius:6px;padding:2px 9px;margin-bottom:9px}
+.zh{font-size:15px;line-height:2;text-align:justify;letter-spacing:.2px}
+.en{font-size:14.6px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.essay p{margin:0 0 12px}
+.essay p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;
+ background:var(--card)}
+details>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:14.4px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details[open]>summary::before{content:"▾"}
+details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
+.sent{border-bottom:1px solid var(--line2);padding:13px 0}
+.sent:last-child{border-bottom:0}
+.snum{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue-soft);
+ color:var(--blue);border-radius:6px;padding:2px 9px;margin-bottom:7px}
+.szh{font-size:15px;line-height:1.9;margin:0 0 9px}
+.sen{font-size:14.6px;line-height:1.85;margin:0;padding:10px 12px;background:var(--green-soft);
+ border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
+.strat{display:inline-block;font-size:12px;color:var(--purple);
+ background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
+.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
+.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+ font-size:12px;white-space:nowrap}
+.chunk .v{flex:1;color:var(--txt2)}
+.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.row:last-child{border-bottom:0}
+.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
+.row .c{flex:1;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab:last-child{border-bottom:0}
+.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
+.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
+ line-height:1.78;color:var(--red-ink);margin-top:10px}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
+ border-radius:18px;padding:5px 13px;color:var(--sub)}
+.flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+</style>
+</head>
+<body>
+
+<a class="back" href="writing.html">← 返回写作与翻译</a>
+<h1>汉译英 · 2024年6月 第2套</h1>
+
+<div class="card">
+  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part IV</span></div>
+  <div class="big">
+    <div><b>173</b><span>中文字数</span></div>
+    <div><b>5</b><span>句</span></div>
+    <div><b>30</b><span>分钟</span></div>
+  </div>
+  <div class="tip b">翻译评分只看四件事：<b>意思说全、语法没错、表达通顺、用词准确</b>。
+  翻得漂亮不加分，翻错了狠狠扣 —— 所以目标是<b>不出错</b>，不是出彩。</div>
+</div>
+
+<div class="card">
+  <div class="chead"><h2>中文原文</h2><span class="cmeta">5 句</span></div>
+  <div class="tip b">【主旨】 客观介绍农历及其作用 全段在客观介绍中国农历的来历、用途和地位，属于典型的「中国文化／事物介绍」语体。开篇 农历 (the lunar calendar) 起源于数千年前的中国，根据太阳和月亮的运行规律制定 就把对象（农历）和性质（一种历法）点明，后文层层说明它的功能与今日地位。这类介绍文以陈述客观事实为主，用词宜平实、书面，不必华丽，关键是把每个信息点说准、说顺。 【时态】 一般现在时 全篇是介绍农历「是什么、有什么作用、今天怎样」的客观事实陈述，事实性、长期性内容用一般现在时最稳。例如 农历在农业生产和人们日常生活中发挥着重要作用 和 农历是中国传统文化的重要组成部分，当今依然广为使用 讲的都是延续到今天的事实，用一般现在时。只有两处例外要偏离基调：讲它「起源于数千年前」这一已完成的来历、以及讲「古人」过去如何做，要用一般过去时。 【译法】 农历 农历 (the lunar calendar) 原文已在括号里给出官方译法 the lunar calendar，全篇统一用它，绝不中途换成 the Chinese calendar 或 lunar year 等说法。它在文中反复出现，第二次起可用代词 it 承接以免重复。 春节 春节 取约定俗成的英文译名 the Spring Festival（首字母大写，作专有节日名）。也可加注 (Chinese New Year)，但全篇前后须一致。 中秋节 中秋节 取通行译名 the Mid-Autumn Festival（首字母大写，连字符不可漏）。这是阅卷常见考点，拼写与大小写要稳。</div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    <span class="zh">农历 (the lunar calendar) 起源于数千年前的中国，根据太阳和月亮的运行规律制定。长期以来，农历在农业生产和人们日常生活中发挥着重要作用。古人依据农历记录日期、安排农活，以便最有效地利用自然资源和气候条件，提高农作物的产量和质量。中国的春节、中秋节等传统节日的日期都基于农历。农历是中国传统文化的重要组成部分，当今依然广为使用。</span></div>
+  <div class="tip a"><b>先自己翻一遍再看下面。</b>用纸笔或另一个文档写，写完再逐句对照 ——
+  直接看答案等于没练。</div>
+</div>
+
+<div class="card">
+  <h2>怎么用这份包</h2>
+  <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
+    <span>③ 抄下错处</span><span>④ 整篇通读</span></div>
+  <div class="tip g">第二步是全流程最有价值的一步：<b>看你漏译了什么、时态用错了哪里</b>。
+  每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
+</div>
+
+<div class="card">
+  <h2>逐句对照（5 句）</h2>
+  <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
+  <div class="sent"><span class="snum">第 1 句</span><p class="szh">农历 (the lunar calendar) 起源于数千年前的中国，根据太阳和月亮的运行规律制定。</p><p class="sen">The lunar calendar originated in China thousands of years ago and was formulated based on the movements of the sun and the moon.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">「起源于数千年前」是已完成的来历，偏离全篇现在时基调，用一般过去时 originated；分词 formulated 表被动、不计时态。</span></div><div class="chunk"><span class="k">语态</span><span class="v">根据太阳和月亮的运行规律制定 中农历是被制定的，必须用被动（formulated／was formulated），切勿写成农历自己 formulate。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">「太阳和月亮」是天体唯一物，前面加定冠词 the sun and the moon；「运行规律」可数化为复数 movements 或用 the movement，二者皆可。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">长期以来，农历在农业生产和人们日常生活中发挥着重要作用。</p><p class="sen">For a long time, the lunar calendar has played an important role in agricultural production and people&#x27;s daily life.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">长期以来 强调从过去持续到现在，宜用现在完成时 has played 呼应「长期」；若理解为客观长期事实，用一般现在时 plays 亦可，两者都对，但选定后须前后逻辑自洽。</span></div><div class="chunk"><span class="k">冠词</span><span class="v">play 后面的 role 前要加不定冠词，写成 an important role（important 以元音开头用 an），漏冠词是常见硬伤。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">「农业生产」agricultural production 为不可数，不加复数；「日常生活」daily life 同样用单数，前加 people&#x27;s。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">古人依据农历记录日期、安排农活，以便最有效地利用自然资源和气候条件，提高农作物的产量和质量。</p><p class="sen">Ancient people recorded dates and arranged farm work according to the lunar calendar, in order to make the most effective use of natural resources and climatic conditions, thereby improving the yield and quality of crops.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">本句讲 古人 过去的做法，偏离现在时基调，谓语用一般过去时 recorded、arranged。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">「日期」不止一个→dates 复数；「自然资源」natural resources 习惯用复数；「农作物」crops 复数；「产量和质量」yield、quality 为不可数，保持单数。</span></div><div class="chunk"><span class="k">介词搭配</span><span class="v">「依据／根据」农历用 according to；「利用」用 make use of 或 make the most of；「农作物的产量」用 the yield of crops，of 表所属。</span></div></div><div class="sent"><span class="snum">第 4 句</span><p class="szh">中国的春节、中秋节等传统节日的日期都基于农历。</p><p class="sen">The dates of China&#x27;s traditional festivals, such as the Spring Festival and the Mid-Autumn Festival, are based on the lunar calendar.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">讲节日日期与农历的固定关系，是客观事实，回指全篇基调用一般现在时 are based on。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语中心词是复数 the dates，谓语 be 动词须用 are（are based on），不能受邻近的 festivals 或单数 calendar 干扰写成 is。</span></div><div class="chunk"><span class="k">单复数与专名</span><span class="v">「日期」多个→dates 复数；「节日」复数 festivals；专名 the Spring Festival、the Mid-Autumn Festival 须沿用 glossary 定法，首字母大写、连字符不漏。</span></div></div><div class="sent"><span class="snum">第 5 句</span><p class="szh">农历是中国传统文化的重要组成部分，当今依然广为使用。</p><p class="sen">The lunar calendar is an important part of traditional Chinese culture and is still widely used today.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">讲农历今日的地位与使用现状，是当前事实，回指全篇基调用一般现在时 is、is used。</span></div><div class="chunk"><span class="k">语态</span><span class="v">当今依然广为使用 农历是被使用的对象→用被动 is widely used，不可写成农历自己 use。</span></div><div class="chunk"><span class="k">副词与搭配</span><span class="v">「广为」用 widely 修饰 used；「依然」用 still；「当今」用 today／nowadays 作时间状语置于句末。an important part 的不定冠词 an 不可漏。</span></div></div>
+</div>
+
+<div class="card">
+  <h2>整篇参考译文</h2>
+  <details><summary>展开整篇（自己翻完再看）</summary>
+    <div class="dbody"><p class="en">The lunar calendar originated in China thousands of years ago and was formulated based on the movements of the sun and the moon. For a long time, it has played an important role in agricultural production and people&#x27;s daily life. In the past, ancient people recorded dates and arranged farm work according to the lunar calendar, in order to make the most effective use of natural resources and climatic conditions, thereby improving the yield and quality of crops. The dates of China&#x27;s traditional festivals, such as the Spring Festival and the Mid-Autumn Festival, are based on the lunar calendar. As an important part of traditional Chinese culture, the lunar calendar is still widely used today. 【衔接】 第2句承接首句改用 it 首句已点明主语 The lunar calendar，第2句若再重复全称会显累赘，可改用代词 it 承接，写成 For a long time, it has played an important role ...，让两句读起来连贯不啰嗦。涉及原文 农历在农业生产和人们日常生活中发挥着重要作用。 第3句补 in the past 显时间层次 第3句讲 古人 过去的做法，与前两句的现在视角有时间落差。可在句首补 In the past 或保留 Ancient people 作主语，让读者明确这里转入历史，时态从现在时切到过去时不显突兀。 末句 today 收束呼应主题 末句 当今依然广为使用 中的 today 与第3句的过去形成「古—今」呼应，把全篇从「起源—古代作用—今日地位」收束完整。保留 today 这个时间词，整篇的时间脉络就清晰了。</p></div></details>
+  <div class="tip a">整篇译文是用来<b>感受节奏和衔接</b>的，不是用来背的。
+  重点看它怎么处理句间连接、怎么避免重复用词。</div>
+</div>
+
+<div class="card">
+  <h2>句间衔接（3 处）</h2>
+  <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
+  <div class="row"><span class="tag">衔接</span><div class="c"><b>第2句承接首句改用 it</b>首句已点明主语 The lunar calendar，第2句若再重复全称会显累赘，可改用代词 it 承接，写成 For a long time, it has played an important role ...，让两句读起来连贯不啰嗦。涉及原文 农历在农业生产和人们日常生活中发挥着重要作用。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第3句补 in the past 显时间层次</b>第3句讲 古人 过去的做法，与前两句的现在视角有时间落差。可在句首补 In the past 或保留 Ancient people 作主语，让读者明确这里转入历史，时态从现在时切到过去时不显突兀。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>末句 today 收束呼应主题</b>末句 当今依然广为使用 中的 today 与第3句的过去形成「古—今」呼应，把全篇从「起源—古代作用—今日地位」收束完整。保留 today 这个时间词，整篇的时间脉络就清晰了。</div></div>
+</div>
+
+<div class="card">
+  <h2>译法要点（18 条）</h2>
+  <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
+  <div class="vocab"><div class="w">农历</div><div class="d">农历 (the lunar calendar) 原文已在括号里给出官方译法 the lunar calendar，全篇统一用它，绝不中途换成 the Chinese calendar 或 lunar year 等说法。它在文中反复出现，第二次起可用代词 it 承接以免重复。</div></div><div class="vocab"><div class="w">春节</div><div class="d">春节 取约定俗成的英文译名 the Spring Festival（首字母大写，作专有节日名）。也可加注 (Chinese New Year)，但全篇前后须一致。</div></div><div class="vocab"><div class="w">中秋节</div><div class="d">中秋节 取通行译名 the Mid-Autumn Festival（首字母大写，连字符不可漏）。这是阅卷常见考点，拼写与大小写要稳。</div></div><div class="vocab"><div class="w">时态</div><div class="d">「起源于数千年前」是已完成的来历，偏离全篇现在时基调，用一般过去时 originated；分词 formulated 表被动、不计时态。</div></div><div class="vocab"><div class="w">语态</div><div class="d">根据太阳和月亮的运行规律制定 中农历是被制定的，必须用被动（formulated／was formulated），切勿写成农历自己 formulate。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">「太阳和月亮」是天体唯一物，前面加定冠词 the sun and the moon；「运行规律」可数化为复数 movements 或用 the movement，二者皆可。</div></div><div class="vocab"><div class="w">时态</div><div class="d">长期以来 强调从过去持续到现在，宜用现在完成时 has played 呼应「长期」；若理解为客观长期事实，用一般现在时 plays 亦可，两者都对，但选定后须前后逻辑自洽。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">play 后面的 role 前要加不定冠词，写成 an important role（important 以元音开头用 an），漏冠词是常见硬伤。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">「农业生产」agricultural production 为不可数，不加复数；「日常生活」daily life 同样用单数，前加 people&#x27;s。</div></div><div class="vocab"><div class="w">时态</div><div class="d">本句讲 古人 过去的做法，偏离现在时基调，谓语用一般过去时 recorded、arranged。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">「日期」不止一个→dates 复数；「自然资源」natural resources 习惯用复数；「农作物」crops 复数；「产量和质量」yield、quality 为不可数，保持单数。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">「依据／根据」农历用 according to；「利用」用 make use of 或 make the most of；「农作物的产量」用 the yield of crops，of 表所属。</div></div><div class="vocab"><div class="w">时态</div><div class="d">讲节日日期与农历的固定关系，是客观事实，回指全篇基调用一般现在时 are based on。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语中心词是复数 the dates，谓语 be 动词须用 are（are based on），不能受邻近的 festivals 或单数 calendar 干扰写成 is。</div></div><div class="vocab"><div class="w">单复数与专名</div><div class="d">「日期」多个→dates 复数；「节日」复数 festivals；专名 the Spring Festival、the Mid-Autumn Festival 须沿用 glossary 定法，首字母大写、连字符不漏。</div></div><div class="vocab"><div class="w">时态</div><div class="d">讲农历今日的地位与使用现状，是当前事实，回指全篇基调用一般现在时 is、is used。</div></div><div class="vocab"><div class="w">语态</div><div class="d">当今依然广为使用 农历是被使用的对象→用被动 is widely used，不可写成农历自己 use。</div></div><div class="vocab"><div class="w">副词与搭配</div><div class="d">「广为」用 widely 修饰 used；「依然」用 still；「当今」用 today／nowadays 作时间状语置于句末。an important part 的不定冠词 an 不可漏。</div></div>
+</div>
+
+<div class="card">
+  <h2>翻译四句口诀</h2>
+  <table>
+    <tr><th>步骤</th><th>做什么</th></tr>
+    <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
+    <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
+    <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
+    <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 > 用词花</b></td></tr>
+  </table>
+</div>
+
+</body>
+</html>

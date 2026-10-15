@@ -5,30 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>仔细阅读 · 2025年6月 第2套</title>
 <style>
-:root{ --bg:#f4f5f7; --card:#ffffff; --soft:#fafbfc; --grey:#f2f3f5;
- --line:#e5e8ec; --line2:#eff1f4; --track:#e8ebef;
- --txt:#1b1e23; --txt2:#2b303a; --txt3:#3d434e; --sub:#6b7280; --sub2:#a8b0bb;
- --blue:#2563eb; --blue-soft:#eef3ff; --green:#0d8a52; --green-soft:#e8f7ef;
- --red:#c0392b; --red-soft:#fdecea; --amber:#b45309; --amber-soft:#fef6e7;
- --amber-line:#f0dfb8; --green-line:#bfe3cf;
- --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05);
- --shadow-lg:0 2px 4px rgba(16,24,40,.05), 0 8px 20px rgba(16,24,40,.07);  --blue-ink:#123a75;}
-@media (prefers-color-scheme: dark){ :root{ --bg:#101216; --card:#191c21; --soft:#20242a; --grey:#22262c;
- --line:#2c313a; --line2:#242930; --track:#2a2f38;
- --txt:#e9ebee; --txt2:#d7dade; --txt3:#c3c8cf; --sub:#98a0aa; --sub2:#6b7280;
- --blue:#6b96fb; --blue-soft:#1a2742; --green:#41d18f; --green-soft:#14301f;
- --red:#ef7261; --red-soft:#371d19; --amber:#e0a53f; --amber-soft:#312713;
- --amber-line:#4a3a1c; --green-line:#1f4530;
- --shadow:0 1px 2px rgba(0,0,0,.35), 0 2px 8px rgba(0,0,0,.28);
- --shadow-lg:0 2px 6px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.45);
- color-scheme:dark;  --blue-ink:#a9c6ff;} }
+:root{--bg:#f5f6f8;--card:#fff;--line:#e6e8ec;--txt:#1c1e21;--sub:#6b7280;
+ --blue:#2563eb;--blue-soft:#eff4ff;--green:#0d8a52;--green-soft:#e9f7ef;--sub2:#a8b0bb;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;--grey:#f2f3f5;}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--txt);
  font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
  padding:14px 13px 48px;max-width:760px;margin:0 auto;}
 a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
 h1{font-size:19px;margin:2px 0 12px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:14px;box-shadow:var(--shadow);}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:14px}
 .chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .chead h2{font-size:16px;margin:0}
 .cmeta{font-size:12.5px;color:var(--sub)}
@@ -36,10 +22,10 @@ h1{font-size:19px;margin:2px 0 12px}
 .tab,.tbtn2{border:1.5px solid var(--line);background:var(--card);color:var(--sub);font-size:14px;
  padding:9px 18px;border-radius:22px;cursor:pointer;font-family:inherit;font-weight:600}
 .tab.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
-.tbtn2{margin-left:auto;color:var(--amber);border-color:var(--amber-line);background:var(--amber-soft)}
+.tbtn2{margin-left:auto;color:var(--amber);border-color:#f0dfb8;background:var(--amber-soft)}
 .tbtn2.on{background:var(--amber);color:#fff;border-color:var(--amber)}
 .panel{display:none}.panel.on{display:block}
-.para{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line2)}
+.para{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid #f0f2f5}
 .para:last-child{border-bottom:0}
 .pno{flex:0 0 32px;font-size:12.5px;color:#fff;background:var(--blue);border-radius:8px;
  height:22px;line-height:22px;text-align:center;margin-top:3px;font-weight:700;letter-spacing:.3px}
@@ -57,7 +43,7 @@ body.zh .ptx .zh,body.zh .oz{display:block}
 .qsz{font-size:13px;color:var(--sub);margin:5px 0 0;display:none}
 body.zh .qsz{display:block}
 .opts{margin-top:10px;display:flex;flex-direction:column;gap:7px}
-.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;background:var(--soft);
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;background:#fafbfc;
  border:1.5px solid var(--line);border-radius:11px;padding:13px 14px;cursor:pointer;
  font-family:inherit;font-size:14.4px;color:var(--txt);line-height:1.65;width:100%;
  transition:border-color .15s, background .15s}
@@ -75,13 +61,17 @@ body.zh .qsz{display:block}
 .subrow{margin-top:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .submit{padding:12px 24px;border:0;border-radius:11px;background:var(--blue);color:#fff;
  font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
-.submit:disabled{background:var(--blue)}
+.submit:disabled{background:#9fb4de}
 .score{font-size:15px;font-weight:700}
-.hint{font-size:13px;color:var(--sub);background:var(--soft);border:1px solid var(--line);
+.hint{font-size:13px;color:var(--sub);background:#fafbfc;border:1px solid var(--line);
  border-radius:10px;padding:10px 12px;margin:0 0 14px;line-height:1.7}
+.syncbtn{padding:12px 20px;border:0;border-radius:11px;background:var(--green);color:#fff;
+ font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit}
+.syncbtn:disabled{background:var(--sub2)}
+.syncst{font-size:12.5px;color:var(--green);margin:9px 0 0;min-height:18px}
 .ana{border:1px solid var(--line);border-radius:11px;margin-bottom:9px;overflow:hidden;background:#fff}
 .ana>summary{display:flex;gap:10px;align-items:center;padding:11px 13px;cursor:pointer;
- font-size:14px;list-style:none;background:var(--soft)}
+ font-size:14px;list-style:none;background:#fafbfc}
 .ana>summary::-webkit-details-marker{display:none}
 .ana .an{font-weight:700;color:var(--blue)}
 .ana .aa{color:var(--green);font-weight:700}
@@ -94,7 +84,7 @@ body.zh .qsz{display:block}
 .arow:last-child{margin-bottom:0}
 .atag{flex:0 0 42px;font-size:12px;font-weight:700;color:var(--blue);background:var(--blue-soft);
  border-radius:6px;height:21px;line-height:21px;text-align:center}
-.atx{flex:1;min-width:0;font-size:13.6px;line-height:1.75;color:var(--txt2)}
+.atx{flex:1;min-width:0;font-size:13.6px;line-height:1.75;color:#2b2f36}
 .atx p{margin:0}
 .atx .lpara{display:inline-block;font-size:11.5px;background:var(--amber-soft);color:var(--amber);
  border-radius:5px;padding:1px 8px;margin-bottom:5px;font-weight:700}
@@ -102,30 +92,30 @@ body.zh .qsz{display:block}
 .lzh{margin:4px 0 0;font-size:12.8px;color:var(--sub)}
 .vds{display:flex;flex-direction:column;gap:10px}
 .vd{border-radius:10px;padding:10px 12px;border:1px solid}
-.vd.ok{background:var(--green-soft);border-color:var(--green-line)}
-.vd.bad{background:var(--soft);border-color:var(--line)}
+.vd.ok{background:var(--green-soft);border-color:#bfe3cf}
+.vd.bad{background:#fafbfc;border-color:var(--line)}
 .vdh{display:flex;gap:9px;align-items:center;margin-bottom:6px}
 .vdl{font-weight:700;font-size:14px}
 .vdf{font-size:12px;padding:2px 9px;border-radius:20px;font-weight:600}
 .vd.ok .vdf{background:var(--green);color:#fff}
-.vd.bad .vdf{background:var(--line);color:var(--sub)}
+.vd.bad .vdf{background:#dde1e8;color:#4b5563}
 .pairs{display:flex;flex-direction:column;gap:4px;margin:7px 0}
 .pair{display:flex;gap:8px;align-items:baseline;font-size:13px;flex-wrap:wrap}
 .po{color:var(--green);font-weight:600}
 .pa{color:var(--sub)}
 .pp{color:var(--blue);font-weight:600}
-.vdn{margin:7px 0 0;font-size:13.2px;color:var(--txt3);line-height:1.72}
+.vdn{margin:7px 0 0;font-size:13.2px;color:#3a3f47;line-height:1.72}
 table{width:100%;border-collapse:collapse;font-size:13.4px}
 th,td{padding:8px 7px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+th{font-size:12.5px;color:var(--sub);background:#fafbfc;font-weight:600}
 td.c{text-align:center;white-space:nowrap;color:var(--sub);font-size:12.5px}
 tr:last-child td{border-bottom:0}
 .frow{display:flex;align-items:center;gap:11px;padding:7px 0}
 .fn{flex:0 0 88px;font-size:13.2px}
-.fbar{flex:1;height:8px;background:var(--track);border-radius:5px;overflow:hidden}
+.fbar{flex:1;height:8px;background:#eceef2;border-radius:5px;overflow:hidden}
 .fbar i{display:block;height:100%;background:var(--red);border-radius:5px}
 .fv{flex:0 0 30px;text-align:right;font-size:13px;font-weight:700;color:var(--red)}
-.tip{background:var(--blue-soft);color:var(--blue-ink);border-radius:10px;padding:11px 13px;
+.tip{background:var(--blue-soft);color:#123a75;border-radius:10px;padding:11px 13px;
  font-size:13.2px;line-height:1.7;margin-top:12px}
 </style>
 </head>
@@ -165,7 +155,9 @@ tr:last-child td{border-bottom:0}
     做完点下方提交，会自动判分。右上「中译」可一键显示题干与选项的中文。</p>
     <div class="q" data-q="46"><div class="qs"><span class="qn">46.</span><span class="qse">What does science suggest the right dress may do?</span></div><div class="qsz">科学研究表明，合适的着装可能会起到什么作用?</div><div class="opts"><button class="opt" data-q="46" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Add to our advantage in work and life.</span><span class="oz">增加我们在工作和生活中的优势。</span></span></button><button class="opt" data-q="46" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Enable us to look a lot more attractive.</span><span class="oz">使我们看起来更有吸引力。</span></span></button><button class="opt" data-q="46" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">Help us to enjoy a fuller personal life.</span><span class="oz">帮助我们享受更充实的个人生活。</span></span></button><button class="opt" data-q="46" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Provide extra energy for what we do.</span><span class="oz">为我们所做的事情提供额外的能量。</span></span></button></div><button class="jump" data-go="p1-1" data-qnum="46">定位 P1</button></div><div class="q" data-q="47"><div class="qs"><span class="qn">47.</span><span class="qse">Why does science say the clothes one wears may affect their interaction with others?</span></div><div class="qsz">科学研究为何认为一个人所穿的衣服可能会影响他们与他人的互动?</div><div class="opts"><button class="opt" data-q="47" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Clothes usually represent one&#x27;s social and economic status.</span><span class="oz">衣服通常代表一个人的社会和经济地位。</span></span></button><button class="opt" data-q="47" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Clothes largely determine one&#x27;s likability by people around.</span><span class="oz">衣服在很大程度上决定一个人是否受到周围人的喜爱。</span></span></button><button class="opt" data-q="47" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">Different types of clothing markedly reflect different personalities.</span><span class="oz">不同类型的服装明显反映出不同的个性。</span></span></button><button class="opt" data-q="47" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Different types of clothing convey different messages symbolically.</span><span class="oz">不同类型的服装象征性地传达不同的信息。</span></span></button></div><button class="jump" data-go="p1-2" data-qnum="47">定位 P2</button></div><div class="q" data-q="48"><div class="qs"><span class="qn">48.</span><span class="qse">How do the clothes we wear sway our evaluation of ourselves?</span></div><div class="qsz">我们所穿的衣服如何影响我们对自己的评价?</div><div class="opts"><button class="opt" data-q="48" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">By exerting an effect on our power of judgment.</span><span class="oz">通过对我们的判断力产生影响。</span></span></button><button class="opt" data-q="48" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">By impacting how we feel about ourselves.</span><span class="oz">通过影响我们对自己的感受。</span></span></button><button class="opt" data-q="48" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">By affecting what we take as the basis for assessment.</span><span class="oz">通过影响我们作为评估依据的内容。</span></span></button><button class="opt" data-q="48" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">By influencing our interpretation of symbolic messages.</span><span class="oz">通过影响我们对象征性信息的解读。</span></span></button></div><button class="jump" data-go="p1-3" data-qnum="48">定位 P3</button></div><div class="q" data-q="49"><div class="qs"><span class="qn">49.</span><span class="qse">Why does the author say tailored jackets are associated with being &#x27;dressed for success&#x27;?</span></div><div class="qsz">作者为何说合身的西装外套与&quot;为成功而着装&quot;相关联?</div><div class="opts"><button class="opt" data-q="49" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">They are necessary for formal business dealings.</span><span class="oz">它们是正式商务往来所必需的。</span></span></button><button class="opt" data-q="49" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">They may help people concentrate on their business.</span><span class="oz">它们可能帮助人们专注于自己的业务。</span></span></button><button class="opt" data-q="49" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">They are vital to keeping a dominant position in business transactions.</span><span class="oz">它们对于在商务交易中保持主导地位至关重要。</span></span></button><button class="opt" data-q="49" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">They may enable people to have the right mentality for doing business.</span><span class="oz">它们可能使人们拥有正确的经商心态。</span></span></button></div><button class="jump" data-go="p1-4" data-qnum="49">定位 P4</button></div><div class="q" data-q="50"><div class="qs"><span class="qn">50.</span><span class="qse">What are people advised to do when they want to socialize?</span></div><div class="qsz">当人们想要进行社交时,建议他们做什么?</div><div class="opts"><button class="opt" data-q="50" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">Focus on clothing.</span><span class="oz">注重服装。</span></span></button><button class="opt" data-q="50" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">Wear a good suit.</span><span class="oz">穿一套好西装。</span></span></button><button class="opt" data-q="50" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">Dress casually.</span><span class="oz">穿着随意。</span></span></button><button class="opt" data-q="50" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">Look unusual.</span><span class="oz">看起来与众不同。</span></span></button></div><button class="jump" data-go="p1-6" data-qnum="50">定位 P6</button></div>
     <div class="subrow"><button class="submit" data-sec="p1">提交答案 · 自动判分</button>
-      <span class="score" id="sc-p1"></span></div>
+      <span class="score" id="sc-p1"></span>
+      <button class="syncbtn" id="sy-p1" style="display:none">☁ 同步回执</button></div>
+    <p class="syncst" id="sst-p1"></p>
   </div>
 
   <div class="panel" id="p1-ana">
@@ -191,7 +183,9 @@ tr:last-child td{border-bottom:0}
     做完点下方提交，会自动判分。右上「中译」可一键显示题干与选项的中文。</p>
     <div class="q" data-q="51"><div class="qs"><span class="qn">51.</span><span class="qse">What does the author think of classical music and opera in today&#x27;s world?</span></div><div class="qsz">作者如何看待古典音乐和歌剧在当今世界的地位?</div><div class="opts"><button class="opt" data-q="51" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">They still make their presence felt.</span><span class="oz">它们仍然保持着存在感。</span></span></button><button class="opt" data-q="51" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">They have given way to electronic music.</span><span class="oz">它们已经让位于电子音乐。</span></span></button><button class="opt" data-q="51" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">They will not fade away from the public eye.</span><span class="oz">它们不会从公众视野中消失。</span></span></button><button class="opt" data-q="51" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">They are no longer relevant to teenagers&#x27; lives.</span><span class="oz">它们与青少年的生活不再相关。</span></span></button></div></div><div class="q" data-q="52"><div class="qs"><span class="qn">52.</span><span class="qse">What do we learn about much of the popular music currently produced?</span></div><div class="qsz">关于当前制作的大部分流行音乐,我们了解到什么?</div><div class="opts"><button class="opt" data-q="52" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">It can be difficult for many classical music fans to appreciate.</span><span class="oz">许多古典音乐爱好者可能难以欣赏它。</span></span></button><button class="opt" data-q="52" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">It can be seen as an indicator of refinement on classical music.</span><span class="oz">它可以被视为古典音乐精致化的一个标志。</span></span></button><button class="opt" data-q="52" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">It caters to society&#x27;s taste in music in a more subtle way than classical music.</span><span class="oz">它比古典音乐更微妙地迎合社会的音乐品味。</span></span></button><button class="opt" data-q="52" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">It contains elements similar to those in some masterpieces of classical music.</span><span class="oz">它包含与某些古典音乐杰作相似的元素。</span></span></button></div><button class="jump" data-go="p2-2" data-qnum="52">定位 P2</button></div><div class="q" data-q="53"><div class="qs"><span class="qn">53.</span><span class="qse">Why does the author mention the invention of the rock opera?</span></div><div class="qsz">作者为什么提到摇滚歌剧的发明?</div><div class="opts"><button class="opt" data-q="53" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">To illustrate how to tell a story using music.</span><span class="oz">为了说明如何用音乐讲述故事。</span></span></button><button class="opt" data-q="53" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">To present the simplest definition of opera.</span><span class="oz">为了给出歌剧最简单的定义。</span></span></button><button class="opt" data-q="53" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">To show the relevance of opera and classical music.</span><span class="oz">为了展示歌剧和古典音乐的相关性。</span></span></button><button class="opt" data-q="53" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">To justify the necessity of using orchestras in opera.</span><span class="oz">为了证明在歌剧中使用管弦乐队的必要性。</span></span></button></div><button class="jump" data-go="p2-3" data-qnum="53">定位 P3</button></div><div class="q" data-q="54"><div class="qs"><span class="qn">54.</span><span class="qse">Why are classical music pieces still used as background music in modern movies?</span></div><div class="qsz">为什么古典音乐作品仍被用作现代电影的背景音乐?</div><div class="opts"><button class="opt" data-q="54" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">There are few types of music for movie producers to choose from.</span><span class="oz">电影制作人可选择的音乐类型很少。</span></span></button><button class="opt" data-q="54" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">They are considered to be the most expressive type of music.</span><span class="oz">它们被认为是最具表现力的音乐类型。</span></span></button><button class="opt" data-q="54" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">They are well received by movie fans from all over the world.</span><span class="oz">它们受到世界各地电影爱好者的好评。</span></span></button><button class="opt" data-q="54" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">They are essential for movies to become the world&#x27;s greatest hits.</span><span class="oz">它们对于电影成为世界最受欢迎作品至关重要。</span></span></button></div><button class="jump" data-go="p2-4" data-qnum="54">定位 P4</button></div><div class="q" data-q="55"><div class="qs"><span class="qn">55.</span><span class="qse">What do we learn about our modern music?</span></div><div class="qsz">关于我们的现代音乐,我们了解到什么?</div><div class="opts"><button class="opt" data-q="55" data-k="A"><span class="k">A</span><span class="ot"><span class="oe">It could not have come into being without classical music and opera as its foundation.</span><span class="oz">如果没有古典音乐和歌剧作为基础,它不可能产生。</span></span></button><button class="opt" data-q="55" data-k="B"><span class="k">B</span><span class="ot"><span class="oe">It cannot outcompete classical music and opera in its impact on our current society.</span><span class="oz">它在对当今社会的影响方面无法超越古典音乐和歌剧。</span></span></button><button class="opt" data-q="55" data-k="C"><span class="k">C</span><span class="ot"><span class="oe">It will not enjoy as much popularity as classical music and opera among music fans.</span><span class="oz">它在音乐爱好者中不会像古典音乐和歌剧那样受欢迎。</span></span></button><button class="opt" data-q="55" data-k="D"><span class="k">D</span><span class="ot"><span class="oe">It might not be able to rival classical music and opera in importance for centuries to come.</span><span class="oz">在未来几个世纪里,它在重要性上可能无法与古典音乐和歌剧匹敌。</span></span></button></div><button class="jump" data-go="p2-5" data-qnum="55">定位 P5</button></div>
     <div class="subrow"><button class="submit" data-sec="p2">提交答案 · 自动判分</button>
-      <span class="score" id="sc-p2"></span></div>
+      <span class="score" id="sc-p2"></span>
+      <button class="syncbtn" id="sy-p2" style="display:none">☁ 同步回执</button></div>
+    <p class="syncst" id="sst-p2"></p>
   </div>
 
   <div class="panel" id="p2-ana">
@@ -215,7 +209,13 @@ tr:last-child td{border-bottom:0}
 
 <script>
 var ANS = {"c-1": {"46": "A", "47": "D", "48": "B", "49": "D", "50": "C"}, "c-2": {"51": "A", "52": "D", "53": "C", "54": "B", "55": "A"}};
+var TOPIC = "cet4-l1nks314-da7731fc";
+var REPORT = null;
 var picked = {}, judged = {};
+function todayStr(){
+  var d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
 
 document.querySelectorAll('.tab').forEach(function(t){
   t.addEventListener('click', function(){
@@ -270,7 +270,38 @@ document.querySelectorAll('.submit').forEach(function(btn){
     var sc = document.getElementById('sc-' + sec);
     sc.textContent = '得分 ' + right + '/' + total + '  ·  正确率 ' + Math.round(right/total*100) + '%';
     sc.style.color = right/total >= 0.6 ? 'var(--green)' : 'var(--red)';
+
+    // 生成回执
+    var wrongList = [];
+    box.querySelectorAll('.q').forEach(function(qd){
+      var q = qd.dataset.q, ans = null;
+      for (var k in ANS){ if (ANS[k][q]) ans = ANS[k][q]; }
+      if (picked[q] !== ans) wrongList.push(q);
+    });
+    REPORT = {
+      t: "rep", kind: "reading", date: todayStr(), page: TITLE,
+      score: right + "/" + total, pct: Math.round(right/total*100),
+      wrong: wrongList
+    };
+    var sb = document.getElementById('sy-' + sec);
+    if (sb) sb.style.display = 'inline-block';
   });
+});
+
+// ── 同步到云端 ──
+function syncReport(){
+  if (!REPORT) return;
+  var st = document.getElementById('sst-' + document.querySelector('.syncbtn').id.slice(3));
+  fetch('https://ntfy.sh/' + TOPIC, {method:'POST', body: JSON.stringify(REPORT)})
+    .then(function(r){
+      if (st) st.textContent = r.ok ? '✓ 已同步（教练能看到这条记录）' : '同步失败，请截图发到对话';
+      if (!r.ok && st) st.style.color = 'var(--red)';
+    })
+    .catch(function(){ if (st){ st.textContent = '离线，请截图发到对话'; st.style.color = 'var(--red)'; } });
+}
+
+document.querySelectorAll('.syncbtn').forEach(function(b){
+  b.addEventListener('click', function(){ syncReport(); });
 });
 
 document.querySelectorAll('.jump').forEach(function(b){

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>写作 · 2025年6月 第1套</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--soft:#fafbfc;--grey:#f2f3f5;--line:#e5e8ec;--line2:#eff1f4;
+ --track:#e8ebef;--txt:#1b1e23;--txt2:#2b303a;--txt3:#3d434e;--sub:#6b7280;--sub2:#a8b0bb;
+ --blue:#2563eb;--blue-soft:#eef3ff;--green:#0d8a52;--green-soft:#e8f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;
+ --amber-line:#f0dfb8;--green-line:#bfe3cf;--purple:#7c5cff;--purple-soft:#f2eeff;
+ --blue-ink:#123a75;--green-ink:#0d5232;--amber-ink:#7a5b00;--red-ink:#8a2318;--purple-ink:#3f2a7a;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05)}
+@media (prefers-color-scheme: dark){:root{--bg:#101216;--card:#191c21;--soft:#20242a;
+ --grey:#22262c;--line:#2c313a;--line2:#242930;--track:#2a2f38;--txt:#e9ebee;--txt2:#d7dade;
+ --txt3:#c3c8cf;--sub:#98a0aa;--sub2:#6b7280;--blue:#6b96fb;--blue-soft:#1a2742;
+ --green:#41d18f;--green-soft:#14301f;--red:#ef7261;--red-soft:#371d19;--amber:#e0a53f;
+ --amber-soft:#312713;--amber-line:#4a3a1c;--green-line:#1f4530;--purple:#a98cff;
+ --purple-soft:#241c3d;--blue-ink:#a9c6ff;--green-ink:#7fe0b0;--amber-ink:#f0c469;
+ --red-ink:#ffa79a;--purple-ink:#c3a9ff;--shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28);
+ color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:20px;margin:2px 0 14px;font-weight:800;padding-left:12px;
+ border-left:4px solid var(--blue);line-height:1.25;letter-spacing:.2px}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:12px;flex-wrap:wrap}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.hint{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 12px}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.72;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.big{display:flex;gap:9px;margin-bottom:12px}
+.big div{flex:1;background:var(--blue-soft);border-radius:10px;padding:10px 8px;text-align:center}
+.big b{display:block;font-size:18px;font-weight:800;color:var(--blue)}
+.big span{font-size:11.5px;color:var(--sub)}
+.prompt{font-size:14.6px;line-height:1.9;background:var(--soft);border-radius:11px;
+ padding:14px;border:1px solid var(--line);text-align:justify}
+.prompt .lbl{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue);
+ color:#fff;border-radius:6px;padding:2px 9px;margin-bottom:9px}
+.zh{font-size:15px;line-height:2;text-align:justify;letter-spacing:.2px}
+.en{font-size:14.6px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.essay p{margin:0 0 12px}
+.essay p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;
+ background:var(--card)}
+details>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:14.4px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details[open]>summary::before{content:"▾"}
+details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
+.sent{border-bottom:1px solid var(--line2);padding:13px 0}
+.sent:last-child{border-bottom:0}
+.snum{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue-soft);
+ color:var(--blue);border-radius:6px;padding:2px 9px;margin-bottom:7px}
+.szh{font-size:15px;line-height:1.9;margin:0 0 9px}
+.sen{font-size:14.6px;line-height:1.85;margin:0;padding:10px 12px;background:var(--green-soft);
+ border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
+.strat{display:inline-block;font-size:12px;color:var(--purple);
+ background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
+.chunk{display:flex;gap:9px;margin:7px 0;font-size:13.4px;line-height:1.72}
+.chunk .k{flex:0 0 auto;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:1px 8px;height:20px;line-height:18px;
+ font-size:12px;white-space:nowrap}
+.chunk .v{flex:1;color:var(--txt2)}
+.row{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.row:last-child{border-bottom:0}
+.row .tag{flex:0 0 46px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;height:21px;line-height:21px;text-align:center}
+.row .c{flex:1;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:3px}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+.vocab{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2);font-size:13.4px}
+.vocab:last-child{border-bottom:0}
+.vocab .w{flex:0 0 96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;color:var(--txt2);line-height:1.72}
+.pit{border-radius:10px;background:var(--red-soft);padding:12px 14px;font-size:13.4px;
+ line-height:1.78;color:var(--red-ink);margin-top:10px}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
+ border-radius:18px;padding:5px 13px;color:var(--sub)}
+.flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+</style>
+</head>
+<body>
+
+<a class="back" href="writing.html">← 返回写作与翻译</a>
+<h1>写作 · 2025年6月 第1套</h1>
+
+<div class="card">
+  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part I</span></div>
+  <div class="big">
+    <div><b>140</b><span>范文词数</span></div>
+    <div><b>3</b><span>段</span></div>
+    <div><b>30</b><span>分钟</span></div>
+  </div>
+  <div class="tip b">四级写作的命中点是<b>切题 + 结构清楚 + 语法不出错</b>。
+  用三段式（引入表态 / 主体展开 / 回扣收尾），比追求华丽句式稳得多。</div>
+</div>
+
+<div class="card">
+  <div class="chead"><h2>题目</h2><span class="cmeta">Directions</span></div>
+  <div class="prompt"><span class="lbl">Directions</span><br>Directions : Suppose your university is seeking students&#x27; opinions on the necessity of making College Chinese a compulsory course. You are now to write an essay to express your view. You will have 30 minutes for the task. You should write at least 120 words but no more than 180 words.</div>
+  <div class="tip a"><b>先自己在纸上写完，再看下面的范文。</b>写作的提分全靠"写—对照—改"这个循环，
+  光看范文不动笔，等于没练。</div>
+</div>
+
+<div class="card">
+  <h2>审题：这题到底要写什么</h2>
+  <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>为大学语文必修与否表态 任务动词是 express your view，宾语是校方在征集意见的这件事——the necessity of making College Chinese a compulsory course。所以只有一句话：就『大学语文该不该设为必修课』旗帜鲜明地选一边（赞成或反对），并说清理由。注意 express your view 要求的是『你的』看法，不是罗列正反两面就算完成，必须有明确的个人立场。</div></div>
+  <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>赞成把大学语文设为必修 本篇中心立场：赞成 making College Chinese a compulsory course。因为母语能力是所有专业学习和职业发展的底座，且大学语文承载文化传承，值得用必修的方式保障，所以它是必要的、不是负担。立场必须一句说死，全文都为这一句服务。</div></div>
+  <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>扣个人能力：练思辨与表达 第一条理由从个人能力落地：扎实的中文能力能磨练逻辑思维和书面表达，很多理工科学生写报告逻辑混乱、语句不通，正说明母语训练不能断。这条理由直接回应了『必要性』——不是空喊重要，而是指出真实短板。 扣文化传承：接续文化根脉 第二条理由从社会文化落地：经典诗文承载着民族的价值观与文化认同，通过大学语文的系统学习才能把这份根脉接续下去，这是其他专业课替代不了的。用『别的课给不了』来证明它非设为必修不可。</div></div>
+  <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 点背景＋亮立场 开门见山点出校园里正在讨论 the necessity of making College Chinese a compulsory course 这一背景，随即用一句『In my view…』亮明赞成立场，为全文定调。 第 2 段 两条理由各配论证 主体段，先用一句让步承认反方看法，再逐条给出『练思辨表达』和『接文化根脉』两条理由，每条配具体例子或推理，把『为什么必要』说透。 第 3 段 重申立场＋升华 重申赞成把大学语文设为必修的立场，把它定性为一种投资而非负担，收束全文、呼应开头。</div></div>
+</div>
+
+<div class="card">
+  <h2>谋篇：每段写什么（3 段）</h2>
+  <p class="hint">这是可以直接套用的框架 —— 换一道题，功能不变、内容替换。</p>
+  <div class="row"><span class="tag">第1段</span><div class="c"><b>引出争议并表态赞成 背景就写校园里正在争论 making College Chinese a compulsory course 是否有必要；表态句直接写明你认为它既必要又明智，为下文两条理由埋好方向</b>引出争议背景 The question of whether ____ should ____ has sparked heated discussion on campus.（把本题争议填进 whether 从句） 亮明个人立场 In my view, ____ is both necessary and wise.（横线处填你的立场对象）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>写练思辨表达＋接文化根脉两条 第一条：中文能力磨练思维与表达，举理工科学生写报告逻辑混乱为例；第二条：经典诗文承载文化认同，是别的专业课替代不了的</b>两条都紧扣校方关心的 the necessity of making College Chinese a compulsory course。 让步承认反方 Admittedly, some students argue that ____. Yet this view overlooks ____.（先让步再转折反驳） 分点领起理由 First, ____. What&#x27;s more, ____.（两条理由分别领起，层次清楚） 举例支撑观点 Many ____ write ____, which weakens ____.（用具体现象作例子，避免空泛）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申赞成并定性为投资 重申赞成把大学语文设为必修的立场，把它定性为对语言能力和文化根脉的投资、而不是学业负担，回扣全文中心</b>总结重申立场 Therefore, I firmly believe ____ deserves ____.（横线填立场对象与该有的地位） 拔高升华收尾 It is not ____ but an investment in ____.（用『不是A而是B』把意义抬高一层）</div></div>
+</div>
+
+<div class="card">
+  <h2>参考范文（140 词）</h2>
+  <details><summary>展开范文（自己写完之后再看）</summary>
+    <div class="dbody">
+      <div class="essay"><p class='en'>The question of whether College Chinese should be a compulsory course has sparked heated discussion on campus. In my view, making it compulsory is both necessary and wise.</p><p class='en'>Admittedly, some students argue that Chinese is their mother tongue and needs no further study. Yet this view overlooks two facts. First, a solid command of Chinese sharpens our thinking and expression. Many science majors write reports full of grammatical errors and muddled logic, which weakens their careers. A required course would help them communicate clearly. What&#x27;s more, classical Chinese carries our cultural heritage. Through reading poems and essays, students inherit values and a sense of identity that no other subject offers.</p><p class='en'>Therefore, I firmly believe College Chinese deserves a place as a compulsory course. It is not a burden but an investment in both our language ability and our cultural roots.</p></div>
+      <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>大学语文是否应设为一门必修课，在校园里引发了热烈讨论。在我看来，把它设为必修既必要又明智。</div>
+    </div></details>
+  <div class="tip a">看范文时不要「读」，要<b>拆</b>：每段第一句做什么？观点句和理由句怎么连？
+  结尾怎么回扣题目？</div>
+</div>
+
+<div class="card">
+  <h2>逐段解析（3 段）</h2>
+  <div class="row"><span class="tag">第1段</span><div class="c"><b>一句背景一句立场 </b>首段落实了『首段：一句背景一句立场』：第一句 The question of whether College Chinese should be a compulsory course has sparked heated discussion 用套架点出争议背景；第二句 In my view, making it compulsory is both necessary and wise 立刻亮明赞成立场，开头就让阅卷人看清你选哪边。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>让步—观点—例证—小结落地 </b>主体段先用 Admittedly, some students argue... Yet this view overlooks 让步再反驳；再用 First 与 What&#x27;s more 分领两条理由；每条都配例子——理工科学生 write reports full of grammatical errors and muddled logic、classical Chinese carries our cultural heritage，做到了不空喊口号。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>连接词重申再升华 </b>尾段用 Therefore 领起，Therefore, I firmly believe College Chinese deserves a place 换句重申立场；末句 It is not a burden but an investment 用『不是A而是B』把意义拔高，首尾呼应、没有引入新理由。</div></div>
+</div>
+
+<div class="card">
+  <h2>自检避坑</h2>
+  <div class="pit">典型低分写法 · 反面示例与改法 两边都夸不选边 反面示例：『必修有必修的好处，选修也有选修的道理，两者各有千秋。』——这是立场摇摆，任务点缺失。改成：『In my view, making College Chinese compulsory is both necessary and wise.』先把边选死。 空喊重要没有论据 反面示例：『College Chinese is very important and very useful for every student.』——只堆形容词、无支撑。改成：『Many science majors write reports full of muddled logic, which shows why the training matters.』用具体现象撑住理由。 套话开头不沾主题 反面示例开头：『With the rapid development of society, more and more problems have attracted people&#x27;s attention.』——换成任何话题都成立、和大学语文不沾边。改成直接点题：『The question of whether College Chinese should be compulsory has sparked heated discussion.』</div>
+  <table style="margin-top:14px">
+    <tr><th>自查项</th><th>怎么查</th></tr>
+    <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+    <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+    <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+    <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+  </table>
+</div>
+
+</body>
+</html>
