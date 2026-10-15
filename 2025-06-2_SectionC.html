@@ -178,6 +178,34 @@
 .syncbtn:active{transform:scale(.98)}
 .syncbtn:disabled{background:var(--sub2)}
 .syncst{font-size:12.5px;color:var(--green);margin-top:9px;min-height:18px}
+
+/* ═══ 体验增强 ═══ */
+.stem{display:none}
+body.qshow .stem{display:block}
+#stemToggle{margin-left:8px}
+#prepOverlay{position:fixed;inset:0;background:rgba(10,14,20,.8);z-index:9999;display:none;
+ flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;
+ padding:24px;font-family:inherit}
+#prepOverlay.on{display:flex}
+#prepOverlay .pt{font-size:15px;opacity:.92;margin-bottom:8px}
+#prepCount{font-size:72px;font-weight:800;line-height:1}
+#prepOverlay .ps{font-size:13px;opacity:.75;margin-top:14px}
+#prepSkip{margin-top:22px;padding:10px 24px;border-radius:10px;border:1px solid rgba(255,255,255,.45);
+ background:transparent;color:#fff;font-size:14px;cursor:pointer;font-family:inherit}
+#prepSkip:active{background:rgba(255,255,255,.15)}
+#studyTimer{position:fixed;right:12px;bottom:14px;z-index:9000;background:var(--card,#fff);
+ border:1px solid var(--line,#e5e8ec);border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,.14);
+ padding:8px 12px;font-size:13px;color:var(--txt,#333);cursor:pointer;display:flex;
+ align-items:center;gap:7px;user-select:none;font-family:inherit}
+#studyTimer .ic{font-size:15px}
+#studyTimer .t{font-weight:700;font-variant-numeric:tabular-nums}
+#studyTimer .x{margin-left:4px;opacity:.45;font-size:12px}
+
+/* ═══ 答案来源句标注 ═══ */
+.line.ansline .en{border-left:3px solid var(--green,#0d8a52);padding-left:9px;border-radius:0 8px 8px 0}
+.line.ansline .en{background:var(--green-soft,#e8f7ef)}
+.anstag{display:inline-block;font-size:11px;font-weight:700;color:#fff;background:var(--green,#0d8a52);
+ border-radius:6px;padding:2px 7px;margin-left:8px;white-space:nowrap;vertical-align:middle}
 </style>
 <noscript><style>
   .locked-sec{filter:none !important;opacity:1 !important;pointer-events:auto !important;user-select:auto !important;}
@@ -810,5 +838,98 @@ var QUIZ = [{"id": "q16", "stem": "16. What do we learn from the passage about t
   if (btn) btn.addEventListener('click', function(){ doSync(true); });
 })();
 </script>
-</body>
+
+<div id="prepOverlay">
+  <div class="pt">🎧 请先读题，倒计时结束自动播放</div>
+  <div id="prepCount">__PREP__</div>
+  <div class="ps">真实考试没有这个提示 —— 这里帮你留出读选项的时间</div>
+  <button id="prepSkip">跳过，立即播放</button>
+</div>
+<div id="studyTimer"><span class="ic">⏱</span><span class="t" id="stTime">00:00</span><span class="x">收起</span></div>
+
+<script>
+(function(){
+  var PREP = 15;
+  var prepDone = false;
+
+  /* 1) 题干默认隐藏，提交后显示 */
+  var stemBtn = document.createElement('button');
+  stemBtn.className = 'btn btn-ghost';
+  stemBtn.id = 'stemToggle';
+  stemBtn.textContent = '👁 显示题干';
+  var submitBtn = document.getElementById('submitBtn');
+  if (submitBtn && submitBtn.parentNode) submitBtn.parentNode.insertBefore(stemBtn, submitBtn);
+  stemBtn.addEventListener('click', function(){
+    var on = document.body.classList.toggle('qshow');
+    stemBtn.textContent = on ? '🙈 隐藏题干' : '👁 显示题干';
+  });
+  if (submitBtn) submitBtn.addEventListener('click', function(){
+    setTimeout(function(){ document.body.classList.add('qshow'); stemBtn.textContent = '🙈 隐藏题干'; }, 0);
+  });
+
+  /* 2) 首次播放前读题倒计时 */
+  function startPrep(){
+    var ov = document.getElementById('prepOverlay');
+    var audio = document.getElementById('audio');
+    if (!ov || !audio) return;
+    var n = PREP, c = document.getElementById('prepCount');
+    ov.classList.add('on');
+    c.textContent = n;
+    var t = setInterval(function(){
+      n--;
+      if (n <= 0){ clearInterval(t); ov.classList.remove('on'); prepDone = true; audio.play(); }
+      else c.textContent = n;
+    }, 1000);
+    document.getElementById('prepSkip').onclick = function(){
+      clearInterval(t); ov.classList.remove('on'); prepDone = true; audio.play();
+    };
+  }
+  var tpPlay = document.getElementById('tpPlay');
+  if (tpPlay && tpPlay.parentNode){
+    var np = tpPlay.cloneNode(true);
+    tpPlay.parentNode.replaceChild(np, tpPlay);
+    np.addEventListener('click', function(){
+      if (!prepDone && PREP > 0){ startPrep(); return; }
+      document.getElementById('audio').play();
+    });
+  }
+
+  /* 3) 悬浮学习计时器（跨页累计） */
+  var KEY = 'cet4_study_secs';
+  var total = parseInt(localStorage.getItem(KEY) || '0', 10) || 0;
+  var pageStart = Date.now();
+  var tt = document.getElementById('stTime');
+  var timer = document.getElementById('studyTimer');
+  function fmt(s){ s = Math.max(0, Math.floor(s)); return String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0'); }
+  function tick(){ tt.textContent = fmt(total + (Date.now() - pageStart) / 1000); }
+  tick();
+  setInterval(tick, 1000);
+  var collapsed = false;
+  timer.addEventListener('click', function(e){
+    if (e.target.classList.contains('x')){
+      collapsed = !collapsed;
+      if (collapsed){ tt.style.display = 'none'; timer.querySelector('.x').textContent = '展开'; }
+      else { tt.style.display = ''; timer.querySelector('.x').textContent = '收起'; }
+    }
+  });
+  window.addEventListener('beforeunload', function(){
+    localStorage.setItem(KEY, String(total + Math.floor((Date.now() - pageStart) / 1000)));
+  });
+})();
+</script>
+<script>
+(function(){
+var AL = {"q16": 3, "q17": 10, "q18": 12, "q19": 19, "q20": 21, "q21": 28, "q22": 30, "q23": 36, "q24": 41, "q25": 45};
+for (var qid in AL){
+  var line = document.querySelector(".line[data-li=\"" + AL[qid] + "\"]");
+  if (!line) continue;
+  line.classList.add("ansline");
+  var t = document.createElement("span");
+  t.className = "anstag";
+  t.textContent = "📌 答案句 Q" + qid.slice(1);
+  var lh = line.querySelector(".lh");
+  if (lh) lh.appendChild(t);
+}
+})();
+</script></body>
 </html>
