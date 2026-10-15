@@ -222,7 +222,7 @@ body.qshow .stem{display:block}
 #markBar .sw{width:22px;height:22px;border-radius:50%;border:2px solid var(--line,#e5e8ec);
  padding:0;cursor:pointer;flex:0 0 auto}
 #markBar .sw.on{border-color:var(--blue,#2563eb);box-shadow:0 0 0 2px rgba(37,99,235,.25)}
-#markCanvas{position:fixed;inset:0;z-index:8980;pointer-events:none}
+#markCanvas{position:absolute;top:0;left:0;z-index:8980;pointer-events:none}
 #markCanvas.act{pointer-events:auto;cursor:crosshair;touch-action:pan-y}</style>
 <noscript><style>
   .locked-sec{filter:none !important;opacity:1 !important;pointer-events:auto !important;user-select:auto !important;}
@@ -972,11 +972,26 @@ for (var qid in AL){
   var cv = document.getElementById('markCanvas');
   if (!cv) return;
   var ctx = cv.getContext('2d');
-  function rz(){ cv.width = window.innerWidth; cv.height = window.innerHeight; }
-  rz(); window.addEventListener('resize', rz);
+
+  // 画布覆盖整个文档，笔迹写在文档坐标里，随页面滚动
+  function rz(){
+    var w = document.documentElement.scrollWidth || window.innerWidth;
+    var h = document.documentElement.scrollHeight || window.innerHeight;
+    if (w !== cv.width || h !== cv.height){
+      var old = document.createElement('canvas');
+      old.width = cv.width; old.height = cv.height;
+      old.getContext('2d').drawImage(cv, 0, 0);
+      cv.width = w; cv.height = h;
+      ctx.drawImage(old, 0, 0);
+    }
+  }
+  rz();
+  window.addEventListener('resize', rz);
+  setInterval(rz, 2000);   // 解锁原文等导致文档变高时，扩展画布并保留笔迹
 
   var pen = document.getElementById('mkPen'), era = document.getElementById('mkErase'), clr = document.getElementById('mkClear');
-  var mode = 'off', color = '#1b1e23', baseW = 3, drawing = false, last = null;
+  var mode = 'off', color = '#1b1e23', baseW = 3, drawing = false;
+  var last = null, lastMid = null;
 
   function setMode(m){
     mode = m;
@@ -988,7 +1003,6 @@ for (var qid in AL){
   era.addEventListener('click', function(){ setMode(mode === 'erase' ? 'off' : 'erase'); });
   clr.addEventListener('click', function(){ ctx.clearRect(0,0,cv.width,cv.height); });
 
-  // 粗细
   var wds = document.querySelectorAll('#markBar .wd');
   wds.forEach(function(b){
     b.addEventListener('click', function(){
@@ -998,7 +1012,6 @@ for (var qid in AL){
       if (mode === 'erase') setMode('draw');
     });
   });
-  // 颜色
   var sws = document.querySelectorAll('#markBar .sw');
   sws.forEach(function(b){
     b.addEventListener('click', function(){
@@ -1008,7 +1021,6 @@ for (var qid in AL){
       if (mode === 'erase') setMode('draw');
     });
   });
-  // 默认选中：中 + 黑
   var wdM = document.querySelector('#markBar .wd[data-w="3"]');
   var swK = document.querySelector('#markBar .sw[data-c="#1b1e23"]');
   if (wdM) wdM.classList.add('on');
@@ -1019,41 +1031,39 @@ for (var qid in AL){
   }
   function widthOf(e){
     if (mode === 'erase') return Math.max(10, baseW * 5);
-    var p = pressure(e);
-    return Math.max(0.7, baseW * (0.35 + p));
+    return Math.max(0.7, baseW * (0.35 + pressure(e)));
   }
-  function strokeSeg(e){
-    var x = e.clientX, y = e.clientY;
-    var w = widthOf(e);
+
+  // 中点二次贝塞尔，让线条平滑
+  function segTo(x, y, w){
+    var mx = (last[0] + x) / 2, my = (last[1] + y) / 2;
     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     ctx.lineWidth = w;
-    if (mode === 'erase'){
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.strokeStyle = 'rgba(0,0,0,1)';
-    } else {
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.strokeStyle = color;
-    }
-    ctx.beginPath(); ctx.moveTo(last[0], last[1]); ctx.lineTo(x, y); ctx.stroke();
+    if (mode === 'erase'){ ctx.globalCompositeOperation = 'destination-out'; ctx.strokeStyle = 'rgba(0,0,0,1)'; }
+    else { ctx.globalCompositeOperation = 'source-over'; ctx.strokeStyle = color; }
+    ctx.beginPath();
+    ctx.moveTo(lastMid[0], lastMid[1]);
+    ctx.quadraticCurveTo(last[0], last[1], mx, my);
+    ctx.stroke();
     ctx.globalCompositeOperation = 'source-over';
-    last = [x, y];
+    lastMid = [mx, my]; last = [x, y];
   }
 
   cv.addEventListener('pointerdown', function(e){
     if (mode === 'off') return;
-    if (e.pointerType === 'touch') return;      // 手指不画，交给滚动/点选
-    drawing = true; last = [e.clientX, e.clientY];
+    if (e.pointerType === 'touch') return;      // 手指不画
+    drawing = true;
+    last = [e.pageX, e.pageY]; lastMid = [e.pageX, e.pageY];
     try{ cv.setPointerCapture(e.pointerId); }catch(_){}
-    // 落笔先画一个点
     var w = widthOf(e);
-    if (mode !== 'erase'){ ctx.fillStyle = color; ctx.beginPath(); ctx.arc(e.clientX, e.clientY, w/2, 0, Math.PI*2); ctx.fill(); }
+    if (mode !== 'erase'){ ctx.fillStyle = color; ctx.beginPath(); ctx.arc(e.pageX, e.pageY, w/2, 0, Math.PI*2); ctx.fill(); }
     e.preventDefault();
   });
   cv.addEventListener('pointermove', function(e){
     if (!drawing || mode === 'off') return;
     var evs = (typeof e.getCoalescedEvents === 'function') ? e.getCoalescedEvents() : [];
-    if (evs && evs.length){ for (var i = 0; i < evs.length; i++) strokeSeg(evs[i]); }
-    else strokeSeg(e);
+    if (evs && evs.length){ for (var i = 0; i < evs.length; i++) segTo(evs[i].pageX, evs[i].pageY, widthOf(evs[i])); }
+    else segTo(e.pageX, e.pageY, widthOf(e));
   });
   ['pointerup','pointercancel'].forEach(function(ev){
     cv.addEventListener(ev, function(){ drawing = false; });
