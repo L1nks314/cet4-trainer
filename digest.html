@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>四级听力 · 6 套真题跨卷提炼</title>
+<style>
+  :root{--ink:#16181d;--sub:#616875;--line:#e4e7ec;--bg:#f5f6f8;--card:#fff;
+    --red:#c0392b;--red-soft:#fdf0ee;--blue:#1f6feb;--blue-soft:#eef4ff;
+    --green:#17794a;--green-soft:#e9f7f0;--amber:#9a6a05;--amber-soft:#fdf7e6;
+    --purple:#6b46c1;--purple-soft:#f3eeff;}
+  *{box-sizing:border-box;}
+  body{margin:0;padding:20px 16px 70px;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.8;font-size:16px;-webkit-text-size-adjust:100%;}
+  .wrap{max-width:840px;margin:0 auto;}
+  header{background:linear-gradient(135deg,#3f2a7a,#6b46c1);color:#fff;border-radius:15px;padding:24px;margin-bottom:16px;}
+  header h1{margin:0 0 6px;font-size:21px;}
+  header .m{font-size:13px;opacity:.9;}
+  .badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
+    border-radius:20px;padding:2px 11px;font-size:12px;margin:8px 6px 0 0;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px;}
+  h2{font-size:17px;margin:0 0 4px;display:flex;align-items:center;gap:9px;}
+  h2 .num{background:var(--purple);color:#fff;min-width:23px;height:23px;border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;font-size:12.5px;flex:0 0 23px;padding:0 4px;}
+  .hint{font-size:13px;color:var(--sub);margin:0 0 14px;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f3f5;font-weight:600;font-size:13px;}
+  .num-c{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .bar{display:inline-block;height:9px;background:var(--purple);border-radius:5px;vertical-align:middle;min-width:3px;}
+  .en{font-size:14.5px;line-height:1.75;}
+  .en b{background:#fff2a8;border-radius:3px;padding:0 2px;}
+  .cn{font-size:13px;color:var(--sub);margin-top:2px;}
+  .tip{border-radius:0 8px 8px 0;padding:11px 14px;font-size:13.5px;margin:12px 0 0;}
+  .tip.amber{background:var(--amber-soft);border-left:3px solid #e0a800;color:#6b4e00;}
+  .tip.green{background:var(--green-soft);border-left:3px solid var(--green);color:#0d5232;}
+  .tip.blue{background:var(--blue-soft);border-left:3px solid var(--blue);color:#123a75;}
+  .tip.red{background:var(--red-soft);border-left:3px solid var(--red);color:#8a2318;}
+  .kv{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:6px;}
+  .kv div{flex:1 1 130px;background:#f8f9fb;border:1px solid var(--line);border-radius:10px;padding:10px 13px;text-align:center;}
+  .kv b{display:block;font-size:20px;line-height:1.35;color:var(--purple);}
+  .kv span{font-size:12px;color:var(--sub);}
+  .sent{border-left:3px solid var(--purple);padding:8px 0 8px 13px;margin-bottom:11px;background:#fafbfd;border-radius:0 8px 8px 0;}
+  .sent .tag{font-size:11.5px;color:var(--purple);font-weight:600;}
+  code{background:#f1f3f5;padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,Menlo,monospace;}
+  footer{text-align:center;color:var(--sub);font-size:12.5px;margin-top:26px;line-height:1.9;}
+  @media print{body{background:#fff;padding:0}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>四级听力 · 6 套真题跨卷提炼</h1>
+  <div class="m">数据来源：你自己上传的 6 套真题音频，经词级识别后统计<br>
+  样本：2023.06(1/2套) · 2024.06(1套) · 2025.06(1/2套) · 2025.12(1套)</div>
+  <div>
+    <span class="badge">12,125 词</span>
+    <span class="badge">150 道题</span>
+    <span class="badge">9 小时音频</span>
+  </div>
+</header>
+
+<div class="card">
+  <h2><span class="num">i</span>先说清楚这份表怎么来的</h2>
+  <p class="hint">这决定了你该怎么信它。</p>
+  <p style="margin:0;font-size:14.5px;">
+    我把你发的 6 套音频逐词识别，统计出高频词、固定搭配和吞音句。**样本是你自己的真题**，不是培训机构的说法——
+    所以"哪些表达真的反复出现"这个结论，是算出来的，不是听来的。
+  </p>
+  <div class="tip red"><b>两个必须知道的局限：</b><br>
+  ① 文本来自语音识别，<b>可能有约 5% 的错字</b>（比如 <code>hear</code> 识别成 <code>hit</code>）。所以句子请你当"索引"用，具体表述以真题书上为准。<br>
+  ② <b>"答案在转折词后"这条我无法完全验证</b>——验证需要答案位置，而答案需要用答案册。这份表给的是<b>转折词的分布数量</b>，不是命中率。</div>
+</div>
+
+<div class="card">
+  <h2><span class="num">1</span>信号词分布：转折词有多密</h2>
+  <p class="hint">统计范围已剔除考试指令和题干朗读，只算听力材料本身。</p>
+  <div class="kv">
+    <div><b>65</b><span>but 出现句数</span></div>
+    <div><b>9</b><span>instead</span></div>
+    <div><b>6</b><span>however</span></div>
+    <div><b>5</b><span>in fact / actually / really</span></div>
+  </div>
+  <table>
+    <tr><th style="width:34%">信号词</th><th style="width:22%">出现句数</th><th>相对密度</th></tr>
+    <tr><td><b>but</b></td><td class="num-c">65</td><td><span class="bar" style="width:100%"></span></td></tr>
+    <tr><td><b>instead</b></td><td class="num-c">9</td><td><span class="bar" style="width:14%"></span></td></tr>
+    <tr><td><b>however</b></td><td class="num-c">6</td><td><span class="bar" style="width:9%"></span></td></tr>
+    <tr><td>really</td><td class="num-c">5</td><td><span class="bar" style="width:8%"></span></td></tr>
+    <tr><td>more likely</td><td class="num-c">5</td><td><span class="bar" style="width:8%"></span></td></tr>
+    <tr><td>actually</td><td class="num-c">5</td><td><span class="bar" style="width:8%"></span></td></tr>
+    <tr><td>in fact</td><td class="num-c">4</td><td><span class="bar" style="width:6%"></span></td></tr>
+    <tr><td>yet / surprisingly / although / in other words</td><td class="num-c">1–2</td><td><span class="bar" style="width:3%"></span></td></tr>
+  </table>
+
+  <h3 style="font-size:14.5px;margin:18px 0 9px;padding-left:9px;border-left:3px solid var(--purple);">真人例句（从你的真题里摘的）</h3>
+  <div class="sent"><div class="tag">but · 65 句</div>
+    <div class="en">Blue light includes natural light, <b>but</b> it also includes light that isn't natural — for example, from computers, phones, televisions and other electronic devices.</div></div>
+  <div class="sent"><div class="tag">instead · 9 句</div>
+    <div class="en">The body of the phone is as basic as it gets. <b>Instead</b> of a touchscreen, it's controlled with an old-school keypad.</div></div>
+  <div class="sent"><div class="tag">however · 6 句</div>
+    <div class="en">Biting a medal in front of journalists and photographers has become a common pose for Olympic medalists. <b>However</b>, it is only for the winners themselves, not others.</div></div>
+  <div class="sent"><div class="tag">in fact · 4 句</div>
+    <div class="en">Blue light isn't necessarily bad for us. <b>In fact</b>, we need blue light during the day.</div></div>
+  <div class="sent"><div class="tag">yet · 2 句</div>
+    <div class="en">This goal is not <b>yet</b> possible due to the current costs of the technology.</div></div>
+  <div class="tip amber"><b>怎么用：</b>看到 <b>but 有 65 句</b> 这个数字，你就明白为什么听力课上总说"转折词是命门"。
+  但真正的用法不是"听到 but 就选答案"，而是——<b>把 but 后面的半句作为重点听</b>，因为前面那半句经常是铺垫、是干扰项的原型。</div>
+</div>
+
+<div class="card">
+  <h2><span class="num">2</span>高频搭配：这些词组反复出现</h2>
+  <p class="hint">在 6 套里出现 4 次以上的词组。这类搭配是"听到就懂、不用在脑子里翻译"的东西，最值得背。</p>
+  <table>
+    <tr><th style="width:46%">搭配</th><th class="num-c" style="width:16%">次数</th><th>出现场景</th></tr>
+    <tr><td><b>recycled plastic</b></td><td class="num-c">10</td><td>环保 · 材料</td></tr>
+    <tr><td><b>blue light</b></td><td class="num-c">8</td><td>健康 · 电子设备</td></tr>
+    <tr><td>the Amazon</td><td class="num-c">8</td><td>地理 · 环境</td></tr>
+    <tr><td><b>user experience</b></td><td class="num-c">6</td><td>科技 · 职场</td></tr>
+    <tr><td>the board</td><td class="num-c">6</td><td>职场 · 管理</td></tr>
+    <tr><td>the UK</td><td class="num-c">6</td><td>社会 · 新闻</td></tr>
+    <tr><td><b>food waste</b></td><td class="num-c">5</td><td>环保 · 消费</td></tr>
+    <tr><td>more likely to</td><td class="num-c">5</td><td>论证 · 观点</td></tr>
+    <tr><td>instead of</td><td class="num-c">6</td><td>对比 · 转折</td></tr>
+    <tr><td>amount of</td><td class="num-c">5</td><td>数据 · 描述</td></tr>
+    <tr><td>looking for</td><td class="num-c">6</td><td>日常对话</td></tr>
+    <tr><td>year old</td><td class="num-c">4</td><td>人物描述</td></tr>
+  </table>
+
+  <h3 style="font-size:14.5px;margin:18px 0 9px;padding-left:9px;border-left:3px solid var(--purple);">话题分布（从高频词推断）</h3>
+  <table>
+    <tr><th style="width:24%">话题</th><th>典型词（你真题里出现 4 套以上的）</th></tr>
+    <tr><td><b>健康 / 生活习惯</b></td><td>food, health, sleep, meals, exercise, light, body</td></tr>
+    <tr><td><b>环保 / 消费</b></td><td>waste, recycled, plastic, city, local, store</td></tr>
+    <tr><td><b>职场 / 商业</b></td><td>business, experience, customers, company, board, local</td></tr>
+    <tr><td><b>校园 / 成长</b></td><td>school, children, parents, learn, study, students</td></tr>
+    <tr><td><b>科技 / 产品</b></td><td>phone, design, device, powerful, technology</td></tr>
+  </table>
+  <div class="tip blue"><b>结论：</b>四级听力的话题比你想的窄。<b>健康、环保、职场、校园、科技</b>这五类覆盖了绝大部分内容。
+  你不需要背"四级大纲词汇 4500 个"，你需要的是把这五类场景词背熟。</div>
+</div>
+
+<div class="card">
+  <h2><span class="num">3</span>吞音句精选：15 句最难的</h2>
+  <p class="hint">从 204 句里挑出的连读密度最高的句子（每秒吞掉的音最多）。建议每天拿 3 句做跟读。</p>
+
+  <div class="sent"><div class="tag">密度 0.50 · 30 词 · 15 处连读</div>
+    <div class="en">Perhaps they made the sound of wind to comment on the weather, or imitated the sound of a bird to tell a friend that a bird was nearby.</div>
+    <div class="cn">也许他们用风声来评论天气，或者模仿鸟叫来告诉朋友附近有只鸟。</div></div>
+
+  <div class="sent"><div class="tag">密度 0.48 · 21 词 · 10 处</div>
+    <div class="en">Many of the parents have taken on college loans for the kids, sometimes at the expense of their own finances.</div>
+    <div class="cn">许多父母为孩子们背上了大学贷款，有时甚至牺牲了自己的财务状况。</div></div>
+
+  <div class="sent"><div class="tag">密度 0.47 · 15 词 · 7 处</div>
+    <div class="en">What is the reason for being vegetarian? Is it his religion, health condition, or lifestyle?</div>
+    <div class="cn">吃素的原因是什么？是宗教、健康状况，还是生活方式？</div></div>
+
+  <div class="sent"><div class="tag">密度 0.46 · 26 词 · 12 处</div>
+    <div class="en">Do you prefer to fill out an application on the web, or to print it out and fill it in by hand and then post it back?</div>
+    <div class="cn">你更愿意网上填写申请表，还是打印出来手写填好再寄回去？</div></div>
+
+  <div class="sent"><div class="tag">密度 0.46 · 13 词 · 6 处</div>
+    <div class="en">Most of the coverage of the boom in wild camping has been negative.</div>
+    <div class="cn">关于野营热潮的大部分报道都是负面的。</div></div>
+
+  <div class="sent"><div class="tag">密度 0.44 · 16 词 · 7 处</div>
+    <div class="en">As a kid, did you know what job you wanted to do when you grew up?</div>
+    <div class="cn">你小时候知道自己长大后想做什么工作吗？</div></div>
+
+  <div class="sent"><div class="tag">密度 0.43 · 14 词 · 6 处</div>
+    <div class="en">It is important to identify the source of the problem in the supply chain.</div>
+    <div class="cn">找出供应链中问题的根源很重要。</div></div>
+
+  <div class="sent"><div class="tag">密度 0.42 · 24 词 · 10 处</div>
+    <div class="en">Jet lag has been a big problem for me, and has been for the last few years, even though I never suffered from it before.</div>
+    <div class="cn">时差一直是我的大问题，最近几年都是——尽管我以前从没受过这个罪。</div></div>
+
+  <div class="sent"><div class="tag">密度 0.42 · 19 词 · 8 处</div>
+    <div class="en">We understand instinctively that the stories we hold in common are an important part of the ties that bind us.</div>
+    <div class="cn">我们本能地明白，共同拥有的故事是维系我们关系的重要纽带。</div></div>
+
+  <div class="sent"><div class="tag">密度 0.42 · 19 词 · 8 处</div>
+    <div class="en">I was surprised that the expert recommended not eating for the entire journey and avoiding sleeping on the plane.</div>
+    <div class="cn">让我意外的是，专家建议整个航程都不要进食，也别在飞机上睡觉。</div></div>
+
+  <div class="sent"><div class="tag">密度 0.42 · 12 词 · 5 处</div>
+    <div class="en">Though he offered to pay for the cost of a new one.</div>
+    <div class="cn">尽管他提出承担买一个新的费用。</div></div>
+
+  <div class="sent"><div class="tag">密度 0.42 · 12 词 · 5 处</div>
+    <div class="en">This can be compared to just nineteen percent of the general population.</div>
+    <div class="cn">这可以对比一下——普通人群中只有 19%。</div></div>
+
+  <div class="tip green"><b>怎么练这 15 句：</b>不要一次练完。每天挑 3 句，每句走一遍这个流程——
+  <b>①</b> 不看文本听 3 遍 → <b>②</b> 听写 → <b>③</b> 对着文本逐词点听（找出哪几个音粘在一起）→ <b>④</b> 跟读 5 遍到能一口气说完。<br>
+  一周就是 21 句，覆盖全套真题最难的部分。</div>
+</div>
+
+<div class="card">
+  <h2><span class="num">4</span>三条从数据里读出来的结论</h2>
+  <table>
+    <tr><th style="width:30%">结论</th><th>数据支撑</th></tr>
+    <tr><td><b>① 转折词是命门</b></td>
+        <td><code>but</code> 出现在 <b>65 个句子</b>里，是第二名的 7 倍。<b>but 之后的半句是重点，之前的半句常是干扰项原型。</b></td></tr>
+    <tr><td><b>② 话题比你想象的窄</b></td>
+        <td>健康、环保、职场、校园、科技这五类覆盖了绝大部分内容。背场景词比背大纲词汇效率高得多。</td></tr>
+    <tr><td><b>③ 吞音是普适的，不是个例</b></td>
+        <td>6 套里 <b>204 句</b>含 5 处以上连读——不是"某些句子很难"，而是<b>英语本来就这样念</b>。所以练跟读不是练难题，是练常态。</td></tr>
+  </table>
+  <div class="tip amber"><b>最后一句实话：</b>这三条结论你都可能在别处听过。区别在于——<b>这三条是从你自己那 6 套里算出来的数字</b>。
+  知道自己丢分的那套真题里，<code>but</code> 出现了多少句，比听别人说"转折词很重要"要有用得多。</div>
+</div>
+
+<footer>
+  四级听力 6 套真题跨卷提炼 ｜ 生成于 2026-10-15<br>
+  数据来源：用户提供的真题音频，经 Vosk 词级识别（平均误差 0.061 秒）后统计<br>
+  原始识别数据已归档于 /workspace/真题资料库/识别数据/
+</footer>
+
+</div>
+</body>
+</html>

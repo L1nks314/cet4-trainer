@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>四级听力精听训练包 · L1 听力篇章</title>
+<style>
+  :root{
+    --ink:#1a1a1a; --sub:#5f6368; --line:#e3e6ea; --bg:#f6f7f9;
+    --card:#ffffff; --accent:#c0392b; --accent-soft:#fdf0ee;
+    --blue:#1f6feb; --blue-soft:#eef4ff; --green:#1a7f4b; --green-soft:#eaf7f0;
+    --amber:#a16207; --amber-soft:#fdf6e3;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:20px 16px 60px; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.75; font-size:16px; -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+  header{background:linear-gradient(135deg,#2c3e50,#4a6572);color:#fff;border-radius:14px;padding:22px 22px 18px;margin-bottom:18px;}
+  header h1{margin:0 0 6px;font-size:21px;letter-spacing:.3px;}
+  header .meta{font-size:13px;opacity:.85;}
+  .badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
+    border-radius:20px;padding:2px 11px;font-size:12px;margin-right:6px;margin-top:8px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 20px 18px;margin-bottom:16px;}
+  h2{font-size:17px;margin:0 0 4px;display:flex;align-items:center;gap:8px;}
+  h2 .num{background:var(--ink);color:#fff;width:23px;height:23px;border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;font-size:13px;flex:0 0 23px;}
+  .hint{font-size:13px;color:var(--sub);margin:0 0 14px;}
+  .tip{background:var(--amber-soft);border-left:3px solid #e0a800;border-radius:0 8px 8px 0;
+    padding:10px 14px;font-size:13.5px;color:#6b4e00;margin:12px 0 0;}
+  .tip b{color:#8a5a00;}
+  /* 播放器 */
+  .player{border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin-bottom:9px;background:#fbfcfd;}
+  .player .lab{font-size:13px;font-weight:600;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;}
+  .player .lab span{font-weight:400;color:var(--sub);font-size:12px;}
+  audio{width:100%;height:34px;display:block;}
+  /* 题目 */
+  .q{padding:14px 0;border-bottom:1px dashed var(--line);}
+  .q:last-of-type{border-bottom:none;}
+  .q .stem{font-weight:600;margin-bottom:9px;font-size:15px;}
+  .opt{display:block;padding:7px 12px;border:1px solid var(--line);border-radius:8px;margin-bottom:6px;font-size:14.5px;background:#fff;}
+  .opt .k{font-weight:700;color:var(--sub);margin-right:7px;}
+  /* 题干中英对照 */
+  .zh{color:var(--sub);font-size:13px;font-weight:400;display:block;margin-top:3px;}
+  /* 原文 */
+  .trans{font-size:15.5px;line-height:2.15;}
+  .trans p{margin:0 0 4px;}
+  .trans .sen{padding:2px 0;border-radius:4px;}
+  .mark{background:#fff2a8;padding:0 2px;border-radius:3px;font-weight:600;}
+  .w{color:var(--sub);font-size:12.5px;font-style:italic;}
+  /* 解析表 */
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f3f5;font-weight:600;font-size:13px;}
+  td code{background:#f1f3f5;padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,Menlo,monospace;}
+  .ans-key{font-size:14.5px;margin-bottom:12px;}
+  .ans-key b{color:var(--accent);}
+  details{border:1px solid var(--line);border-radius:10px;padding:0;margin-top:10px;overflow:hidden;}
+  details[open]{background:#fbfcfd;}
+  summary{cursor:pointer;padding:12px 15px;font-weight:600;font-size:14.5px;
+    background:#f1f3f5;list-style:none;user-select:none;}
+  summary::-webkit-details-marker{display:none;}
+  summary::before{content:"▸ ";color:var(--sub);}
+  details[open] summary::before{content:"▾ ";}
+  details .body{padding:14px 16px;font-size:14.5px;}
+  details .body p{margin:0 0 9px;}
+  .why{background:var(--blue-soft);border-radius:8px;padding:9px 12px;font-size:13.5px;color:#123a75;margin-top:9px;}
+  .warn{background:var(--accent-soft);border-radius:8px;padding:9px 12px;font-size:13.5px;color:#8a2318;margin-top:9px;}
+  ul.ck{list-style:none;padding:0;margin:8px 0 0;}
+  ul.ck li{padding:7px 0 7px 30px;position:relative;font-size:14.5px;border-bottom:1px solid var(--line);}
+  ul.ck li:last-child{border-bottom:none;}
+  ul.ck li::before{content:"☐";position:absolute;left:4px;top:6px;font-size:17px;color:var(--sub);}
+  footer{text-align:center;color:var(--sub);font-size:12.5px;margin-top:26px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>四级听力精听训练包 · L1</h1>
+  <div class="meta">题型：听力篇章（Passage）｜ 3 题 · 每题 14.2 分 · 合计 42.6 分</div>
+  <div>
+    <span class="badge">184 词</span>
+    <span class="badge">原速 142 词/分</span>
+    <span class="badge">建议用时 25 分钟</span>
+  </div>
+</header>
+
+<div class="card">
+  <h2><span class="num">!</span>使用说明</h2>
+  <p class="hint">别跳步。跳步就等于白练。</p>
+  <p style="margin:0;font-size:14.5px;">
+    <b>第 1 步</b>：只听「原速」，做题，<b>不暂停、不看原文</b>。<br>
+    <b>第 2 步</b>：用「慢速」逐句听写，听不出的地方画横线，<b>不要留空、不要猜</b>。<br>
+    <b>第 3 步</b>：展开原文，用红笔思维标出错处并<b>归因</b>（连读？生词？）。<br>
+    <b>第 4 步</b>：看着原文跟读 3 遍，模仿语速与连读。<br>
+    <b>第 5 步</b>：换「提速」版脱稿复听，能全程听懂才算过关。
+  </p>
+</div>
+
+<div class="card">
+  <h2><span class="num">1</span>做题区</h2>
+  <p class="hint">先只用下面的「原速」音频完成 3 道题，然后自己对答案。</p>
+
+  <div class="player">
+    <div class="lab">① 原速 · 142 词/分（四级真实语速）<span>考试用这档</span></div>
+    <audio controls preload="metadata" src="2_原速_142wpm_四级真实语速.mp3"></audio>
+  </div>
+  <div class="player">
+    <div class="lab">② 慢速 · 113 词/分（逐句听写用）<span>听写用这档</span></div>
+    <audio controls preload="metadata" src="1_慢速_113wpm_辨音用.mp3"></audio>
+  </div>
+  <div class="player">
+    <div class="lab">③ 提速 · 190 词/分（脱稿复听用）<span>过关用这档</span></div>
+    <audio controls preload="metadata" src="3_提速_190wpm_冲刺用.mp3"></audio>
+  </div>
+
+  <div class="q">
+    <div class="stem">1. What did the psychologists find surprising about the people who succeeded?
+      <span class="zh">心理学家发现成功养成习惯的人哪一点令人意外？</span></div>
+    <span class="opt"><span class="k">A)</span>They had far stronger willpower than the others.</span>
+    <span class="opt"><span class="k">B)</span>They were able to follow a strict daily timetable.</span>
+    <span class="opt"><span class="k">C)</span>They linked the new habit to something they already did.</span>
+    <span class="opt"><span class="k">D)</span>They had failed many times before they finally succeeded.</span>
+  </div>
+
+  <div class="q">
+    <div class="stem">2. What does the speaker suggest doing if you want to read before bed?
+      <span class="zh">如果想睡前阅读，说话人建议怎么做？</span></div>
+    <span class="opt"><span class="k">A)</span>Read for a fixed amount of time every evening.</span>
+    <span class="opt"><span class="k">B)</span>Read right after you brush your teeth.</span>
+    <span class="opt"><span class="k">C)</span>Choose books that are short and easy to finish.</span>
+    <span class="opt"><span class="k">D)</span>Ask someone to remind you every night.</span>
+  </div>
+
+  <div class="q">
+    <div class="stem">3. According to the passage, what is the key to lasting change?
+      <span class="zh">按短文所述，持久改变的关键是什么？</span></div>
+    <span class="opt"><span class="k">A)</span>Never missing a single day.</span>
+    <span class="opt"><span class="k">B)</span>Doing the habit perfectly every time.</span>
+    <span class="opt"><span class="k">C)</span>Consistency rather than perfection.</span>
+    <span class="opt"><span class="k">D)</span>Setting a goal that is easy to reach.</span>
+  </div>
+
+  <div class="tip"><b>考场同款技巧：</b>三题的答案在录音里<b>严格按顺序出现</b>。第 1 题的答案一定在第 3 题之前。所以某一题卡住时，果断放弃，眼睛盯住下一题的关键词，别回头。</div>
+</div>
+
+<div class="card">
+  <h2><span class="num">2</span>原文 + 连读标注</h2>
+  <p class="hint">先做完听写再展开。<span class="mark">黄色</span> = 连读/失爆发生处，也就是你最容易听漏的地方。</p>
+
+  <div class="trans">
+    <p><span class="sen">Most people believe that building a new habit requires a great deal of willpower.</span></p>
+    <p><span class="sen">But according to <span class="mark">a growing body of</span> research, that belief may be exactly what <span class="mark">holds us</span> back.</span></p>
+    <p><span class="sen">A team of psychologists at University College London followed ninety-six <span class="mark">adults who</span> were trying to form a new daily routine.</span></p>
+    <p><span class="sen">What they discovered was surprising.</span></p>
+    <p><span class="sen">The people who succeeded were not the ones with the strongest self-control.</span></p>
+    <p><span class="sen"><span class="mark">Instead, they</span> were the ones who <span class="mark">attached the</span> new behavior to something they already did every day.</span></p>
+    <p><span class="sen">This technique is now known as <span class="mark">habit stacking</span>.</span></p>
+    <p><span class="sen">If you <span class="mark">want to</span> start reading before bed, for example, you do not simply promise yourself to read more.</span></p>
+    <p><span class="sen">You decide that immediately <span class="mark">after you</span> brush your teeth, you will open a book.</span></p>
+    <p><span class="sen">The existing habit becomes a kind of signal, and the brain begins to expect the new action without any conscious effort.</span></p>
+    <p><span class="sen">The researchers also found that <span class="mark">did not damage</span> the process when you miss a single day.</span></p>
+    <p><span class="sen">What mattered far more was returning to the routine quickly.</span></p>
+    <p><span class="sen">In other words, the key to lasting change is <span class="mark">not perfection, but</span> consistency.</span></p>
+  </div>
+
+  <h2 style="margin-top:22px;font-size:15px;">发音现象拆解</h2>
+  <table>
+    <tr><th style="width:31%">原文</th><th style="width:26%">实际听感</th><th>现象</th></tr>
+    <tr><td>a growing <b>body of</b> research</td><td><code>/ˈbɒdiəv/</code></td><td>辅音结尾 + 元音开头，<b>连读</b>，of 弱读成 /əv/</td></tr>
+    <tr><td><b>holds us</b> back</td><td><code>/həʊldzʌs/</code></td><td>s + us 连读，us 弱读成 /əs/，几乎听不见</td></tr>
+    <tr><td><b>adults who</b> were</td><td><code>/ˈædʌlts huː/</code></td><td>ts 接 who，/ts/ 几乎被吞掉</td></tr>
+    <tr><td><b>attached the</b> new</td><td><code>/əˈtætʃt ðə/</code></td><td>/tʃt/ 后接 /ð/，<b>失去爆破</b>，t 只做口型不发声</td></tr>
+    <tr><td><b>habit</b> stacking</td><td><code>/ˈhæbɪstækɪŋ/</code></td><td>t + s，<b>爆破音省略</b>，听上去像 habi-stacking</td></tr>
+    <tr><td><b>want to</b> start</td><td><code>/wɒnə/</code></td><td>口语缩读，want to → wanna</td></tr>
+    <tr><td>immediately <b>after you</b> brush</td><td><code>/ˈɑːftəruː/</code></td><td>t + you 同化为 /tʃ/ 或 /r/，整体粘连</td></tr>
+    <tr><td>did <b>not damage</b></td><td><code>/ˈnɒ(d)dæmɪdʒ/</code></td><td>t + d 同类爆破音，前一音完全省略</td></tr>
+    <tr><td><b>not</b> perfection, <b>but</b> consistency</td><td><code>/nɒ(p)pə.../</code></td><td>t + p、t + k，<b>失去爆破</b>，这是整篇最重要的一句</td></tr>
+  </table>
+
+  <div class="tip"><b>划重点：</b>上面这 9 处里，有 <b>7 处是"辅音相遇导致声音消失"</b>。这正是你 100 分档的核心病因——<b>不是单词不认识，是声音被吞掉了</b>。把这些句子读熟，耳朵就会自己认出来。</div>
+</div>
+
+<div class="card">
+  <h2><span class="num">3</span>答案与解析</h2>
+  <p class="hint">先自己做完再展开，否则等于没做。</p>
+
+  <details>
+    <summary>展开查看答案与逐题解析</summary>
+    <div class="body">
+      <div class="ans-key">正确答案：<b>1-C</b>　<b>2-B</b>　<b>3-C</b></div>
+
+      <p><b>第 1 题 → C</b></p>
+      <p>原句：<i>"The people who succeeded were <b>not</b> the ones with the strongest self-control. <b>Instead</b>, they were the ones who <b>attached</b> the new behavior to something they already did every day."</i></p>
+      <div class="why">考点是信号词 <b>Instead</b>。前面先否定 A 选项（willpower / self-control），紧接着用 Instead 给出真实答案。<b>听到 not...Instead... 就等于听到"这道题的答案在后面 3 秒"</b>。</div>
+
+      <p style="margin-top:14px;"><b>第 2 题 → B</b></p>
+      <p>原句：<i>"...immediately <b>after you brush your teeth</b>, you will open a book."</i></p>
+      <div class="why">同义替换考点：选项 B 的 <code>right after</code> 对应原文的 <code>immediately after</code>。四级听力最爱考这种换词——<b>听到 immediate 就要想 right / at once</b>。</div>
+      <div class="warn">这也是本篇最难的听音点：<code>after you</code> 连读成类似 <code>/ˈɑːftəruː/</code>。如果你把 brush your teeth 听成了别的词，就会直接跑偏。回到第 2 部分把这句跟读 5 遍。</div>
+
+      <p style="margin-top:14px;"><b>第 3 题 → C</b></p>
+      <p>原句：<i>"In other words, the key to lasting change is <b>not perfection, but consistency</b>."</i></p>
+      <div class="why">同样是 <b>not A but B</b> 结构，答案是 B。而且 <code>not perfection</code> 和 <code>but consistency</code> 两处都是失去爆破，<b>perfection 和 consistency 的实际声音很轻</b>——这里丢分的人，往往是把整个转折结构听漏了。</div>
+
+      <div class="tip" style="margin-top:16px;"><b>题型规律：</b>本篇 3 题里有 <b>2 题</b>考 <code>not...instead...</code> / <code>not A but B</code> 的转折结构。<b>四级听力的篇章题，转折词后出答案的概率超过 60%</b>。however / but / instead / in fact / what's more 这几个词，听到就必须竖起耳朵。</div>
+    </div>
+  </details>
+</div>
+
+<div class="card">
+  <h2><span class="num">4</span>错因归因表</h2>
+  <p class="hint">对完答案后，逐题填。这一步比做题本身更重要——如果只做题不复盘，错题下个月还会错。</p>
+  <table>
+    <tr><th style="width:14%">题号</th><th style="width:20%">对/错</th><th style="width:33%">错因分类</th><th>具体是哪一句没听出来</th></tr>
+    <tr><td>1</td><td>　</td><td>□连读 □生词 □走神 □技巧</td><td>　</td></tr>
+    <tr><td>2</td><td>　</td><td>□连读 □生词 □走神 □技巧</td><td>　</td></tr>
+    <tr><td>3</td><td>　</td><td>□连读 □生词 □走神 □技巧</td><td>　</td></tr>
+  </table>
+  <div class="tip"><b>判读标准：</b>如果 3 题里有 <b>2 题以上勾了"连读"</b>，说明你是纯语音问题，接下来两周只做跟读，别急着刷题。<br>如果勾的是"生词"，把生词抄进本子按场景背。<br>如果勾"走神"或"技巧"，说明你的问题在应试策略，重点练预读选项。</div>
+</div>
+
+<div class="card">
+  <h2><span class="num">5</span>今日打卡</h2>
+  <ul class="ck">
+    <li>原速盲听做题（不暂停、不回放）</li>
+    <li>慢速逐句听写，写满整篇（约 10 分钟）</li>
+    <li>对照原文，红笔标注全部错误并归因</li>
+    <li>跟读模仿 3 遍，重点读第 2 部分标黄的 9 处</li>
+    <li>提速版脱稿复听，能听懂全文大意即过关</li>
+    <li>填写上方的错因归因表</li>
+  </ul>
+  <div class="tip"><b>明天继续：</b>把今天没过关的句子单独截出来，循环听到能脱口而出，再开始下一篇。这就是"榨干一套真题"的意思。</div>
+</div>
+
+<footer>四级听力精听训练包 · L1 ｜ 专为 100 分档考生设计<br>音频语速已校准至四级真实考速（140-150 词/分）</footer>
+
+</div>
+</body>
+</html>
