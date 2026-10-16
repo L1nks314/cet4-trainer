@@ -411,7 +411,7 @@ document.querySelectorAll('.jump').forEach(function(b){
 
 <script>
 (function(){
-  /* penv9 */
+  /* penv11 */
   var cv = document.getElementById('markCanvas');
   if (!cv) return;
   var ctx = cv.getContext('2d');
@@ -452,6 +452,28 @@ document.querySelectorAll('.jump').forEach(function(b){
     return s.bb;
   }
 
+  /* ── 笔迹锚定：记录落笔处的内容块，重排后按内容位移整体平移 ── */
+  var ANCH_SEL = '.line, .q, .card, .tip, p, li, h2, h3, .ptx, .para';
+  function anchorOf(clientX, clientY){
+    var el = document.elementFromPoint(clientX, clientY);
+    if (!el || !el.closest) return null;
+    var a = el.closest(ANCH_SEL) || el;
+    if (!a || a.nodeType !== 1) return null;
+    return { el: a, y0: a.getBoundingClientRect().top + (window.pageYOffset || 0) };
+  }
+  function shiftOf(s, cache){
+    if (!s || !s.anch || !s.anch.el) return 0;
+    if (cache){
+      var v = cache.get(s.anch.el);
+      if (v === undefined){
+        v = (s.anch.el.getBoundingClientRect().top + (window.pageYOffset || 0)) - s.anch.y0;
+        cache.set(s.anch.el, v);
+      }
+      return v;
+    }
+    return (s.anch.el.getBoundingClientRect().top + (window.pageYOffset || 0)) - s.anch.y0;
+  }
+
   function scanSC(){
     SC = [];
     var all = document.querySelectorAll('div,section,article,aside');
@@ -479,10 +501,10 @@ document.querySelectorAll('.jump').forEach(function(b){
     return best ? {c:best, c0:best.scrollTop} : {c:null, c0:0};
   }
 
-  function drawStroke(s, sparse){
+  function drawStroke(s, sparse, acache){
     var pts = s.pts, n = pts.length;
     if (!n) return;
-    var off = offOf(s), bx = -OX, by = off - OY;
+    var off = offOf(s), bx = -OX, by = off - OY + shiftOf(s, acache);
     ctx.save();
     clipC(s.c);
     ctx.globalCompositeOperation = s.era ? 'destination-out' : 'source-over';
@@ -518,26 +540,27 @@ document.querySelectorAll('.jump').forEach(function(b){
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     ctx.clearRect(0, 0, VW, VH);
     var vx0 = OX, vy0 = OY, vx1 = OX + VW, vy1 = OY + VH;
+    var acache = new Map();
     for (var i = 0; i < strokes.length; i++){
-      var s = strokes[i];
+      var s = strokes[i], sh = shiftOf(s, acache);
       if (!hasEra && !s.era){
         var bb = s.bb || bboxOf(s), off = offOf(s);
-        if (bb[3] + off < vy0 - 80 || bb[1] + off > vy1 + 80 ||
+        if (bb[3] + off + sh < vy0 - 80 || bb[1] + off + sh > vy1 + 80 ||
             bb[2] < vx0 - 80 || bb[0] > vx1 + 80) continue;
       }
-      drawStroke(s, true);
+      drawStroke(s, true, acache);
     }
     if (cur){
       cur.n = cur.pts.length;
       var lp = cur.pts[cur.pts.length-1];
-      cur.mid = [lp[0] - OX, lp[1] + offOf(cur) - OY];
+      cur.mid = [lp[0] - OX, lp[1] + offOf(cur) + shiftOf(cur, acache) - OY];
     }
   }
 
   function live(){
     if (!cur) return;
     var pts = cur.pts, n = pts.length;
-    var off = offOf(cur), bx = -OX, by = off - OY;
+    var off = offOf(cur), bx = -OX, by = off - OY + shiftOf(cur, null);
     ctx.save();
     clipC(cur.c);
     ctx.globalCompositeOperation = cur.era ? 'destination-out' : 'source-over';
@@ -814,10 +837,11 @@ document.querySelectorAll('.jump').forEach(function(b){
     var x = e.pageX, y = e.pageY, w = widthOf(e, useEra);
     var o = ownerOf(x, y);
     cur = { pts:[[x, y, w]], color:color, era:useEra,
-            c:o.c, c0:o.c0, n:1, mid:[0, 0], bb:null };
+            c:o.c, c0:o.c0, n:1, mid:[0, 0], bb:null,
+            anch: anchorOf(e.clientX, e.clientY) };
     if (cur.era) hasEra = true;
     strokes.push(cur);
-    var bx = -OX, by = offOf(cur) - OY;
+    var bx = -OX, by = offOf(cur) - OY + shiftOf(cur, null);
     ctx.save();
     clipC(cur.c);
     if (!cur.era){

@@ -229,6 +229,15 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
  transition:opacity .18s ease,transform .18s ease}
 #penToast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 .dstip{margin-top:11px;background:var(--blue-soft);color:var(--blue);border-radius:11px;padding:11px 14px;font-size:13.2px;line-height:1.75}
+
+/* ═══ 听写模式 ═══ */
+#dictBar{display:none;margin-top:11px;background:var(--amber-soft);border:1.5px solid var(--amber);
+ border-radius:11px;padding:10px 13px;align-items:center;gap:9px;flex-wrap:wrap}
+#dictBar.on{display:flex}
+#dictBar .db-txt{flex:1;min-width:150px;font-size:13.6px;font-weight:600;color:var(--amber-ink,var(--txt));line-height:1.6}
+#dictBar button{border:1.5px solid var(--line);background:#fff;border-radius:9px;padding:7px 13px;
+ font-size:13px;font-weight:700;font-family:inherit;color:inherit;cursor:pointer}
+#dictBar button.pri{background:var(--blue);border-color:var(--blue);color:#fff}
 </style>
 <noscript><style>
   .locked-sec{filter:none !important;opacity:1 !important;pointer-events:auto !important;user-select:auto !important;}
@@ -257,13 +266,19 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
     <button class="tbtn" id="tpBack">⏮ 回退 3 秒</button>
     <button class="tbtn act" id="tpFollow">🧲 自动滚动 开</button>
     <button class="tbtn" id="tpMark">🏷 连读点</button>
+        <button class="tbtn" id="tpDict">✍️ 听写模式</button>
   </div>
   <audio id="audio" controls preload="auto" src=""></audio>
   <div class="plinfo">
     <span id="plLabel"></span>
     <span id="plPos">00:00 / 00:00</span>
   </div>
-  <div class="tip blue"><b>精听用法：</b>第一遍别点，整体听；第二遍起用 🔁 把听不出的句子循环三到五遍；第三遍盯着词一个个点，把连读处逐词拆开听。这就是"把一段音频榨干"。</div>
+  <div id="dictBar">
+  <span class="db-txt"></span>
+  <button id="dbAgain">🔁 重听这句</button>
+  <button id="dbNext" class="pri">▶ 下一句</button>
+</div>
+<div class="tip blue"><b>精听用法：</b>第一遍别点，整体听；第二遍起用 🔁 把听不出的句子循环三到五遍；第三遍盯着词一个个点，把连读处逐词拆开听。这就是"把一段音频榨干"。</div>
 </div>
 
 
@@ -814,7 +829,7 @@ var QUIZ = [];
 
 <script>
 (function(){
-  /* penv9 */
+  /* penv11 */
   var cv = document.getElementById('markCanvas');
   if (!cv) return;
   var ctx = cv.getContext('2d');
@@ -855,6 +870,28 @@ var QUIZ = [];
     return s.bb;
   }
 
+  /* ── 笔迹锚定：记录落笔处的内容块，重排后按内容位移整体平移 ── */
+  var ANCH_SEL = '.line, .q, .card, .tip, p, li, h2, h3, .ptx, .para';
+  function anchorOf(clientX, clientY){
+    var el = document.elementFromPoint(clientX, clientY);
+    if (!el || !el.closest) return null;
+    var a = el.closest(ANCH_SEL) || el;
+    if (!a || a.nodeType !== 1) return null;
+    return { el: a, y0: a.getBoundingClientRect().top + (window.pageYOffset || 0) };
+  }
+  function shiftOf(s, cache){
+    if (!s || !s.anch || !s.anch.el) return 0;
+    if (cache){
+      var v = cache.get(s.anch.el);
+      if (v === undefined){
+        v = (s.anch.el.getBoundingClientRect().top + (window.pageYOffset || 0)) - s.anch.y0;
+        cache.set(s.anch.el, v);
+      }
+      return v;
+    }
+    return (s.anch.el.getBoundingClientRect().top + (window.pageYOffset || 0)) - s.anch.y0;
+  }
+
   function scanSC(){
     SC = [];
     var all = document.querySelectorAll('div,section,article,aside');
@@ -882,10 +919,10 @@ var QUIZ = [];
     return best ? {c:best, c0:best.scrollTop} : {c:null, c0:0};
   }
 
-  function drawStroke(s, sparse){
+  function drawStroke(s, sparse, acache){
     var pts = s.pts, n = pts.length;
     if (!n) return;
-    var off = offOf(s), bx = -OX, by = off - OY;
+    var off = offOf(s), bx = -OX, by = off - OY + shiftOf(s, acache);
     ctx.save();
     clipC(s.c);
     ctx.globalCompositeOperation = s.era ? 'destination-out' : 'source-over';
@@ -921,26 +958,27 @@ var QUIZ = [];
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     ctx.clearRect(0, 0, VW, VH);
     var vx0 = OX, vy0 = OY, vx1 = OX + VW, vy1 = OY + VH;
+    var acache = new Map();
     for (var i = 0; i < strokes.length; i++){
-      var s = strokes[i];
+      var s = strokes[i], sh = shiftOf(s, acache);
       if (!hasEra && !s.era){
         var bb = s.bb || bboxOf(s), off = offOf(s);
-        if (bb[3] + off < vy0 - 80 || bb[1] + off > vy1 + 80 ||
+        if (bb[3] + off + sh < vy0 - 80 || bb[1] + off + sh > vy1 + 80 ||
             bb[2] < vx0 - 80 || bb[0] > vx1 + 80) continue;
       }
-      drawStroke(s, true);
+      drawStroke(s, true, acache);
     }
     if (cur){
       cur.n = cur.pts.length;
       var lp = cur.pts[cur.pts.length-1];
-      cur.mid = [lp[0] - OX, lp[1] + offOf(cur) - OY];
+      cur.mid = [lp[0] - OX, lp[1] + offOf(cur) + shiftOf(cur, acache) - OY];
     }
   }
 
   function live(){
     if (!cur) return;
     var pts = cur.pts, n = pts.length;
-    var off = offOf(cur), bx = -OX, by = off - OY;
+    var off = offOf(cur), bx = -OX, by = off - OY + shiftOf(cur, null);
     ctx.save();
     clipC(cur.c);
     ctx.globalCompositeOperation = cur.era ? 'destination-out' : 'source-over';
@@ -1217,10 +1255,11 @@ var QUIZ = [];
     var x = e.pageX, y = e.pageY, w = widthOf(e, useEra);
     var o = ownerOf(x, y);
     cur = { pts:[[x, y, w]], color:color, era:useEra,
-            c:o.c, c0:o.c0, n:1, mid:[0, 0], bb:null };
+            c:o.c, c0:o.c0, n:1, mid:[0, 0], bb:null,
+            anch: anchorOf(e.clientX, e.clientY) };
     if (cur.era) hasEra = true;
     strokes.push(cur);
-    var bx = -OX, by = offOf(cur) - OY;
+    var bx = -OX, by = offOf(cur) - OY + shiftOf(cur, null);
     ctx.save();
     clipC(cur.c);
     if (!cur.era){
@@ -1375,6 +1414,93 @@ var QUIZ = [];
     var t = document.getElementById('dictPhotoTip');
     if (t) t.style.display = (t.style.display === 'none') ? 'block' : 'none';
     b.textContent = (t && t.style.display === 'block') ? '📷 收起说明' : '📷 手写听写 · 拍照交批改';
+  });
+})();
+</script>
+
+<script>
+/* 听写模式：逐句播放 → 播完自动暂停 → 写好后点「下一句」 */
+(function(){
+  var audio = document.getElementById('audio');
+  var bar = document.getElementById('dictBar');
+  var btn = document.getElementById('tpDict');
+  if (!audio || !bar || !btn || !window.DATA || !DATA.lines) return;
+  var txt = bar.querySelector('.db-txt');
+  var bNext = document.getElementById('dbNext');
+  var bAgain = document.getElementById('dbAgain');
+  var on = false, curLi = -1, B = null, guard = 0;
+
+  function bounds(){
+    if (B) return B;
+    var L = DATA.lines, out = [];
+    for (var i = 0; i < L.length; i++){
+      var s = L[i].tokens[0].s;
+      var e = (i + 1 < L.length) ? L[i + 1].tokens[0].s : (DATA.dur || 1e9);
+      out.push([Math.max(0, s - 0.10), e]);
+    }
+    B = out; return B;
+  }
+  function liAt(t){
+    var b = bounds();
+    for (var i = 0; i < b.length; i++) if (t >= b[i][0] - 0.35 && t < b[i][1]) return i;
+    return -1;
+  }
+  function playLine(li){
+    var b = bounds();
+    if (li < 0 || li >= b.length) return false;
+    curLi = li;
+    guard = performance.now() + 500;          /* 刚切句，先忽略句末判断 */
+    bar.classList.remove('on');
+    audio.currentTime = b[li][0];
+    var pr = audio.play();
+    if (pr && pr.catch) pr.catch(function(){});
+    return true;
+  }
+  function showWait(li){
+    var b = bounds(), last = (li + 1 >= b.length);
+    if (last){
+      txt.innerHTML = '🎉 <b>' + b.length + ' 句全部播完</b> —— 去听写区比对，看漏了哪些';
+      bNext.textContent = '✓ 完成';
+    } else {
+      txt.innerHTML = '✍️ <b>第 ' + (li + 1) + ' / ' + b.length + ' 句</b>播完了 —— 写好后继续';
+      bNext.textContent = '▶ 下一句';
+    }
+    bar.classList.add('on');
+  }
+  function exitMode(){
+    on = false; curLi = -1;
+    btn.classList.remove('act'); btn.textContent = '✍️ 听写模式';
+    bar.classList.remove('on');
+  }
+
+  audio.addEventListener('timeupdate', function(){
+    if (!on || audio.paused) return;
+    if (performance.now() < guard) return;
+    var t = audio.currentTime, li = liAt(t);
+    if (li < 0) return;
+    if (t >= bounds()[li][1] - 0.08){ audio.pause(); showWait(li); }
+  });
+  audio.addEventListener('ended', function(){
+    if (!on) return;
+    audio.pause(); showWait(bounds().length - 1);
+  });
+
+  btn.addEventListener('click', function(){
+    if (on){ exitMode(); return; }
+    on = true;
+    btn.classList.add('act'); btn.textContent = '✍️ 听写模式 开';
+    var li = liAt(audio.currentTime);
+    txt.innerHTML = '✍️ 听写模式：<b>每句播完会自动暂停</b>，你写完点「下一句」';
+    bNext.textContent = '▶ 下一句';
+    bar.classList.add('on');
+    playLine(li < 0 ? 0 : li);
+  });
+  bNext.addEventListener('click', function(){
+    if (!on){ bar.classList.remove('on'); return; }
+    if (!playLine(curLi + 1)) exitMode();
+  });
+  bAgain.addEventListener('click', function(){
+    if (curLi >= 0) playLine(curLi);
   });
 })();
 </script>
