@@ -151,31 +151,41 @@ details.card>summary:hover{opacity:.82}
 details.card .fd{padding:0 18px 18px}
 details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
 
-/* ═══ 涂写标记（触控笔专属） ═══ */
-#markBar{position:fixed;z-index:8990;display:flex;flex-direction:column;gap:0;
- background:var(--card,#fff);border:1px solid var(--line,#e5e8ec);border-radius:14px;
- box-shadow:0 6px 22px rgba(0,0,0,.18);max-width:94vw;overflow:hidden;touch-action:none}
-#markBar .hd{display:flex;align-items:center;gap:8px;padding:7px 11px;background:var(--soft);
- border-bottom:1px solid var(--line2,#eceff3);touch-action:none;cursor:grab}
-#markBar .hd .grip{font-size:12.5px;font-weight:700;color:var(--sub,#6b7280);user-select:none;
- letter-spacing:.5px}
-#markBar .hd .mini{margin-left:auto;border:0;background:transparent;font-size:12.5px;font-weight:700;
- color:var(--sub,#6b7280);cursor:pointer;padding:3px 9px;border-radius:8px;font-family:inherit}
-#markBar .hd .mini:hover{background:var(--line2,#eceff3)}
-#markBar .bd{padding:8px 10px 9px;display:flex;flex-direction:column;gap:5px}
-#markBar.collapsed .bd{display:none}
-#markBar .row{display:flex;gap:4px;align-items:center;justify-content:center;flex-wrap:wrap}
-#markBar button{border:0;background:transparent;padding:7px 11px;border-radius:14px;font-size:13px;
- cursor:pointer;color:var(--txt,#333);font-family:inherit;white-space:nowrap;line-height:1.3}
+/* ═══ 涂写标记（触控笔专属）═══ */
+#markBar{position:fixed;z-index:8990;background:var(--card,#fff);border:1px solid var(--line,#e5e8ec);
+ border-radius:50%;width:54px;height:54px;overflow:hidden;touch-action:none;
+ box-shadow:0 6px 20px rgba(0,0,0,.18);
+ transition:width .26s cubic-bezier(.4,0,.2,1),height .26s cubic-bezier(.4,0,.2,1),
+            border-radius .26s cubic-bezier(.4,0,.2,1),box-shadow .26s}
+#markBar.open{width:306px;height:124px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+#mkFab{position:absolute;top:0;left:0;width:100%;height:100%;border:0;background:transparent;
+ font-size:23px;line-height:1;cursor:pointer;color:var(--blue,#2563eb);font-family:inherit;
+ transition:opacity .16s ease}
+#markBar.open #mkFab{opacity:0;pointer-events:none}
+#markBar .panel{position:absolute;top:0;left:0;width:100%;height:100%;
+ display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .22s ease .06s}
+#markBar.open .panel{opacity:1;pointer-events:auto}
+#markBar .grip{flex:0 0 16px;display:flex;align-items:center;justify-content:center;
+ position:relative;cursor:grab;touch-action:none}
+#markBar .grip i{display:block;width:30px;height:3px;border-radius:2px;background:var(--line,#dfe3e8)}
+#markBar .grip .cls{position:absolute;right:3px;top:0;border:0;background:transparent;
+ color:var(--sub,#6b7280);font-size:12px;line-height:1;cursor:pointer;padding:3px 6px;
+ border-radius:7px;font-family:inherit}
+#markBar .grip .cls:hover{background:var(--soft,#f4f6f8)}
+#markBar .bd{flex:1;padding:1px 10px 8px;display:flex;flex-direction:column;gap:3px;overflow:hidden}
+#markBar .row{display:flex;gap:3px;align-items:center;justify-content:center;flex-wrap:nowrap}
+#markBar button{border:0;background:transparent;padding:6px 10px;border-radius:12px;font-size:13px;
+ cursor:pointer;color:var(--txt,#333);font-family:inherit;white-space:nowrap;line-height:1.25}
 #markBar button.on{background:var(--blue,#2563eb);color:#fff}
-#markBar .sep{width:1px;height:18px;background:var(--line,#e5e8ec);margin:0 3px;flex:0 0 auto}
-#markBar .wd{min-width:30px;text-align:center}
+#markBar .sep{width:1px;height:16px;background:var(--line,#e5e8ec);margin:0 3px;flex:0 0 auto}
+#markBar .wd{min-width:26px;text-align:center;padding:6px 6px}
 #markBar .wd i{display:inline-block;border-radius:50%;background:currentColor;vertical-align:middle}
-#markBar .sw{width:22px;height:22px;border-radius:50%;border:2px solid var(--line,#e5e8ec);
+#markBar .sw{width:21px;height:21px;border-radius:50%;border:2px solid var(--line,#e5e8ec);
  padding:0;cursor:pointer;flex:0 0 auto}
-#markBar .sw.on{border-color:var(--blue,#2563eb);box-shadow:0 0 0 2px rgba(37,99,235,.25)}
+#markBar .sw.on{border-color:var(--blue,#2563eb);box-shadow:0 0 0 2px rgba(37,99,235,.22)}
 #markCanvas{position:absolute;top:0;left:0;z-index:8980;pointer-events:none}
-#markCanvas.act{pointer-events:auto;cursor:crosshair;touch-action:pan-y}</style>
+#markCanvas.act{pointer-events:auto;cursor:crosshair;touch-action:pan-y}
+</style>
 </head>
 <body>
 
@@ -376,76 +386,135 @@ details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14
 </script>
 
 
+
 <canvas id="markCanvas"></canvas>
 <div id="markBar">
-  <div class="hd"><span class="grip">☰ 画笔 · 拖动可移动</span><button class="mini" id="mkMini">收起</button></div>
-  <div class="bd">
-  <div class="row">
-    <button id="mkPen">🖊 涂写</button>
-    <button id="mkErase">🧽 橡皮</button>
-    <button id="mkClear">🗑 清空</button>
-    <span class="sep"></span>
-    <button class="wd" data-w="1.6" title="细"><i style="width:2px;height:2px"></i></button>
-    <button class="wd" data-w="3" title="中"><i style="width:4px;height:4px"></i></button>
-    <button class="wd" data-w="6" title="粗"><i style="width:7px;height:7px"></i></button>
-    <span class="sep"></span>
-    <button class="sw" data-c="#1b1e23" title="黑" style="background:#1b1e23"></button>
-    <button class="sw" data-c="#c0392b" title="红" style="background:#c0392b"></button>
-    <button class="sw" data-c="#2563eb" title="蓝" style="background:#2563eb"></button>
-    <button class="sw" data-c="#0d8a52" title="绿" style="background:#0d8a52"></button>
+  <button id="mkFab" title="画笔">🖊</button>
+  <div class="panel">
+    <div class="grip"><i></i><button class="cls" id="mkMini" title="收起">⌄</button></div>
+    <div class="bd">
+      <div class="row">
+        <button id="mkPen">🖊 涂写</button>
+        <button id="mkErase">🧽 橡皮</button>
+        <button id="mkClear">🗑 清空</button>
+      </div>
+      <div class="row">
+        <button class="wd" data-w="1.6" title="细"><i style="width:2px;height:2px"></i></button>
+        <button class="wd" data-w="3" title="中"><i style="width:4px;height:4px"></i></button>
+        <button class="wd" data-w="6" title="粗"><i style="width:7px;height:7px"></i></button>
+        <span class="sep"></span>
+        <button class="sw" data-c="#1b1e23" title="黑" style="background:#1b1e23"></button>
+        <button class="sw" data-c="#c0392b" title="红" style="background:#c0392b"></button>
+        <button class="sw" data-c="#2563eb" title="蓝" style="background:#2563eb"></button>
+        <button class="sw" data-c="#0f9d58" title="绿" style="background:#0f9d58"></button>
+        <button class="sw" data-c="#d97706" title="橙" style="background:#d97706"></button>
+      </div>
+    </div>
   </div>
 </div>
-</div>
+
 <script>
 (function(){
   var cv = document.getElementById('markCanvas');
   if (!cv) return;
   var ctx = cv.getContext('2d');
 
-  // 画布覆盖整个文档，笔迹写在文档坐标里，随页面滚动
+  /* ── 笔迹数据：滚动时可整体重绘 ── */
+  var strokes = [], cur = null;
+
   function rz(){
     var w = document.documentElement.scrollWidth || window.innerWidth;
     var h = document.documentElement.scrollHeight || window.innerHeight;
-    if (w !== cv.width || h !== cv.height){
-      var old = document.createElement('canvas');
-      old.width = cv.width; old.height = cv.height;
-      old.getContext('2d').drawImage(cv, 0, 0);
-      cv.width = w; cv.height = h;
-      ctx.drawImage(old, 0, 0);
+    if (w !== cv.width || h !== cv.height){ cv.width = w; cv.height = h; drawAll(); }
+  }
+
+  /* 找可滚动容器（分栏等），其滚动时重绘笔迹 */
+  var SC = [];
+  function scanSC(){
+    SC = [];
+    var all = document.querySelectorAll('div,section,article,aside');
+    for (var i=0;i<all.length;i++){
+      var el = all[i], st = getComputedStyle(el);
+      if ((st.overflowY === 'auto' || st.overflowY === 'scroll') && el.scrollHeight > el.clientHeight + 4){
+        SC.push(el);
+        if (!el.__mkh){ el.__mkh = 1;
+          el.addEventListener('scroll', function(){ drawAll(); }, {passive:true}); }
+      }
     }
   }
-  rz();
-  window.addEventListener('resize', rz);
-  setInterval(rz, 2000);   // 解锁原文等导致文档变高时，扩展画布并保留笔迹
+  function ownerOf(x, y){
+    for (var i=0;i<SC.length;i++){
+      var c = SC[i], r = c.getBoundingClientRect();
+      var l = r.left + window.pageXOffset, t = r.top + window.pageYOffset;
+      if (x >= l && x <= l + r.width && y >= t && y <= t + c.scrollHeight)
+        return {c:c, c0:c.scrollTop};
+    }
+    return {c:null, c0:0};
+  }
+  function drawOne(s){
+    var pts = s.pts; if (!pts.length) return;
+    var dy = s.c ? (s.c0 - s.c.scrollTop) : 0;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.globalCompositeOperation = s.era ? 'destination-out' : 'source-over';
+    if (!s.era) ctx.strokeStyle = s.color;
+    if (pts.length === 1){
+      ctx.fillStyle = s.era ? 'rgba(0,0,0,1)' : s.color;
+      ctx.beginPath(); ctx.arc(pts[0][0], pts[0][1]+dy, Math.max(.5, pts[0][2]/2), 0, 6.2832);
+      ctx.fill(); ctx.globalCompositeOperation = 'source-over'; return;
+    }
+    var lm = [pts[0][0], pts[0][1]];
+    for (var i=1;i<pts.length;i++){
+      var p = pts[i], q = pts[i-1];
+      var mx = (q[0]+p[0])/2, my = (q[1]+p[1])/2;
+      ctx.lineWidth = p[2];
+      ctx.beginPath();
+      ctx.moveTo(lm[0], lm[1]+dy);
+      ctx.quadraticCurveTo(q[0], q[1]+dy, mx, my+dy);
+      ctx.stroke();
+      lm = [mx, my];
+    }
+    ctx.globalCompositeOperation = 'source-over';
+  }
+  function drawAll(){
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    for (var i=0;i<strokes.length;i++) drawOne(strokes[i]);
+  }
 
-  var pen = document.getElementById('mkPen'), era = document.getElementById('mkErase'), clr = document.getElementById('mkClear');
+  rz();
+  window.addEventListener('resize', function(){ rz(); });
+  scanSC(); setInterval(scanSC, 1500);
+  setInterval(rz, 2000);
+
+  /* ── 模式 / 颜色 / 粗细 ── */
+  var pen = document.getElementById('mkPen'), era = document.getElementById('mkErase'),
+      clr = document.getElementById('mkClear');
   var mode = 'off', color = '#1b1e23', baseW = 3, drawing = false;
-  var last = null, lastMid = null;
 
   function setMode(m){
     mode = m;
     cv.classList.toggle('act', m !== 'off');
-    pen.classList.toggle('on', m === 'draw');
-    era.classList.toggle('on', m === 'erase');
+    if (pen) pen.classList.toggle('on', m === 'draw');
+    if (era) era.classList.toggle('on', m === 'erase');
   }
-  pen.addEventListener('click', function(){ setMode(mode === 'draw' ? 'off' : 'draw'); });
-  era.addEventListener('click', function(){ setMode(mode === 'erase' ? 'off' : 'erase'); });
-  clr.addEventListener('click', function(){ ctx.clearRect(0,0,cv.width,cv.height); });
+  if (pen) pen.addEventListener('click', function(){ setMode(mode === 'draw' ? 'off' : 'draw'); });
+  if (era) era.addEventListener('click', function(){ setMode(mode === 'erase' ? 'off' : 'erase'); });
+  if (clr) clr.addEventListener('click', function(){
+    strokes = []; ctx.clearRect(0, 0, cv.width, cv.height); });
 
   var wds = document.querySelectorAll('#markBar .wd');
-  wds.forEach(function(b){
+  Array.prototype.forEach.call(wds, function(b){
     b.addEventListener('click', function(){
       baseW = parseFloat(b.dataset.w);
-      wds.forEach(function(x){ x.classList.remove('on'); });
+      Array.prototype.forEach.call(wds, function(x){ x.classList.remove('on'); });
       b.classList.add('on');
       if (mode === 'erase') setMode('draw');
     });
   });
   var sws = document.querySelectorAll('#markBar .sw');
-  sws.forEach(function(b){
+  Array.prototype.forEach.call(sws, function(b){
     b.addEventListener('click', function(){
       color = b.dataset.c;
-      sws.forEach(function(x){ x.classList.remove('on'); });
+      Array.prototype.forEach.call(sws, function(x){ x.classList.remove('on'); });
       b.classList.add('on');
       if (mode === 'erase') setMode('draw');
     });
@@ -459,91 +528,118 @@ details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14
     return (e.pointerType === 'pen' && typeof e.pressure === 'number' && e.pressure > 0) ? e.pressure : 0.5;
   }
   function widthOf(e){
-    if (mode === 'erase') return Math.max(10, baseW * 5);
+    if (mode === 'erase') return Math.max(12, baseW * 5);
     return Math.max(0.7, baseW * (0.35 + pressure(e)));
   }
-
-  // 中点二次贝塞尔，让线条平滑
-  function segTo(x, y, w){
-    var mx = (last[0] + x) / 2, my = (last[1] + y) / 2;
+  function addPt(x, y, w){
+    var pts = cur.pts, q = pts[pts.length - 1];
+    var dy = cur.c ? (cur.c0 - cur.c.scrollTop) : 0;
+    var mx = (q[0]+x)/2, my = (q[1]+y)/2;
     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.globalCompositeOperation = cur.era ? 'destination-out' : 'source-over';
+    if (!cur.era) ctx.strokeStyle = cur.color;
     ctx.lineWidth = w;
-    if (mode === 'erase'){ ctx.globalCompositeOperation = 'destination-out'; ctx.strokeStyle = 'rgba(0,0,0,1)'; }
-    else { ctx.globalCompositeOperation = 'source-over'; ctx.strokeStyle = color; }
     ctx.beginPath();
-    ctx.moveTo(lastMid[0], lastMid[1]);
-    ctx.quadraticCurveTo(last[0], last[1], mx, my);
+    ctx.moveTo(cur.mid[0], cur.mid[1] + dy);
+    ctx.quadraticCurveTo(q[0], q[1] + dy, mx, my + dy);
     ctx.stroke();
     ctx.globalCompositeOperation = 'source-over';
-    lastMid = [mx, my]; last = [x, y];
+    cur.mid = [mx, my];
+    pts.push([x, y, w]);
   }
 
   cv.addEventListener('pointerdown', function(e){
     if (mode === 'off') return;
-    if (e.pointerType === 'touch') return;      // 手指不画
+    if (e.pointerType === 'touch') return;          /* 手指只滚动，不画 */
     drawing = true;
-    last = [e.pageX, e.pageY]; lastMid = [e.pageX, e.pageY];
+    var o = ownerOf(e.pageX, e.pageY);
+    cur = {pts:[[e.pageX, e.pageY, widthOf(e)]], color:color, era:(mode === 'erase'),
+           c:o.c, c0:o.c0, mid:[e.pageX, e.pageY]};
+    strokes.push(cur);
     try{ cv.setPointerCapture(e.pointerId); }catch(_){}
-    var w = widthOf(e);
-    if (mode !== 'erase'){ ctx.fillStyle = color; ctx.beginPath(); ctx.arc(e.pageX, e.pageY, w/2, 0, Math.PI*2); ctx.fill(); }
+    if (mode !== 'erase'){
+      var w = widthOf(e);
+      ctx.fillStyle = color;
+      ctx.beginPath(); ctx.arc(e.pageX, e.pageY, w/2, 0, 6.2832); ctx.fill();
+    }
     e.preventDefault();
   });
   cv.addEventListener('pointermove', function(e){
-    if (!drawing || mode === 'off') return;
-    var evs = (typeof e.getCoalescedEvents === 'function') ? e.getCoalescedEvents() : [];
-    if (evs && evs.length){ for (var i = 0; i < evs.length; i++) segTo(evs[i].pageX, evs[i].pageY, widthOf(evs[i])); }
-    else segTo(e.pageX, e.pageY, widthOf(e));
+    if (!drawing || mode === 'off' || !cur) return;
+    var evs = (typeof e.getCoalescedEvents === 'function') ? e.getCoalescedEvents() : null;
+    if (evs && evs.length){ for (var i=0;i<evs.length;i++) addPt(evs[i].pageX, evs[i].pageY, widthOf(evs[i])); }
+    else addPt(e.pageX, e.pageY, widthOf(e));
   });
   ['pointerup','pointercancel'].forEach(function(ev){
-    cv.addEventListener(ev, function(){ drawing = false; });
+    cv.addEventListener(ev, function(){ drawing = false; cur = null; });
   });
 })();
 </script>
+
 <script>
 (function(){
-  var bar=document.getElementById('markBar');
-  if(!bar || bar.dataset.drag) return;
-  bar.dataset.drag='1';
-  var KEY='cet4pen:'+(location.pathname.split('/').pop()||'x');
-  var hd=bar.querySelector('.hd'), mini=document.getElementById('mkMini');
-  function place(l,t){ bar.style.left=l+'px'; bar.style.top=t+'px';
-    bar.style.right='auto'; bar.style.bottom='auto'; bar.style.transform='none'; }
-  function clamp(l,t){ var w=bar.offsetWidth,h=bar.offsetHeight;
-    l=Math.max(6,Math.min(l,innerWidth-w-6)); t=Math.max(6,Math.min(t,innerHeight-h-6));
-    place(l,t); }
-  function save(){ var r=bar.getBoundingClientRect();
-    try{ localStorage.setItem(KEY,JSON.stringify({l:Math.round(r.left),t:Math.round(r.top),
-      c:bar.classList.contains('collapsed')})); }catch(e){} }
-  function sync(){ if(mini) mini.textContent=bar.classList.contains('collapsed')?'展开':'收起'; }
-  var st=null;
-  try{ st=JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){}
-  if(st && st.c) bar.classList.add('collapsed');
-  sync();
-  if(st && st.l!=null){ place(st.l,st.t); clamp(st.l,st.t); }
-  else { var r=bar.getBoundingClientRect();
-    place(Math.max(6,innerWidth-r.width-14), Math.max(6,innerHeight-r.height-14)); }
-  if(mini) mini.addEventListener('click', function(e){
-    e.stopPropagation();
-    bar.classList.toggle('collapsed'); sync();
-    var r2=bar.getBoundingClientRect(); clamp(r2.left,r2.top); save();
-  });
-  var dragging=false, ox=0, oy=0, moved=false;
-  hd.addEventListener('pointerdown', function(e){
-    if (e.target && e.target.closest && e.target.closest('.mini')) return;
-    dragging=true; moved=false;
-    var r=bar.getBoundingClientRect(); ox=e.clientX-r.left; oy=e.clientY-r.top;
-    try{ hd.setPointerCapture(e.pointerId); }catch(err){}
-    e.preventDefault(); e.stopPropagation();
-  });
-  hd.addEventListener('pointermove', function(e){
-    if(!dragging) return; moved=true; clamp(e.clientX-ox, e.clientY-oy);
-    e.preventDefault(); e.stopPropagation();
-  });
-  function end(e){ if(dragging){ dragging=false; if(moved) save(); } }
-  hd.addEventListener('pointerup', end);
-  hd.addEventListener('pointercancel', end);
+  var bar = document.getElementById('markBar');
+  if (!bar || bar.dataset.v2) return;
+  bar.dataset.v2 = '1';
+  var fab = document.getElementById('mkFab'), grip = bar.querySelector('.grip');
+  var KEY = 'cet4pen2:' + (location.pathname.split('/').pop() || 'x');
+
+  function place(l, t){ bar.style.left=l+'px'; bar.style.top=t+'px';
+    bar.style.right='auto'; bar.style.bottom='auto'; }
+  function clamp(l, t){
+    var w = bar.offsetWidth, h = bar.offsetHeight;
+    l = Math.max(6, Math.min(l, window.innerWidth - w - 6));
+    t = Math.max(6, Math.min(t, window.innerHeight - h - 6));
+    place(l, t);
+  }
+  function save(){
+    var r = bar.getBoundingClientRect();
+    try{ localStorage.setItem(KEY, JSON.stringify({l:Math.round(r.left), t:Math.round(r.top),
+      o:bar.classList.contains('open')})); }catch(e){}
+  }
+  var st = null;
+  try{ st = JSON.parse(localStorage.getItem(KEY) || 'null'); }catch(e){}
+  if (st && st.o) bar.classList.add('open');
+  if (st && st.l != null){ place(st.l, st.t); clamp(st.l, st.t); }
+  else { var off = document.getElementById('studyTimer') ? 80 : 16;
+    place(window.innerWidth - 306 - 16, window.innerHeight - 124 - off); }
+
+  function setOpen(o){
+    bar.classList.toggle('open', o);
+    save();
+    setTimeout(function(){ var r = bar.getBoundingClientRect(); clamp(r.left, r.top); }, 300);
+  }
+  var cls = document.getElementById('mkMini');
+  if (cls) cls.addEventListener('click', function(e){ e.stopPropagation(); setOpen(false); });
+
+  function drag(handle, tap){
+    var down = false, moved = false, ox = 0, oy = 0, sx = 0, sy = 0;
+    handle.addEventListener('pointerdown', function(e){
+      if (e.target && e.target.closest && e.target.closest('.cls')) return;
+      down = true; moved = false; sx = e.clientX; sy = e.clientY;
+      var r = bar.getBoundingClientRect(); ox = e.clientX - r.left; oy = e.clientY - r.top;
+      try{ handle.setPointerCapture(e.pointerId); }catch(_){}
+      e.preventDefault();
+    });
+    handle.addEventListener('pointermove', function(e){
+      if (!down) return;
+      if (!moved && (Math.abs(e.clientX - sx) + Math.abs(e.clientY - sy)) > 6) moved = true;
+      if (moved) clamp(e.clientX - ox, e.clientY - oy);
+      e.preventDefault();
+    });
+    function end(){
+      if (!down) return;
+      down = false;
+      if (moved) save();
+      else if (tap) tap();
+    }
+    handle.addEventListener('pointerup', end);
+    handle.addEventListener('pointercancel', function(){ down = false; });
+  }
+  if (fab) drag(fab, function(){ setOpen(true); });
+  if (grip) drag(grip);
   window.addEventListener('resize', function(){
-    var r=bar.getBoundingClientRect(); clamp(r.left,r.top); });
+    var r = bar.getBoundingClientRect(); clamp(r.left, r.top); });
 })();
 </script>
 </body>
