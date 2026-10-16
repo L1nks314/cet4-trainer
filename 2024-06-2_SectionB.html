@@ -225,7 +225,7 @@ body.qshow .stem{display:block}
  padding:0;cursor:pointer;flex:0 0 auto}
 #markBar .sw.on{border-color:var(--blue,#2563eb);box-shadow:0 0 0 2px rgba(37,99,235,.22)}
 #markCanvas{position:absolute;top:0;left:0;z-index:8980;pointer-events:none}
-#markCanvas.act{pointer-events:auto;cursor:crosshair;touch-action:none}
+#markCanvas.act{cursor:crosshair}
 </style>
 <noscript><style>
   .locked-sec{filter:none !important;opacity:1 !important;pointer-events:auto !important;user-select:auto !important;}
@@ -1093,30 +1093,49 @@ for (var qid in AL){
     pts.push([x, y, w]);
   }
 
-  cv.addEventListener('pointerdown', function(e){
+  /* 事件挂在 document，捕获阶段拦截；只处理笔和鼠标 —— 手指留给浏览器滚动/点选 */
+  var EXCLUDE = 'button,a,input,textarea,select,label,#markBar';
+  function hitUI(t, x, y){
+    if (t && t.closest && t.closest(EXCLUDE)) return true;
+    var bar = document.getElementById('markBar');       /* 坐标兜底：落在画笔面板上也不画 */
+    if (bar){
+      var r = bar.getBoundingClientRect();
+      if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) return true;
+    }
+    return false;
+  }
+
+  document.addEventListener('pointerdown', function(e){
     if (mode === 'off') return;
-    if (e.pointerType === 'touch') return;          /* 手指只滚动，不画 */
+    if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;   /* 手指不做画 */
+    if (hitUI(e.target, e.clientX, e.clientY)) return;                  /* 点在控件上不画 */
     drawing = true;
     var o = ownerOf(e.pageX, e.pageY);
     cur = {pts:[[e.pageX, e.pageY, widthOf(e)]], color:color, era:(mode === 'erase'),
            c:o.c, c0:o.c0, mid:[e.pageX, e.pageY]};
     strokes.push(cur);
-    try{ cv.setPointerCapture(e.pointerId); }catch(_){}
     if (mode !== 'erase'){
       var w = widthOf(e);
       ctx.fillStyle = color;
       ctx.beginPath(); ctx.arc(e.pageX, e.pageY, w/2, 0, 6.2832); ctx.fill();
     }
     e.preventDefault();
-  });
-  cv.addEventListener('pointermove', function(e){
+  }, {capture:true, passive:false});
+
+  document.addEventListener('pointermove', function(e){
     if (!drawing || mode === 'off' || !cur) return;
+    if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
     var evs = (typeof e.getCoalescedEvents === 'function') ? e.getCoalescedEvents() : null;
     if (evs && evs.length){ for (var i=0;i<evs.length;i++) addPt(evs[i].pageX, evs[i].pageY, widthOf(evs[i])); }
     else addPt(e.pageX, e.pageY, widthOf(e));
-  });
+    e.preventDefault();
+  }, {capture:true, passive:false});
+
   ['pointerup','pointercancel'].forEach(function(ev){
-    cv.addEventListener(ev, function(){ drawing = false; cur = null; });
+    document.addEventListener(ev, function(e){
+      if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
+      drawing = false; cur = null;
+    }, {capture:true});
   });
 })();
 </script>
