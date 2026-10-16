@@ -116,6 +116,7 @@ a.it.now .tx{font-weight:700;color:var(--green)}
 <div class="list">
   <div class="lh">写作与翻译</div>
   <a class="it" href="writing.html"><span class="no">W</span><span class="tx">写作与翻译总览<span class="tag">18 套写作 · 18 套翻译 · 模板与句式</span></span><span class="ar">›</span></a>
+  <a class="it" href="records.html"><span class="no">R</span><span class="tx">我的记录<span class="tag">回执 · 归因 · 云端</span></span><span class="ar">›</span></a>
 </div>
 
 <div class="list">
@@ -327,7 +328,10 @@ function renderHead(){
 }
 
 function renderTasks(){
-  done = PROG[fmt(today)] || {};
+  var man = PROG[fmt(today)] || {};
+  var au = {};
+  try{ au = (JSON.parse(localStorage.getItem('cet4_done')||'{}')[fmt(today)]) || {}; }catch(e){ au = {}; }
+  done = { l: !!(man.l || au.listen), o: !!(man.o || au.other), r: !!(man.r || au.receipt) };
   var lessonTxt = (gap>=LESSONS.length) ? "全部 24 节已排完 · 请在对话里说「扩充题库」" : LESSONS[idx].d;
   var tHtml='';
   tHtml+='<div class="task'+(done.l?" on":"")+'" data-k="l"><div class="box'+(done.l?" on":"")+'"></div>'
@@ -402,5 +406,37 @@ pull().then(function(remote){
 });
 </script>
 
+
+<script>
+/* 完成记录：训练包做完后自动写入，作战台据此自动打勾 */
+(function(){
+  window.__markDone = function(kind){
+    try{
+      var K='cet4_done', d=JSON.parse(localStorage.getItem(K)||'{}');
+      var t=new Date();
+      var ds=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');
+      d[ds]=d[ds]||{};
+      if(!d[ds][kind]) d[ds][kind]=Date.now();
+      localStorage.setItem(K, JSON.stringify(d));
+    }catch(e){}
+  };
+  /* 判分/回执上云成功 = 当天这一项完成 */
+  var _f = window.fetch;
+  window.fetch = function(u){
+    var p = _f.apply(this, arguments);
+    try{
+      if (typeof u === 'string' && u.indexOf('ntfy.sh') >= 0){
+        p.then(function(r){
+          if (r && r.ok){
+            window.__markDone(/_Section/.test(location.pathname) ? 'listen' : 'other');
+            window.__markDone('receipt');
+          }
+        }).catch(function(){});
+      }
+    }catch(e){}
+    return p;
+  };
+})();
+</script>
 </body>
 </html>

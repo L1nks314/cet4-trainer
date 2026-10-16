@@ -590,5 +590,37 @@
     var r = bar.getBoundingClientRect(); clamp(r.left, r.top); });
 })();
 </script>
+
+<script>
+/* 完成记录：训练包做完后自动写入，作战台据此自动打勾 */
+(function(){
+  window.__markDone = function(kind){
+    try{
+      var K='cet4_done', d=JSON.parse(localStorage.getItem(K)||'{}');
+      var t=new Date();
+      var ds=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');
+      d[ds]=d[ds]||{};
+      if(!d[ds][kind]) d[ds][kind]=Date.now();
+      localStorage.setItem(K, JSON.stringify(d));
+    }catch(e){}
+  };
+  /* 判分/回执上云成功 = 当天这一项完成 */
+  var _f = window.fetch;
+  window.fetch = function(u){
+    var p = _f.apply(this, arguments);
+    try{
+      if (typeof u === 'string' && u.indexOf('ntfy.sh') >= 0){
+        p.then(function(r){
+          if (r && r.ok){
+            window.__markDone(/_Section/.test(location.pathname) ? 'listen' : 'other');
+            window.__markDone('receipt');
+          }
+        }).catch(function(){});
+      }
+    }catch(e){}
+    return p;
+  };
+})();
+</script>
 </body>
 </html>

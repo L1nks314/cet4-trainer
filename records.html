@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>我的记录 · 四级冲刺</title>
+<style>
+:root{ --bg:#f4f5f7; --card:#ffffff; --soft:#fafbfc;
+ --line:#e5e8ec; --line2:#eff1f4;
+ --txt:#1b1e23; --txt2:#2b303a; --sub:#6b7280; --sub2:#a8b0bb;
+ --blue:#2563eb; --blue-soft:#eef3ff; --green:#0d8a52; --green-soft:#e8f7ef;
+ --red:#c0392b; --red-soft:#fdecea; --amber:#b45309; --amber-soft:#fef6e7;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05); }
+@media (prefers-color-scheme: dark){
+ :root{ --bg:#101216; --card:#181b20; --soft:#20242a;
+  --line:#272c33; --line2:#22262c;
+  --txt:#e9ebee; --txt2:#d5d9de; --sub:#98a0aa; --sub2:#6b7280;
+  --blue:#6b96fb; --blue-soft:#1b2536; --green:#4ec98a; --green-soft:#152a20;
+  --red:#f0776a; --red-soft:#2c1a18; --amber:#e3a54a; --amber-soft:#2b2317;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 2px 6px rgba(0,0,0,.25); }
+}
+*{box-sizing:border-box}
+body{margin:0;padding:20px 16px 60px;background:var(--bg);color:var(--txt);
+ font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif;
+ max-width:820px;margin-left:auto;margin-right:auto}
+.back{display:inline-block;margin-bottom:12px;color:var(--blue);text-decoration:none;font-size:14px;font-weight:600}
+h1{font-size:22px;margin:0 0 16px;letter-spacing:-.3px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+ padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px;gap:10px}
+.chead h2{font-size:16px;margin:0}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.day{font-size:12.5px;font-weight:800;color:var(--sub);margin:16px 0 8px;letter-spacing:.5px}
+.day:first-child{margin-top:0}
+.it{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:9px;background:var(--soft)}
+.it .hd{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.pill{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:7px;background:var(--blue-soft);color:var(--blue)}
+.pill.g{background:var(--green-soft);color:var(--green)}
+.pill.a{background:var(--amber-soft);color:var(--amber)}
+.it .tt{font-size:13.5px;font-weight:700;color:var(--txt2)}
+.it .bd{font-size:13.5px;line-height:1.8;white-space:pre-wrap;word-break:break-word;color:var(--txt2)}
+.coach{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;
+ padding:11px 13px;margin-top:9px;font-size:13.5px;line-height:1.8;white-space:pre-wrap;
+ color:var(--txt2);word-break:break-word}
+.coach b{color:var(--green)}
+.empty{color:var(--sub);font-size:13.5px;text-align:center;padding:26px 0}
+.tip{background:var(--blue-soft);color:var(--blue);border-radius:11px;padding:11px 14px;
+ font-size:13px;line-height:1.75;margin-bottom:14px}
+</style>
+</head>
+<body>
+<a class="back" href="index.html">← 返回作战台</a>
+<h1>我的记录</h1>
+
+<div class="tip">
+  <b>这里能看到你交过的每一份回执。</b><br>
+  听力 / 阅读判分后自动上云；写作、翻译点「把文字发给我批改」后上云。<br>
+  教练的归因与批改会追加在对应回执下面（晚间复盘后更新）。
+</div>
+
+<div class="card">
+  <div class="chead"><h2>回执与批改</h2><span class="cmeta" id="cnt">加载中…</span></div>
+  <div id="list"><div class="empty">正在拉取云端记录…</div></div>
+</div>
+
+<script>
+var TOPIC = 'cet4-67f4d286a543c3aca5af06b1910625b0749ce20d4052';
+var KIND = {listening:'听力', reading:'阅读', writing:'写作', translation:'翻译'};
+
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+fetch('https://ntfy.sh/' + TOPIC + '/json?poll=1&since=all')
+  .then(function(r){ return r.text(); })
+  .then(function(txt){
+    var recs = [], coaches = [];
+    txt.trim().split('\n').forEach(function(line){
+      if (!line.trim()) return;
+      var m; try{ m = JSON.parse(line); }catch(e){ return; }
+      var payload; try{ payload = JSON.parse(m.message); }catch(e){ return; }
+      if (!payload || !payload.t) return;
+      if (payload.t === 'rep') recs.push(payload);
+      else if (payload.t === 'coach') coaches.push(payload);
+    });
+    render(recs, coaches);
+  })
+  .catch(function(){
+    document.getElementById('list').innerHTML = '<div class="empty">拉取失败 —— 检查网络后刷新本页。</div>';
+  });
+
+function render(recs, coaches){
+  if (!recs.length){
+    document.getElementById('cnt').textContent = '0 条';
+    document.getElementById('list').innerHTML =
+      '<div class="empty">还没有回执。做完一套听力或阅读，判分后会自动出现在这里。</div>';
+    return;
+  }
+  recs.sort(function(a,b){ return (b.date||'') < (a.date||'') ? -1 : 1; });
+  var byDay = {};
+  recs.forEach(function(r){ (byDay[r.date] = byDay[r.date] || []).push(r); });
+  var days = Object.keys(byDay).sort().reverse();
+  var html = '';
+  days.forEach(function(d){
+    html += '<div class="day">' + esc(d) + '</div>';
+    byDay[d].forEach(function(r){
+      var k = r.kind || 'listening';
+      var pillCls = (k === 'writing' || k === 'translation') ? 'a' : 'g';
+      var meta = esc(r.page || '');
+      if (r.score) meta += ' · ' + esc(r.score);
+      if (r.pct != null) meta += ' · ' + r.pct + '%';
+      html += '<div class="it">'
+        + '<div class="hd"><span class="pill ' + pillCls + '">' + (KIND[k] || '回执') + '</span>'
+        + '<span class="tt">' + meta + '</span></div>'
+        + '<div class="bd">' + esc(r.text || '') + '</div>'
+        + coachFor(d, k, coaches)
+        + '</div>';
+    });
+  });
+  document.getElementById('cnt').textContent = recs.length + ' 条';
+  document.getElementById('list').innerHTML = html;
+}
+
+function coachFor(date, kind, coaches){
+  var hit = coaches.filter(function(c){
+    return c.date === date && (!c.kind || c.kind === kind);
+  });
+  if (!hit.length) return '';
+  return hit.map(function(c){
+    return '<div class="coach"><b>教练归因</b><br>' + esc(c.text || '') + '</div>';
+  }).join('');
+}
+</script>
+</body>
+</html>
