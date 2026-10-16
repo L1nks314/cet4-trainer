@@ -819,7 +819,7 @@ var QUIZ = [];
 
 <script>
 (function(){
-  /* penv8 */
+  /* penv9 */
   var cv = document.getElementById('markCanvas');
   if (!cv) return;
   var ctx = cv.getContext('2d');
@@ -996,6 +996,8 @@ var QUIZ = [];
     if (pen) pen.classList.toggle('on', m === 'draw');
     if (era) era.classList.toggle('on', m === 'erase');
     if (m !== 'off'){ scanSC(); syncScroll(); }
+    if (m === 'draw' && !window.__penHint){ window.__penHint = 1;
+      setTimeout(function(){ toast('💡 双击笔尖可切换橡皮'); }, 500); }
     schedule(true);
   }
   if (pen) pen.addEventListener('click', function(){ setMode(mode === 'draw' ? 'off' : 'draw'); });
@@ -1097,29 +1099,42 @@ var QUIZ = [];
     hasEra = false;
     for (var i = 0; i < strokes.length; i++) if (strokes[i].era){ hasEra = true; break; }
   }
-  function checkPenTap(st){
-    if (!st) return;
-    var now = performance.now(), p = st.pts, n = p.length;
-    var x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
-    for (var i = 0; i < n; i++){
-      if (p[i][0] < x0) x0 = p[i][0];
-      if (p[i][0] > x1) x1 = p[i][0];
-      if (p[i][1] < y0) y0 = p[i][1];
-      if (p[i][1] > y1) y1 = p[i][1];
-    }
-    var tap = (x1 - x0) < 14 && (y1 - y0) < 14;        /* 位移极小即视为「点」 */
-    var near = Math.abs(x0 - lastPenTap.x) < 44 && Math.abs(y0 - lastPenTap.y) < 44;
-    var fast = lastPenTap.t && (now - lastPenTap.t) < 620;
+  /* 双击检测走独立手势（见文件末尾的 penTapDown/Move/Up），这里保持空实现 */
+  function checkPenTap(){}
+
+  /* ── 独立手势：笔尖双击 → 切换橡皮（不依赖是否开启涂写） ── */
+  var penTapRec = null;
+  function penTapDown(e){
+    if (e.pointerType !== 'pen') return;
+    diag(e, 'down', true);           /* 诊断：未开涂写时也能看到事件 */
+    penTapRec = { t: performance.now(), x: e.pageX, y: e.pageY, moved: false };
+  }
+  function penTapMove(e){
+    if (e.pointerType !== 'pen' || !penTapRec) return;
+    if (Math.abs(e.pageX - penTapRec.x) > 26 || Math.abs(e.pageY - penTapRec.y) > 26) penTapRec.moved = true;
+  }
+  function penTapUp(e){
+    if (e.pointerType !== 'pen' || !penTapRec) return;
+    diag(e, 'up', true);
+    var was = penTapRec; penTapRec = null;
+    var now = performance.now();
+    var tap = !was.moved;
+    var fast = lastPenTap.t && (now - lastPenTap.t) < 900;
+    var near = Math.abs(was.x - lastPenTap.x) < 90 && Math.abs(was.y - lastPenTap.y) < 90;
     if (tap && fast && near){
-      lastPenTap.t = 0;
+      lastPenTap = { t:0, x:0, y:0 };
       dropTapDots(2);
-      if (mode === 'draw'){ setMode('erase'); toast('✍️ 双击笔尖 → 已切到橡皮'); }
-      else if (mode === 'erase'){ setMode('draw'); toast('🖊 双击笔尖 → 已切回画笔'); }
+      if (mode === 'erase'){ setMode('draw'); toast('🖊 双击笔尖 → 已切回画笔'); }
+      else { setMode('erase'); toast('✍️ 双击笔尖 → 已切到橡皮'); }
       schedule(true);
     } else {
-      lastPenTap = { t: now, x: x0, y: y0 };
+      lastPenTap = { t: now, x: was.x, y: was.y };
     }
   }
+  document.addEventListener('pointerdown', penTapDown, {capture:true});
+  document.addEventListener('pointermove', penTapMove, {capture:true});
+  document.addEventListener('pointerup', penTapUp, {capture:true});
+  document.addEventListener('pointercancel', function(e){ if (e.pointerType === 'pen') penTapRec = null; }, {capture:true});
 
   var EXCLUDE = 'input,textarea,select,#markBar';
   function hitUI(t, x, y){
