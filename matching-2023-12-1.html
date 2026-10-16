@@ -135,7 +135,7 @@ tr:last-child td{border-bottom:0}
 
 /* ═══ 同屏分栏 ═══ */
 .card.split .panels{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
-.card.split .panel[id$="-read"]{max-height:74vh;overflow-y:auto;padding-right:16px;border-right:1px solid var(--line2);overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.card.split .panel[id$="-read"]{padding-right:16px;border-right:1px solid var(--line2)}
 .card.split .panel[id$="-quiz"]{min-width:0}
 @media(max-width:900px){
   .card.split .panels{grid-template-columns:1fr}
@@ -153,7 +153,7 @@ tr:last-child td{border-bottom:0}
  border-radius:50%;width:54px;height:54px;overflow:hidden;touch-action:none;
  box-shadow:0 6px 20px rgba(0,0,0,.18);
  transition:width .26s cubic-bezier(.4,0,.2,1),height .26s cubic-bezier(.4,0,.2,1),
-            border-radius .26s cubic-bezier(.4,0,.2,1),box-shadow .26s}
+            border-radius .26s cubic-bezier(.4,0,.2,1)}
 #markBar.open{width:306px;height:124px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
 #mkFab{position:absolute;top:0;left:0;width:100%;height:100%;border:0;background:transparent;
  font-size:23px;line-height:1;cursor:pointer;color:var(--blue,#2563eb);font-family:inherit;
@@ -181,7 +181,7 @@ tr:last-child td{border-bottom:0}
  padding:0;cursor:pointer;flex:0 0 auto}
 #markBar .sw.on{border-color:var(--blue,#2563eb);box-shadow:0 0 0 2px rgba(37,99,235,.22)}
 #markCanvas{position:absolute;top:0;left:0;z-index:8980;pointer-events:none}
-#markCanvas.act{pointer-events:auto;cursor:crosshair;touch-action:pan-y}
+#markCanvas.act{pointer-events:auto;cursor:crosshair;touch-action:none}
 
 /* 补齐缺失样式（与写作页同源） */
 .tag{flex:0 0 auto;min-width:48px;font-size:11.5px;font-weight:700;color:var(--blue);
@@ -337,7 +337,9 @@ var _sb=document.getElementById('sy-m1'); if(_sb)_sb.addEventListener('click',fu
     SC = [];
     var all = document.querySelectorAll('div,section,article,aside');
     for (var i=0;i<all.length;i++){
-      var el = all[i], st = getComputedStyle(el);
+      var el = all[i];
+      if (el.offsetHeight < 90) continue;
+      var st = getComputedStyle(el);
       if ((st.overflowY === 'auto' || st.overflowY === 'scroll') && el.scrollHeight > el.clientHeight + 4){
         SC.push(el);
         if (!el.__mkh){ el.__mkh = 1;
@@ -385,8 +387,8 @@ var _sb=document.getElementById('sy-m1'); if(_sb)_sb.addEventListener('click',fu
 
   rz();
   window.addEventListener('resize', function(){ rz(); });
-  scanSC(); setInterval(scanSC, 1500);
-  setInterval(rz, 2000);
+  setTimeout(scanSC, 500);
+  window.addEventListener('load', scanSC);
 
   /* ── 模式 / 颜色 / 粗细 ── */
   var pen = document.getElementById('mkPen'), era = document.getElementById('mkErase'),
@@ -504,7 +506,7 @@ var _sb=document.getElementById('sy-m1'); if(_sb)_sb.addEventListener('click',fu
   try{ st = JSON.parse(localStorage.getItem(KEY) || 'null'); }catch(e){}
   if (st && st.o) bar.classList.add('open');
   if (st && st.l != null){ place(st.l, st.t); clamp(st.l, st.t); }
-  else { var off = document.getElementById('studyTimer') ? 80 : 16;
+  else { var off = 16;
     place(window.innerWidth - 306 - 16, window.innerHeight - 124 - off); }
 
   function setOpen(o){

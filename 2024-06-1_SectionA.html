@@ -193,13 +193,6 @@ body.qshow .stem{display:block}
 #prepSkip{padding:7px 14px;border-radius:8px;border:1px solid var(--line,#e5e8ec);
  background:var(--soft,#fafbfc);color:var(--txt,#333);font-size:13px;cursor:pointer;font-family:inherit;margin:0}
 #prepSkip:active{background:var(--grey,#f2f3f5)}
-#studyTimer{position:fixed;right:12px;bottom:14px;z-index:9000;background:var(--card,#fff);
- border:1px solid var(--line,#e5e8ec);border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,.14);
- padding:8px 12px;font-size:13px;color:var(--txt,#333);cursor:pointer;display:flex;
- align-items:center;gap:7px;user-select:none;font-family:inherit}
-#studyTimer .ic{font-size:15px}
-#studyTimer .t{font-weight:700;font-variant-numeric:tabular-nums}
-#studyTimer .x{margin-left:4px;opacity:.45;font-size:12px}
 
 /* ═══ 答案来源句标注 ═══ */
 .line.ansline .en{border-left:3px solid var(--green,#0d8a52);padding-left:9px;border-radius:0 8px 8px 0}
@@ -213,7 +206,7 @@ body.qshow .stem{display:block}
  border-radius:50%;width:54px;height:54px;overflow:hidden;touch-action:none;
  box-shadow:0 6px 20px rgba(0,0,0,.18);
  transition:width .26s cubic-bezier(.4,0,.2,1),height .26s cubic-bezier(.4,0,.2,1),
-            border-radius .26s cubic-bezier(.4,0,.2,1),box-shadow .26s}
+            border-radius .26s cubic-bezier(.4,0,.2,1)}
 #markBar.open{width:306px;height:124px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
 #mkFab{position:absolute;top:0;left:0;width:100%;height:100%;border:0;background:transparent;
  font-size:23px;line-height:1;cursor:pointer;color:var(--blue,#2563eb);font-family:inherit;
@@ -241,7 +234,7 @@ body.qshow .stem{display:block}
  padding:0;cursor:pointer;flex:0 0 auto}
 #markBar .sw.on{border-color:var(--blue,#2563eb);box-shadow:0 0 0 2px rgba(37,99,235,.22)}
 #markCanvas{position:absolute;top:0;left:0;z-index:8980;pointer-events:none}
-#markCanvas.act{pointer-events:auto;cursor:crosshair;touch-action:pan-y}
+#markCanvas.act{pointer-events:auto;cursor:crosshair;touch-action:none}
 </style>
 <noscript><style>
   .locked-sec{filter:none !important;opacity:1 !important;pointer-events:auto !important;user-select:auto !important;}
@@ -881,8 +874,6 @@ var QUIZ = [{"id": "q1", "stem": "1. Why did the six residents have to find anot
   <div class="ps">真实考试没有这个提示 —— 这里帮你留出读选项的时间</div>
   <button id="prepSkip">跳过，立即播放</button>
 </div>
-<div id="studyTimer"><span class="ic">⏱</span><span class="t" id="stTime">00:00</span><span class="x">收起</span></div>
-
 <script>
 (function(){
   var PREP = 15;
@@ -929,28 +920,6 @@ var QUIZ = [{"id": "q1", "stem": "1. Why did the six residents have to find anot
       document.getElementById('audio').play();
     });
   }
-
-  /* 3) 悬浮学习计时器（跨页累计） */
-  var KEY = 'cet4_study_secs';
-  var total = parseInt(localStorage.getItem(KEY) || '0', 10) || 0;
-  var pageStart = Date.now();
-  var tt = document.getElementById('stTime');
-  var timer = document.getElementById('studyTimer');
-  function fmt(s){ s = Math.max(0, Math.floor(s)); return String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0'); }
-  function tick(){ tt.textContent = fmt(total + (Date.now() - pageStart) / 1000); }
-  tick();
-  setInterval(tick, 1000);
-  var collapsed = false;
-  timer.addEventListener('click', function(e){
-    if (e.target.classList.contains('x')){
-      collapsed = !collapsed;
-      if (collapsed){ tt.style.display = 'none'; timer.querySelector('.x').textContent = '展开'; }
-      else { tt.style.display = ''; timer.querySelector('.x').textContent = '收起'; }
-    }
-  });
-  window.addEventListener('beforeunload', function(){
-    localStorage.setItem(KEY, String(total + Math.floor((Date.now() - pageStart) / 1000)));
-  });
 })();
 </script>
 <script>
@@ -1017,7 +986,9 @@ for (var qid in AL){
     SC = [];
     var all = document.querySelectorAll('div,section,article,aside');
     for (var i=0;i<all.length;i++){
-      var el = all[i], st = getComputedStyle(el);
+      var el = all[i];
+      if (el.offsetHeight < 90) continue;
+      var st = getComputedStyle(el);
       if ((st.overflowY === 'auto' || st.overflowY === 'scroll') && el.scrollHeight > el.clientHeight + 4){
         SC.push(el);
         if (!el.__mkh){ el.__mkh = 1;
@@ -1065,8 +1036,8 @@ for (var qid in AL){
 
   rz();
   window.addEventListener('resize', function(){ rz(); });
-  scanSC(); setInterval(scanSC, 1500);
-  setInterval(rz, 2000);
+  setTimeout(scanSC, 500);
+  window.addEventListener('load', scanSC);
 
   /* ── 模式 / 颜色 / 粗细 ── */
   var pen = document.getElementById('mkPen'), era = document.getElementById('mkErase'),
@@ -1184,7 +1155,7 @@ for (var qid in AL){
   try{ st = JSON.parse(localStorage.getItem(KEY) || 'null'); }catch(e){}
   if (st && st.o) bar.classList.add('open');
   if (st && st.l != null){ place(st.l, st.t); clamp(st.l, st.t); }
-  else { var off = document.getElementById('studyTimer') ? 80 : 16;
+  else { var off = 16;
     place(window.innerWidth - 306 - 16, window.innerHeight - 124 - off); }
 
   function setOpen(o){
