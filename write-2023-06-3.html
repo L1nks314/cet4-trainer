@@ -117,6 +117,29 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+
+/* ═══ 写作台 ═══ */
+.wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
+.wbtn:hover{border-color:var(--blue);color:var(--blue)}
+.wbtn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.wbtn.primary:hover{filter:brightness(1.08);color:#fff}
+.wbar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.wbar .tmv{font-weight:800;font-size:17px;color:var(--blue);font-variant-numeric:tabular-nums;
+ letter-spacing:.5px}
+.wbar .cnt{margin-left:auto;font-size:13px;font-weight:700;color:var(--sub)}
+#wpText{width:100%;min-height:230px;resize:vertical;padding:14px 16px;border-radius:12px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);font:inherit;
+ font-size:14.5px;line-height:1.95;box-sizing:border-box}
+#wpText:focus{outline:none;border-color:var(--blue)}
+.wrow{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.wst{font-size:13px;font-weight:700;color:var(--sub);line-height:1.6}
+.wdone{background:var(--green-soft,#eaf7ef);border:1px solid var(--green);
+ color:var(--green);padding:11px 14px;border-radius:11px;font-size:13.5px;font-weight:700;
+ margin-bottom:12px;line-height:1.65}
+.card.lock>*:not(.lockbar){display:none}
+.lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
+ color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
 </style>
 </head>
 <body>
@@ -142,6 +165,27 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   光看范文不动笔，等于没练。</div>
 </div>
 
+
+<div class="card" id="wpad">
+  <h2>写作台</h2>
+  <div id="wpIdle">
+    <p class="hint">建议 30 分钟内写满 120–180 词，写完后点提交 —— 范文与逐段解析才会解锁。</p>
+    <div class="wrow"><button class="wbtn primary" id="wpStart">✍️ 开始写作</button></div>
+  </div>
+  <div id="wpEdit" style="display:none">
+    <div class="wbar">
+      <span class="tmv" id="wpTimer">30:00</span>
+      <button class="wbtn" id="wpPause" style="padding:5px 12px;font-size:12.5px">⏸ 暂停</button>
+      <span class="cnt" id="wpCount">0 词</span>
+    </div>
+    <textarea id="wpText" placeholder="在这里写你的作文…（题目在上方，写完点下面的提交）"></textarea>
+    <div class="wrow">
+      <button class="wbtn primary" id="wpSubmit">📤 完成写作，查看范文</button>
+      <button class="wbtn" id="wpSync" style="display:none">☁ 发给教练批改</button>
+    </div>
+    <div class="wst" id="wpSt">草稿会自动保存，刷新不会丢。</div>
+  </div>
+</div>
 <div class="card">
   <h2>审题：这题到底要写什么</h2>
   <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>好处＋我能提供的服务 本题要写一篇议论短文，围绕大学生做社区服务这件事，讲清楚两件事：its benefits（社区服务有什么好处）和 the service you can provide to the community（你个人能为社区提供什么服务）。这是一道双落点题，两面都要写到、缺一即偏题。</div></div>
@@ -156,7 +200,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   <div class="row"><span class="tag">第1段</span><div class="c"><b>话题＋『值得参与』立场 点出当下越来越多大学生投身 community service，并亮明立场：这是一件兼具社会价值和个人价值的好事，值得每个人参与</b>引出话题 These days, more and more college students are getting involved in ______. 亮明立场 In my view, this is a meaningful practice that benefits both ______ and ______.</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>利人＋利己＋我教孩子英语 先说好处惠及他人与社会（陪伴老人、温暖社区），再说锻炼自身能力与责任感；然后落到 the service you can provide to the community——结合自己英语较好，每周末去社区免费辅导孩子英语</b>段首主题句 ______ brings benefits to both society and ourselves. 举例支撑 For example, by ______, we can ______. 由好处转到自己 As for me, the service I can provide is ______.</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>总结利人利己＋号召参与 重申社区服务既帮助他人又成就自己，呼应 an online discussion，号召更多同学行动起来</b>重申立场 In short, ______ is well worth our effort. 发出号召 I sincerely hope that more of us will ______.</div></div>
 </div>
 
-<div class="card">
+<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 参考范文（162 词）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>参考范文（162 词）</h2>
   <details><summary>展开范文（自己写完之后再看）</summary>
     <div class="dbody">
@@ -167,12 +211,12 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   结尾怎么回扣题目？</div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 逐段解析（3 段）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>逐段解析（3 段）</h2>
   <div class="row"><span class="tag">第1段</span><div class="c"><b>一句引题＋一句表态 </b>落实首段蓝图：第一句 These days, more and more college students are getting involved in community service 引出话题；第二句 In my view, this is a meaningful practice that benefits both the community and ourselves 直接亮立场并预告『利人利己』两条线，对应 its benefits。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>主题句＋两层好处＋落地服务 </b>用主题句 Community service brings benefits to both society and the people who offer it 统起本段，再以 On the one hand / On the other hand 分出惠及他人与提升自己两层（各配老人、孩子的小场景），随后用 As for me 转到 the service you can provide to the community，落到每周末免费教孩子英语这件具体可行的事。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申＋号召闭环 </b>用 In short 重申『利人利己』立场，再用 I sincerely hope that more of us will step out and act 发出号召，呼应学生会的 online discussion，结构收口。</div></div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>自检避坑</h2>
   <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">漏写『我能提供的服务』</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">全文洋洋洒洒讲社区服务多有意义，结尾只一句 So community service is good. 却始终没说自己能做什么——这把双任务写成了单任务。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">在主体段加一句 As for me, I can teach English to children in my community every weekend，把第二个落点坐实。</span></div></div><div class="pit-item"><div class="pit-t">服务内容笼统空泛</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">The service I can provide is to help people and make society better. 谁都能写、毫无信息。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">落到具体一件事——offer free English lessons to children in my community every weekend，挂钩自身专长，体现可行。</span></div></div><div class="pit-item"><div class="pit-t">万能模板凑字</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">As the saying goes, every coin has two sides. With the development of society, community service becomes more and more important. 两句套话占了开头却没传递立场。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">These days, more and more college students are getting involved in community service. In my view, it is well worth our effort，一句引题一句表态。</span></div></div></div>
   <table style="margin-top:14px">
@@ -184,5 +228,105 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   </table>
 </div>
 
+
+<script>
+(function(){
+  var slot = document.getElementById('wpad');
+  if (!slot) return;
+  var TOPIC = "cet4-67f4d286a543c3aca5af06b1910625b0749ce20d4052";
+  var KEY = 'cet4write:' + (location.pathname.split('/').pop() || 'x');
+  var TOTAL = 30 * 60;
+  var idle = document.getElementById('wpIdle'), edit = document.getElementById('wpEdit');
+  var ta = document.getElementById('wpText'), tmv = document.getElementById('wpTimer');
+  var cnt = document.getElementById('wpCount'), st = document.getElementById('wpSt');
+  var btnP = document.getElementById('wpPause'), btnS = document.getElementById('wpSync');
+  var state = {draft:'', used:0, done:false};
+  var left = TOTAL, tid = null, running = false;
+
+  function fmt(s){ s = Math.max(0, s|0);
+    var m = Math.floor(s/60), x = s%60;
+    return (m<10?'0':'')+m+':'+(x<10?'0':'')+x; }
+  function words(t){ t = (t||'').trim(); if(!t) return 0;
+    return t.split(/\s+/).filter(function(w){ return /[A-Za-z0-9]/.test(w); }).length; }
+  function save(){ state.draft = ta.value;
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}') || {}; }catch(e){ return {}; } }
+  function tick(){ state.used++;
+    left = TOTAL - state.used;
+    tmv.textContent = fmt(left);
+    if (left <= 0){ clearInterval(tid); running = false; tmv.textContent = '00:00';
+      st.style.color = 'var(--amber)';
+      st.textContent = '⏰ 30 分钟到。还可以继续写，写完了再提交。'; }
+    if (state.used % 10 === 0) save();
+  }
+  function updCnt(){ cnt.textContent = words(ta.value) + ' 词'; }
+
+  function unlock(scroll){
+    state.done = true;
+    var locks = document.querySelectorAll('.card.lock');
+    for (var i=0;i<locks.length;i++){
+      var b = locks[i].querySelector('.lockbar');
+      if (b) b.parentNode.removeChild(b);
+      locks[i].classList.remove('lock');
+    }
+    var ref = document.getElementById('refcard');
+    if (ref){ var ds = ref.querySelectorAll('details');
+      for (var j=0;j<ds.length;j++) ds[j].open = true; }
+    save();
+    if (scroll && ref) ref.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  document.getElementById('wpStart').addEventListener('click', function(){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    if (!running){ running = true; tid = setInterval(tick, 1000); }
+    ta.focus(); updCnt(); save();
+  });
+
+  btnP.addEventListener('click', function(){
+    if (running){ clearInterval(tid); running = false; btnP.textContent = '▶ 继续'; }
+    else { running = true; tid = setInterval(tick, 1000); btnP.textContent = '⏸ 暂停'; }
+  });
+
+  ta.addEventListener('input', function(){ updCnt(); save(); });
+
+  document.getElementById('wpSubmit').addEventListener('click', function(){
+    var n = words(ta.value);
+    if (n < 30){ st.style.color = 'var(--amber)';
+      st.textContent = '至少写满 30 词再提交（现在 ' + n + ' 词）'; return; }
+    if (running){ clearInterval(tid); running = false; }
+    var m = Math.floor(state.used/60), s = state.used % 60;
+    st.style.color = 'var(--green)';
+    st.innerHTML = '✅ 已提交 · 用时 ' + m + ' 分 ' + s + ' 秒 · ' + n + ' 词。范文与解析已解锁 ↓';
+    btnS.style.display = 'inline-block';
+    unlock(true);
+  });
+
+  btnS.addEventListener('click', function(){
+    if (!ta.value.trim()){ return; }
+    btnS.disabled = true; btnS.textContent = '同步中…';
+    var d = new Date();
+    var ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    fetch('https://ntfy.sh/' + TOPIC, { method:'POST',
+      body: JSON.stringify({t:'rep', kind:'writing', date:ds, page:document.title,
+        text:'【写作提交】' + ds + ' · ' + words(ta.value) + ' 词\n\n' + ta.value})
+    }).then(function(x){
+      if (x.ok){ btnS.textContent = '✓ 已发送'; btnS.style.color = 'var(--green)';
+        st.innerHTML = '✓ 作文已上云。回到主对话说一句「看回执」，我给你逐句批改。'; }
+      else { btnS.disabled = false; btnS.textContent = '☁ 重试同步'; }
+    }).catch(function(){ btnS.disabled = false; btnS.textContent = '☁ 重试同步'; });
+  });
+
+  var d0 = load();
+  state.draft = d0.draft || ''; state.used = d0.used || 0; state.done = !!d0.done;
+  if (state.draft){ ta.value = state.draft; updCnt(); }
+  if (state.done){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    left = TOTAL - state.used; tmv.textContent = fmt(left);
+    unlock(false);
+    btnS.style.display = 'inline-block';
+    st.innerHTML = '（本篇已提交过，范文已解锁）';
+  }
+})();
+</script>
 </body>
 </html>

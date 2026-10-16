@@ -117,6 +117,29 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+
+/* ═══ 写作台 ═══ */
+.wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
+.wbtn:hover{border-color:var(--blue);color:var(--blue)}
+.wbtn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.wbtn.primary:hover{filter:brightness(1.08);color:#fff}
+.wbar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.wbar .tmv{font-weight:800;font-size:17px;color:var(--blue);font-variant-numeric:tabular-nums;
+ letter-spacing:.5px}
+.wbar .cnt{margin-left:auto;font-size:13px;font-weight:700;color:var(--sub)}
+#wpText{width:100%;min-height:230px;resize:vertical;padding:14px 16px;border-radius:12px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);font:inherit;
+ font-size:14.5px;line-height:1.95;box-sizing:border-box}
+#wpText:focus{outline:none;border-color:var(--blue)}
+.wrow{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.wst{font-size:13px;font-weight:700;color:var(--sub);line-height:1.6}
+.wdone{background:var(--green-soft,#eaf7ef);border:1px solid var(--green);
+ color:var(--green);padding:11px 14px;border-radius:11px;font-size:13.5px;font-weight:700;
+ margin-bottom:12px;line-height:1.65}
+.card.lock>*:not(.lockbar){display:none}
+.lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
+ color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
 </style>
 </head>
 <body>
@@ -142,6 +165,27 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   光看范文不动笔，等于没练。</div>
 </div>
 
+
+<div class="card" id="wpad">
+  <h2>写作台</h2>
+  <div id="wpIdle">
+    <p class="hint">建议 30 分钟内写满 120–180 词，写完后点提交 —— 范文与逐段解析才会解锁。</p>
+    <div class="wrow"><button class="wbtn primary" id="wpStart">✍️ 开始写作</button></div>
+  </div>
+  <div id="wpEdit" style="display:none">
+    <div class="wbar">
+      <span class="tmv" id="wpTimer">30:00</span>
+      <button class="wbtn" id="wpPause" style="padding:5px 12px;font-size:12.5px">⏸ 暂停</button>
+      <span class="cnt" id="wpCount">0 词</span>
+    </div>
+    <textarea id="wpText" placeholder="在这里写你的作文…（题目在上方，写完点下面的提交）"></textarea>
+    <div class="wrow">
+      <button class="wbtn primary" id="wpSubmit">📤 完成写作，查看范文</button>
+      <button class="wbtn" id="wpSync" style="display:none">☁ 发给教练批改</button>
+    </div>
+    <div class="wst" id="wpSt">草稿会自动保存，刷新不会丢。</div>
+  </div>
+</div>
 <div class="card">
   <h2>审题：这题到底要写什么</h2>
   <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>顺首句论证心理健康同等重要 要写一篇议论文，开头照抄 Today there is a growing awareness that mental well-being needs to be given as much attention as physical health.，然后用 make comments, cite examples or use your personal experiences 的方式展开论证：为什么心理健康该和身体健康一样被重视、该怎么重视。注意首句已经把中心论点给定了，你的活儿是论证它，不是再去讨论别的。</div></div>
@@ -156,7 +200,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   <div class="row"><span class="tag">第1段</span><div class="c"><b>首句＋为何不容忽视 照抄 Today there is a growing awareness that mental well-being needs to be given as much attention as physical health.，再补一句：在快节奏的现代生活里，这一认识尤其重要，因为被忽视的心理问题往往悄悄拖垮一个人</b>承接首句点题 This view deserves our serious attention, especially when ____ .（填「现代生活节奏快／压力普遍」等本题背景） 亮出本文走向 In my view, ____ for two main reasons.（填本文要论证的核心判断）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>代价＋考试焦虑亲历 先评论：长期忽视心理健康会带来焦虑、失眠，反过来损害身体与表现，正应了 as much attention as physical health；再举个人经历：一次大考前我因焦虑彻夜难眠、成绩失常，后来通过倾诉与规律作息调整心态才恢复，亲身印证心理状态值得同等照料</b>亮明分论点 To begin with, ignoring ____ can cost us dearly.（填本段要谈的对象，如 our mental state） 引出个人例子 Take my own experience as an example: ____ .（填一句你的亲历概述） 小结回扣 This taught me that ____ .（填本段从经历得出、回扣中心的结论）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申同等重视＋呼吁 重申应像照顾身体一样照顾内心，呼应 as much attention as physical health；并呼吁个人主动关注情绪、社会给予更多支持，让心理健康真正被同等对待</b>重申立场 In conclusion, we should value ____ as much as ____ .（填 our minds / our bodies 之类的本题对象） 收尾呼吁 Only in this way can we ____ .（填本题期望达成的结果，如 live a truly healthy life）</div></div>
 </div>
 
-<div class="card">
+<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 参考范文（172 词）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>参考范文（172 词）</h2>
   <details><summary>展开范文（自己写完之后再看）</summary>
     <div class="dbody">
@@ -167,12 +211,12 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   结尾怎么回扣题目？</div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 逐段解析（3 段）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>逐段解析（3 段）</h2>
   <div class="row"><span class="tag">第1段</span><div class="c"><b>抄句后接钩子 </b>首句逐字照抄给定句 Today there is a growing awareness that mental well-being needs to be given as much attention as physical health.，紧接一句 This view deserves our serious attention 点题，落实了「抄句后立刻接钩子」，把给定句接成自己的论证起点。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>理由加例子 </b>本段照「主题句→理由→例子→小结」展开：To begin with, ignoring our inner state can cost us dearly 是主题句，随后给失眠、注意力下降的理由，再用 Take my own experience as an example 引出考试焦虑亲历，最后 This taught me that... 回扣中心，兑现了「理由加例子撑满一段」。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申加呼吁 </b>结尾仅两句：In conclusion, we should value our minds as much as our bodies 重申立场、呼应 as much attention as physical health；Only when... can we 句呼吁个人与社会共同行动，收得简短利落，未再展开新例。</div></div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>自检避坑</h2>
   <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">改写首句</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Nowadays many people think the mind is as important as the body.（这是把首句改写复述，违反照抄要求）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">原样照抄 Today there is a growing awareness that mental well-being needs to be given as much attention as physical health.，再接论证。</span></div></div><div class="pit-item"><div class="pit-t">通篇空话</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Mental health is very important. We must pay attention to it. It is good for everyone.（三句都在重复「重要」，没有任何例子）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">换成考试焦虑导致失眠、成绩下滑的亲历，用 use your personal experiences 把观点撑起来。</span></div></div><div class="pit-item"><div class="pit-t">重复凑字</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Health is important. Mental health is important. Physical health is also important. Both kinds of health are very important.（四句同义反复纯凑字）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">合并成一句立论，把省下的字数用于展开考试焦虑那个例子。</span></div></div></div>
   <table style="margin-top:14px">
@@ -184,5 +228,105 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   </table>
 </div>
 
+
+<script>
+(function(){
+  var slot = document.getElementById('wpad');
+  if (!slot) return;
+  var TOPIC = "cet4-67f4d286a543c3aca5af06b1910625b0749ce20d4052";
+  var KEY = 'cet4write:' + (location.pathname.split('/').pop() || 'x');
+  var TOTAL = 30 * 60;
+  var idle = document.getElementById('wpIdle'), edit = document.getElementById('wpEdit');
+  var ta = document.getElementById('wpText'), tmv = document.getElementById('wpTimer');
+  var cnt = document.getElementById('wpCount'), st = document.getElementById('wpSt');
+  var btnP = document.getElementById('wpPause'), btnS = document.getElementById('wpSync');
+  var state = {draft:'', used:0, done:false};
+  var left = TOTAL, tid = null, running = false;
+
+  function fmt(s){ s = Math.max(0, s|0);
+    var m = Math.floor(s/60), x = s%60;
+    return (m<10?'0':'')+m+':'+(x<10?'0':'')+x; }
+  function words(t){ t = (t||'').trim(); if(!t) return 0;
+    return t.split(/\s+/).filter(function(w){ return /[A-Za-z0-9]/.test(w); }).length; }
+  function save(){ state.draft = ta.value;
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}') || {}; }catch(e){ return {}; } }
+  function tick(){ state.used++;
+    left = TOTAL - state.used;
+    tmv.textContent = fmt(left);
+    if (left <= 0){ clearInterval(tid); running = false; tmv.textContent = '00:00';
+      st.style.color = 'var(--amber)';
+      st.textContent = '⏰ 30 分钟到。还可以继续写，写完了再提交。'; }
+    if (state.used % 10 === 0) save();
+  }
+  function updCnt(){ cnt.textContent = words(ta.value) + ' 词'; }
+
+  function unlock(scroll){
+    state.done = true;
+    var locks = document.querySelectorAll('.card.lock');
+    for (var i=0;i<locks.length;i++){
+      var b = locks[i].querySelector('.lockbar');
+      if (b) b.parentNode.removeChild(b);
+      locks[i].classList.remove('lock');
+    }
+    var ref = document.getElementById('refcard');
+    if (ref){ var ds = ref.querySelectorAll('details');
+      for (var j=0;j<ds.length;j++) ds[j].open = true; }
+    save();
+    if (scroll && ref) ref.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  document.getElementById('wpStart').addEventListener('click', function(){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    if (!running){ running = true; tid = setInterval(tick, 1000); }
+    ta.focus(); updCnt(); save();
+  });
+
+  btnP.addEventListener('click', function(){
+    if (running){ clearInterval(tid); running = false; btnP.textContent = '▶ 继续'; }
+    else { running = true; tid = setInterval(tick, 1000); btnP.textContent = '⏸ 暂停'; }
+  });
+
+  ta.addEventListener('input', function(){ updCnt(); save(); });
+
+  document.getElementById('wpSubmit').addEventListener('click', function(){
+    var n = words(ta.value);
+    if (n < 30){ st.style.color = 'var(--amber)';
+      st.textContent = '至少写满 30 词再提交（现在 ' + n + ' 词）'; return; }
+    if (running){ clearInterval(tid); running = false; }
+    var m = Math.floor(state.used/60), s = state.used % 60;
+    st.style.color = 'var(--green)';
+    st.innerHTML = '✅ 已提交 · 用时 ' + m + ' 分 ' + s + ' 秒 · ' + n + ' 词。范文与解析已解锁 ↓';
+    btnS.style.display = 'inline-block';
+    unlock(true);
+  });
+
+  btnS.addEventListener('click', function(){
+    if (!ta.value.trim()){ return; }
+    btnS.disabled = true; btnS.textContent = '同步中…';
+    var d = new Date();
+    var ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    fetch('https://ntfy.sh/' + TOPIC, { method:'POST',
+      body: JSON.stringify({t:'rep', kind:'writing', date:ds, page:document.title,
+        text:'【写作提交】' + ds + ' · ' + words(ta.value) + ' 词\n\n' + ta.value})
+    }).then(function(x){
+      if (x.ok){ btnS.textContent = '✓ 已发送'; btnS.style.color = 'var(--green)';
+        st.innerHTML = '✓ 作文已上云。回到主对话说一句「看回执」，我给你逐句批改。'; }
+      else { btnS.disabled = false; btnS.textContent = '☁ 重试同步'; }
+    }).catch(function(){ btnS.disabled = false; btnS.textContent = '☁ 重试同步'; });
+  });
+
+  var d0 = load();
+  state.draft = d0.draft || ''; state.used = d0.used || 0; state.done = !!d0.done;
+  if (state.draft){ ta.value = state.draft; updCnt(); }
+  if (state.done){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    left = TOTAL - state.used; tmv.textContent = fmt(left);
+    unlock(false);
+    btnS.style.display = 'inline-block';
+    st.innerHTML = '（本篇已提交过，范文已解锁）';
+  }
+})();
+</script>
 </body>
 </html>

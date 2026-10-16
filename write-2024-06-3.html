@@ -117,6 +117,29 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+
+/* ═══ 写作台 ═══ */
+.wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
+.wbtn:hover{border-color:var(--blue);color:var(--blue)}
+.wbtn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.wbtn.primary:hover{filter:brightness(1.08);color:#fff}
+.wbar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.wbar .tmv{font-weight:800;font-size:17px;color:var(--blue);font-variant-numeric:tabular-nums;
+ letter-spacing:.5px}
+.wbar .cnt{margin-left:auto;font-size:13px;font-weight:700;color:var(--sub)}
+#wpText{width:100%;min-height:230px;resize:vertical;padding:14px 16px;border-radius:12px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);font:inherit;
+ font-size:14.5px;line-height:1.95;box-sizing:border-box}
+#wpText:focus{outline:none;border-color:var(--blue)}
+.wrow{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.wst{font-size:13px;font-weight:700;color:var(--sub);line-height:1.6}
+.wdone{background:var(--green-soft,#eaf7ef);border:1px solid var(--green);
+ color:var(--green);padding:11px 14px;border-radius:11px;font-size:13.5px;font-weight:700;
+ margin-bottom:12px;line-height:1.65}
+.card.lock>*:not(.lockbar){display:none}
+.lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
+ color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
 </style>
 </head>
 <body>
@@ -142,6 +165,27 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   光看范文不动笔，等于没练。</div>
 </div>
 
+
+<div class="card" id="wpad">
+  <h2>写作台</h2>
+  <div id="wpIdle">
+    <p class="hint">建议 30 分钟内写满 120–180 词，写完后点提交 —— 范文与逐段解析才会解锁。</p>
+    <div class="wrow"><button class="wbtn primary" id="wpStart">✍️ 开始写作</button></div>
+  </div>
+  <div id="wpEdit" style="display:none">
+    <div class="wbar">
+      <span class="tmv" id="wpTimer">30:00</span>
+      <button class="wbtn" id="wpPause" style="padding:5px 12px;font-size:12.5px">⏸ 暂停</button>
+      <span class="cnt" id="wpCount">0 词</span>
+    </div>
+    <textarea id="wpText" placeholder="在这里写你的作文…（题目在上方，写完点下面的提交）"></textarea>
+    <div class="wrow">
+      <button class="wbtn primary" id="wpSubmit">📤 完成写作，查看范文</button>
+      <button class="wbtn" id="wpSync" style="display:none">☁ 发给教练批改</button>
+    </div>
+    <div class="wst" id="wpSt">草稿会自动保存，刷新不会丢。</div>
+  </div>
+</div>
 <div class="card">
   <h2>审题：这题到底要写什么</h2>
   <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>对食堂开放表态 本题只有一件：就 whether university canteens should be open to the public 亮出你自己的立场并加以论证。express your view 中的 your view 说明必须选边站、给出个人观点，不能只做中立的正反分析。</div></div>
@@ -156,7 +200,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   <div class="row"><span class="tag">第1段</span><div class="c"><b>引出争议表明赞成 把 whether university canteens should be open to the public 这一争议引出，随即表明自己赞成在有序管理下开放的总观点</b>引出话题 Recently, our university has been collecting opinions on whether ___.（把 ___ 换成本题争议） 亮明观点 In my view, ___ is a wise move that benefits both ___ and ___.（填入你的主张与受益方）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>便民增收加回应顾虑 写足两条理由：食堂餐食干净便宜可缓解周边就餐压力、外来收入能反哺学生；再让步承认拥挤与安全顾虑，并用固定时段、门口登记等对策化解</b>并列理由 For one thing, ___; for another, ___.（两条理由各填一句） 让步转折 Admittedly, ___; however, ___ can be eased by ___.（先认反方一点，再给对策）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申赞成并升华 重申赞成有序开放的立场，并升华到『学生需求优先的前提下，共享食堂让学校成为社会更温暖的一部分』</b>重申立场 Therefore, I firmly believe that ___ is worthwhile.（填入你的主张） 收尾升华 As long as ___, ___ makes ___.（用一个条件句把意义拔高）</div></div>
 </div>
 
-<div class="card">
+<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 参考范文（145 词）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>参考范文（145 词）</h2>
   <details><summary>展开范文（自己写完之后再看）</summary>
     <div class="dbody">
@@ -167,12 +211,12 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   结尾怎么回扣题目？</div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 逐段解析（3 段）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>逐段解析（3 段）</h2>
   <div class="row"><span class="tag">第1段</span><div class="c"><b>开门见山表态 </b>首段用 In my view, opening them to the public is a wise move 一句直接亮牌，落实了『点题句加表态句』方法，开头即满足 express your view。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>两理由加让步 </b>段内 For one thing… For another… 摆出便民、增收两条理由，并落到 nearby residents、lower prices for students 等具体场景，再用 Admittedly…however… 让步回应拥挤与安全，论证有据。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申并升华 </b>结尾 Therefore, I firmly believe… 重申立场，末句 As long as student needs come first 把话题拔高到共享意义，与开头呼应形成闭环。</div></div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>自检避坑</h2>
   <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">只分析不表态</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">『Opening canteens has both advantages and disadvantages.』通篇如此却始终不说自己支持哪边。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">『Opening canteens has some drawbacks, but in my view its benefits clearly outweigh them.』——先亮出赞成的立场再展开。</span></div></div><div class="pit-item"><div class="pit-t">理由空泛喊口号</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">『Opening canteens is good and brings many benefits to everybody.』空洞无物。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">『Opening canteens offers nearby office workers a clean and cheap lunch, easing the dining pressure around campus.』——落到具体人群和场景。</span></div></div><div class="pit-item"><div class="pit-t">误加称呼署名</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">开头写『Dear Sir,』结尾署『Yours, Li Ming』，把观点短文写成了书信。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">直接以 Recently, our university… 开篇、以升华句收尾，全程不加称呼与落款。</span></div></div></div>
   <table style="margin-top:14px">
@@ -184,5 +228,105 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   </table>
 </div>
 
+
+<script>
+(function(){
+  var slot = document.getElementById('wpad');
+  if (!slot) return;
+  var TOPIC = "cet4-67f4d286a543c3aca5af06b1910625b0749ce20d4052";
+  var KEY = 'cet4write:' + (location.pathname.split('/').pop() || 'x');
+  var TOTAL = 30 * 60;
+  var idle = document.getElementById('wpIdle'), edit = document.getElementById('wpEdit');
+  var ta = document.getElementById('wpText'), tmv = document.getElementById('wpTimer');
+  var cnt = document.getElementById('wpCount'), st = document.getElementById('wpSt');
+  var btnP = document.getElementById('wpPause'), btnS = document.getElementById('wpSync');
+  var state = {draft:'', used:0, done:false};
+  var left = TOTAL, tid = null, running = false;
+
+  function fmt(s){ s = Math.max(0, s|0);
+    var m = Math.floor(s/60), x = s%60;
+    return (m<10?'0':'')+m+':'+(x<10?'0':'')+x; }
+  function words(t){ t = (t||'').trim(); if(!t) return 0;
+    return t.split(/\s+/).filter(function(w){ return /[A-Za-z0-9]/.test(w); }).length; }
+  function save(){ state.draft = ta.value;
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}') || {}; }catch(e){ return {}; } }
+  function tick(){ state.used++;
+    left = TOTAL - state.used;
+    tmv.textContent = fmt(left);
+    if (left <= 0){ clearInterval(tid); running = false; tmv.textContent = '00:00';
+      st.style.color = 'var(--amber)';
+      st.textContent = '⏰ 30 分钟到。还可以继续写，写完了再提交。'; }
+    if (state.used % 10 === 0) save();
+  }
+  function updCnt(){ cnt.textContent = words(ta.value) + ' 词'; }
+
+  function unlock(scroll){
+    state.done = true;
+    var locks = document.querySelectorAll('.card.lock');
+    for (var i=0;i<locks.length;i++){
+      var b = locks[i].querySelector('.lockbar');
+      if (b) b.parentNode.removeChild(b);
+      locks[i].classList.remove('lock');
+    }
+    var ref = document.getElementById('refcard');
+    if (ref){ var ds = ref.querySelectorAll('details');
+      for (var j=0;j<ds.length;j++) ds[j].open = true; }
+    save();
+    if (scroll && ref) ref.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  document.getElementById('wpStart').addEventListener('click', function(){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    if (!running){ running = true; tid = setInterval(tick, 1000); }
+    ta.focus(); updCnt(); save();
+  });
+
+  btnP.addEventListener('click', function(){
+    if (running){ clearInterval(tid); running = false; btnP.textContent = '▶ 继续'; }
+    else { running = true; tid = setInterval(tick, 1000); btnP.textContent = '⏸ 暂停'; }
+  });
+
+  ta.addEventListener('input', function(){ updCnt(); save(); });
+
+  document.getElementById('wpSubmit').addEventListener('click', function(){
+    var n = words(ta.value);
+    if (n < 30){ st.style.color = 'var(--amber)';
+      st.textContent = '至少写满 30 词再提交（现在 ' + n + ' 词）'; return; }
+    if (running){ clearInterval(tid); running = false; }
+    var m = Math.floor(state.used/60), s = state.used % 60;
+    st.style.color = 'var(--green)';
+    st.innerHTML = '✅ 已提交 · 用时 ' + m + ' 分 ' + s + ' 秒 · ' + n + ' 词。范文与解析已解锁 ↓';
+    btnS.style.display = 'inline-block';
+    unlock(true);
+  });
+
+  btnS.addEventListener('click', function(){
+    if (!ta.value.trim()){ return; }
+    btnS.disabled = true; btnS.textContent = '同步中…';
+    var d = new Date();
+    var ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    fetch('https://ntfy.sh/' + TOPIC, { method:'POST',
+      body: JSON.stringify({t:'rep', kind:'writing', date:ds, page:document.title,
+        text:'【写作提交】' + ds + ' · ' + words(ta.value) + ' 词\n\n' + ta.value})
+    }).then(function(x){
+      if (x.ok){ btnS.textContent = '✓ 已发送'; btnS.style.color = 'var(--green)';
+        st.innerHTML = '✓ 作文已上云。回到主对话说一句「看回执」，我给你逐句批改。'; }
+      else { btnS.disabled = false; btnS.textContent = '☁ 重试同步'; }
+    }).catch(function(){ btnS.disabled = false; btnS.textContent = '☁ 重试同步'; });
+  });
+
+  var d0 = load();
+  state.draft = d0.draft || ''; state.used = d0.used || 0; state.done = !!d0.done;
+  if (state.draft){ ta.value = state.draft; updCnt(); }
+  if (state.done){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    left = TOTAL - state.used; tmv.textContent = fmt(left);
+    unlock(false);
+    btnS.style.display = 'inline-block';
+    st.innerHTML = '（本篇已提交过，范文已解锁）';
+  }
+})();
+</script>
 </body>
 </html>

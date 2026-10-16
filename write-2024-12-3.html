@@ -117,6 +117,29 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+
+/* ═══ 写作台 ═══ */
+.wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
+.wbtn:hover{border-color:var(--blue);color:var(--blue)}
+.wbtn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.wbtn.primary:hover{filter:brightness(1.08);color:#fff}
+.wbar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.wbar .tmv{font-weight:800;font-size:17px;color:var(--blue);font-variant-numeric:tabular-nums;
+ letter-spacing:.5px}
+.wbar .cnt{margin-left:auto;font-size:13px;font-weight:700;color:var(--sub)}
+#wpText{width:100%;min-height:230px;resize:vertical;padding:14px 16px;border-radius:12px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);font:inherit;
+ font-size:14.5px;line-height:1.95;box-sizing:border-box}
+#wpText:focus{outline:none;border-color:var(--blue)}
+.wrow{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.wst{font-size:13px;font-weight:700;color:var(--sub);line-height:1.6}
+.wdone{background:var(--green-soft,#eaf7ef);border:1px solid var(--green);
+ color:var(--green);padding:11px 14px;border-radius:11px;font-size:13.5px;font-weight:700;
+ margin-bottom:12px;line-height:1.65}
+.card.lock>*:not(.lockbar){display:none}
+.lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
+ color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
 </style>
 </head>
 <body>
@@ -142,6 +165,27 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   光看范文不动笔，等于没练。</div>
 </div>
 
+
+<div class="card" id="wpad">
+  <h2>写作台</h2>
+  <div id="wpIdle">
+    <p class="hint">建议 30 分钟内写满 120–180 词，写完后点提交 —— 范文与逐段解析才会解锁。</p>
+    <div class="wrow"><button class="wbtn primary" id="wpStart">✍️ 开始写作</button></div>
+  </div>
+  <div id="wpEdit" style="display:none">
+    <div class="wbar">
+      <span class="tmv" id="wpTimer">30:00</span>
+      <button class="wbtn" id="wpPause" style="padding:5px 12px;font-size:12.5px">⏸ 暂停</button>
+      <span class="cnt" id="wpCount">0 词</span>
+    </div>
+    <textarea id="wpText" placeholder="在这里写你的作文…（题目在上方，写完点下面的提交）"></textarea>
+    <div class="wrow">
+      <button class="wbtn primary" id="wpSubmit">📤 完成写作，查看范文</button>
+      <button class="wbtn" id="wpSync" style="display:none">☁ 发给教练批改</button>
+    </div>
+    <div class="wst" id="wpSt">草稿会自动保存，刷新不会丢。</div>
+  </div>
+</div>
 <div class="card">
   <h2>审题：这题到底要写什么</h2>
   <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>写学生怎样建设绿色校园的投稿短文 是写一篇投稿校报的短文，主题被 how the students can contribute to a green campus 一句钉死：写的是学生能为绿色校园做什么，而不是泛谈环保重要性。要求明确说 write an essay for submission，所以产物是一篇 essay，不是别的文体。</div></div>
@@ -156,7 +200,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   <div class="row"><span class="tag">第1段</span><div class="c"><b>点明绿色校园是学生的共同责任 落点：绿色校园不再是口号而是共同责任，学生在其中扮演关键角色，日常小习惯能汇成真正的改变——直接引出 how the students can contribute to a green campus 这一话题</b>点明意义 ... is no longer a slogan but a shared responsibility, and ... play a key role in ...（用来一句话拔高话题的重要性） 引出话题 As members of ..., we can turn ... into ...（把宏大意义落回「我们能做」，自然带出下文）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>垃圾分类、节水节电、绿色出行加二手书 落点：分类回收纸瓶罐以减少浪费；随手关灯关电脑、节约用水以降低能耗；步行骑车共享单车减碳、旧教材传给学弟学妹循环使用——每条做法都配一句效果，覆盖立意里的三条要点</b>总起引出做法 There are several practical things we can do.（一句话领起主体段，告诉读者下面要分点） 分点过渡 First, we should ...; Second, ...; Moreover, ...（用序数词与递进词把并列做法串成有序的一段） 动作配效果 ..., which cuts ... and saves ... / ... can greatly reduce ...（在做法后补一句它带来的好处，让要点不空洞）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>小行动汇成更绿更宜居的校园 落点：绿色校园源于这些日常行动而非空谈，只要每个学生迈出一小步，校园就会更干净、更绿色、更宜居——把主题从个人小事升华到共同家园</b>收束回扣 In short, ... grows out of these everyday actions rather than empty talk.（一句话把中心拎回来，与开头呼应） 条件式号召 If every ... takes one small step, ... will surely become ...（用假设句发出行动倡议并给出积极前景）</div></div>
 </div>
 
-<div class="card">
+<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 参考范文（152 词）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>参考范文（152 词）</h2>
   <details><summary>展开范文（自己写完之后再看）</summary>
     <div class="dbody">
@@ -167,12 +211,12 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   结尾怎么回扣题目？</div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 逐段解析（3 段）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>逐段解析（3 段）</h2>
   <div class="row"><span class="tag">第1段</span><div class="c"><b>两句总起点题 </b>本段落实第一段「总起点题」的功能：用 &quot;A green campus is no longer a slogan but a shared responsibility&quot; 一句拔高意义，再用 &quot;we can turn small daily habits into real changes&quot; 引出学生能做的事，正好套用了『点明意义』与『引出话题』两条句架。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>分点加效果的主体 </b>本段落实「分述具体做法」：先 &quot;There are several practical things we can do&quot; 总起，再用 First / Second / Moreover 领出垃圾分类、节水节电、绿色出行与二手书三条做法，每条都跟一句效果如 &quot;which cuts waste and saves resources&quot;，做到动作配效果、不空洞。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>收束加号召 </b>本段落实「总结呼吁升华」：&quot;In short, a green campus grows out of these everyday actions rather than empty talk&quot; 回扣开头的行动主题，末句 &quot;If every student takes one small step&quot; 用条件句发出号召并给出更宜居的前景。</div></div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>自检避坑</h2>
   <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">误加称呼署名当书信</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">开头写 &quot;Dear Editor,&quot; 结尾署 &quot;Yours sincerely, Li Ming&quot;。这偏离了 essay 体裁。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">删掉称呼和落款，直接以 &quot;A green campus is no longer a slogan but a shared responsibility&quot; 这样的正文开篇。</span></div></div><div class="pit-item"><div class="pit-t">只谈重要性不落行动</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">&quot;Environmental protection is very important. We should all pay attention to it and love our green campus.&quot; 全是口号无行动。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">&quot;We should sort our rubbish and switch off lights when they are not in use.&quot; 给出具体可做的动作。</span></div></div><div class="pit-item"><div class="pit-t">做法堆砌成清单无衔接</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">&quot;We can recycle. We can save water. We can ride bikes.&quot; 三个短句并列、无理由无过渡。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">&quot;First, we should recycle paper and bottles, which cuts waste and saves resources.&quot; 加序数词与效果，逻辑立刻连贯。</span></div></div><div class="pit-item"><div class="pit-t">重复同一观点注水</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">&quot;A green campus is important. Yes, a green campus is really very important for us all.&quot; 同一意思重复凑数。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">删掉重复句，换成新内容 &quot;Moreover, we can pass used textbooks on to younger students to give them a second life.&quot。</span></div></div></div>
   <table style="margin-top:14px">
@@ -184,5 +228,105 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   </table>
 </div>
 
+
+<script>
+(function(){
+  var slot = document.getElementById('wpad');
+  if (!slot) return;
+  var TOPIC = "cet4-67f4d286a543c3aca5af06b1910625b0749ce20d4052";
+  var KEY = 'cet4write:' + (location.pathname.split('/').pop() || 'x');
+  var TOTAL = 30 * 60;
+  var idle = document.getElementById('wpIdle'), edit = document.getElementById('wpEdit');
+  var ta = document.getElementById('wpText'), tmv = document.getElementById('wpTimer');
+  var cnt = document.getElementById('wpCount'), st = document.getElementById('wpSt');
+  var btnP = document.getElementById('wpPause'), btnS = document.getElementById('wpSync');
+  var state = {draft:'', used:0, done:false};
+  var left = TOTAL, tid = null, running = false;
+
+  function fmt(s){ s = Math.max(0, s|0);
+    var m = Math.floor(s/60), x = s%60;
+    return (m<10?'0':'')+m+':'+(x<10?'0':'')+x; }
+  function words(t){ t = (t||'').trim(); if(!t) return 0;
+    return t.split(/\s+/).filter(function(w){ return /[A-Za-z0-9]/.test(w); }).length; }
+  function save(){ state.draft = ta.value;
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}') || {}; }catch(e){ return {}; } }
+  function tick(){ state.used++;
+    left = TOTAL - state.used;
+    tmv.textContent = fmt(left);
+    if (left <= 0){ clearInterval(tid); running = false; tmv.textContent = '00:00';
+      st.style.color = 'var(--amber)';
+      st.textContent = '⏰ 30 分钟到。还可以继续写，写完了再提交。'; }
+    if (state.used % 10 === 0) save();
+  }
+  function updCnt(){ cnt.textContent = words(ta.value) + ' 词'; }
+
+  function unlock(scroll){
+    state.done = true;
+    var locks = document.querySelectorAll('.card.lock');
+    for (var i=0;i<locks.length;i++){
+      var b = locks[i].querySelector('.lockbar');
+      if (b) b.parentNode.removeChild(b);
+      locks[i].classList.remove('lock');
+    }
+    var ref = document.getElementById('refcard');
+    if (ref){ var ds = ref.querySelectorAll('details');
+      for (var j=0;j<ds.length;j++) ds[j].open = true; }
+    save();
+    if (scroll && ref) ref.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  document.getElementById('wpStart').addEventListener('click', function(){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    if (!running){ running = true; tid = setInterval(tick, 1000); }
+    ta.focus(); updCnt(); save();
+  });
+
+  btnP.addEventListener('click', function(){
+    if (running){ clearInterval(tid); running = false; btnP.textContent = '▶ 继续'; }
+    else { running = true; tid = setInterval(tick, 1000); btnP.textContent = '⏸ 暂停'; }
+  });
+
+  ta.addEventListener('input', function(){ updCnt(); save(); });
+
+  document.getElementById('wpSubmit').addEventListener('click', function(){
+    var n = words(ta.value);
+    if (n < 30){ st.style.color = 'var(--amber)';
+      st.textContent = '至少写满 30 词再提交（现在 ' + n + ' 词）'; return; }
+    if (running){ clearInterval(tid); running = false; }
+    var m = Math.floor(state.used/60), s = state.used % 60;
+    st.style.color = 'var(--green)';
+    st.innerHTML = '✅ 已提交 · 用时 ' + m + ' 分 ' + s + ' 秒 · ' + n + ' 词。范文与解析已解锁 ↓';
+    btnS.style.display = 'inline-block';
+    unlock(true);
+  });
+
+  btnS.addEventListener('click', function(){
+    if (!ta.value.trim()){ return; }
+    btnS.disabled = true; btnS.textContent = '同步中…';
+    var d = new Date();
+    var ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    fetch('https://ntfy.sh/' + TOPIC, { method:'POST',
+      body: JSON.stringify({t:'rep', kind:'writing', date:ds, page:document.title,
+        text:'【写作提交】' + ds + ' · ' + words(ta.value) + ' 词\n\n' + ta.value})
+    }).then(function(x){
+      if (x.ok){ btnS.textContent = '✓ 已发送'; btnS.style.color = 'var(--green)';
+        st.innerHTML = '✓ 作文已上云。回到主对话说一句「看回执」，我给你逐句批改。'; }
+      else { btnS.disabled = false; btnS.textContent = '☁ 重试同步'; }
+    }).catch(function(){ btnS.disabled = false; btnS.textContent = '☁ 重试同步'; });
+  });
+
+  var d0 = load();
+  state.draft = d0.draft || ''; state.used = d0.used || 0; state.done = !!d0.done;
+  if (state.draft){ ta.value = state.draft; updCnt(); }
+  if (state.done){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    left = TOTAL - state.used; tmv.textContent = fmt(left);
+    unlock(false);
+    btnS.style.display = 'inline-block';
+    st.innerHTML = '（本篇已提交过，范文已解锁）';
+  }
+})();
+</script>
 </body>
 </html>

@@ -117,6 +117,29 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+
+/* ═══ 写作台 ═══ */
+.wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
+.wbtn:hover{border-color:var(--blue);color:var(--blue)}
+.wbtn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.wbtn.primary:hover{filter:brightness(1.08);color:#fff}
+.wbar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.wbar .tmv{font-weight:800;font-size:17px;color:var(--blue);font-variant-numeric:tabular-nums;
+ letter-spacing:.5px}
+.wbar .cnt{margin-left:auto;font-size:13px;font-weight:700;color:var(--sub)}
+#wpText{width:100%;min-height:230px;resize:vertical;padding:14px 16px;border-radius:12px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);font:inherit;
+ font-size:14.5px;line-height:1.95;box-sizing:border-box}
+#wpText:focus{outline:none;border-color:var(--blue)}
+.wrow{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.wst{font-size:13px;font-weight:700;color:var(--sub);line-height:1.6}
+.wdone{background:var(--green-soft,#eaf7ef);border:1px solid var(--green);
+ color:var(--green);padding:11px 14px;border-radius:11px;font-size:13.5px;font-weight:700;
+ margin-bottom:12px;line-height:1.65}
+.card.lock>*:not(.lockbar){display:none}
+.lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
+ color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
 </style>
 </head>
 <body>
@@ -142,6 +165,27 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   光看范文不动笔，等于没练。</div>
 </div>
 
+
+<div class="card" id="wpad">
+  <h2>写作台</h2>
+  <div id="wpIdle">
+    <p class="hint">建议 30 分钟内写满 120–180 词，写完后点提交 —— 范文与逐段解析才会解锁。</p>
+    <div class="wrow"><button class="wbtn primary" id="wpStart">✍️ 开始写作</button></div>
+  </div>
+  <div id="wpEdit" style="display:none">
+    <div class="wbar">
+      <span class="tmv" id="wpTimer">30:00</span>
+      <button class="wbtn" id="wpPause" style="padding:5px 12px;font-size:12.5px">⏸ 暂停</button>
+      <span class="cnt" id="wpCount">0 词</span>
+    </div>
+    <textarea id="wpText" placeholder="在这里写你的作文…（题目在上方，写完点下面的提交）"></textarea>
+    <div class="wrow">
+      <button class="wbtn primary" id="wpSubmit">📤 完成写作，查看范文</button>
+      <button class="wbtn" id="wpSync" style="display:none">☁ 发给教练批改</button>
+    </div>
+    <div class="wst" id="wpSt">草稿会自动保存，刷新不会丢。</div>
+  </div>
+</div>
 <div class="card">
   <h2>审题：这题到底要写什么</h2>
   <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>论证健康生活方式对大学生的重要性 任务动词是 essay，限定语是 write an essay on the importance o f developing a healthy lifestyle among college students。核心不是介绍怎么保持健康，而是论证「为什么它对大学生这一群体重要」——题眼是 importance 与 college students，全文的每个理由都要回答「为什么重要」，而不是罗列做法。</div></div>
@@ -156,7 +200,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   <div class="row"><span class="tag">第1段</span><div class="c"><b>健康生活方式是大学成功的根基 落点：先一句 A healthy lifestyle plays a vital role 亮明对 college students 至关重要，再用「课业与屏幕让校园生活越来越忙」做背景，收到「它不是小习惯而是根基」这一立场</b>亮明重要性观点 ___ plays a vital role in ___. （把「健康生活方式」填主语、「大学生的成长/学业」填对象，一句话钉住重要性） 背景铺垫引出 As ___ grows busier with ___, I firmly believe that ___ is not merely ___ but the foundation of ___. （前半填校园背景，后半用「不是……而是……」抬高立场）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>效率与情绪两个理由落地 落点：理由一「健康身体提升学习效率」，配「熬夜赶 due、靠外卖度日的人第二天难以专注」做反例；理由二「规律作息稳定情绪」，配「久坐生焦虑、短跑缓解考试压力与离家孤独」做对比，都紧扣 developing a healthy lifestyle among college students</b>并列引出理由 For one thing, ___. For another, ___. （两句分别领起两个分论点，结构清爽） 对比式举例 A student who ___ will ___, while ___ keep(s) ___. （前半写不健康的后果，while 后写健康的好处，形成对比论证） 让步转折加层次 ___, whereas ___. （用 whereas 把负面情形与正面收益对照，增加论证层次）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申根基地位并呼吁尽早养成 落点：先重申「健康生活方式对大学生不是可选项而是必需」，再升华「越早养成，就能带更多精力与自信进入学业和未来」，回扣中心、发出呼吁</b>收束重申立场 In conclusion, ___ is not optional but essential for ___. （换词重申，避免与首段重复） 递进式升华呼吁 The sooner we ___, the more ___ we will ___. （用「越早……越……」把观点推向行动号召）</div></div>
 </div>
 
-<div class="card">
+<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 参考范文（155 词）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>参考范文（155 词）</h2>
   <details><summary>展开范文（自己写完之后再看）</summary>
     <div class="dbody">
@@ -167,12 +211,12 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   结尾怎么回扣题目？</div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 逐段解析（3 段）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>逐段解析（3 段）</h2>
   <div class="row"><span class="tag">第1段</span><div class="c"><b>观点前置立中心 </b>首句 A healthy lifestyle plays a vital role 直接落实「亮明重要性观点」句架，观点前置；第二句用 not a trivial habit but the very foundation 抬高立场，完成 outline 的「开门见山亮立场」功能。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>两理由各配场景 </b>用 For one thing / For another 领起效率与情绪两个分论点，各配 stays up all night rushing a due date、lives on takeout、Sitting still for hours 等大学生场景，并用 while / whereas 做对比，落实「理由加场景例证」，论证不空。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申加升华收束 </b>In conclusion 换词重申 not optional but essential，再用 The sooner we build it, the more ... 升华成呼吁，落实「重申升华呼吁」功能，结尾不烂尾。</div></div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>自检避坑</h2>
   <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">空喊口号无例证</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">We should keep healthy. Health is very important. We should do sports and sleep well.（三句都是口号、没有一个理由和例证）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">A student who stays up all night rushing a due date will struggle to concentrate the next morning.（用具体场景证明健康为何重要）。</span></div></div><div class="pit-item"><div class="pit-t">写成做法清单跑题</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">First, go to bed early. Second, eat more vegetables. Third, exercise every day.（纯做法清单，避开了题眼 importance）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">A healthy routine boosts learning efficiency and eases anxiety, which is why it matters so much to college students.（落到「为什么重要」）。</span></div></div><div class="pit-item"><div class="pit-t">开篇不表态埋观点</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Nowadays, many things are changing in our life, and people talk about many topics every day.（绕圈子、迟迟不表态）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">A healthy lifestyle is essential for every college student.（首句就把立场亮出来）。</span></div></div><div class="pit-item"><div class="pit-t">同义反复注水超标</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Health is important. A healthy life is important. Being healthy is really very important for us.（三句同义反复凑字数）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">A healthy lifestyle is important because it keeps our body strong and our mind focused.（一句说清、给出原因）。</span></div></div></div>
   <table style="margin-top:14px">
@@ -184,5 +228,105 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   </table>
 </div>
 
+
+<script>
+(function(){
+  var slot = document.getElementById('wpad');
+  if (!slot) return;
+  var TOPIC = "cet4-67f4d286a543c3aca5af06b1910625b0749ce20d4052";
+  var KEY = 'cet4write:' + (location.pathname.split('/').pop() || 'x');
+  var TOTAL = 30 * 60;
+  var idle = document.getElementById('wpIdle'), edit = document.getElementById('wpEdit');
+  var ta = document.getElementById('wpText'), tmv = document.getElementById('wpTimer');
+  var cnt = document.getElementById('wpCount'), st = document.getElementById('wpSt');
+  var btnP = document.getElementById('wpPause'), btnS = document.getElementById('wpSync');
+  var state = {draft:'', used:0, done:false};
+  var left = TOTAL, tid = null, running = false;
+
+  function fmt(s){ s = Math.max(0, s|0);
+    var m = Math.floor(s/60), x = s%60;
+    return (m<10?'0':'')+m+':'+(x<10?'0':'')+x; }
+  function words(t){ t = (t||'').trim(); if(!t) return 0;
+    return t.split(/\s+/).filter(function(w){ return /[A-Za-z0-9]/.test(w); }).length; }
+  function save(){ state.draft = ta.value;
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}') || {}; }catch(e){ return {}; } }
+  function tick(){ state.used++;
+    left = TOTAL - state.used;
+    tmv.textContent = fmt(left);
+    if (left <= 0){ clearInterval(tid); running = false; tmv.textContent = '00:00';
+      st.style.color = 'var(--amber)';
+      st.textContent = '⏰ 30 分钟到。还可以继续写，写完了再提交。'; }
+    if (state.used % 10 === 0) save();
+  }
+  function updCnt(){ cnt.textContent = words(ta.value) + ' 词'; }
+
+  function unlock(scroll){
+    state.done = true;
+    var locks = document.querySelectorAll('.card.lock');
+    for (var i=0;i<locks.length;i++){
+      var b = locks[i].querySelector('.lockbar');
+      if (b) b.parentNode.removeChild(b);
+      locks[i].classList.remove('lock');
+    }
+    var ref = document.getElementById('refcard');
+    if (ref){ var ds = ref.querySelectorAll('details');
+      for (var j=0;j<ds.length;j++) ds[j].open = true; }
+    save();
+    if (scroll && ref) ref.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  document.getElementById('wpStart').addEventListener('click', function(){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    if (!running){ running = true; tid = setInterval(tick, 1000); }
+    ta.focus(); updCnt(); save();
+  });
+
+  btnP.addEventListener('click', function(){
+    if (running){ clearInterval(tid); running = false; btnP.textContent = '▶ 继续'; }
+    else { running = true; tid = setInterval(tick, 1000); btnP.textContent = '⏸ 暂停'; }
+  });
+
+  ta.addEventListener('input', function(){ updCnt(); save(); });
+
+  document.getElementById('wpSubmit').addEventListener('click', function(){
+    var n = words(ta.value);
+    if (n < 30){ st.style.color = 'var(--amber)';
+      st.textContent = '至少写满 30 词再提交（现在 ' + n + ' 词）'; return; }
+    if (running){ clearInterval(tid); running = false; }
+    var m = Math.floor(state.used/60), s = state.used % 60;
+    st.style.color = 'var(--green)';
+    st.innerHTML = '✅ 已提交 · 用时 ' + m + ' 分 ' + s + ' 秒 · ' + n + ' 词。范文与解析已解锁 ↓';
+    btnS.style.display = 'inline-block';
+    unlock(true);
+  });
+
+  btnS.addEventListener('click', function(){
+    if (!ta.value.trim()){ return; }
+    btnS.disabled = true; btnS.textContent = '同步中…';
+    var d = new Date();
+    var ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    fetch('https://ntfy.sh/' + TOPIC, { method:'POST',
+      body: JSON.stringify({t:'rep', kind:'writing', date:ds, page:document.title,
+        text:'【写作提交】' + ds + ' · ' + words(ta.value) + ' 词\n\n' + ta.value})
+    }).then(function(x){
+      if (x.ok){ btnS.textContent = '✓ 已发送'; btnS.style.color = 'var(--green)';
+        st.innerHTML = '✓ 作文已上云。回到主对话说一句「看回执」，我给你逐句批改。'; }
+      else { btnS.disabled = false; btnS.textContent = '☁ 重试同步'; }
+    }).catch(function(){ btnS.disabled = false; btnS.textContent = '☁ 重试同步'; });
+  });
+
+  var d0 = load();
+  state.draft = d0.draft || ''; state.used = d0.used || 0; state.done = !!d0.done;
+  if (state.draft){ ta.value = state.draft; updCnt(); }
+  if (state.done){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    left = TOTAL - state.used; tmv.textContent = fmt(left);
+    unlock(false);
+    btnS.style.display = 'inline-block';
+    st.innerHTML = '（本篇已提交过，范文已解锁）';
+  }
+})();
+</script>
 </body>
 </html>
