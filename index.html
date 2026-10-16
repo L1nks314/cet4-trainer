@@ -332,7 +332,8 @@ function renderTasks(){
   var au = {};
   try{ au = (JSON.parse(localStorage.getItem('cet4_done')||'{}')[fmt(today)]) || {}; }catch(e){ au = {}; }
   done = { l: !!(man.l || au.listen), o: !!(man.o || au.other), r: !!(man.r || au.receipt) };
-  var lessonTxt = (gap>=LESSONS.length) ? "全部 24 节已排完 · 请在对话里说「扩充题库」" : LESSONS[idx].d;
+  var lessonTxt = (gap>=LESSONS.length) ? "全部 39 节已排完 · 请在对话里说「扩充题库」"
+                : (gap<0 ? "集训 10/17 开始 · 今天先歇着，明天从这里起步" : LESSONS[idx].d);
   var tHtml='';
   tHtml+='<div class="task'+(done.l?" on":"")+'" data-k="l"><div class="box'+(done.l?" on":"")+'"></div>'
    +'<div class="tk"><div class="tt">听力精听 · 40 分钟</div>'
