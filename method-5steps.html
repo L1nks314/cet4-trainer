@@ -228,7 +228,7 @@ body.qshow .stem{display:block}
  padding:0;cursor:pointer;flex:0 0 auto}
 #markBar .sw.on{border-color:var(--blue,#2563eb);box-shadow:0 0 0 2px rgba(37,99,235,.22)}
 #markCanvas{position:fixed;top:0;left:0;z-index:8980;pointer-events:none}
-html.penon,body.penon{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;overscroll-behavior:none}
+html.penon,body.penon{touch-action:none !important;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;overscroll-behavior:none}
 html.penon body,body.penon *,:host{touch-action:none !important}
 body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;touch-action:auto !important}
 #markCanvas.act{cursor:crosshair}
@@ -815,7 +815,7 @@ var QUIZ = [];
 
 <script>
 (function(){
-  /* penv5 */
+  /* penv6 */
   var cv = document.getElementById('markCanvas');
   if (!cv) return;
   var ctx = cv.getContext('2d');
@@ -1048,36 +1048,36 @@ var QUIZ = [];
     }
     return null;
   }
-  var TS = { id:null, y:0, host:null, base:0, hist:[] };
-  document.addEventListener('touchstart', function(e){
-    if (mode === 'off' || e.touches.length !== 1) return;
-    var p = e.changedTouches[0];
-    if (hitUI(e.target, p.clientX, p.clientY)) return;
+  var TF = { id:null, y:0, host:null, base:0, hist:[], locked:false };
+  function tfBegin(e){
+    if (mode === 'off' || e.pointerType !== 'touch' || TF.id !== null) return;
+    if (e.isPrimary === false) return;
+    if (hitUI(e.target, e.clientX, e.clientY)) return;
     if (e.target && e.target.closest && e.target.closest('input,textarea,select')) return;
-    TS.id = p.identifier; TS.y = p.clientY;
-    TS.host = scrollHost(e.target);
-    TS.base = TS.host ? TS.host.scrollTop : (window.pageYOffset || 0);
-    TS.hist = [[p.clientY, performance.now()]];
-  }, {passive:true, capture:true});
-  document.addEventListener('touchmove', function(e){
-    if (TS.id === null) return;
-    var p = null;
-    for (var i = 0; i < e.touches.length; i++) if (e.touches[i].identifier === TS.id) p = e.touches[i];
-    if (!p){ TS.id = null; return; }
-    var dy = TS.y - p.clientY;
-    if (Math.abs(dy) < 4) return;                       /* 视为点按，不拦 */
+    TF.id = e.pointerId; TF.y = e.clientY; TF.locked = false;
+    TF.host = scrollHost(e.target);
+    TF.base = TF.host ? TF.host.scrollTop : (window.pageYOffset || 0);
+    TF.hist = [[e.clientY, performance.now()]];
+  }
+  function tfMove(e){
+    if (TF.id === null || e.pointerId !== TF.id) return;
+    var dy = TF.y - e.clientY;
+    if (!TF.locked){
+      if (Math.abs(dy) < 5) return;      /* 轻点不拦，保证选项可点选 */
+      TF.locked = true;
+    }
     e.preventDefault();
-    var v = TS.base + dy;
-    if (TS.host) TS.host.scrollTop = v; else window.scrollTo(window.pageXOffset || 0, v);
-    TS.hist.push([p.clientY, performance.now()]);
-    if (TS.hist.length > 5) TS.hist.shift();
+    var v = TF.base + dy;
+    if (TF.host) TF.host.scrollTop = v; else window.scrollTo(window.pageXOffset || 0, v);
+    TF.hist.push([e.clientY, performance.now()]);
+    if (TF.hist.length > 5) TF.hist.shift();
     schedule(true);
-  }, {passive:false, capture:true});
-  function endTouch(e){
-    if (TS.id === null) return;
-    var host = TS.host, hist = TS.hist;
-    TS.id = null; TS.host = null;
-    if (hist.length < 2) return;
+  }
+  function tfEnd(e){
+    if (TF.id === null || e.pointerId !== TF.id) return;
+    var host = TF.host, hist = TF.hist, locked = TF.locked;
+    TF.id = null; TF.host = null;
+    if (!locked || hist.length < 2) return;
     var a = hist[0], b = hist[hist.length - 1];
     var dt = b[1] - a[1];
     if (dt < 8) return;
@@ -1102,13 +1102,17 @@ var QUIZ = [];
       if (moved) requestAnimationFrame(step);
     })();
   }
-  document.addEventListener('touchend', endTouch, {passive:true, capture:true});
-  document.addEventListener('touchcancel', function(){ TS.id = null; TS.host = null; }, {passive:true, capture:true});
+  document.addEventListener('pointerdown', tfBegin, {capture:true, passive:true});
+  document.addEventListener('pointermove', tfMove, {capture:true, passive:false});
+  document.addEventListener('pointerup', tfEnd, {capture:true, passive:true});
+  document.addEventListener('pointercancel', tfEnd, {capture:true, passive:true});
+  window.addEventListener('blur', function(){ TF.id = null; TF.host = null; });
 
   document.addEventListener('pointerdown', function(e){
     if (mode === 'off') return;
     if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
     if (hitUI(e.target, e.clientX, e.clientY)) return;
+    TF.id = null; TF.host = null;          /* 笔落下：立即终止手指滚动接管 */
     drawing = true;
     var x = e.pageX, y = e.pageY, w = widthOf(e);
     var o = ownerOf(x, y);
