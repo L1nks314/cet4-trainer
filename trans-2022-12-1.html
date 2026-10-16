@@ -117,6 +117,28 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+/* ═══ 写作台 ═══ */
+.wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
+.wbtn:hover{border-color:var(--blue);color:var(--blue)}
+.wbtn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.wbtn.primary:hover{filter:brightness(1.08);color:#fff}
+.wbar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.wbar .tmv{font-weight:800;font-size:17px;color:var(--blue);font-variant-numeric:tabular-nums;
+ letter-spacing:.5px}
+.wbar .cnt{margin-left:auto;font-size:13px;font-weight:700;color:var(--sub)}
+#wpText{width:100%;min-height:230px;resize:vertical;padding:14px 16px;border-radius:12px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);font:inherit;
+ font-size:14.5px;line-height:1.95;box-sizing:border-box}
+#wpText:focus{outline:none;border-color:var(--blue)}
+.wrow{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.wst{font-size:13px;font-weight:700;color:var(--sub);line-height:1.6}
+.wdone{background:var(--green-soft,#eaf7ef);border:1px solid var(--green);
+ color:var(--green);padding:11px 14px;border-radius:11px;font-size:13.5px;font-weight:700;
+ margin-bottom:12px;line-height:1.65}
+.card.lock>*:not(.lockbar){display:none}
+.lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
+ color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
 </style>
 </head>
 <body>
@@ -149,6 +171,27 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   </div></details>
 </div>
 
+
+<div class="card" id="wpad">
+  <h2>翻译台</h2>
+  <div id="wpIdle">
+    <p class="hint">建议 30 分钟内译完，写完点提交 —— 逐句对照、参考译文、译法要点才会解锁。</p>
+    <div class="wrow"><button class="wbtn primary" id="wpStart">✍️ 开始翻译</button></div>
+  </div>
+  <div id="wpEdit" style="display:none">
+    <div class="wbar">
+      <span class="tmv" id="wpTimer">30:00</span>
+      <button class="wbtn" id="wpPause" style="padding:5px 12px;font-size:12.5px">⏸ 暂停</button>
+      <span class="cnt" id="wpCount">0 词</span>
+    </div>
+    <textarea id="wpText" placeholder="在这里写你的译文…（也可以手写在纸上/平板上，写完拍照发对话）"></textarea>
+    <div class="wrow">
+      <button class="wbtn primary" id="wpSubmit">📷 提交并解锁参考</button>
+      <button class="wbtn" id="wpSync" style="display:none">☁ 把文字发给我批改</button>
+    </div>
+    <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
+  </div>
+</div>
 <div class="card">
   <h2>怎么用这份包</h2>
   <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
@@ -157,13 +200,13 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
 </div>
 
-<div class="card">
+<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 逐句对照（5 句）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>逐句对照（5 句）</h2>
   <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
   <div class="sent"><span class="snum">第 1 句</span><p class="szh">在中国农历中，立秋(Start of Autumn)意味着夏天的结束和秋天的开始。</p><p class="sen">In the Chinese lunar calendar, the Start of Autumn marks the end of summer and the beginning of autumn.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调，用一般现在时 marks，因为这是在陈述立秋恒常的含义。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语 Start of Autumn 视作单数概念，谓语用第三人称单数 marks，不要写成 mark。</span></div><div class="chunk"><span class="k">冠词</span><span class="v">特指中国的这一部农历，用定冠词 the Chinese lunar calendar；the end of summer / the beginning of autumn 中的 summer、autumn 表季节泛指，前面不加冠词。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">立秋带来的首先是天气的变化，气温逐渐下降。</p><p class="sen">The Start of Autumn first brings a change in the weather; temperatures gradually drop.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">仍是普遍现象，回指基调用一般现在时 brings、drop。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">&quot;气温&quot;指总体气温水平的逐渐变化，英文习惯用复数 temperatures（与 drop 搭配），不要写成 the temperature is dropping 那样具体某一刻。</span></div><div class="chunk"><span class="k">冠词</span><span class="v">&quot;天气的变化&quot;译 a change in the weather：change 可数、此处泛指一种变化用不定冠词 a；weather 特指当下的天气状况，习惯搭 the weather。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">人们看到树叶开始变黄飘落时，知道秋天已经来临，这就是所谓的&quot;一叶知秋&quot;。</p><p class="sen">When people see the leaves begin to turn yellow and fall, they know that autumn has arrived; this is the so-called principle that &quot;one falling leaf heralds the coming of autumn.&quot;</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">主句与 When 从句都是普遍现象，用一般现在时 see、know；但&quot;已经来临&quot;强调&quot;到说话时已经到了&quot;，用现在完成时 has arrived，这是回指基调时&quot;确有需要才偏离&quot;的典型一处。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">&quot;树叶&quot;不止一片，用复数 the leaves；与之搭配的动词 begin、turn、fall 都用复数形式。</span></div><div class="chunk"><span class="k">动词搭配</span><span class="v">&quot;开始变黄飘落&quot;译 begin to turn yellow and fall：turn + 形容词表&quot;变成某颜色&quot;；see somebody/something do 是感官动词接动词原形结构（the leaves begin）。</span></div></div><div class="sent"><span class="snum">第 4 句</span><p class="szh">但此时酷热的天气并未完全结束，高温通常还会持续一段时间，被称为&quot;秋老虎&quot;。</p><p class="sen">However, the hot weather has not completely ended at this time; high temperatures usually continue for a while, known as the &quot;Autumn Tiger.&quot;</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态语态</span><span class="v">&quot;并未完全结束&quot;强调&quot;到现在还没结束&quot;，用现在完成时否定 has not completely ended；&quot;通常还会持续&quot;是普遍规律，回基调用一般现在时 usually continue。</span></div><div class="chunk"><span class="k">单复数主谓一致</span><span class="v">the hot weather 不可数作单数，配 has；high temperatures 用复数表整体高温，配复数动词 continue。两处主谓单复数各自对齐，别混。</span></div><div class="chunk"><span class="k">含蓄否定</span><span class="v">&quot;并未完全结束&quot;是部分否定，用 has not completely ended（not + completely）准确传达&quot;还没彻底结束&quot;，不要漏译&quot;完全&quot;而写成 has not ended（语气过强）。</span></div></div><div class="sent"><span class="snum">第 5 句</span><p class="szh">立秋对农民意义重大，这时各种秋季作物迅速生长、开始成熟，收获的季节即将到来。</p><p class="sen">The Start of Autumn is of great significance to farmers, as various autumn crops grow rapidly and begin to ripen at this time, and the harvest season is approaching.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">全句陈述每年立秋的普遍意义，回基调用一般现在时 is、grow、begin；&quot;即将到来&quot;用 is approaching（现在进行表临近的将来）或 is coming，自然贴切。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">&quot;各种秋季作物&quot;种类不止一种，用复数 various autumn crops，配复数动词 grow、begin；&quot;农民&quot;泛指这一群体，用复数 farmers。</span></div><div class="chunk"><span class="k">介词搭配</span><span class="v">&quot;对农民意义重大&quot;用 of great significance to farmers / important to farmers——&quot;对（某人）重要&quot;固定搭 to，不要写成 for 或 of。</span></div></div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 整篇参考译文</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>整篇参考译文</h2>
   <details><summary>展开整篇（自己翻完再看）</summary>
     <div class="dbody"><p class="en">In the Chinese lunar calendar, the Start of Autumn marks the end of summer and the beginning of autumn. It first brings a change in the weather, as temperatures gradually drop. When people see the leaves begin to turn yellow and fall, they know that autumn has arrived; this is the so-called principle that &quot;one falling leaf heralds the coming of autumn.&quot; However, the hot weather has not completely ended at this time; high temperatures usually continue for a while, a period known as the &quot;Autumn Tiger.&quot; The Start of Autumn is of great significance to farmers, as various autumn crops grow rapidly and begin to ripen at this time, and the harvest season is approaching. 【衔接】 句1到句2：避免重复主语 第一句主语已是 the Start of Autumn，第二句中文又以&quot;立秋&quot;开头。整篇里若每句都重复 the Start of Autumn 会显啰嗦，可让第二句改用代词 It 承接：It first brings a change in the weather，读起来更连贯。 句3到句4：补转折显逻辑 第三句讲&quot;叶落知秋&quot;，第四句 但此时酷热的天气并未完全结束 是明显转折。中文的&quot;但&quot;必须在英文里显化成 However 放句首，否则两句逻辑断裂，读者会觉得&quot;既然秋天来了怎么又说酷热没结束&quot;。 句4内部：用上下文兜住秋老虎 the &quot;Autumn Tiger&quot; 对英文读者是陌生意象，靠紧邻的 high temperatures usually continue 把&quot;它指的是持续高温&quot;这层意思兜住，known as 紧贴其后，读者就能从语境理解，无需另加长注解。</p></div></details>
@@ -171,13 +214,13 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   重点看它怎么处理句间连接、怎么避免重复用词。</div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 句间衔接（3 处）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>句间衔接（3 处）</h2>
   <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
   <div class="row"><span class="tag">衔接</span><div class="c"><b>句1到句2：避免重复主语</b>第一句主语已是 the Start of Autumn，第二句中文又以&quot;立秋&quot;开头。整篇里若每句都重复 the Start of Autumn 会显啰嗦，可让第二句改用代词 It 承接：It first brings a change in the weather，读起来更连贯。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>句3到句4：补转折显逻辑</b>第三句讲&quot;叶落知秋&quot;，第四句 但此时酷热的天气并未完全结束 是明显转折。中文的&quot;但&quot;必须在英文里显化成 However 放句首，否则两句逻辑断裂，读者会觉得&quot;既然秋天来了怎么又说酷热没结束&quot;。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>句4内部：用上下文兜住秋老虎</b>the &quot;Autumn Tiger&quot; 对英文读者是陌生意象，靠紧邻的 high temperatures usually continue 把&quot;它指的是持续高温&quot;这层意思兜住，known as 紧贴其后，读者就能从语境理解，无需另加长注解。</div></div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 译法要点（19 条）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>译法要点（19 条）</h2>
   <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
   <div class="vocab"><div class="w">立秋</div><div class="d">立秋(Start of Autumn) 的英文译法原文已给出，直接沿用 Start of Autumn，首次出现时用括号补出原中文/拼音不必，但全篇必须只用这一种译法，不要一会儿写 Beginning of Autumn、一会儿写 Start of Autumn。</div></div><div class="vocab"><div class="w">中国农历</div><div class="d">在中国农历中 的&quot;农历&quot;是文化负载词，统一译为 the Chinese lunar calendar（约定俗成译名），不要写成 the Chinese calendar 或 the agricultural calendar 以免歧义。</div></div><div class="vocab"><div class="w">一叶知秋</div><div class="d">一叶知秋 是成语，没有现成对应英文，采取&quot;直译 + 点明含义&quot;：one falling leaf heralds the coming of autumn，或保留为带引号的意译短语。全篇此处仅出现一次，重在把&quot;看到一片叶子就知道秋天到了&quot;的意思译清楚。</div></div><div class="vocab"><div class="w">秋老虎</div><div class="d">秋老虎 是中国民俗说法，指立秋后短期回热的高温天气。采取&quot;直译加引号&quot;的处理：the &quot;Autumn Tiger&quot;，并靠前文的&quot;高温持续&quot;把含义带出，让英文读者能从上下文理解，而不是孤零零冒出一个 tiger。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调，用一般现在时 marks，因为这是在陈述立秋恒常的含义。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 Start of Autumn 视作单数概念，谓语用第三人称单数 marks，不要写成 mark。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">特指中国的这一部农历，用定冠词 the Chinese lunar calendar；the end of summer / the beginning of autumn 中的 summer、autumn 表季节泛指，前面不加冠词。</div></div><div class="vocab"><div class="w">时态</div><div class="d">仍是普遍现象，回指基调用一般现在时 brings、drop。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;气温&quot;指总体气温水平的逐渐变化，英文习惯用复数 temperatures（与 drop 搭配），不要写成 the temperature is dropping 那样具体某一刻。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">&quot;天气的变化&quot;译 a change in the weather：change 可数、此处泛指一种变化用不定冠词 a；weather 特指当下的天气状况，习惯搭 the weather。</div></div><div class="vocab"><div class="w">时态</div><div class="d">主句与 When 从句都是普遍现象，用一般现在时 see、know；但&quot;已经来临&quot;强调&quot;到说话时已经到了&quot;，用现在完成时 has arrived，这是回指基调时&quot;确有需要才偏离&quot;的典型一处。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;树叶&quot;不止一片，用复数 the leaves；与之搭配的动词 begin、turn、fall 都用复数形式。</div></div><div class="vocab"><div class="w">动词搭配</div><div class="d">&quot;开始变黄飘落&quot;译 begin to turn yellow and fall：turn + 形容词表&quot;变成某颜色&quot;；see somebody/something do 是感官动词接动词原形结构（the leaves begin）。</div></div><div class="vocab"><div class="w">时态语态</div><div class="d">&quot;并未完全结束&quot;强调&quot;到现在还没结束&quot;，用现在完成时否定 has not completely ended；&quot;通常还会持续&quot;是普遍规律，回基调用一般现在时 usually continue。</div></div><div class="vocab"><div class="w">单复数主谓一致</div><div class="d">the hot weather 不可数作单数，配 has；high temperatures 用复数表整体高温，配复数动词 continue。两处主谓单复数各自对齐，别混。</div></div><div class="vocab"><div class="w">含蓄否定</div><div class="d">&quot;并未完全结束&quot;是部分否定，用 has not completely ended（not + completely）准确传达&quot;还没彻底结束&quot;，不要漏译&quot;完全&quot;而写成 has not ended（语气过强）。</div></div><div class="vocab"><div class="w">时态</div><div class="d">全句陈述每年立秋的普遍意义，回基调用一般现在时 is、grow、begin；&quot;即将到来&quot;用 is approaching（现在进行表临近的将来）或 is coming，自然贴切。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;各种秋季作物&quot;种类不止一种，用复数 various autumn crops，配复数动词 grow、begin；&quot;农民&quot;泛指这一群体，用复数 farmers。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">&quot;对农民意义重大&quot;用 of great significance to farmers / important to farmers——&quot;对（某人）重要&quot;固定搭 to，不要写成 for 或 of。</div></div>
@@ -194,5 +237,107 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   </table>
 </div>
 
+
+<script>
+(function(){
+  var slot = document.getElementById('wpad');
+  if (!slot) return;
+  var TOPIC = "cet4-67f4d286a543c3aca5af06b1910625b0749ce20d4052";
+  var KEY = 'cet4trans:' + (location.pathname.split('/').pop() || 'x');
+  var TOTAL = 30 * 60;
+  var idle = document.getElementById('wpIdle'), edit = document.getElementById('wpEdit');
+  var ta = document.getElementById('wpText'), tmv = document.getElementById('wpTimer');
+  var cnt = document.getElementById('wpCount'), st = document.getElementById('wpSt');
+  var btnP = document.getElementById('wpPause'), btnS = document.getElementById('wpSync');
+  var state = {draft:'', used:0, done:false};
+  var left = TOTAL, tid = null, running = false;
+
+  function fmt(s){ s = Math.max(0, s|0);
+    var m = Math.floor(s/60), x = s%60;
+    return (m<10?'0':'')+m+':'+(x<10?'0':'')+x; }
+  function words(t){ t = (t||'').trim(); if(!t) return 0;
+    return t.split(/\s+/).filter(function(w){ return /[A-Za-z0-9]/.test(w); }).length; }
+  function save(){ state.draft = ta.value;
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}') || {}; }catch(e){ return {}; } }
+  function tick(){ state.used++;
+    left = TOTAL - state.used;
+    tmv.textContent = fmt(left);
+    if (left <= 0){ clearInterval(tid); running = false; tmv.textContent = '00:00';
+      st.style.color = 'var(--amber)';
+      st.textContent = '⏰ 30 分钟到。还可以继续写，写完了再提交。'; }
+    if (state.used % 10 === 0) save();
+  }
+  function updCnt(){ cnt.textContent = words(ta.value) + ' 词'; }
+
+  function unlock(scroll){
+    state.done = true;
+    var locks = document.querySelectorAll('.card.lock');
+    for (var i=0;i<locks.length;i++){
+      var b = locks[i].querySelector('.lockbar');
+      if (b) b.parentNode.removeChild(b);
+      locks[i].classList.remove('lock');
+    }
+    var all = document.querySelectorAll('.card details');
+    for (var j=0;j<all.length;j++) all[j].open = true;
+    save();
+    if (scroll && locks.length){
+      var last = document.querySelectorAll('.card.lock');
+      var t = document.getElementById('refcard');
+      if (t) t.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  }
+
+  document.getElementById('wpStart').addEventListener('click', function(){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    if (!running){ running = true; tid = setInterval(tick, 1000); }
+    ta.focus(); updCnt(); save();
+  });
+
+  btnP.addEventListener('click', function(){
+    if (running){ clearInterval(tid); running = false; btnP.textContent = '▶ 继续'; }
+    else { running = true; tid = setInterval(tick, 1000); btnP.textContent = '⏸ 暂停'; }
+  });
+
+  ta.addEventListener('input', function(){ updCnt(); save(); });
+
+  document.getElementById('wpSubmit').addEventListener('click', function(){
+    var n = words(ta.value);
+    if (running){ clearInterval(tid); running = false; }
+    var m = Math.floor(state.used/60), s = state.used % 60;
+    st.style.color = 'var(--green)';
+    st.innerHTML = '✅ 已解锁 · 用时 ' + m + ' 分 ' + s + ' 秒' + (n ? ' · ' + n + ' 词' : '')
+      + '。把<b>手写照片发到主对话</b>，我来识别并逐句批改。';
+    if (n > 0) btnS.style.display = 'inline-block';
+    unlock(true);
+  });
+
+  btnS.addEventListener('click', function(){
+    if (!ta.value.trim()){ return; }
+    btnS.disabled = true; btnS.textContent = '同步中…';
+    var d = new Date();
+    var ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    fetch('https://ntfy.sh/' + TOPIC, { method:'POST',
+      body: JSON.stringify({t:'rep', kind:'translation', date:ds, page:document.title,
+        text:'【翻译提交】' + ds + ' · ' + words(ta.value) + ' 词\n\n' + ta.value})
+    }).then(function(x){
+      if (x.ok){ btnS.textContent = '✓ 已发送'; btnS.style.color = 'var(--green)';
+        st.innerHTML = '✓ 已上云。回到主对话说一句「看回执」，我给你逐句批改。'; }
+      else { btnS.disabled = false; btnS.textContent = '☁ 重试同步'; }
+    }).catch(function(){ btnS.disabled = false; btnS.textContent = '☁ 重试同步'; });
+  });
+
+  var d0 = load();
+  state.draft = d0.draft || ''; state.used = d0.used || 0; state.done = !!d0.done;
+  if (state.draft){ ta.value = state.draft; updCnt(); }
+  if (state.done){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    left = TOTAL - state.used; tmv.textContent = fmt(left);
+    unlock(false);
+    btnS.style.display = 'inline-block';
+    st.innerHTML = '（本篇已提交过，参考已解锁）';
+  }
+})();
+</script>
 </body>
 </html>

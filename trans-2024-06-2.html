@@ -117,6 +117,28 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+/* ═══ 写作台 ═══ */
+.wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
+.wbtn:hover{border-color:var(--blue);color:var(--blue)}
+.wbtn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.wbtn.primary:hover{filter:brightness(1.08);color:#fff}
+.wbar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.wbar .tmv{font-weight:800;font-size:17px;color:var(--blue);font-variant-numeric:tabular-nums;
+ letter-spacing:.5px}
+.wbar .cnt{margin-left:auto;font-size:13px;font-weight:700;color:var(--sub)}
+#wpText{width:100%;min-height:230px;resize:vertical;padding:14px 16px;border-radius:12px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);font:inherit;
+ font-size:14.5px;line-height:1.95;box-sizing:border-box}
+#wpText:focus{outline:none;border-color:var(--blue)}
+.wrow{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.wst{font-size:13px;font-weight:700;color:var(--sub);line-height:1.6}
+.wdone{background:var(--green-soft,#eaf7ef);border:1px solid var(--green);
+ color:var(--green);padding:11px 14px;border-radius:11px;font-size:13.5px;font-weight:700;
+ margin-bottom:12px;line-height:1.65}
+.card.lock>*:not(.lockbar){display:none}
+.lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
+ color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
 </style>
 </head>
 <body>
@@ -149,6 +171,27 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   </div></details>
 </div>
 
+
+<div class="card" id="wpad">
+  <h2>翻译台</h2>
+  <div id="wpIdle">
+    <p class="hint">建议 30 分钟内译完，写完点提交 —— 逐句对照、参考译文、译法要点才会解锁。</p>
+    <div class="wrow"><button class="wbtn primary" id="wpStart">✍️ 开始翻译</button></div>
+  </div>
+  <div id="wpEdit" style="display:none">
+    <div class="wbar">
+      <span class="tmv" id="wpTimer">30:00</span>
+      <button class="wbtn" id="wpPause" style="padding:5px 12px;font-size:12.5px">⏸ 暂停</button>
+      <span class="cnt" id="wpCount">0 词</span>
+    </div>
+    <textarea id="wpText" placeholder="在这里写你的译文…（也可以手写在纸上/平板上，写完拍照发对话）"></textarea>
+    <div class="wrow">
+      <button class="wbtn primary" id="wpSubmit">📷 提交并解锁参考</button>
+      <button class="wbtn" id="wpSync" style="display:none">☁ 把文字发给我批改</button>
+    </div>
+    <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
+  </div>
+</div>
 <div class="card">
   <h2>怎么用这份包</h2>
   <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
@@ -157,13 +200,13 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
 </div>
 
-<div class="card">
+<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 逐句对照（5 句）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>逐句对照（5 句）</h2>
   <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
   <div class="sent"><span class="snum">第 1 句</span><p class="szh">农历 (the lunar calendar) 起源于数千年前的中国，根据太阳和月亮的运行规律制定。</p><p class="sen">The lunar calendar originated in China thousands of years ago and was formulated based on the movements of the sun and the moon.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">「起源于数千年前」是已完成的来历，偏离全篇现在时基调，用一般过去时 originated；分词 formulated 表被动、不计时态。</span></div><div class="chunk"><span class="k">语态</span><span class="v">根据太阳和月亮的运行规律制定 中农历是被制定的，必须用被动（formulated／was formulated），切勿写成农历自己 formulate。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">「太阳和月亮」是天体唯一物，前面加定冠词 the sun and the moon；「运行规律」可数化为复数 movements 或用 the movement，二者皆可。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">长期以来，农历在农业生产和人们日常生活中发挥着重要作用。</p><p class="sen">For a long time, the lunar calendar has played an important role in agricultural production and people&#x27;s daily life.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">长期以来 强调从过去持续到现在，宜用现在完成时 has played 呼应「长期」；若理解为客观长期事实，用一般现在时 plays 亦可，两者都对，但选定后须前后逻辑自洽。</span></div><div class="chunk"><span class="k">冠词</span><span class="v">play 后面的 role 前要加不定冠词，写成 an important role（important 以元音开头用 an），漏冠词是常见硬伤。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">「农业生产」agricultural production 为不可数，不加复数；「日常生活」daily life 同样用单数，前加 people&#x27;s。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">古人依据农历记录日期、安排农活，以便最有效地利用自然资源和气候条件，提高农作物的产量和质量。</p><p class="sen">Ancient people recorded dates and arranged farm work according to the lunar calendar, in order to make the most effective use of natural resources and climatic conditions, thereby improving the yield and quality of crops.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">本句讲 古人 过去的做法，偏离现在时基调，谓语用一般过去时 recorded、arranged。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">「日期」不止一个→dates 复数；「自然资源」natural resources 习惯用复数；「农作物」crops 复数；「产量和质量」yield、quality 为不可数，保持单数。</span></div><div class="chunk"><span class="k">介词搭配</span><span class="v">「依据／根据」农历用 according to；「利用」用 make use of 或 make the most of；「农作物的产量」用 the yield of crops，of 表所属。</span></div></div><div class="sent"><span class="snum">第 4 句</span><p class="szh">中国的春节、中秋节等传统节日的日期都基于农历。</p><p class="sen">The dates of China&#x27;s traditional festivals, such as the Spring Festival and the Mid-Autumn Festival, are based on the lunar calendar.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">讲节日日期与农历的固定关系，是客观事实，回指全篇基调用一般现在时 are based on。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语中心词是复数 the dates，谓语 be 动词须用 are（are based on），不能受邻近的 festivals 或单数 calendar 干扰写成 is。</span></div><div class="chunk"><span class="k">单复数与专名</span><span class="v">「日期」多个→dates 复数；「节日」复数 festivals；专名 the Spring Festival、the Mid-Autumn Festival 须沿用 glossary 定法，首字母大写、连字符不漏。</span></div></div><div class="sent"><span class="snum">第 5 句</span><p class="szh">农历是中国传统文化的重要组成部分，当今依然广为使用。</p><p class="sen">The lunar calendar is an important part of traditional Chinese culture and is still widely used today.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">讲农历今日的地位与使用现状，是当前事实，回指全篇基调用一般现在时 is、is used。</span></div><div class="chunk"><span class="k">语态</span><span class="v">当今依然广为使用 农历是被使用的对象→用被动 is widely used，不可写成农历自己 use。</span></div><div class="chunk"><span class="k">副词与搭配</span><span class="v">「广为」用 widely 修饰 used；「依然」用 still；「当今」用 today／nowadays 作时间状语置于句末。an important part 的不定冠词 an 不可漏。</span></div></div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 整篇参考译文</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>整篇参考译文</h2>
   <details><summary>展开整篇（自己翻完再看）</summary>
     <div class="dbody"><p class="en">The lunar calendar originated in China thousands of years ago and was formulated based on the movements of the sun and the moon. For a long time, it has played an important role in agricultural production and people&#x27;s daily life. In the past, ancient people recorded dates and arranged farm work according to the lunar calendar, in order to make the most effective use of natural resources and climatic conditions, thereby improving the yield and quality of crops. The dates of China&#x27;s traditional festivals, such as the Spring Festival and the Mid-Autumn Festival, are based on the lunar calendar. As an important part of traditional Chinese culture, the lunar calendar is still widely used today. 【衔接】 第2句承接首句改用 it 首句已点明主语 The lunar calendar，第2句若再重复全称会显累赘，可改用代词 it 承接，写成 For a long time, it has played an important role ...，让两句读起来连贯不啰嗦。涉及原文 农历在农业生产和人们日常生活中发挥着重要作用。 第3句补 in the past 显时间层次 第3句讲 古人 过去的做法，与前两句的现在视角有时间落差。可在句首补 In the past 或保留 Ancient people 作主语，让读者明确这里转入历史，时态从现在时切到过去时不显突兀。 末句 today 收束呼应主题 末句 当今依然广为使用 中的 today 与第3句的过去形成「古—今」呼应，把全篇从「起源—古代作用—今日地位」收束完整。保留 today 这个时间词，整篇的时间脉络就清晰了。</p></div></details>
@@ -171,13 +214,13 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   重点看它怎么处理句间连接、怎么避免重复用词。</div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 句间衔接（3 处）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>句间衔接（3 处）</h2>
   <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
   <div class="row"><span class="tag">衔接</span><div class="c"><b>第2句承接首句改用 it</b>首句已点明主语 The lunar calendar，第2句若再重复全称会显累赘，可改用代词 it 承接，写成 For a long time, it has played an important role ...，让两句读起来连贯不啰嗦。涉及原文 农历在农业生产和人们日常生活中发挥着重要作用。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第3句补 in the past 显时间层次</b>第3句讲 古人 过去的做法，与前两句的现在视角有时间落差。可在句首补 In the past 或保留 Ancient people 作主语，让读者明确这里转入历史，时态从现在时切到过去时不显突兀。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>末句 today 收束呼应主题</b>末句 当今依然广为使用 中的 today 与第3句的过去形成「古—今」呼应，把全篇从「起源—古代作用—今日地位」收束完整。保留 today 这个时间词，整篇的时间脉络就清晰了。</div></div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 译法要点（18 条）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>译法要点（18 条）</h2>
   <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
   <div class="vocab"><div class="w">农历</div><div class="d">农历 (the lunar calendar) 原文已在括号里给出官方译法 the lunar calendar，全篇统一用它，绝不中途换成 the Chinese calendar 或 lunar year 等说法。它在文中反复出现，第二次起可用代词 it 承接以免重复。</div></div><div class="vocab"><div class="w">春节</div><div class="d">春节 取约定俗成的英文译名 the Spring Festival（首字母大写，作专有节日名）。也可加注 (Chinese New Year)，但全篇前后须一致。</div></div><div class="vocab"><div class="w">中秋节</div><div class="d">中秋节 取通行译名 the Mid-Autumn Festival（首字母大写，连字符不可漏）。这是阅卷常见考点，拼写与大小写要稳。</div></div><div class="vocab"><div class="w">时态</div><div class="d">「起源于数千年前」是已完成的来历，偏离全篇现在时基调，用一般过去时 originated；分词 formulated 表被动、不计时态。</div></div><div class="vocab"><div class="w">语态</div><div class="d">根据太阳和月亮的运行规律制定 中农历是被制定的，必须用被动（formulated／was formulated），切勿写成农历自己 formulate。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">「太阳和月亮」是天体唯一物，前面加定冠词 the sun and the moon；「运行规律」可数化为复数 movements 或用 the movement，二者皆可。</div></div><div class="vocab"><div class="w">时态</div><div class="d">长期以来 强调从过去持续到现在，宜用现在完成时 has played 呼应「长期」；若理解为客观长期事实，用一般现在时 plays 亦可，两者都对，但选定后须前后逻辑自洽。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">play 后面的 role 前要加不定冠词，写成 an important role（important 以元音开头用 an），漏冠词是常见硬伤。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">「农业生产」agricultural production 为不可数，不加复数；「日常生活」daily life 同样用单数，前加 people&#x27;s。</div></div><div class="vocab"><div class="w">时态</div><div class="d">本句讲 古人 过去的做法，偏离现在时基调，谓语用一般过去时 recorded、arranged。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">「日期」不止一个→dates 复数；「自然资源」natural resources 习惯用复数；「农作物」crops 复数；「产量和质量」yield、quality 为不可数，保持单数。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">「依据／根据」农历用 according to；「利用」用 make use of 或 make the most of；「农作物的产量」用 the yield of crops，of 表所属。</div></div><div class="vocab"><div class="w">时态</div><div class="d">讲节日日期与农历的固定关系，是客观事实，回指全篇基调用一般现在时 are based on。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语中心词是复数 the dates，谓语 be 动词须用 are（are based on），不能受邻近的 festivals 或单数 calendar 干扰写成 is。</div></div><div class="vocab"><div class="w">单复数与专名</div><div class="d">「日期」多个→dates 复数；「节日」复数 festivals；专名 the Spring Festival、the Mid-Autumn Festival 须沿用 glossary 定法，首字母大写、连字符不漏。</div></div><div class="vocab"><div class="w">时态</div><div class="d">讲农历今日的地位与使用现状，是当前事实，回指全篇基调用一般现在时 is、is used。</div></div><div class="vocab"><div class="w">语态</div><div class="d">当今依然广为使用 农历是被使用的对象→用被动 is widely used，不可写成农历自己 use。</div></div><div class="vocab"><div class="w">副词与搭配</div><div class="d">「广为」用 widely 修饰 used；「依然」用 still；「当今」用 today／nowadays 作时间状语置于句末。an important part 的不定冠词 an 不可漏。</div></div>
@@ -194,5 +237,107 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   </table>
 </div>
 
+
+<script>
+(function(){
+  var slot = document.getElementById('wpad');
+  if (!slot) return;
+  var TOPIC = "cet4-67f4d286a543c3aca5af06b1910625b0749ce20d4052";
+  var KEY = 'cet4trans:' + (location.pathname.split('/').pop() || 'x');
+  var TOTAL = 30 * 60;
+  var idle = document.getElementById('wpIdle'), edit = document.getElementById('wpEdit');
+  var ta = document.getElementById('wpText'), tmv = document.getElementById('wpTimer');
+  var cnt = document.getElementById('wpCount'), st = document.getElementById('wpSt');
+  var btnP = document.getElementById('wpPause'), btnS = document.getElementById('wpSync');
+  var state = {draft:'', used:0, done:false};
+  var left = TOTAL, tid = null, running = false;
+
+  function fmt(s){ s = Math.max(0, s|0);
+    var m = Math.floor(s/60), x = s%60;
+    return (m<10?'0':'')+m+':'+(x<10?'0':'')+x; }
+  function words(t){ t = (t||'').trim(); if(!t) return 0;
+    return t.split(/\s+/).filter(function(w){ return /[A-Za-z0-9]/.test(w); }).length; }
+  function save(){ state.draft = ta.value;
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}') || {}; }catch(e){ return {}; } }
+  function tick(){ state.used++;
+    left = TOTAL - state.used;
+    tmv.textContent = fmt(left);
+    if (left <= 0){ clearInterval(tid); running = false; tmv.textContent = '00:00';
+      st.style.color = 'var(--amber)';
+      st.textContent = '⏰ 30 分钟到。还可以继续写，写完了再提交。'; }
+    if (state.used % 10 === 0) save();
+  }
+  function updCnt(){ cnt.textContent = words(ta.value) + ' 词'; }
+
+  function unlock(scroll){
+    state.done = true;
+    var locks = document.querySelectorAll('.card.lock');
+    for (var i=0;i<locks.length;i++){
+      var b = locks[i].querySelector('.lockbar');
+      if (b) b.parentNode.removeChild(b);
+      locks[i].classList.remove('lock');
+    }
+    var all = document.querySelectorAll('.card details');
+    for (var j=0;j<all.length;j++) all[j].open = true;
+    save();
+    if (scroll && locks.length){
+      var last = document.querySelectorAll('.card.lock');
+      var t = document.getElementById('refcard');
+      if (t) t.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  }
+
+  document.getElementById('wpStart').addEventListener('click', function(){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    if (!running){ running = true; tid = setInterval(tick, 1000); }
+    ta.focus(); updCnt(); save();
+  });
+
+  btnP.addEventListener('click', function(){
+    if (running){ clearInterval(tid); running = false; btnP.textContent = '▶ 继续'; }
+    else { running = true; tid = setInterval(tick, 1000); btnP.textContent = '⏸ 暂停'; }
+  });
+
+  ta.addEventListener('input', function(){ updCnt(); save(); });
+
+  document.getElementById('wpSubmit').addEventListener('click', function(){
+    var n = words(ta.value);
+    if (running){ clearInterval(tid); running = false; }
+    var m = Math.floor(state.used/60), s = state.used % 60;
+    st.style.color = 'var(--green)';
+    st.innerHTML = '✅ 已解锁 · 用时 ' + m + ' 分 ' + s + ' 秒' + (n ? ' · ' + n + ' 词' : '')
+      + '。把<b>手写照片发到主对话</b>，我来识别并逐句批改。';
+    if (n > 0) btnS.style.display = 'inline-block';
+    unlock(true);
+  });
+
+  btnS.addEventListener('click', function(){
+    if (!ta.value.trim()){ return; }
+    btnS.disabled = true; btnS.textContent = '同步中…';
+    var d = new Date();
+    var ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    fetch('https://ntfy.sh/' + TOPIC, { method:'POST',
+      body: JSON.stringify({t:'rep', kind:'translation', date:ds, page:document.title,
+        text:'【翻译提交】' + ds + ' · ' + words(ta.value) + ' 词\n\n' + ta.value})
+    }).then(function(x){
+      if (x.ok){ btnS.textContent = '✓ 已发送'; btnS.style.color = 'var(--green)';
+        st.innerHTML = '✓ 已上云。回到主对话说一句「看回执」，我给你逐句批改。'; }
+      else { btnS.disabled = false; btnS.textContent = '☁ 重试同步'; }
+    }).catch(function(){ btnS.disabled = false; btnS.textContent = '☁ 重试同步'; });
+  });
+
+  var d0 = load();
+  state.draft = d0.draft || ''; state.used = d0.used || 0; state.done = !!d0.done;
+  if (state.draft){ ta.value = state.draft; updCnt(); }
+  if (state.done){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    left = TOTAL - state.used; tmv.textContent = fmt(left);
+    unlock(false);
+    btnS.style.display = 'inline-block';
+    st.innerHTML = '（本篇已提交过，参考已解锁）';
+  }
+})();
+</script>
 </body>
 </html>

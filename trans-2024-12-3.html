@@ -117,6 +117,28 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+/* ═══ 写作台 ═══ */
+.wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
+.wbtn:hover{border-color:var(--blue);color:var(--blue)}
+.wbtn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.wbtn.primary:hover{filter:brightness(1.08);color:#fff}
+.wbar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.wbar .tmv{font-weight:800;font-size:17px;color:var(--blue);font-variant-numeric:tabular-nums;
+ letter-spacing:.5px}
+.wbar .cnt{margin-left:auto;font-size:13px;font-weight:700;color:var(--sub)}
+#wpText{width:100%;min-height:230px;resize:vertical;padding:14px 16px;border-radius:12px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);font:inherit;
+ font-size:14.5px;line-height:1.95;box-sizing:border-box}
+#wpText:focus{outline:none;border-color:var(--blue)}
+.wrow{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.wst{font-size:13px;font-weight:700;color:var(--sub);line-height:1.6}
+.wdone{background:var(--green-soft,#eaf7ef);border:1px solid var(--green);
+ color:var(--green);padding:11px 14px;border-radius:11px;font-size:13.5px;font-weight:700;
+ margin-bottom:12px;line-height:1.65}
+.card.lock>*:not(.lockbar){display:none}
+.lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
+ color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
 </style>
 </head>
 <body>
@@ -149,6 +171,27 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   </div></details>
 </div>
 
+
+<div class="card" id="wpad">
+  <h2>翻译台</h2>
+  <div id="wpIdle">
+    <p class="hint">建议 30 分钟内译完，写完点提交 —— 逐句对照、参考译文、译法要点才会解锁。</p>
+    <div class="wrow"><button class="wbtn primary" id="wpStart">✍️ 开始翻译</button></div>
+  </div>
+  <div id="wpEdit" style="display:none">
+    <div class="wbar">
+      <span class="tmv" id="wpTimer">30:00</span>
+      <button class="wbtn" id="wpPause" style="padding:5px 12px;font-size:12.5px">⏸ 暂停</button>
+      <span class="cnt" id="wpCount">0 词</span>
+    </div>
+    <textarea id="wpText" placeholder="在这里写你的译文…（也可以手写在纸上/平板上，写完拍照发对话）"></textarea>
+    <div class="wrow">
+      <button class="wbtn primary" id="wpSubmit">📷 提交并解锁参考</button>
+      <button class="wbtn" id="wpSync" style="display:none">☁ 把文字发给我批改</button>
+    </div>
+    <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
+  </div>
+</div>
 <div class="card">
   <h2>怎么用这份包</h2>
   <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
@@ -157,13 +200,13 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
 </div>
 
-<div class="card">
+<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 逐句对照（3 句）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>逐句对照（3 句）</h2>
   <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
   <div class="sent"><span class="snum">第 1 句</span><p class="szh">敦煌莫高窟 (Mogao Grottoes) 数字展示中心于2014年开放启用, 是莫高窟保护利用工程的重要组成部分。</p><p class="sen">The Mogao Grottoes Digital Exhibition Center, which opened in 2014, is an important part of the project for the protection and utilization of the Mogao Grottoes.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">&quot;开放启用&quot;是2014年已完成的动作→用一般过去时 opened in 2014；主句&quot;是……组成部分&quot;是延续至今的事实→用一般现在时 is。一句之内两个时态各有所指，不矛盾。</span></div><div class="chunk"><span class="k">冠词</span><span class="v">展示中心是特指的唯一机构→前面加定冠词 the；an important part 中&quot;重要组成部分&quot;是泛指其中一个部分→用不定冠词 an（part 以元音音素开头前面用 a 不用 an？part 以辅音 /p/ 开头，故是 an important 因 important 以元音开头）。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">Grottoes 本身是&quot;洞窟&quot;的复数（grotto→grottoes），是约定俗成的专名一部分，照抄即可，不要误写成单数 grotto。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">展示中心采用数字技术和多媒体展示手段, 使游客进入洞窟参观之前就能了解莫高窟的历史文化, 鉴赏莫高窟的艺术经典。</p><p class="sen">The center adopts digital technology and multimedia means, enabling visitors to learn about the history and culture of the Mogao Grottoes and appreciate its artistic classics before they enter the caves.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调一般现在时：中心&quot;采用&quot;技术是现在持续的常态→adopts；时间状语从句 before they enter 也用现在时。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语 The center 是第三人称单数→谓语用 adopts，别漏掉词尾 s。</span></div><div class="chunk"><span class="k">介词搭配</span><span class="v">&quot;了解某事物&quot;用 learn about/understand；&quot;鉴赏艺术&quot;用 appreciate（及物，直接跟宾语，不加介词）。&quot;进入洞窟&quot;是 enter the caves，enter 及物不加 into。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">&quot;游客&quot;泛指一类人→用复数 visitors，相应代词用 they；&quot;洞窟&quot;不止一个→caves 复数；&quot;艺术经典&quot;是多件作品→the artistic classics 复数。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">这将减少开放洞窟的数量, 缩短游客在洞窟内的逗留时间, 减轻参观对莫高窟造成的影响, 以使这一世界文化遗产得到妥善保护、长久利用。</p><p class="sen">This will reduce the number of open caves, shorten the time visitors stay inside, and lessen the impact of visits on the Mogao Grottoes, so that this World Cultural Heritage site can be properly protected and used over the long term.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">&quot;这将……&quot;明确表对未来的预期/效果→用 will + 动词原形 reduce/shorten/lessen，这是基调一般现在时之外的合理偏离。</span></div><div class="chunk"><span class="k">语态</span><span class="v">&quot;遗产得到妥善保护、长久利用&quot;——遗产是&quot;被保护、被利用&quot;的承受者，中文的&quot;得到&quot;提示这里要用英文被动：can be properly protected and used。这是汉译英最易漏的点：中文不显的被动，英文要显化。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">&quot;开放洞窟的数量&quot;→the number of open caves（caves 复数）；&quot;逗留时间&quot;是不可数→the time visitors stay，不加复数。</span></div><div class="chunk"><span class="k">介词搭配</span><span class="v">&quot;参观对莫高窟造成的影响&quot;用 the impact of... on...（impact on 固定搭配）；&quot;减少……的数量&quot;用 reduce the number of...。</span></div></div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 整篇参考译文</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>整篇参考译文</h2>
   <details><summary>展开整篇（自己翻完再看）</summary>
     <div class="dbody"><p class="en">The Mogao Grottoes Digital Exhibition Center, which opened in 2014, is an important part of the project for the protection and utilization of the Mogao Grottoes. The center adopts digital technology and multimedia means, enabling visitors to learn about the history and culture of the Mogao Grottoes and appreciate its artistic classics before they enter the caves. This will reduce the number of open caves, shorten the time visitors stay inside, and lessen the impact of visits on the Mogao Grottoes, so that this World Cultural Heritage site can be properly protected and used over the long term. 【衔接】 第1句到第2句：用 the center 承接避免重复全称 第1句已给出全称 The Mogao Grottoes Digital Exhibition Center，第2句再说展示中心时不必重复整串，改用 The center 承接即可，简洁又不歧义。 第2句到第3句：用 This 指代承接前句做法 第3句中文主语这将减少开放洞窟的数量的&quot;这&quot;，指代第2句&quot;中心采用数字技术使游客提前了解&quot;这一整套做法，英文用 This 开头承接，把两句的因果/递进关系自然带出，读者一看就知道&quot;这&quot;指什么。</p></div></details>
@@ -171,13 +214,13 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   重点看它怎么处理句间连接、怎么避免重复用词。</div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 句间衔接（2 处）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>句间衔接（2 处）</h2>
   <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
   <div class="row"><span class="tag">衔接</span><div class="c"><b>第1句到第2句：用 the center 承接避免重复全称</b>第1句已给出全称 The Mogao Grottoes Digital Exhibition Center，第2句再说展示中心时不必重复整串，改用 The center 承接即可，简洁又不歧义。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第2句到第3句：用 This 指代承接前句做法</b>第3句中文主语这将减少开放洞窟的数量的&quot;这&quot;，指代第2句&quot;中心采用数字技术使游客提前了解&quot;这一整套做法，英文用 This 开头承接，把两句的因果/递进关系自然带出，读者一看就知道&quot;这&quot;指什么。</div></div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 译法要点（14 条）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>译法要点（14 条）</h2>
   <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
   <div class="vocab"><div class="w">敦煌莫高窟</div><div class="d">敦煌莫高窟 (Mogao Grottoes)——原文已给出约定俗成的官方译名 the Mogao Grottoes（也作 the Mogao Caves），考生直接照用即可，全篇统一，不要自己另译成 Dunhuang Cave 之类。</div></div><div class="vocab"><div class="w">数字展示中心</div><div class="d">数字展示中心——定为 the Digital Exhibition Center，全篇反复出现，统一用此译法；下文再次提到&quot;展示中心&quot;时可用 the center 承接，但首次给出全称。</div></div><div class="vocab"><div class="w">世界文化遗产</div><div class="d">这一世界文化遗产——固定译法 World Cultural Heritage（site），此处指莫高窟本身，译作 this World Cultural Heritage site，前后只用这一种说法。</div></div><div class="vocab"><div class="w">时态</div><div class="d">&quot;开放启用&quot;是2014年已完成的动作→用一般过去时 opened in 2014；主句&quot;是……组成部分&quot;是延续至今的事实→用一般现在时 is。一句之内两个时态各有所指，不矛盾。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">展示中心是特指的唯一机构→前面加定冠词 the；an important part 中&quot;重要组成部分&quot;是泛指其中一个部分→用不定冠词 an（part 以元音音素开头前面用 a 不用 an？part 以辅音 /p/ 开头，故是 an important 因 important 以元音开头）。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">Grottoes 本身是&quot;洞窟&quot;的复数（grotto→grottoes），是约定俗成的专名一部分，照抄即可，不要误写成单数 grotto。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调一般现在时：中心&quot;采用&quot;技术是现在持续的常态→adopts；时间状语从句 before they enter 也用现在时。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 The center 是第三人称单数→谓语用 adopts，别漏掉词尾 s。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">&quot;了解某事物&quot;用 learn about/understand；&quot;鉴赏艺术&quot;用 appreciate（及物，直接跟宾语，不加介词）。&quot;进入洞窟&quot;是 enter the caves，enter 及物不加 into。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;游客&quot;泛指一类人→用复数 visitors，相应代词用 they；&quot;洞窟&quot;不止一个→caves 复数；&quot;艺术经典&quot;是多件作品→the artistic classics 复数。</div></div><div class="vocab"><div class="w">时态</div><div class="d">&quot;这将……&quot;明确表对未来的预期/效果→用 will + 动词原形 reduce/shorten/lessen，这是基调一般现在时之外的合理偏离。</div></div><div class="vocab"><div class="w">语态</div><div class="d">&quot;遗产得到妥善保护、长久利用&quot;——遗产是&quot;被保护、被利用&quot;的承受者，中文的&quot;得到&quot;提示这里要用英文被动：can be properly protected and used。这是汉译英最易漏的点：中文不显的被动，英文要显化。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;开放洞窟的数量&quot;→the number of open caves（caves 复数）；&quot;逗留时间&quot;是不可数→the time visitors stay，不加复数。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">&quot;参观对莫高窟造成的影响&quot;用 the impact of... on...（impact on 固定搭配）；&quot;减少……的数量&quot;用 reduce the number of...。</div></div>
@@ -194,5 +237,107 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   </table>
 </div>
 
+
+<script>
+(function(){
+  var slot = document.getElementById('wpad');
+  if (!slot) return;
+  var TOPIC = "cet4-67f4d286a543c3aca5af06b1910625b0749ce20d4052";
+  var KEY = 'cet4trans:' + (location.pathname.split('/').pop() || 'x');
+  var TOTAL = 30 * 60;
+  var idle = document.getElementById('wpIdle'), edit = document.getElementById('wpEdit');
+  var ta = document.getElementById('wpText'), tmv = document.getElementById('wpTimer');
+  var cnt = document.getElementById('wpCount'), st = document.getElementById('wpSt');
+  var btnP = document.getElementById('wpPause'), btnS = document.getElementById('wpSync');
+  var state = {draft:'', used:0, done:false};
+  var left = TOTAL, tid = null, running = false;
+
+  function fmt(s){ s = Math.max(0, s|0);
+    var m = Math.floor(s/60), x = s%60;
+    return (m<10?'0':'')+m+':'+(x<10?'0':'')+x; }
+  function words(t){ t = (t||'').trim(); if(!t) return 0;
+    return t.split(/\s+/).filter(function(w){ return /[A-Za-z0-9]/.test(w); }).length; }
+  function save(){ state.draft = ta.value;
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}') || {}; }catch(e){ return {}; } }
+  function tick(){ state.used++;
+    left = TOTAL - state.used;
+    tmv.textContent = fmt(left);
+    if (left <= 0){ clearInterval(tid); running = false; tmv.textContent = '00:00';
+      st.style.color = 'var(--amber)';
+      st.textContent = '⏰ 30 分钟到。还可以继续写，写完了再提交。'; }
+    if (state.used % 10 === 0) save();
+  }
+  function updCnt(){ cnt.textContent = words(ta.value) + ' 词'; }
+
+  function unlock(scroll){
+    state.done = true;
+    var locks = document.querySelectorAll('.card.lock');
+    for (var i=0;i<locks.length;i++){
+      var b = locks[i].querySelector('.lockbar');
+      if (b) b.parentNode.removeChild(b);
+      locks[i].classList.remove('lock');
+    }
+    var all = document.querySelectorAll('.card details');
+    for (var j=0;j<all.length;j++) all[j].open = true;
+    save();
+    if (scroll && locks.length){
+      var last = document.querySelectorAll('.card.lock');
+      var t = document.getElementById('refcard');
+      if (t) t.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  }
+
+  document.getElementById('wpStart').addEventListener('click', function(){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    if (!running){ running = true; tid = setInterval(tick, 1000); }
+    ta.focus(); updCnt(); save();
+  });
+
+  btnP.addEventListener('click', function(){
+    if (running){ clearInterval(tid); running = false; btnP.textContent = '▶ 继续'; }
+    else { running = true; tid = setInterval(tick, 1000); btnP.textContent = '⏸ 暂停'; }
+  });
+
+  ta.addEventListener('input', function(){ updCnt(); save(); });
+
+  document.getElementById('wpSubmit').addEventListener('click', function(){
+    var n = words(ta.value);
+    if (running){ clearInterval(tid); running = false; }
+    var m = Math.floor(state.used/60), s = state.used % 60;
+    st.style.color = 'var(--green)';
+    st.innerHTML = '✅ 已解锁 · 用时 ' + m + ' 分 ' + s + ' 秒' + (n ? ' · ' + n + ' 词' : '')
+      + '。把<b>手写照片发到主对话</b>，我来识别并逐句批改。';
+    if (n > 0) btnS.style.display = 'inline-block';
+    unlock(true);
+  });
+
+  btnS.addEventListener('click', function(){
+    if (!ta.value.trim()){ return; }
+    btnS.disabled = true; btnS.textContent = '同步中…';
+    var d = new Date();
+    var ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    fetch('https://ntfy.sh/' + TOPIC, { method:'POST',
+      body: JSON.stringify({t:'rep', kind:'translation', date:ds, page:document.title,
+        text:'【翻译提交】' + ds + ' · ' + words(ta.value) + ' 词\n\n' + ta.value})
+    }).then(function(x){
+      if (x.ok){ btnS.textContent = '✓ 已发送'; btnS.style.color = 'var(--green)';
+        st.innerHTML = '✓ 已上云。回到主对话说一句「看回执」，我给你逐句批改。'; }
+      else { btnS.disabled = false; btnS.textContent = '☁ 重试同步'; }
+    }).catch(function(){ btnS.disabled = false; btnS.textContent = '☁ 重试同步'; });
+  });
+
+  var d0 = load();
+  state.draft = d0.draft || ''; state.used = d0.used || 0; state.done = !!d0.done;
+  if (state.draft){ ta.value = state.draft; updCnt(); }
+  if (state.done){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    left = TOTAL - state.used; tmv.textContent = fmt(left);
+    unlock(false);
+    btnS.style.display = 'inline-block';
+    st.innerHTML = '（本篇已提交过，参考已解锁）';
+  }
+})();
+</script>
 </body>
 </html>

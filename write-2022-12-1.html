@@ -180,10 +180,10 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     </div>
     <textarea id="wpText" placeholder="在这里写你的作文…（题目在上方，写完点下面的提交）"></textarea>
     <div class="wrow">
-      <button class="wbtn primary" id="wpSubmit">📤 完成写作，查看范文</button>
-      <button class="wbtn" id="wpSync" style="display:none">☁ 发给教练批改</button>
+      <button class="wbtn primary" id="wpSubmit">📷 提交并解锁参考</button>
+      <button class="wbtn" id="wpSync" style="display:none">☁ 把文字发给我批改</button>
     </div>
-    <div class="wst" id="wpSt">草稿会自动保存，刷新不会丢。</div>
+    <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
 <div class="card">
@@ -291,13 +291,12 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 
   document.getElementById('wpSubmit').addEventListener('click', function(){
     var n = words(ta.value);
-    if (n < 30){ st.style.color = 'var(--amber)';
-      st.textContent = '至少写满 30 词再提交（现在 ' + n + ' 词）'; return; }
     if (running){ clearInterval(tid); running = false; }
     var m = Math.floor(state.used/60), s = state.used % 60;
     st.style.color = 'var(--green)';
-    st.innerHTML = '✅ 已提交 · 用时 ' + m + ' 分 ' + s + ' 秒 · ' + n + ' 词。范文与解析已解锁 ↓';
-    btnS.style.display = 'inline-block';
+    st.innerHTML = '✅ 已解锁 · 用时 ' + m + ' 分 ' + s + ' 秒' + (n ? ' · ' + n + ' 词' : '')
+      + '。把<b>手写照片发到主对话</b>，我来识别并逐句批改。';
+    if (n > 0) btnS.style.display = 'inline-block';
     unlock(true);
   });
 
@@ -311,7 +310,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
         text:'【写作提交】' + ds + ' · ' + words(ta.value) + ' 词\n\n' + ta.value})
     }).then(function(x){
       if (x.ok){ btnS.textContent = '✓ 已发送'; btnS.style.color = 'var(--green)';
-        st.innerHTML = '✓ 作文已上云。回到主对话说一句「看回执」，我给你逐句批改。'; }
+        st.innerHTML = '✓ 已上云。回到主对话说一句「看回执」，我给你逐句批改。'; }
       else { btnS.disabled = false; btnS.textContent = '☁ 重试同步'; }
     }).catch(function(){ btnS.disabled = false; btnS.textContent = '☁ 重试同步'; });
   });

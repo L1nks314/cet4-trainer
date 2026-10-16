@@ -117,6 +117,28 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+/* ═══ 写作台 ═══ */
+.wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
+.wbtn:hover{border-color:var(--blue);color:var(--blue)}
+.wbtn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.wbtn.primary:hover{filter:brightness(1.08);color:#fff}
+.wbar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.wbar .tmv{font-weight:800;font-size:17px;color:var(--blue);font-variant-numeric:tabular-nums;
+ letter-spacing:.5px}
+.wbar .cnt{margin-left:auto;font-size:13px;font-weight:700;color:var(--sub)}
+#wpText{width:100%;min-height:230px;resize:vertical;padding:14px 16px;border-radius:12px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);font:inherit;
+ font-size:14.5px;line-height:1.95;box-sizing:border-box}
+#wpText:focus{outline:none;border-color:var(--blue)}
+.wrow{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.wst{font-size:13px;font-weight:700;color:var(--sub);line-height:1.6}
+.wdone{background:var(--green-soft,#eaf7ef);border:1px solid var(--green);
+ color:var(--green);padding:11px 14px;border-radius:11px;font-size:13.5px;font-weight:700;
+ margin-bottom:12px;line-height:1.65}
+.card.lock>*:not(.lockbar){display:none}
+.lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
+ color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
 </style>
 </head>
 <body>
@@ -149,6 +171,27 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   </div></details>
 </div>
 
+
+<div class="card" id="wpad">
+  <h2>翻译台</h2>
+  <div id="wpIdle">
+    <p class="hint">建议 30 分钟内译完，写完点提交 —— 逐句对照、参考译文、译法要点才会解锁。</p>
+    <div class="wrow"><button class="wbtn primary" id="wpStart">✍️ 开始翻译</button></div>
+  </div>
+  <div id="wpEdit" style="display:none">
+    <div class="wbar">
+      <span class="tmv" id="wpTimer">30:00</span>
+      <button class="wbtn" id="wpPause" style="padding:5px 12px;font-size:12.5px">⏸ 暂停</button>
+      <span class="cnt" id="wpCount">0 词</span>
+    </div>
+    <textarea id="wpText" placeholder="在这里写你的译文…（也可以手写在纸上/平板上，写完拍照发对话）"></textarea>
+    <div class="wrow">
+      <button class="wbtn primary" id="wpSubmit">📷 提交并解锁参考</button>
+      <button class="wbtn" id="wpSync" style="display:none">☁ 把文字发给我批改</button>
+    </div>
+    <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
+  </div>
+</div>
 <div class="card">
   <h2>怎么用这份包</h2>
   <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
@@ -157,13 +200,13 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
 </div>
 
-<div class="card">
+<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 逐句对照（5 句）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>逐句对照（5 句）</h2>
   <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
   <div class="sent"><span class="snum">第 1 句</span><p class="szh">中国政府十分重视环境保护。</p><p class="sen">The Chinese government attaches great importance to environmental protection.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调用一般现在时：陈述「中国政府一贯重视」这一持续事实，谓语用 attaches（第三人称单数）。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语 The Chinese government 是单数第三人称，谓语动词须加 s → attaches / values，别漏掉这个 s。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">「重视」的地道搭配是 attach importance to（to 后接名词）或直接用 value；用 attach 时勿丢介词 to。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">近年来,中国在减少空气、水和土壤污染上取得了显著成效。</p><p class="sen">In recent years, China has made remarkable progress in reducing air, water and soil pollution.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">偏离基调改用现在完成时：近年来 配 取得了，是「过去到现在已经取得、且影响延续至今」，标准用 has made / has achieved，不能用一般过去时 made。</span></div><div class="chunk"><span class="k">名词并列</span><span class="v">「空气、水和土壤污染」是三类污染共用一个 pollution → air, water and soil pollution，三个修饰词并列、pollution 不可数不加 s。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">「取得成效/进展」固定搭配 make progress（progress 不可数）或 achieve achievements；用 make progress 时 progress 前不加 a、不加 s。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">为了不断改善人们的生活环境,中国采取了一系列有效措施,包括大力发展清洁能源,改善公共交通,推广共享单车,实施垃圾分类。</p><p class="sen">To continuously improve people&#x27;s living environment, China has taken a series of effective measures, including developing clean energy, improving public transportation, promoting shared bikes and implementing garbage classification.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">采取了 是已完成并影响至今，用现在完成时 has taken；与第2句的 has made 保持一致。</span></div><div class="chunk"><span class="k">非谓语一致</span><span class="v">including 后四个动作必须同为动名词且形式整齐：developing / improving / promoting / implementing，不可混入 to develop 或原形 develop。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">measures 是可数复数（一系列措施）→ measures 加 s；shared bikes 表泛指用复数；clean energy、public transportation、garbage classification 均不可数，不加 s。</span></div></div><div class="sent"><span class="snum">第 4 句</span><p class="szh">通过这些措施,中国的城市和农村正在绿起来、美起来。</p><p class="sen">Thanks to these measures, both urban and rural areas in China are becoming greener and more beautiful.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">正在 明确表「此刻正在进行的变化」，用现在进行时 are becoming，这是本句正当偏离一般现在时基调之处。</span></div><div class="chunk"><span class="k">比较级</span><span class="v">「绿起来、美起来」表程度加深：green → greener（短词加 er），beautiful → more beautiful（长词加 more），别写成 more greener 之类双重比较。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语 cities and rural areas 是复数，系动词用 are，不用 is。</span></div></div><div class="sent"><span class="snum">第 5 句</span><p class="szh">中国还积极参与国际合作,为全球环境保护做出了重要贡献。</p><p class="sen">China also actively participates in international cooperation, making important contributions to global environmental protection.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">主干 积极参与 是持续性事实，用一般现在时 participates（回归全篇基调）；分词 making 不带时态，但其内含的 做出了 是已完成结果，分词形式 making contributions 不与主句时态冲突，自然衔接。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语 China 单数第三人称，主干谓语 participates 加 s。</span></div><div class="chunk"><span class="k">搭配与单复数</span><span class="v">「参与」用 participate in（勿丢 in）；「做出贡献」用 make contributions to，contribution 可数、贡献不止一项可用复数 contributions。</span></div></div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 整篇参考译文</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>整篇参考译文</h2>
   <details><summary>展开整篇（自己翻完再看）</summary>
     <div class="dbody"><p class="en">The Chinese government attaches great importance to environmental protection. In recent years, China has made remarkable progress in reducing air, water and soil pollution. To continuously improve people&#x27;s living environment, China has taken a series of effective measures, including developing clean energy, improving public transportation, promoting shared bikes and implementing garbage classification. Thanks to these measures, both urban and rural areas in China are becoming greener and more beautiful. China also actively participates in international cooperation, making important contributions to global environmental protection. 【衔接】 第3句句首用目的状语自然承接第2句 第2句讲已取得成效，第3句 为了不断改善人们的生活环境 用 To continuously improve... 的目的状语开头，顺势说明「为达成进一步改善而采取措施」，与前句的成效形成「已有成绩—继续努力」的递进，无需再额外加关联词。 第4句用Thanks to these measures回指第3句的措施 第4句 通过这些措施 译为 Thanks to these measures，其中 these measures 直接回指第3句末尾的 a series of effective measures，用指示词承接避免重复罗列，把「采取措施」与「城乡变美」串成因果链。 第5句用also标出中国的另一项行动 第5句 中国还积极参与国际合作 的「还」译为 also，提示这是在国内措施之外、中国在国际层面的又一作为，与前文国内行动形成「对内＋对外」的并列层次，让整篇逻辑更清楚。</p></div></details>
@@ -171,13 +214,13 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   重点看它怎么处理句间连接、怎么避免重复用词。</div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 句间衔接（3 处）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>句间衔接（3 处）</h2>
   <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
   <div class="row"><span class="tag">衔接</span><div class="c"><b>第3句句首用目的状语自然承接第2句</b>第2句讲已取得成效，第3句 为了不断改善人们的生活环境 用 To continuously improve... 的目的状语开头，顺势说明「为达成进一步改善而采取措施」，与前句的成效形成「已有成绩—继续努力」的递进，无需再额外加关联词。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第4句用Thanks to these measures回指第3句的措施</b>第4句 通过这些措施 译为 Thanks to these measures，其中 these measures 直接回指第3句末尾的 a series of effective measures，用指示词承接避免重复罗列，把「采取措施」与「城乡变美」串成因果链。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第5句用also标出中国的另一项行动</b>第5句 中国还积极参与国际合作 的「还」译为 also，提示这是在国内措施之外、中国在国际层面的又一作为，与前文国内行动形成「对内＋对外」的并列层次，让整篇逻辑更清楚。</div></div>
 </div>
 
-<div class="card">
+<div class="card lock"><div class="lockbar"><b>🔒 译法要点（19 条）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>译法要点（19 条）</h2>
   <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
   <div class="vocab"><div class="w">环境保护</div><div class="d">统一译作 environmental protection。原文 中国政府十分重视环境保护 与 为全球环境保护做出了重要贡献 两处出现，全篇只用这一个译法，第二处可用代词或省略避免重复，但译名本身不变。属意译，是约定俗成的固定表达。</div></div><div class="vocab"><div class="w">清洁能源</div><div class="d">统一译作 clean energy。出自 大力发展清洁能源。意译，clean energy 为通用固定搭配，energy 此处不可数、不加 s。</div></div><div class="vocab"><div class="w">共享单车</div><div class="d">统一译作 shared bikes（或 bike-sharing）。出自 推广共享单车。意译，「共享」用 shared/sharing，「单车」用 bikes，需用复数表泛指。</div></div><div class="vocab"><div class="w">垃圾分类</div><div class="d">统一译作 garbage classification（或 garbage sorting）。出自 实施垃圾分类。意译，garbage 不可数、不加 s，classification/sorting 均为常见对应。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调用一般现在时：陈述「中国政府一贯重视」这一持续事实，谓语用 attaches（第三人称单数）。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 The Chinese government 是单数第三人称，谓语动词须加 s → attaches / values，别漏掉这个 s。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">「重视」的地道搭配是 attach importance to（to 后接名词）或直接用 value；用 attach 时勿丢介词 to。</div></div><div class="vocab"><div class="w">时态</div><div class="d">偏离基调改用现在完成时：近年来 配 取得了，是「过去到现在已经取得、且影响延续至今」，标准用 has made / has achieved，不能用一般过去时 made。</div></div><div class="vocab"><div class="w">名词并列</div><div class="d">「空气、水和土壤污染」是三类污染共用一个 pollution → air, water and soil pollution，三个修饰词并列、pollution 不可数不加 s。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">「取得成效/进展」固定搭配 make progress（progress 不可数）或 achieve achievements；用 make progress 时 progress 前不加 a、不加 s。</div></div><div class="vocab"><div class="w">时态</div><div class="d">采取了 是已完成并影响至今，用现在完成时 has taken；与第2句的 has made 保持一致。</div></div><div class="vocab"><div class="w">非谓语一致</div><div class="d">including 后四个动作必须同为动名词且形式整齐：developing / improving / promoting / implementing，不可混入 to develop 或原形 develop。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">measures 是可数复数（一系列措施）→ measures 加 s；shared bikes 表泛指用复数；clean energy、public transportation、garbage classification 均不可数，不加 s。</div></div><div class="vocab"><div class="w">时态</div><div class="d">正在 明确表「此刻正在进行的变化」，用现在进行时 are becoming，这是本句正当偏离一般现在时基调之处。</div></div><div class="vocab"><div class="w">比较级</div><div class="d">「绿起来、美起来」表程度加深：green → greener（短词加 er），beautiful → more beautiful（长词加 more），别写成 more greener 之类双重比较。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 cities and rural areas 是复数，系动词用 are，不用 is。</div></div><div class="vocab"><div class="w">时态</div><div class="d">主干 积极参与 是持续性事实，用一般现在时 participates（回归全篇基调）；分词 making 不带时态，但其内含的 做出了 是已完成结果，分词形式 making contributions 不与主句时态冲突，自然衔接。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 China 单数第三人称，主干谓语 participates 加 s。</div></div><div class="vocab"><div class="w">搭配与单复数</div><div class="d">「参与」用 participate in（勿丢 in）；「做出贡献」用 make contributions to，contribution 可数、贡献不止一项可用复数 contributions。</div></div>
@@ -194,5 +237,107 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   </table>
 </div>
 
+
+<script>
+(function(){
+  var slot = document.getElementById('wpad');
+  if (!slot) return;
+  var TOPIC = "cet4-67f4d286a543c3aca5af06b1910625b0749ce20d4052";
+  var KEY = 'cet4trans:' + (location.pathname.split('/').pop() || 'x');
+  var TOTAL = 30 * 60;
+  var idle = document.getElementById('wpIdle'), edit = document.getElementById('wpEdit');
+  var ta = document.getElementById('wpText'), tmv = document.getElementById('wpTimer');
+  var cnt = document.getElementById('wpCount'), st = document.getElementById('wpSt');
+  var btnP = document.getElementById('wpPause'), btnS = document.getElementById('wpSync');
+  var state = {draft:'', used:0, done:false};
+  var left = TOTAL, tid = null, running = false;
+
+  function fmt(s){ s = Math.max(0, s|0);
+    var m = Math.floor(s/60), x = s%60;
+    return (m<10?'0':'')+m+':'+(x<10?'0':'')+x; }
+  function words(t){ t = (t||'').trim(); if(!t) return 0;
+    return t.split(/\s+/).filter(function(w){ return /[A-Za-z0-9]/.test(w); }).length; }
+  function save(){ state.draft = ta.value;
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}') || {}; }catch(e){ return {}; } }
+  function tick(){ state.used++;
+    left = TOTAL - state.used;
+    tmv.textContent = fmt(left);
+    if (left <= 0){ clearInterval(tid); running = false; tmv.textContent = '00:00';
+      st.style.color = 'var(--amber)';
+      st.textContent = '⏰ 30 分钟到。还可以继续写，写完了再提交。'; }
+    if (state.used % 10 === 0) save();
+  }
+  function updCnt(){ cnt.textContent = words(ta.value) + ' 词'; }
+
+  function unlock(scroll){
+    state.done = true;
+    var locks = document.querySelectorAll('.card.lock');
+    for (var i=0;i<locks.length;i++){
+      var b = locks[i].querySelector('.lockbar');
+      if (b) b.parentNode.removeChild(b);
+      locks[i].classList.remove('lock');
+    }
+    var all = document.querySelectorAll('.card details');
+    for (var j=0;j<all.length;j++) all[j].open = true;
+    save();
+    if (scroll && locks.length){
+      var last = document.querySelectorAll('.card.lock');
+      var t = document.getElementById('refcard');
+      if (t) t.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  }
+
+  document.getElementById('wpStart').addEventListener('click', function(){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    if (!running){ running = true; tid = setInterval(tick, 1000); }
+    ta.focus(); updCnt(); save();
+  });
+
+  btnP.addEventListener('click', function(){
+    if (running){ clearInterval(tid); running = false; btnP.textContent = '▶ 继续'; }
+    else { running = true; tid = setInterval(tick, 1000); btnP.textContent = '⏸ 暂停'; }
+  });
+
+  ta.addEventListener('input', function(){ updCnt(); save(); });
+
+  document.getElementById('wpSubmit').addEventListener('click', function(){
+    var n = words(ta.value);
+    if (running){ clearInterval(tid); running = false; }
+    var m = Math.floor(state.used/60), s = state.used % 60;
+    st.style.color = 'var(--green)';
+    st.innerHTML = '✅ 已解锁 · 用时 ' + m + ' 分 ' + s + ' 秒' + (n ? ' · ' + n + ' 词' : '')
+      + '。把<b>手写照片发到主对话</b>，我来识别并逐句批改。';
+    if (n > 0) btnS.style.display = 'inline-block';
+    unlock(true);
+  });
+
+  btnS.addEventListener('click', function(){
+    if (!ta.value.trim()){ return; }
+    btnS.disabled = true; btnS.textContent = '同步中…';
+    var d = new Date();
+    var ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    fetch('https://ntfy.sh/' + TOPIC, { method:'POST',
+      body: JSON.stringify({t:'rep', kind:'translation', date:ds, page:document.title,
+        text:'【翻译提交】' + ds + ' · ' + words(ta.value) + ' 词\n\n' + ta.value})
+    }).then(function(x){
+      if (x.ok){ btnS.textContent = '✓ 已发送'; btnS.style.color = 'var(--green)';
+        st.innerHTML = '✓ 已上云。回到主对话说一句「看回执」，我给你逐句批改。'; }
+      else { btnS.disabled = false; btnS.textContent = '☁ 重试同步'; }
+    }).catch(function(){ btnS.disabled = false; btnS.textContent = '☁ 重试同步'; });
+  });
+
+  var d0 = load();
+  state.draft = d0.draft || ''; state.used = d0.used || 0; state.done = !!d0.done;
+  if (state.draft){ ta.value = state.draft; updCnt(); }
+  if (state.done){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    left = TOTAL - state.used; tmv.textContent = fmt(left);
+    unlock(false);
+    btnS.style.display = 'inline-block';
+    st.innerHTML = '（本篇已提交过，参考已解锁）';
+  }
+})();
+</script>
 </body>
 </html>
