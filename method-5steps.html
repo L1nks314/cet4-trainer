@@ -228,8 +228,9 @@ body.qshow .stem{display:block}
  padding:0;cursor:pointer;flex:0 0 auto}
 #markBar .sw.on{border-color:var(--blue,#2563eb);box-shadow:0 0 0 2px rgba(37,99,235,.22)}
 #markCanvas{position:fixed;top:0;left:0;z-index:8980;pointer-events:none}
-body.penon{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
-body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text}
+html.penon,body.penon{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;overscroll-behavior:none}
+html.penon body,body.penon *,:host{touch-action:none !important}
+body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;touch-action:auto !important}
 #markCanvas.act{cursor:crosshair}
 </style>
 <noscript><style>
@@ -814,13 +815,13 @@ var QUIZ = [];
 
 <script>
 (function(){
-  /* penv4 */
+  /* penv5 */
   var cv = document.getElementById('markCanvas');
   if (!cv) return;
   var ctx = cv.getContext('2d');
   var strokes = [], cur = null, SC = [];
   var VW = 0, VH = 0, DPR = 1, OX = 0, OY = 0, rzT = 0;
-  var rafId = 0, needFull = false, needLive = false, hasEra = false;
+  var rafId = 0, needFull = false, needLive = false, hasEra = false, pendFull = false;
 
   /* ── 画布只覆盖视口：平板不会因超大画布丧失硬件加速 ── */
   function setSize(){
@@ -854,7 +855,6 @@ var QUIZ = [];
     return s.bb;
   }
 
-  /* 扫描可滚动容器（用于把笔迹限制在所属栏内） */
   function scanSC(){
     SC = [];
     var all = document.querySelectorAll('div,section,article,aside');
@@ -881,14 +881,7 @@ var QUIZ = [];
     }
     return best ? {c:best, c0:best.scrollTop} : {c:null, c0:0};
   }
-  function inCur(x, y){
-    if (!cur || !cur.c) return true;
-    var r = cur.c.getBoundingClientRect();
-    var l = r.left + (window.pageXOffset || 0), t = r.top + (window.pageYOffset || 0);
-    return x >= l && x <= l + r.width && y >= t && y <= t + r.height;
-  }
 
-  /* 画一笔（滚动重绘时抽稀，降低绘制次数） */
   function drawStroke(s, sparse){
     var pts = s.pts, n = pts.length;
     if (!n) return;
@@ -900,7 +893,7 @@ var QUIZ = [];
     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     if (n === 1){
       ctx.fillStyle = s.era ? '#000' : s.color;
-      ctx.beginPath(); ctx.arc(pts[0][0]+bx, pts[0][1]+by, Math.max(.5, pts[0][2]/2), 0, 6.2832); ctx.fill();
+      ctx.beginPath(); ctx.arc(pts[0][0]+bx, pts[0][1]+by, Math.max(.6, pts[0][2]/2), 0, 6.2832); ctx.fill();
       ctx.restore(); return;
     }
     if (sparse && n > 240){
@@ -967,6 +960,8 @@ var QUIZ = [];
   }
 
   function schedule(full){
+    /* 书写中不打断：全量重绘延后到收笔之后 */
+    if (full && drawing){ pendFull = true; return; }
     if (full){ needFull = true; needLive = false; } else needLive = true;
     if (!rafId) rafId = requestAnimationFrame(function(){
       rafId = 0;
@@ -991,6 +986,7 @@ var QUIZ = [];
   function setMode(m){
     mode = m;
     cv.classList.toggle('act', m !== 'off');
+    document.documentElement.classList.toggle('penon', m !== 'off');
     document.body.classList.toggle('penon', m !== 'off');
     if (pen) pen.classList.toggle('on', m === 'draw');
     if (era) era.classList.toggle('on', m === 'erase');
@@ -1028,12 +1024,10 @@ var QUIZ = [];
   if (wdM) wdM.classList.add('on');
   if (swK) swK.classList.add('on');
 
-  function pressure(e){
-    return (e.pointerType === 'pen' && typeof e.pressure === 'number' && e.pressure > 0) ? e.pressure : 0.5;
-  }
+  function pressure(e){ return (e.pointerType === 'pen' && typeof e.pressure === 'number' && e.pressure > 0) ? e.pressure : 0.5; }
   function widthOf(e){
-    if (mode === 'erase') return Math.max(12, baseW * 5);
-    return Math.max(0.7, baseW * (0.35 + pressure(e)));
+    if (mode === 'erase') return Math.max(14, baseW * 5);
+    return Math.max(1.1, baseW * (0.4 + pressure(e)));   /* 下限提高，避免过快显得断断续续 */
   }
 
   var EXCLUDE = 'input,textarea,select,#markBar';
@@ -1045,6 +1039,72 @@ var QUIZ = [];
     return false;
   }
 
+  /* ── 手指滚动：涂写模式下浏览器手势已禁用，这里手动接管（含惯性） ── */
+  function scrollHost(el){
+    while (el && el.nodeType === 1 && el !== document.documentElement){
+      var st = getComputedStyle(el);
+      if ((st.overflowY === 'auto' || st.overflowY === 'scroll') && el.scrollHeight > el.clientHeight + 2) return el;
+      el = el.parentElement;
+    }
+    return null;
+  }
+  var TS = { id:null, y:0, host:null, base:0, hist:[] };
+  document.addEventListener('touchstart', function(e){
+    if (mode === 'off' || e.touches.length !== 1) return;
+    var p = e.changedTouches[0];
+    if (hitUI(e.target, p.clientX, p.clientY)) return;
+    if (e.target && e.target.closest && e.target.closest('input,textarea,select')) return;
+    TS.id = p.identifier; TS.y = p.clientY;
+    TS.host = scrollHost(e.target);
+    TS.base = TS.host ? TS.host.scrollTop : (window.pageYOffset || 0);
+    TS.hist = [[p.clientY, performance.now()]];
+  }, {passive:true, capture:true});
+  document.addEventListener('touchmove', function(e){
+    if (TS.id === null) return;
+    var p = null;
+    for (var i = 0; i < e.touches.length; i++) if (e.touches[i].identifier === TS.id) p = e.touches[i];
+    if (!p){ TS.id = null; return; }
+    var dy = TS.y - p.clientY;
+    if (Math.abs(dy) < 4) return;                       /* 视为点按，不拦 */
+    e.preventDefault();
+    var v = TS.base + dy;
+    if (TS.host) TS.host.scrollTop = v; else window.scrollTo(window.pageXOffset || 0, v);
+    TS.hist.push([p.clientY, performance.now()]);
+    if (TS.hist.length > 5) TS.hist.shift();
+    schedule(true);
+  }, {passive:false, capture:true});
+  function endTouch(e){
+    if (TS.id === null) return;
+    var host = TS.host, hist = TS.hist;
+    TS.id = null; TS.host = null;
+    if (hist.length < 2) return;
+    var a = hist[0], b = hist[hist.length - 1];
+    var dt = b[1] - a[1];
+    if (dt < 8) return;
+    var vel = (a[0] - b[0]) / dt;                       /* px/ms，向上滑为正 */
+    if (Math.abs(vel) < 0.12) return;
+    var last = performance.now();
+    (function step(){
+      var now = performance.now(), d = now - last; last = now;
+      if (d > 64) return;
+      vel *= Math.pow(0.9955, d);
+      if (Math.abs(vel) < 0.03) return;
+      var delta = vel * d, moved = true;
+      if (host){
+        var b0 = host.scrollTop;
+        host.scrollTop = b0 + delta;
+        if (host.scrollTop === b0) moved = false;
+      } else {
+        var y0 = window.pageYOffset || 0;
+        window.scrollTo(window.pageXOffset || 0, y0 + delta);
+      }
+      schedule(true);
+      if (moved) requestAnimationFrame(step);
+    })();
+  }
+  document.addEventListener('touchend', endTouch, {passive:true, capture:true});
+  document.addEventListener('touchcancel', function(){ TS.id = null; TS.host = null; }, {passive:true, capture:true});
+
   document.addEventListener('pointerdown', function(e){
     if (mode === 'off') return;
     if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
@@ -1052,8 +1112,8 @@ var QUIZ = [];
     drawing = true;
     var x = e.pageX, y = e.pageY, w = widthOf(e);
     var o = ownerOf(x, y);
-    cur = {pts:[[x, y, w]], color:color, era:(mode === 'erase'),
-           c:o.c, c0:o.c0, n:1, mid:[0, 0], bb:null};
+    cur = { pts:[[x, y, w]], color:color, era:(mode === 'erase'),
+            c:o.c, c0:o.c0, n:1, mid:[0, 0], bb:null };
     if (cur.era) hasEra = true;
     strokes.push(cur);
     var bx = -OX, by = offOf(cur) - OY;
@@ -1061,7 +1121,7 @@ var QUIZ = [];
     clipC(cur.c);
     if (!cur.era){
       ctx.fillStyle = color;
-      ctx.beginPath(); ctx.arc(x+bx, y+by, Math.max(.5, w/2), 0, 6.2832); ctx.fill();
+      ctx.beginPath(); ctx.arc(x+bx, y+by, Math.max(.6, w/2), 0, 6.2832); ctx.fill();
     }
     ctx.restore();
     cur.mid = [x+bx, y+by];
@@ -1081,11 +1141,14 @@ var QUIZ = [];
   ['pointerup','pointercancel'].forEach(function(ev){
     document.addEventListener(ev, function(e){
       if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
+      if (!drawing){ return; }
       if (rafId && (needLive || needFull)){ cancelAnimationFrame(rafId); rafId = 0; }
       if (needLive) live();
       needLive = false; needFull = false;
       if (cur) cur.bb = bboxOf(cur);
       drawing = false; cur = null;
+      pendFull = false;
+      schedule(true);                    /* 收笔后统一重绘一次，保证最终形态完整 */
     }, {capture:true});
   });
 })();
