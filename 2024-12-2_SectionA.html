@@ -219,14 +219,23 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
  transition:opacity .18s ease,transform .18s ease}
 #penToast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* ═══ 听写模式 ═══ */
-#dictBar{display:none;margin-top:11px;background:var(--amber-soft);border:1.5px solid var(--amber);
- border-radius:11px;padding:10px 13px;align-items:center;gap:9px;flex-wrap:wrap}
+/* ═══ 听写模式（控制条吸顶在听写本顶部） ═══ */
+#dictBar{display:none;position:sticky;top:10px;z-index:55;margin:0 0 12px;
+ background:var(--amber-soft);border:1.5px solid var(--amber);border-radius:12px;
+ padding:10px 12px;align-items:center;gap:9px;flex-wrap:wrap;
+ box-shadow:0 6px 18px rgba(15,20,30,.13)}
 #dictBar.on{display:flex}
-#dictBar .db-txt{flex:1;min-width:150px;font-size:13.6px;font-weight:600;color:var(--amber-ink,var(--txt));line-height:1.6}
-#dictBar button{border:1.5px solid var(--line);background:#fff;border-radius:9px;padding:7px 13px;
- font-size:13px;font-weight:700;font-family:inherit;color:inherit;cursor:pointer}
-#dictBar button.pri{background:var(--blue);border-color:var(--blue);color:#fff}
+#dictBar .db-txt{flex:1;min-width:112px;font-size:14.5px;font-weight:700;color:var(--txt);line-height:1.5}
+#dictBar button{border:1.5px solid var(--line);background:#fff;border-radius:10px;
+ padding:12px 17px;font-size:15px;font-weight:700;font-family:inherit;color:inherit;
+ cursor:pointer;-webkit-tap-highlight-color:transparent}
+#dictBar button.pri{background:var(--blue);border-color:var(--blue);color:#fff;min-width:116px}
+#dictBar #dbExit{padding:12px 15px;color:var(--sub);font-weight:600}
+@media (max-width:560px){
+  #dictBar .db-txt{flex:1 0 100%;min-width:0}
+  #dictBar button{padding:12px 14px;font-size:14.5px}
+  #dictBar button.pri{flex:1}
+}
 
 /* ═══ 逐句听写本 ═══ */
 #dictCard.hide{display:none}
@@ -275,12 +284,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
     <span id="plLabel"></span>
     <span id="plPos">00:00 / 00:00</span>
   </div>
-  <div id="dictBar">
-  <span class="db-txt"></span>
-  <button id="dbAgain">🔁 重听这句</button>
-  <button id="dbNext" class="pri">▶ 下一句</button>
-</div>
-<div class="tip blue"><b>精听用法：</b>第一遍别点，整体听；第二遍起用 🔁 把听不出的句子循环三到五遍；第三遍盯着词一个个点，把连读处逐词拆开听。这就是"把一段音频榨干"。</div>
+  <div class="tip blue"><b>精听用法：</b>第一遍别点，整体听；第二遍起用 🔁 把听不出的句子循环三到五遍；第三遍盯着词一个个点，把连读处逐词拆开听。这就是"把一段音频榨干"。</div>
 </div>
 
 
@@ -309,6 +313,13 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 <div class="card hide" id="dictCard">
   <h2><span class="num">5</span>逐句听写本</h2>
   <p class="hint">点播放器里的 <b>✍️ 听写模式</b>：每句播完会自动暂停，本子会<b>自动跳到那一行</b>。用笔直接写在行上，卡住就空着点「下一句」——空着的地方就是你没听出来的。写完整本点「📷 导出听写照」，把图发我批改。</p>
+  <div id="dictBar">
+    <span class="db-txt"></span>
+    <button id="dbAgain">🔁 重听这句</button>
+    <button id="dbNext" class="pri">▶ 下一句</button>
+    <button id="dbExit" title="退出听写模式">✕</button>
+  </div>
+
   <div class="dpwrap" id="dpWrap"></div>
   <div class="dpbtns">
     <button class="btn btn-ghost" id="dpUndo">↩︎ 撤销一笔</button>
@@ -1777,10 +1788,9 @@ for (var qid in AL){
   var txt = bar.querySelector('.db-txt');
   var bNext = document.getElementById('dbNext');
   var bAgain = document.getElementById('dbAgain');
-  var on = false, curLi = -1, B = null, guard = 0;
-  var DP = window.__dictPad || null;
+  var bExit = document.getElementById('dbExit');
   var tpFollow = document.getElementById('tpFollow');
-  var followBack = false;          /* 进去前若开着自动滚动，退出时还给他 */
+  var on = false, curLi = -1, B = null, tick = 0, followBack = false;
 
   function bounds(){
     if (B) return B;
@@ -1797,48 +1807,66 @@ for (var qid in AL){
     for (var i = 0; i < b.length; i++) if (t >= b[i][0] - 0.35 && t < b[i][1]) return i;
     return -1;
   }
+  function pad(){ return window.__dictPad || null; }
+
+  /* ── 句末判定：不靠 timeupdate 踩点，自己轮询，越过末尾就停 ── */
+  function stopTick(){ if (tick){ clearInterval(tick); tick = 0; } }
+  function startTick(){ if (!tick) tick = setInterval(check, 70); }
+  function check(){
+    if (!on || audio.paused || curLi < 0) return;
+    var b = bounds(), end = b[curLi] ? b[curLi][1] : -1;
+    if (end < 0) return;
+    var t = audio.currentTime;
+    if (t < end - 0.05) return;
+    if (t > end + 0.8){                 /* 进度被手动拖走了：跟随它，别硬停 */
+      var li = liAt(t);
+      if (li >= 0 && li !== curLi) curLi = li;
+      return;
+    }
+    audio.pause();
+    showWait(curLi);
+    stopTick();
+  }
+
   function playLine(li){
     var b = bounds();
     if (li < 0 || li >= b.length) return false;
     curLi = li;
-    guard = performance.now() + 500;          /* 刚切句，先忽略句末判断 */
     bar.classList.remove('on');
-    DP = window.__dictPad || DP;
-    if (DP) DP.focusLine(li);                 /* 本子跳到这一行 */
+    var D = pad();
+    if (D) D.focusLine(li);             /* 本子跳到这一行 */
     audio.currentTime = b[li][0];
     var pr = audio.play();
     if (pr && pr.catch) pr.catch(function(){});
+    startTick();
     return true;
   }
   function showWait(li){
     var b = bounds(), last = (li + 1 >= b.length);
     if (last){
-      txt.innerHTML = '🎉 <b>' + b.length + ' 句全部播完</b> —— 点「📷 导出听写照」，把本子发我批改';
+      txt.innerHTML = '🎉 <b>全部播完</b> · 导出听写照发我';
       bNext.textContent = '✓ 完成';
     } else {
-      txt.innerHTML = '✍️ <b>第 ' + (li + 1) + ' / ' + b.length + ' 句</b>播完了 —— 写完点「下一句」';
+      txt.innerHTML = '第 <b>' + (li + 1) + '</b> / ' + b.length + ' 句';
       bNext.textContent = '▶ 下一句';
     }
     bar.classList.add('on');
   }
   function exitMode(){
     on = false; curLi = -1;
+    stopTick();
     btn.classList.remove('act'); btn.textContent = '✍️ 听写模式';
     bar.classList.remove('on');
     if (window.__dictPad) window.__dictPad.hide();
     if (followBack && tpFollow){ tpFollow.click(); followBack = false; }
   }
 
-  audio.addEventListener('timeupdate', function(){
-    if (!on || audio.paused) return;
-    if (performance.now() < guard) return;
-    var t = audio.currentTime, li = liAt(t);
-    if (li < 0) return;
-    if (t >= bounds()[li][1] - 0.08){ audio.pause(); showWait(li); }
-  });
+  /* 用户自己点播放（或点单词跳播）时，把轮询接回来 */
+  audio.addEventListener('play', function(){ if (on) startTick(); });
   audio.addEventListener('ended', function(){
     if (!on) return;
-    audio.pause(); showWait(bounds().length - 1);
+    audio.pause(); stopTick();
+    showWait(bounds().length - 1);
   });
 
   btn.addEventListener('click', function(){
@@ -1847,12 +1875,12 @@ for (var qid in AL){
     btn.classList.add('act'); btn.textContent = '✍️ 听写模式 开';
     /* 听写时由听写本主导滚动，先把播放器的「自动滚动」让出去，否则两边抢滚动 */
     if (tpFollow && tpFollow.classList.contains('act')){ followBack = true; tpFollow.click(); }
-    DP = window.__dictPad || DP;
-    if (DP) DP.show();
-    txt.innerHTML = '✍️ 听写模式：<b>每句播完会自动暂停</b>，写到本子上，写完点「下一句」';
+    var D = pad();
+    if (D) D.show();
+    txt.innerHTML = '✍️ 每句播完自动暂停';
     bNext.textContent = '▶ 下一句';
-    playLine(liAt(audio.currentTime) < 0 ? 0 : liAt(audio.currentTime));
-    bar.classList.add('on');
+    var li0 = liAt(audio.currentTime);
+    playLine(li0 < 0 ? 0 : li0);      /* 播放中控制条收起，播完才吸顶出现 */
   });
   bNext.addEventListener('click', function(){
     if (!on){ bar.classList.remove('on'); return; }
@@ -1861,6 +1889,7 @@ for (var qid in AL){
   bAgain.addEventListener('click', function(){
     if (curLi >= 0) playLine(curLi);
   });
+  if (bExit) bExit.addEventListener('click', function(){ if (on) exitMode(); });
 })();
 </script>
 </body>
