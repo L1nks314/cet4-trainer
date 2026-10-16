@@ -104,7 +104,6 @@ tr:last-child td{border-bottom:0}
  line-height:1.5;white-space:nowrap}
 .pill.bad{background:var(--red-soft);color:var(--red-ink)}
 .pill.fix{background:var(--green-soft);color:var(--green-ink)}
-/* 折叠的语篇分析 */
 details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
  background:var(--card)}
 details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
@@ -139,6 +138,18 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .card.lock>*:not(.lockbar){display:none}
 .lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
  color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -147,28 +158,11 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 <h1>汉译英 · 2023年6月 第3套</h1>
 
 <div class="card">
-  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part IV</span></div>
-  <div class="big">
-    <div><b>195</b><span>中文字数</span></div>
-    <div><b>5</b><span>句</span></div>
-    <div><b>30</b><span>分钟</span></div>
-  </div>
-  <div class="tip b">翻译评分只看四件事：<b>意思说全、语法没错、表达通顺、用词准确</b>。
-  翻得漂亮不加分，翻错了狠狠扣 —— 所以目标是<b>不出错</b>，不是出彩。</div>
-</div>
-
-<div class="card">
-  <div class="chead"><h2>中文原文</h2><span class="cmeta">5 句</span></div>
-  
+  <div class="chead"><h2>中文原文</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>5 句</span><span>段落翻译</span><span>要求 140–180 词</span></div>
   <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
     <span class="zh">中国政府一直大力推行义务教育(compulsory education) ,以使每个儿童都享有受教育的机会。自1986年《义务教育法》生效以来，经过不懈努力，实现了在全国推行义务教育的目标。如今，在中国, 儿童年满六周岁开始上小学, 从小学到初中一共接受九年义务教育。从2008年秋季学期开始, 义务教育阶段学生无须缴纳学费。随着一系列教育改革举措的实施, 中国义务教育的质量也有显著提高。</span></div>
-  <div class="tip a"><b>先自己翻一遍再看下面。</b>用纸笔或另一个文档写，写完再逐句对照 ——
-  直接看答案等于没练。</div>
-  <details class="dig"><summary>语篇分析 · 主旨 / 时态 / 译法（建议自己翻完再看）</summary><div class="dbody">
-        <div class="chunk"><span class="k">主旨</span><span class="v">客观介绍中国义务教育 整段在客观介绍中国推行义务教育的政策、历程与现状，属于典型的四级&quot;中国社会/制度介绍&quot;语体。从开篇 中国政府一直大力推行义务教育 就能看出：它陈述的是一项长期实行、至今仍在持续的国家制度，语气客观、不带个人评价。这类&quot;讲事实、讲现状&quot;的语体直接决定下面以一般现在时为主基调，用词偏正式、书面。</span></div>
-        <div class="chunk"><span class="k">时态</span><span class="v">一般现在时 通篇是对一项现行制度的客观陈述：现在怎么推行、现在孩子几岁上学、现在质量如何，都是&quot;当下的事实/常态&quot;，故全篇默认一般现在时。如 如今，在中国, 儿童年满六周岁开始上小学 明显是现状描述。仅在两处确需偏离：一是 自1986年《义务教育法》生效以来 这种&quot;自过去某点延续至今&quot;的句子用现在完成时；二是 从2008年秋季学期开始 这种已经开始并持续的政策也用现在完成时表达。</span></div>
-        <div class="chunk"><span class="k">译法</span><span class="v">义务教育 原文已自带括号注释 义务教育(compulsory education)，故全篇统一译作 &quot;compulsory education&quot;，不另造 &quot;obligatory/required education&quot; 等说法。这是本篇反复出现的核心词，必须前后一致。 《义务教育法》 《义务教育法》 是一部具体法律，采用约定俗成的意译加专名首字母大写：&quot;the Compulsory Education Law&quot;。书名号在英文里不保留，靠首字母大写 + 定冠词 the 体现&quot;特指这一部法律&quot;。 小学 小学 统一译作 &quot;primary school&quot;，不与下文混用 &quot;elementary school&quot;。指&quot;上小学&quot;这一阶段动作时不加冠词（start primary school）。 初中 初中 统一译作 &quot;junior high school&quot;（或 junior middle school，全篇取其一即可），不要写成模糊的 middle school 而与小学界限不清。</span></div>
-  </div></details>
+  <details class="dig"><summary>语篇分析 · 主旨 / 时态 / 译法（建议自己翻完再看）</summary><div class="dbody"><div class="chunk"><span class="k">主旨</span><span class="v">客观介绍中国义务教育 整段在客观介绍中国推行义务教育的政策、历程与现状，属于典型的四级&quot;中国社会/制度介绍&quot;语体。从开篇 中国政府一直大力推行义务教育 就能看出：它陈述的是一项长期实行、至今仍在持续的国家制度，语气客观、不带个人评价。这类&quot;讲事实、讲现状&quot;的语体直接决定下面以一般现在时为主基调，用词偏正式、书面。</span></div><div class="chunk"><span class="k">时态</span><span class="v">一般现在时 通篇是对一项现行制度的客观陈述：现在怎么推行、现在孩子几岁上学、现在质量如何，都是&quot;当下的事实/常态&quot;，故全篇默认一般现在时。如 如今，在中国, 儿童年满六周岁开始上小学 明显是现状描述。仅在两处确需偏离：一是 自1986年《义务教育法》生效以来 这种&quot;自过去某点延续至今&quot;的句子用现在完成时；二是 从2008年秋季学期开始 这种已经开始并持续的政策也用现在完成时表达。</span></div><div class="chunk"><span class="k">译法</span><span class="v">义务教育 原文已自带括号注释 义务教育(compulsory education)，故全篇统一译作 &quot;compulsory education&quot;，不另造 &quot;obligatory/required education&quot; 等说法。这是本篇反复出现的核心词，必须前后一致。 《义务教育法》 《义务教育法》 是一部具体法律，采用约定俗成的意译加专名首字母大写：&quot;the Compulsory Education Law&quot;。书名号在英文里不保留，靠首字母大写 + 定冠词 the 体现&quot;特指这一部法律&quot;。 小学 小学 统一译作 &quot;primary school&quot;，不与下文混用 &quot;elementary school&quot;。指&quot;上小学&quot;这一阶段动作时不加冠词（start primary school）。 初中 初中 统一译作 &quot;junior high school&quot;（或 junior middle school，全篇取其一即可），不要写成模糊的 middle school 而与小学界限不清。</span></div></div></details>
 </div>
 
 
@@ -193,50 +187,42 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
-<div class="card">
-  <h2>怎么用这份包</h2>
-  <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
-    <span>③ 抄下错处</span><span>④ 整篇通读</span></div>
-  <div class="tip g">第二步是全流程最有价值的一步：<b>看你漏译了什么、时态用错了哪里</b>。
-  每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
-</div>
 
-<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 逐句对照（5 句）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
+
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 逐句对照 · 参考译文 · 译法要点</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>逐句对照（5 句）</h2>
   <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
   <div class="sent"><span class="snum">第 1 句</span><p class="szh">中国政府一直大力推行义务教育(compulsory education) ,以使每个儿童都享有受教育的机会。</p><p class="sen">The Chinese government has been vigorously promoting compulsory education so that every child can have access to education.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">&quot;一直推行&quot;是从过去持续到现在并仍在继续，用现在完成进行时 has been promoting，比单纯一般现在时更贴&quot;一直&quot;；这是相对全篇基调的合理偏离，原因正是 一直 这个延续标志。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语 The Chinese government 视作单数，助动词用 has 而非 have。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">&quot;享有受教育的机会&quot;用固定搭配 have access to education，access 后接 to；避免逐字译成 enjoy the chance of being educated 这类中式表达。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">自1986年《义务教育法》生效以来，经过不懈努力，实现了在全国推行义务教育的目标。</p><p class="sen">Since the Compulsory Education Law came into effect in 1986, China has, through unremitting efforts, achieved the goal of making compulsory education available nationwide.</p><div class="strat">主语策略：补主语</div><div class="chunk"><span class="k">时态</span><span class="v">主句&quot;实现了&quot;是&quot;自1986以来&quot;延续至今的成果，用现在完成时 has achieved，与 Since 引导的时间起点呼应——这是&quot;自……以来&quot;句的固定时态搭配，属对全篇基调的必要偏离。从句&quot;生效&quot;是过去某点的动作，用一般过去时 came into effect。</span></div><div class="chunk"><span class="k">专名统一</span><span class="v">《义务教育法》照 glossary 统一译作 the Compulsory Education Law，首字母大写、加定冠词 the；&quot;义务教育&quot;仍用 compulsory education。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">&quot;生效&quot;用 come into effect / take effect 固定搭配；&quot;经过不懈努力&quot;用 through unremitting / unremitting efforts，efforts 用复数。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">如今，在中国, 儿童年满六周岁开始上小学, 从小学到初中一共接受九年义务教育。</p><p class="sen">Today in China, children start primary school at the age of six and receive a total of nine years of compulsory education from primary school to junior high school.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调用一般现在时：start、receive，因为这是对&quot;现在中国孩子普遍如此&quot;的常态陈述，且原文有 如今 明确指向现在。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">主语用复数 children 表泛指&quot;中国的孩子们普遍&quot;，比 a child 更自然；谓语相应用原形 start / receive（不加 s）。&quot;九年&quot;是复数 nine years。</span></div><div class="chunk"><span class="k">冠词</span><span class="v">&quot;上小学&quot;指阶段，用 start primary school 不加冠词（类比 go to school）；&quot;年满六周岁&quot;固定表达 at the age of six。</span></div></div><div class="sent"><span class="snum">第 4 句</span><p class="szh">从2008年秋季学期开始, 义务教育阶段学生无须缴纳学费。</p><p class="sen">Since the autumn semester of 2008, students in the compulsory education stage have no longer had to pay tuition fees.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">&quot;从2008年开始（一直免费至今）&quot;用现在完成时 have no longer had to pay 或更简洁地用 have been exempt from / no longer pay，呼应 Since；这是相对基调的必要偏离。若用一般现在时 no longer pay 也可，但需保留 Since 表延续感。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">students 用复数泛指；&quot;学费&quot;tuition fees 习惯用复数（或不可数 tuition）。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">&quot;无须缴纳学费&quot;地道说法：no longer have to pay tuition fees / are exempt from tuition fees；exempt 后接 from。避免中式直译 needn&#x27;t pay the study money。</span></div></div><div class="sent"><span class="snum">第 5 句</span><p class="szh">随着一系列教育改革举措的实施, 中国义务教育的质量也有显著提高。</p><p class="sen">With the implementation of a series of educational reform measures, the quality of compulsory education in China has also improved significantly.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">&quot;也有显著提高&quot;是已经取得并持续的成果，用现在完成时 has improved 最贴；若理解为现状陈述用一般现在时 is improving 亦可。这里取完成时，呼应&quot;改革举措实施后带来的结果&quot;。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语中心词是 the quality（单数，不是 measures），故谓语用 has improved 单数，别被前面复数的 measures 带偏成 have。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">&quot;显著提高&quot;用 improve significantly / remarkably；&quot;一系列举措&quot;a series of measures（series 单复数同形，a series of 后接复数名词）；&quot;实施&quot;the implementation of。</span></div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 整篇参考译文</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>整篇参考译文</h2>
-  <details><summary>展开整篇（自己翻完再看）</summary>
+  <details style="margin-top:14px"><summary>整篇参考译文</summary>
     <div class="dbody"><p class="en">The Chinese government has been vigorously promoting compulsory education so that every child can have access to education. Since the Compulsory Education Law came into effect in 1986, China has, through unremitting efforts, achieved the goal of making compulsory education available nationwide. Today in China, children start primary school at the age of six and receive a total of nine years of compulsory education from primary school to junior high school. Since the autumn semester of 2008, students in the compulsory education stage have no longer had to pay tuition fees. With the implementation of a series of educational reform measures, the quality of compulsory education in China has also improved significantly. 【衔接】 首末两句补 also 呼应 末句 也有显著提高 的&quot;也&quot;是相对全篇成就的递进，译文已用 has also improved 的 also 承接前文一连串成果（普及、免费），让&quot;质量提高&quot;读起来是&quot;在这些成就之上又添一笔&quot;，而非孤立一句。考生若漏掉 also，整篇的递进关系就断了。 时间线索串成主线 全篇靠时间标志自然成线：Since… in 1986（第二句）→ Today（第三句）→ Since… 2008（第四句）。译文保留这条&quot;从立法到现状到具体政策&quot;的时间脉络，读者顺着时间走，无需额外加大量关联词，信息流就清楚。衔接处只需保证这几个时间状语都放在句首显眼处。 专名前后统一 compulsory education 在第一、二、三、五句反复出现，全篇统一同一拼法；the Compulsory Education Law（第二句）与之呼应又区分。统一译名本身就是最重要的&quot;衔接&quot;——同一个概念全篇一个面孔，读者才不会以为在讲不同的东西。</p></div></details>
-  <div class="tip a">整篇译文是用来<b>感受节奏和衔接</b>的，不是用来背的。
-  重点看它怎么处理句间连接、怎么避免重复用词。</div>
+  <details><summary>句间衔接（3 处）</summary>
+    <div class="dbody">
+      <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
+      <div class="row"><span class="tag">衔接</span><div class="c"><b>首末两句补 also 呼应</b>末句 也有显著提高 的&quot;也&quot;是相对全篇成就的递进，译文已用 has also improved 的 also 承接前文一连串成果（普及、免费），让&quot;质量提高&quot;读起来是&quot;在这些成就之上又添一笔&quot;，而非孤立一句。考生若漏掉 also，整篇的递进关系就断了。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>时间线索串成主线</b>全篇靠时间标志自然成线：Since… in 1986（第二句）→ Today（第三句）→ Since… 2008（第四句）。译文保留这条&quot;从立法到现状到具体政策&quot;的时间脉络，读者顺着时间走，无需额外加大量关联词，信息流就清楚。衔接处只需保证这几个时间状语都放在句首显眼处。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>专名前后统一</b>compulsory education 在第一、二、三、五句反复出现，全篇统一同一拼法；the Compulsory Education Law（第二句）与之呼应又区分。统一译名本身就是最重要的&quot;衔接&quot;——同一个概念全篇一个面孔，读者才不会以为在讲不同的东西。</div></div>
+    </div></details>
+  <details><summary>译法要点（19 条）</summary>
+    <div class="dbody">
+      <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
+      <div class="vocab"><div class="w">义务教育</div><div class="d">原文已自带括号注释 义务教育(compulsory education)，故全篇统一译作 &quot;compulsory education&quot;，不另造 &quot;obligatory/required education&quot; 等说法。这是本篇反复出现的核心词，必须前后一致。</div></div><div class="vocab"><div class="w">《义务教育法》</div><div class="d">《义务教育法》 是一部具体法律，采用约定俗成的意译加专名首字母大写：&quot;the Compulsory Education Law&quot;。书名号在英文里不保留，靠首字母大写 + 定冠词 the 体现&quot;特指这一部法律&quot;。</div></div><div class="vocab"><div class="w">小学</div><div class="d">小学 统一译作 &quot;primary school&quot;，不与下文混用 &quot;elementary school&quot;。指&quot;上小学&quot;这一阶段动作时不加冠词（start primary school）。</div></div><div class="vocab"><div class="w">初中</div><div class="d">初中 统一译作 &quot;junior high school&quot;（或 junior middle school，全篇取其一即可），不要写成模糊的 middle school 而与小学界限不清。</div></div><div class="vocab"><div class="w">时态</div><div class="d">&quot;一直推行&quot;是从过去持续到现在并仍在继续，用现在完成进行时 has been promoting，比单纯一般现在时更贴&quot;一直&quot;；这是相对全篇基调的合理偏离，原因正是 一直 这个延续标志。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 The Chinese government 视作单数，助动词用 has 而非 have。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">&quot;享有受教育的机会&quot;用固定搭配 have access to education，access 后接 to；避免逐字译成 enjoy the chance of being educated 这类中式表达。</div></div><div class="vocab"><div class="w">时态</div><div class="d">主句&quot;实现了&quot;是&quot;自1986以来&quot;延续至今的成果，用现在完成时 has achieved，与 Since 引导的时间起点呼应——这是&quot;自……以来&quot;句的固定时态搭配，属对全篇基调的必要偏离。从句&quot;生效&quot;是过去某点的动作，用一般过去时 came into effect。</div></div><div class="vocab"><div class="w">专名统一</div><div class="d">《义务教育法》照 glossary 统一译作 the Compulsory Education Law，首字母大写、加定冠词 the；&quot;义务教育&quot;仍用 compulsory education。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">&quot;生效&quot;用 come into effect / take effect 固定搭配；&quot;经过不懈努力&quot;用 through unremitting / unremitting efforts，efforts 用复数。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调用一般现在时：start、receive，因为这是对&quot;现在中国孩子普遍如此&quot;的常态陈述，且原文有 如今 明确指向现在。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">主语用复数 children 表泛指&quot;中国的孩子们普遍&quot;，比 a child 更自然；谓语相应用原形 start / receive（不加 s）。&quot;九年&quot;是复数 nine years。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">&quot;上小学&quot;指阶段，用 start primary school 不加冠词（类比 go to school）；&quot;年满六周岁&quot;固定表达 at the age of six。</div></div><div class="vocab"><div class="w">时态</div><div class="d">&quot;从2008年开始（一直免费至今）&quot;用现在完成时 have no longer had to pay 或更简洁地用 have been exempt from / no longer pay，呼应 Since；这是相对基调的必要偏离。若用一般现在时 no longer pay 也可，但需保留 Since 表延续感。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">students 用复数泛指；&quot;学费&quot;tuition fees 习惯用复数（或不可数 tuition）。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">&quot;无须缴纳学费&quot;地道说法：no longer have to pay tuition fees / are exempt from tuition fees；exempt 后接 from。避免中式直译 needn&#x27;t pay the study money。</div></div><div class="vocab"><div class="w">时态</div><div class="d">&quot;也有显著提高&quot;是已经取得并持续的成果，用现在完成时 has improved 最贴；若理解为现状陈述用一般现在时 is improving 亦可。这里取完成时，呼应&quot;改革举措实施后带来的结果&quot;。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语中心词是 the quality（单数，不是 measures），故谓语用 has improved 单数，别被前面复数的 measures 带偏成 have。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">&quot;显著提高&quot;用 improve significantly / remarkably；&quot;一系列举措&quot;a series of measures（series 单复数同形，a series of 后接复数名词）；&quot;实施&quot;the implementation of。</div></div>
+    </div></details>
 </div>
 
-<div class="card lock"><div class="lockbar"><b>🔒 句间衔接（3 处）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>句间衔接（3 处）</h2>
-  <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
-  <div class="row"><span class="tag">衔接</span><div class="c"><b>首末两句补 also 呼应</b>末句 也有显著提高 的&quot;也&quot;是相对全篇成就的递进，译文已用 has also improved 的 also 承接前文一连串成果（普及、免费），让&quot;质量提高&quot;读起来是&quot;在这些成就之上又添一笔&quot;，而非孤立一句。考生若漏掉 also，整篇的递进关系就断了。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>时间线索串成主线</b>全篇靠时间标志自然成线：Since… in 1986（第二句）→ Today（第三句）→ Since… 2008（第四句）。译文保留这条&quot;从立法到现状到具体政策&quot;的时间脉络，读者顺着时间走，无需额外加大量关联词，信息流就清楚。衔接处只需保证这几个时间状语都放在句首显眼处。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>专名前后统一</b>compulsory education 在第一、二、三、五句反复出现，全篇统一同一拼法；the Compulsory Education Law（第二句）与之呼应又区分。统一译名本身就是最重要的&quot;衔接&quot;——同一个概念全篇一个面孔，读者才不会以为在讲不同的东西。</div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 译法要点（19 条）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>译法要点（19 条）</h2>
-  <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
-  <div class="vocab"><div class="w">义务教育</div><div class="d">原文已自带括号注释 义务教育(compulsory education)，故全篇统一译作 &quot;compulsory education&quot;，不另造 &quot;obligatory/required education&quot; 等说法。这是本篇反复出现的核心词，必须前后一致。</div></div><div class="vocab"><div class="w">《义务教育法》</div><div class="d">《义务教育法》 是一部具体法律，采用约定俗成的意译加专名首字母大写：&quot;the Compulsory Education Law&quot;。书名号在英文里不保留，靠首字母大写 + 定冠词 the 体现&quot;特指这一部法律&quot;。</div></div><div class="vocab"><div class="w">小学</div><div class="d">小学 统一译作 &quot;primary school&quot;，不与下文混用 &quot;elementary school&quot;。指&quot;上小学&quot;这一阶段动作时不加冠词（start primary school）。</div></div><div class="vocab"><div class="w">初中</div><div class="d">初中 统一译作 &quot;junior high school&quot;（或 junior middle school，全篇取其一即可），不要写成模糊的 middle school 而与小学界限不清。</div></div><div class="vocab"><div class="w">时态</div><div class="d">&quot;一直推行&quot;是从过去持续到现在并仍在继续，用现在完成进行时 has been promoting，比单纯一般现在时更贴&quot;一直&quot;；这是相对全篇基调的合理偏离，原因正是 一直 这个延续标志。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 The Chinese government 视作单数，助动词用 has 而非 have。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">&quot;享有受教育的机会&quot;用固定搭配 have access to education，access 后接 to；避免逐字译成 enjoy the chance of being educated 这类中式表达。</div></div><div class="vocab"><div class="w">时态</div><div class="d">主句&quot;实现了&quot;是&quot;自1986以来&quot;延续至今的成果，用现在完成时 has achieved，与 Since 引导的时间起点呼应——这是&quot;自……以来&quot;句的固定时态搭配，属对全篇基调的必要偏离。从句&quot;生效&quot;是过去某点的动作，用一般过去时 came into effect。</div></div><div class="vocab"><div class="w">专名统一</div><div class="d">《义务教育法》照 glossary 统一译作 the Compulsory Education Law，首字母大写、加定冠词 the；&quot;义务教育&quot;仍用 compulsory education。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">&quot;生效&quot;用 come into effect / take effect 固定搭配；&quot;经过不懈努力&quot;用 through unremitting / unremitting efforts，efforts 用复数。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调用一般现在时：start、receive，因为这是对&quot;现在中国孩子普遍如此&quot;的常态陈述，且原文有 如今 明确指向现在。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">主语用复数 children 表泛指&quot;中国的孩子们普遍&quot;，比 a child 更自然；谓语相应用原形 start / receive（不加 s）。&quot;九年&quot;是复数 nine years。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">&quot;上小学&quot;指阶段，用 start primary school 不加冠词（类比 go to school）；&quot;年满六周岁&quot;固定表达 at the age of six。</div></div><div class="vocab"><div class="w">时态</div><div class="d">&quot;从2008年开始（一直免费至今）&quot;用现在完成时 have no longer had to pay 或更简洁地用 have been exempt from / no longer pay，呼应 Since；这是相对基调的必要偏离。若用一般现在时 no longer pay 也可，但需保留 Since 表延续感。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">students 用复数泛指；&quot;学费&quot;tuition fees 习惯用复数（或不可数 tuition）。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">&quot;无须缴纳学费&quot;地道说法：no longer have to pay tuition fees / are exempt from tuition fees；exempt 后接 from。避免中式直译 needn&#x27;t pay the study money。</div></div><div class="vocab"><div class="w">时态</div><div class="d">&quot;也有显著提高&quot;是已经取得并持续的成果，用现在完成时 has improved 最贴；若理解为现状陈述用一般现在时 is improving 亦可。这里取完成时，呼应&quot;改革举措实施后带来的结果&quot;。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语中心词是 the quality（单数，不是 measures），故谓语用 has improved 单数，别被前面复数的 measures 带偏成 have。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">&quot;显著提高&quot;用 improve significantly / remarkably；&quot;一系列举措&quot;a series of measures（series 单复数同形，a series of 后接复数名词）；&quot;实施&quot;the implementation of。</div></div>
-</div>
-
-<div class="card">
-  <h2>翻译四句口诀</h2>
-  <table>
-    <tr><th>步骤</th><th>做什么</th></tr>
-    <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
-    <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
-    <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
-    <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 > 用词花</b></td></tr>
-  </table>
-</div>
+<details class="card">
+  <summary>📖 怎么译 · 流程与口诀（建议翻到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">流程</span><div class="c"><b>四步走</b>
+      ① 自己翻 → ② 逐句对照（最有价值的一步：看你漏译了什么、时态用错了哪里）
+      → ③ 抄下错处 → ④ 整篇通读。每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div></div>
+    <table>
+      <tr><th>步骤</th><th>做什么</th></tr>
+      <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
+      <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
+      <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
+      <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 &gt; 用词花</b></td></tr>
+    </table>
+  </div>
+</details>
 
 
 <script>
@@ -367,5 +353,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   }
 })();
 </script>
+
+
 </body>
 </html>

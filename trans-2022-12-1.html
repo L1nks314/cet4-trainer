@@ -104,7 +104,6 @@ tr:last-child td{border-bottom:0}
  line-height:1.5;white-space:nowrap}
 .pill.bad{background:var(--red-soft);color:var(--red-ink)}
 .pill.fix{background:var(--green-soft);color:var(--green-ink)}
-/* 折叠的语篇分析 */
 details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
  background:var(--card)}
 details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
@@ -139,6 +138,18 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .card.lock>*:not(.lockbar){display:none}
 .lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
  color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -147,28 +158,11 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 <h1>汉译英 · 2022年12月 第1套</h1>
 
 <div class="card">
-  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part IV</span></div>
-  <div class="big">
-    <div><b>174</b><span>中文字数</span></div>
-    <div><b>5</b><span>句</span></div>
-    <div><b>30</b><span>分钟</span></div>
-  </div>
-  <div class="tip b">翻译评分只看四件事：<b>意思说全、语法没错、表达通顺、用词准确</b>。
-  翻得漂亮不加分，翻错了狠狠扣 —— 所以目标是<b>不出错</b>，不是出彩。</div>
-</div>
-
-<div class="card">
-  <div class="chead"><h2>中文原文</h2><span class="cmeta">5 句</span></div>
-  
+  <div class="chead"><h2>中文原文</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>5 句</span><span>段落翻译</span><span>要求 140–180 词</span></div>
   <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
     <span class="zh">在中国农历中，立秋 (Start of Autumn)意味着夏天的结束和秋天的开始。立秋带来的首先是天气的变化，气温逐渐下降。人们看到树叶开始变黄飘落时，知道秋天已经来临，这就是所谓的&quot;一叶知秋&quot;。但此时酷热的天气并未完全结束，高温通常还会持续一段时间，被称为&quot;秋老虎&quot;。立秋对农民意义重大，这时各种秋季作物迅速生长、开始成熟，收获的季节即将到来。</span></div>
-  <div class="tip a"><b>先自己翻一遍再看下面。</b>用纸笔或另一个文档写，写完再逐句对照 ——
-  直接看答案等于没练。</div>
-  <details class="dig"><summary>语篇分析 · 主旨 / 时态 / 译法（建议自己翻完再看）</summary><div class="dbody">
-        <div class="chunk"><span class="k">主旨</span><span class="v">客观介绍节气立秋 全篇围绕中国农历节气&quot;立秋&quot;展开，介绍它的含义、带来的天气变化以及对农事的意义，属于典型的中国文化/常识介绍类语体。开篇 在中国农历中，立秋(Start of Autumn)意味着夏天的结束和秋天的开始 就是下定义、陈述客观事实的口吻，没有讲一个发生在过去的故事，因此全篇基调是客观陈述当前的普遍事实。</span></div>
-        <div class="chunk"><span class="k">时态</span><span class="v">一般现在时 全篇是在客观介绍立秋这个节气&quot;通常是什么、会发生什么&quot;的恒常规律,而非叙述某一次过去的事件。立秋带来的首先是天气的变化，气温逐渐下降 说的是每年立秋都成立的普遍现象,这类&quot;客观事实/普遍规律&quot;在英文里默认用一般现在时。</span></div>
-        <div class="chunk"><span class="k">译法</span><span class="v">立秋 立秋(Start of Autumn) 的英文译法原文已给出，直接沿用 Start of Autumn，首次出现时用括号补出原中文/拼音不必，但全篇必须只用这一种译法，不要一会儿写 Beginning of Autumn、一会儿写 Start of Autumn。 中国农历 在中国农历中 的&quot;农历&quot;是文化负载词，统一译为 the Chinese lunar calendar（约定俗成译名），不要写成 the Chinese calendar 或 the agricultural calendar 以免歧义。 一叶知秋 一叶知秋 是成语，没有现成对应英文，采取&quot;直译 + 点明含义&quot;：one falling leaf heralds the coming of autumn，或保留为带引号的意译短语。全篇此处仅出现一次，重在把&quot;看到一片叶子就知道秋天到了&quot;的意思译清楚。 秋老虎 秋老虎 是中国民俗说法，指立秋后短期回热的高温天气。采取&quot;直译加引号&quot;的处理：the &quot;Autumn Tiger&quot;，并靠前文的&quot;高温持续&quot;把含义带出，让英文读者能从上下文理解，而不是孤零零冒出一个 tiger。</span></div>
-  </div></details>
+  <details class="dig"><summary>语篇分析 · 主旨 / 时态 / 译法（建议自己翻完再看）</summary><div class="dbody"><div class="chunk"><span class="k">主旨</span><span class="v">客观介绍节气立秋 全篇围绕中国农历节气&quot;立秋&quot;展开，介绍它的含义、带来的天气变化以及对农事的意义，属于典型的中国文化/常识介绍类语体。开篇 在中国农历中，立秋(Start of Autumn)意味着夏天的结束和秋天的开始 就是下定义、陈述客观事实的口吻，没有讲一个发生在过去的故事，因此全篇基调是客观陈述当前的普遍事实。</span></div><div class="chunk"><span class="k">时态</span><span class="v">一般现在时 全篇是在客观介绍立秋这个节气&quot;通常是什么、会发生什么&quot;的恒常规律,而非叙述某一次过去的事件。立秋带来的首先是天气的变化，气温逐渐下降 说的是每年立秋都成立的普遍现象,这类&quot;客观事实/普遍规律&quot;在英文里默认用一般现在时。</span></div><div class="chunk"><span class="k">译法</span><span class="v">立秋 立秋(Start of Autumn) 的英文译法原文已给出，直接沿用 Start of Autumn，首次出现时用括号补出原中文/拼音不必，但全篇必须只用这一种译法，不要一会儿写 Beginning of Autumn、一会儿写 Start of Autumn。 中国农历 在中国农历中 的&quot;农历&quot;是文化负载词，统一译为 the Chinese lunar calendar（约定俗成译名），不要写成 the Chinese calendar 或 the agricultural calendar 以免歧义。 一叶知秋 一叶知秋 是成语，没有现成对应英文，采取&quot;直译 + 点明含义&quot;：one falling leaf heralds the coming of autumn，或保留为带引号的意译短语。全篇此处仅出现一次，重在把&quot;看到一片叶子就知道秋天到了&quot;的意思译清楚。 秋老虎 秋老虎 是中国民俗说法，指立秋后短期回热的高温天气。采取&quot;直译加引号&quot;的处理：the &quot;Autumn Tiger&quot;，并靠前文的&quot;高温持续&quot;把含义带出，让英文读者能从上下文理解，而不是孤零零冒出一个 tiger。</span></div></div></details>
 </div>
 
 
@@ -193,50 +187,42 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
-<div class="card">
-  <h2>怎么用这份包</h2>
-  <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
-    <span>③ 抄下错处</span><span>④ 整篇通读</span></div>
-  <div class="tip g">第二步是全流程最有价值的一步：<b>看你漏译了什么、时态用错了哪里</b>。
-  每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
-</div>
 
-<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 逐句对照（5 句）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
+
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 逐句对照 · 参考译文 · 译法要点</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>逐句对照（5 句）</h2>
   <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
   <div class="sent"><span class="snum">第 1 句</span><p class="szh">在中国农历中，立秋(Start of Autumn)意味着夏天的结束和秋天的开始。</p><p class="sen">In the Chinese lunar calendar, the Start of Autumn marks the end of summer and the beginning of autumn.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调，用一般现在时 marks，因为这是在陈述立秋恒常的含义。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语 Start of Autumn 视作单数概念，谓语用第三人称单数 marks，不要写成 mark。</span></div><div class="chunk"><span class="k">冠词</span><span class="v">特指中国的这一部农历，用定冠词 the Chinese lunar calendar；the end of summer / the beginning of autumn 中的 summer、autumn 表季节泛指，前面不加冠词。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">立秋带来的首先是天气的变化，气温逐渐下降。</p><p class="sen">The Start of Autumn first brings a change in the weather; temperatures gradually drop.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">仍是普遍现象，回指基调用一般现在时 brings、drop。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">&quot;气温&quot;指总体气温水平的逐渐变化，英文习惯用复数 temperatures（与 drop 搭配），不要写成 the temperature is dropping 那样具体某一刻。</span></div><div class="chunk"><span class="k">冠词</span><span class="v">&quot;天气的变化&quot;译 a change in the weather：change 可数、此处泛指一种变化用不定冠词 a；weather 特指当下的天气状况，习惯搭 the weather。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">人们看到树叶开始变黄飘落时，知道秋天已经来临，这就是所谓的&quot;一叶知秋&quot;。</p><p class="sen">When people see the leaves begin to turn yellow and fall, they know that autumn has arrived; this is the so-called principle that &quot;one falling leaf heralds the coming of autumn.&quot;</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">主句与 When 从句都是普遍现象，用一般现在时 see、know；但&quot;已经来临&quot;强调&quot;到说话时已经到了&quot;，用现在完成时 has arrived，这是回指基调时&quot;确有需要才偏离&quot;的典型一处。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">&quot;树叶&quot;不止一片，用复数 the leaves；与之搭配的动词 begin、turn、fall 都用复数形式。</span></div><div class="chunk"><span class="k">动词搭配</span><span class="v">&quot;开始变黄飘落&quot;译 begin to turn yellow and fall：turn + 形容词表&quot;变成某颜色&quot;；see somebody/something do 是感官动词接动词原形结构（the leaves begin）。</span></div></div><div class="sent"><span class="snum">第 4 句</span><p class="szh">但此时酷热的天气并未完全结束，高温通常还会持续一段时间，被称为&quot;秋老虎&quot;。</p><p class="sen">However, the hot weather has not completely ended at this time; high temperatures usually continue for a while, known as the &quot;Autumn Tiger.&quot;</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态语态</span><span class="v">&quot;并未完全结束&quot;强调&quot;到现在还没结束&quot;，用现在完成时否定 has not completely ended；&quot;通常还会持续&quot;是普遍规律，回基调用一般现在时 usually continue。</span></div><div class="chunk"><span class="k">单复数主谓一致</span><span class="v">the hot weather 不可数作单数，配 has；high temperatures 用复数表整体高温，配复数动词 continue。两处主谓单复数各自对齐，别混。</span></div><div class="chunk"><span class="k">含蓄否定</span><span class="v">&quot;并未完全结束&quot;是部分否定，用 has not completely ended（not + completely）准确传达&quot;还没彻底结束&quot;，不要漏译&quot;完全&quot;而写成 has not ended（语气过强）。</span></div></div><div class="sent"><span class="snum">第 5 句</span><p class="szh">立秋对农民意义重大，这时各种秋季作物迅速生长、开始成熟，收获的季节即将到来。</p><p class="sen">The Start of Autumn is of great significance to farmers, as various autumn crops grow rapidly and begin to ripen at this time, and the harvest season is approaching.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">全句陈述每年立秋的普遍意义，回基调用一般现在时 is、grow、begin；&quot;即将到来&quot;用 is approaching（现在进行表临近的将来）或 is coming，自然贴切。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">&quot;各种秋季作物&quot;种类不止一种，用复数 various autumn crops，配复数动词 grow、begin；&quot;农民&quot;泛指这一群体，用复数 farmers。</span></div><div class="chunk"><span class="k">介词搭配</span><span class="v">&quot;对农民意义重大&quot;用 of great significance to farmers / important to farmers——&quot;对（某人）重要&quot;固定搭 to，不要写成 for 或 of。</span></div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 整篇参考译文</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>整篇参考译文</h2>
-  <details><summary>展开整篇（自己翻完再看）</summary>
+  <details style="margin-top:14px"><summary>整篇参考译文</summary>
     <div class="dbody"><p class="en">In the Chinese lunar calendar, the Start of Autumn marks the end of summer and the beginning of autumn. It first brings a change in the weather, as temperatures gradually drop. When people see the leaves begin to turn yellow and fall, they know that autumn has arrived; this is the so-called principle that &quot;one falling leaf heralds the coming of autumn.&quot; However, the hot weather has not completely ended at this time; high temperatures usually continue for a while, a period known as the &quot;Autumn Tiger.&quot; The Start of Autumn is of great significance to farmers, as various autumn crops grow rapidly and begin to ripen at this time, and the harvest season is approaching. 【衔接】 句1到句2：避免重复主语 第一句主语已是 the Start of Autumn，第二句中文又以&quot;立秋&quot;开头。整篇里若每句都重复 the Start of Autumn 会显啰嗦，可让第二句改用代词 It 承接：It first brings a change in the weather，读起来更连贯。 句3到句4：补转折显逻辑 第三句讲&quot;叶落知秋&quot;，第四句 但此时酷热的天气并未完全结束 是明显转折。中文的&quot;但&quot;必须在英文里显化成 However 放句首，否则两句逻辑断裂，读者会觉得&quot;既然秋天来了怎么又说酷热没结束&quot;。 句4内部：用上下文兜住秋老虎 the &quot;Autumn Tiger&quot; 对英文读者是陌生意象，靠紧邻的 high temperatures usually continue 把&quot;它指的是持续高温&quot;这层意思兜住，known as 紧贴其后，读者就能从语境理解，无需另加长注解。</p></div></details>
-  <div class="tip a">整篇译文是用来<b>感受节奏和衔接</b>的，不是用来背的。
-  重点看它怎么处理句间连接、怎么避免重复用词。</div>
+  <details><summary>句间衔接（3 处）</summary>
+    <div class="dbody">
+      <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
+      <div class="row"><span class="tag">衔接</span><div class="c"><b>句1到句2：避免重复主语</b>第一句主语已是 the Start of Autumn，第二句中文又以&quot;立秋&quot;开头。整篇里若每句都重复 the Start of Autumn 会显啰嗦，可让第二句改用代词 It 承接：It first brings a change in the weather，读起来更连贯。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>句3到句4：补转折显逻辑</b>第三句讲&quot;叶落知秋&quot;，第四句 但此时酷热的天气并未完全结束 是明显转折。中文的&quot;但&quot;必须在英文里显化成 However 放句首，否则两句逻辑断裂，读者会觉得&quot;既然秋天来了怎么又说酷热没结束&quot;。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>句4内部：用上下文兜住秋老虎</b>the &quot;Autumn Tiger&quot; 对英文读者是陌生意象，靠紧邻的 high temperatures usually continue 把&quot;它指的是持续高温&quot;这层意思兜住，known as 紧贴其后，读者就能从语境理解，无需另加长注解。</div></div>
+    </div></details>
+  <details><summary>译法要点（19 条）</summary>
+    <div class="dbody">
+      <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
+      <div class="vocab"><div class="w">立秋</div><div class="d">立秋(Start of Autumn) 的英文译法原文已给出，直接沿用 Start of Autumn，首次出现时用括号补出原中文/拼音不必，但全篇必须只用这一种译法，不要一会儿写 Beginning of Autumn、一会儿写 Start of Autumn。</div></div><div class="vocab"><div class="w">中国农历</div><div class="d">在中国农历中 的&quot;农历&quot;是文化负载词，统一译为 the Chinese lunar calendar（约定俗成译名），不要写成 the Chinese calendar 或 the agricultural calendar 以免歧义。</div></div><div class="vocab"><div class="w">一叶知秋</div><div class="d">一叶知秋 是成语，没有现成对应英文，采取&quot;直译 + 点明含义&quot;：one falling leaf heralds the coming of autumn，或保留为带引号的意译短语。全篇此处仅出现一次，重在把&quot;看到一片叶子就知道秋天到了&quot;的意思译清楚。</div></div><div class="vocab"><div class="w">秋老虎</div><div class="d">秋老虎 是中国民俗说法，指立秋后短期回热的高温天气。采取&quot;直译加引号&quot;的处理：the &quot;Autumn Tiger&quot;，并靠前文的&quot;高温持续&quot;把含义带出，让英文读者能从上下文理解，而不是孤零零冒出一个 tiger。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调，用一般现在时 marks，因为这是在陈述立秋恒常的含义。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 Start of Autumn 视作单数概念，谓语用第三人称单数 marks，不要写成 mark。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">特指中国的这一部农历，用定冠词 the Chinese lunar calendar；the end of summer / the beginning of autumn 中的 summer、autumn 表季节泛指，前面不加冠词。</div></div><div class="vocab"><div class="w">时态</div><div class="d">仍是普遍现象，回指基调用一般现在时 brings、drop。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;气温&quot;指总体气温水平的逐渐变化，英文习惯用复数 temperatures（与 drop 搭配），不要写成 the temperature is dropping 那样具体某一刻。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">&quot;天气的变化&quot;译 a change in the weather：change 可数、此处泛指一种变化用不定冠词 a；weather 特指当下的天气状况，习惯搭 the weather。</div></div><div class="vocab"><div class="w">时态</div><div class="d">主句与 When 从句都是普遍现象，用一般现在时 see、know；但&quot;已经来临&quot;强调&quot;到说话时已经到了&quot;，用现在完成时 has arrived，这是回指基调时&quot;确有需要才偏离&quot;的典型一处。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;树叶&quot;不止一片，用复数 the leaves；与之搭配的动词 begin、turn、fall 都用复数形式。</div></div><div class="vocab"><div class="w">动词搭配</div><div class="d">&quot;开始变黄飘落&quot;译 begin to turn yellow and fall：turn + 形容词表&quot;变成某颜色&quot;；see somebody/something do 是感官动词接动词原形结构（the leaves begin）。</div></div><div class="vocab"><div class="w">时态语态</div><div class="d">&quot;并未完全结束&quot;强调&quot;到现在还没结束&quot;，用现在完成时否定 has not completely ended；&quot;通常还会持续&quot;是普遍规律，回基调用一般现在时 usually continue。</div></div><div class="vocab"><div class="w">单复数主谓一致</div><div class="d">the hot weather 不可数作单数，配 has；high temperatures 用复数表整体高温，配复数动词 continue。两处主谓单复数各自对齐，别混。</div></div><div class="vocab"><div class="w">含蓄否定</div><div class="d">&quot;并未完全结束&quot;是部分否定，用 has not completely ended（not + completely）准确传达&quot;还没彻底结束&quot;，不要漏译&quot;完全&quot;而写成 has not ended（语气过强）。</div></div><div class="vocab"><div class="w">时态</div><div class="d">全句陈述每年立秋的普遍意义，回基调用一般现在时 is、grow、begin；&quot;即将到来&quot;用 is approaching（现在进行表临近的将来）或 is coming，自然贴切。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;各种秋季作物&quot;种类不止一种，用复数 various autumn crops，配复数动词 grow、begin；&quot;农民&quot;泛指这一群体，用复数 farmers。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">&quot;对农民意义重大&quot;用 of great significance to farmers / important to farmers——&quot;对（某人）重要&quot;固定搭 to，不要写成 for 或 of。</div></div>
+    </div></details>
 </div>
 
-<div class="card lock"><div class="lockbar"><b>🔒 句间衔接（3 处）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>句间衔接（3 处）</h2>
-  <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
-  <div class="row"><span class="tag">衔接</span><div class="c"><b>句1到句2：避免重复主语</b>第一句主语已是 the Start of Autumn，第二句中文又以&quot;立秋&quot;开头。整篇里若每句都重复 the Start of Autumn 会显啰嗦，可让第二句改用代词 It 承接：It first brings a change in the weather，读起来更连贯。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>句3到句4：补转折显逻辑</b>第三句讲&quot;叶落知秋&quot;，第四句 但此时酷热的天气并未完全结束 是明显转折。中文的&quot;但&quot;必须在英文里显化成 However 放句首，否则两句逻辑断裂，读者会觉得&quot;既然秋天来了怎么又说酷热没结束&quot;。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>句4内部：用上下文兜住秋老虎</b>the &quot;Autumn Tiger&quot; 对英文读者是陌生意象，靠紧邻的 high temperatures usually continue 把&quot;它指的是持续高温&quot;这层意思兜住，known as 紧贴其后，读者就能从语境理解，无需另加长注解。</div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 译法要点（19 条）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>译法要点（19 条）</h2>
-  <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
-  <div class="vocab"><div class="w">立秋</div><div class="d">立秋(Start of Autumn) 的英文译法原文已给出，直接沿用 Start of Autumn，首次出现时用括号补出原中文/拼音不必，但全篇必须只用这一种译法，不要一会儿写 Beginning of Autumn、一会儿写 Start of Autumn。</div></div><div class="vocab"><div class="w">中国农历</div><div class="d">在中国农历中 的&quot;农历&quot;是文化负载词，统一译为 the Chinese lunar calendar（约定俗成译名），不要写成 the Chinese calendar 或 the agricultural calendar 以免歧义。</div></div><div class="vocab"><div class="w">一叶知秋</div><div class="d">一叶知秋 是成语，没有现成对应英文，采取&quot;直译 + 点明含义&quot;：one falling leaf heralds the coming of autumn，或保留为带引号的意译短语。全篇此处仅出现一次，重在把&quot;看到一片叶子就知道秋天到了&quot;的意思译清楚。</div></div><div class="vocab"><div class="w">秋老虎</div><div class="d">秋老虎 是中国民俗说法，指立秋后短期回热的高温天气。采取&quot;直译加引号&quot;的处理：the &quot;Autumn Tiger&quot;，并靠前文的&quot;高温持续&quot;把含义带出，让英文读者能从上下文理解，而不是孤零零冒出一个 tiger。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调，用一般现在时 marks，因为这是在陈述立秋恒常的含义。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 Start of Autumn 视作单数概念，谓语用第三人称单数 marks，不要写成 mark。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">特指中国的这一部农历，用定冠词 the Chinese lunar calendar；the end of summer / the beginning of autumn 中的 summer、autumn 表季节泛指，前面不加冠词。</div></div><div class="vocab"><div class="w">时态</div><div class="d">仍是普遍现象，回指基调用一般现在时 brings、drop。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;气温&quot;指总体气温水平的逐渐变化，英文习惯用复数 temperatures（与 drop 搭配），不要写成 the temperature is dropping 那样具体某一刻。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">&quot;天气的变化&quot;译 a change in the weather：change 可数、此处泛指一种变化用不定冠词 a；weather 特指当下的天气状况，习惯搭 the weather。</div></div><div class="vocab"><div class="w">时态</div><div class="d">主句与 When 从句都是普遍现象，用一般现在时 see、know；但&quot;已经来临&quot;强调&quot;到说话时已经到了&quot;，用现在完成时 has arrived，这是回指基调时&quot;确有需要才偏离&quot;的典型一处。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;树叶&quot;不止一片，用复数 the leaves；与之搭配的动词 begin、turn、fall 都用复数形式。</div></div><div class="vocab"><div class="w">动词搭配</div><div class="d">&quot;开始变黄飘落&quot;译 begin to turn yellow and fall：turn + 形容词表&quot;变成某颜色&quot;；see somebody/something do 是感官动词接动词原形结构（the leaves begin）。</div></div><div class="vocab"><div class="w">时态语态</div><div class="d">&quot;并未完全结束&quot;强调&quot;到现在还没结束&quot;，用现在完成时否定 has not completely ended；&quot;通常还会持续&quot;是普遍规律，回基调用一般现在时 usually continue。</div></div><div class="vocab"><div class="w">单复数主谓一致</div><div class="d">the hot weather 不可数作单数，配 has；high temperatures 用复数表整体高温，配复数动词 continue。两处主谓单复数各自对齐，别混。</div></div><div class="vocab"><div class="w">含蓄否定</div><div class="d">&quot;并未完全结束&quot;是部分否定，用 has not completely ended（not + completely）准确传达&quot;还没彻底结束&quot;，不要漏译&quot;完全&quot;而写成 has not ended（语气过强）。</div></div><div class="vocab"><div class="w">时态</div><div class="d">全句陈述每年立秋的普遍意义，回基调用一般现在时 is、grow、begin；&quot;即将到来&quot;用 is approaching（现在进行表临近的将来）或 is coming，自然贴切。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;各种秋季作物&quot;种类不止一种，用复数 various autumn crops，配复数动词 grow、begin；&quot;农民&quot;泛指这一群体，用复数 farmers。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">&quot;对农民意义重大&quot;用 of great significance to farmers / important to farmers——&quot;对（某人）重要&quot;固定搭 to，不要写成 for 或 of。</div></div>
-</div>
-
-<div class="card">
-  <h2>翻译四句口诀</h2>
-  <table>
-    <tr><th>步骤</th><th>做什么</th></tr>
-    <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
-    <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
-    <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
-    <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 > 用词花</b></td></tr>
-  </table>
-</div>
+<details class="card">
+  <summary>📖 怎么译 · 流程与口诀（建议翻到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">流程</span><div class="c"><b>四步走</b>
+      ① 自己翻 → ② 逐句对照（最有价值的一步：看你漏译了什么、时态用错了哪里）
+      → ③ 抄下错处 → ④ 整篇通读。每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div></div>
+    <table>
+      <tr><th>步骤</th><th>做什么</th></tr>
+      <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
+      <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
+      <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
+      <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 &gt; 用词花</b></td></tr>
+    </table>
+  </div>
+</details>
 
 
 <script>
@@ -367,5 +353,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   }
 })();
 </script>
+
+
 </body>
 </html>

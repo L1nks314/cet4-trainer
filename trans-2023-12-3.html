@@ -104,7 +104,6 @@ tr:last-child td{border-bottom:0}
  line-height:1.5;white-space:nowrap}
 .pill.bad{background:var(--red-soft);color:var(--red-ink)}
 .pill.fix{background:var(--green-soft);color:var(--green-ink)}
-/* 折叠的语篇分析 */
 details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
  background:var(--card)}
 details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
@@ -139,6 +138,18 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .card.lock>*:not(.lockbar){display:none}
 .lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
  color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -147,28 +158,11 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 <h1>汉译英 · 2023年12月 第3套</h1>
 
 <div class="card">
-  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part IV</span></div>
-  <div class="big">
-    <div><b>179</b><span>中文字数</span></div>
-    <div><b>4</b><span>句</span></div>
-    <div><b>30</b><span>分钟</span></div>
-  </div>
-  <div class="tip b">翻译评分只看四件事：<b>意思说全、语法没错、表达通顺、用词准确</b>。
-  翻得漂亮不加分，翻错了狠狠扣 —— 所以目标是<b>不出错</b>，不是出彩。</div>
-</div>
-
-<div class="card">
-  <div class="chead"><h2>中文原文</h2><span class="cmeta">4 句</span></div>
-  
+  <div class="chead"><h2>中文原文</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>4 句</span><span>段落翻译</span><span>要求 140–180 词</span></div>
   <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
     <span class="zh">改革开放以来，中国人民生活水平不断提高，这在人们的饮食 (diet)变化上得到充分体现 。如今，人们不再满足于吃得饱，而是追求吃得更加安全、更加营养、更加健康，食物也愈来愈丰富多样，不再限于本地的农产品。物流业 (logistics industry)的发展使人们很容易品尝到全国各地的特产。毫无疑问，食品质量与饮食结构的改善为增进人们健康提供了有力的保障。</span></div>
-  <div class="tip a"><b>先自己翻一遍再看下面。</b>用纸笔或另一个文档写，写完再逐句对照 ——
-  直接看答案等于没练。</div>
-  <details class="dig"><summary>语篇分析 · 主旨 / 时态 / 译法（建议自己翻完再看）</summary><div class="dbody">
-        <div class="chunk"><span class="k">主旨</span><span class="v">改革开放以来饮食变化的社会介绍 这段在客观介绍一个社会现象：改革开放以来，中国人民生活水平不断提高，这在人们的饮食 (diet)变化上得到充分体现，属于四级最常见的「中国社会/经济变迁介绍」类语体。它陈述的是一个延续到今天、并仍在持续的事实状态，用词应平实客观，不需文学性。</span></div>
-        <div class="chunk"><span class="k">时态</span><span class="v">一般现在时 通篇在客观陈述「如今的事实与现状」——如今，人们不再满足于吃得饱，而是追求吃得更加安全描述的是当下的普遍状态，物流业 (logistics industry)的发展使人们很容易品尝到全国各地的特产也是现在仍成立的事实，故全篇以一般现在时为主。仅「改革开放以来……不断提高」这一处表达「从过去延续到现在的持续变化」时，宜局部用现在完成时偏离基调。</span></div>
-        <div class="chunk"><span class="k">译法</span><span class="v">改革开放 拟定统一译法 the reform and opening-up（约定俗成的官方固定译名，首字母小写、连字符连接 opening-up）。这是中国时政文化的标准译法，全篇只用这一种，不要自造成 the reform and open policy 之类。对应原文 改革开放以来。 物流业 原文已给出括注英文，统一用 the logistics industry（意译，logistics 不可数、行业整体加 the）。对应原文 物流业 (logistics industry)的发展，括注里的英文就是命题人指定译法，照用即可。 饮食 原文已括注 diet，统一用 diet 指「饮食/膳食」。注意 这在人们的饮食 (diet)变化上得到充分体现里 diet 指饮食习惯整体，与后文「饮食结构」的 diet 同源，全篇统一即可。</span></div>
-  </div></details>
+  <details class="dig"><summary>语篇分析 · 主旨 / 时态 / 译法（建议自己翻完再看）</summary><div class="dbody"><div class="chunk"><span class="k">主旨</span><span class="v">改革开放以来饮食变化的社会介绍 这段在客观介绍一个社会现象：改革开放以来，中国人民生活水平不断提高，这在人们的饮食 (diet)变化上得到充分体现，属于四级最常见的「中国社会/经济变迁介绍」类语体。它陈述的是一个延续到今天、并仍在持续的事实状态，用词应平实客观，不需文学性。</span></div><div class="chunk"><span class="k">时态</span><span class="v">一般现在时 通篇在客观陈述「如今的事实与现状」——如今，人们不再满足于吃得饱，而是追求吃得更加安全描述的是当下的普遍状态，物流业 (logistics industry)的发展使人们很容易品尝到全国各地的特产也是现在仍成立的事实，故全篇以一般现在时为主。仅「改革开放以来……不断提高」这一处表达「从过去延续到现在的持续变化」时，宜局部用现在完成时偏离基调。</span></div><div class="chunk"><span class="k">译法</span><span class="v">改革开放 拟定统一译法 the reform and opening-up（约定俗成的官方固定译名，首字母小写、连字符连接 opening-up）。这是中国时政文化的标准译法，全篇只用这一种，不要自造成 the reform and open policy 之类。对应原文 改革开放以来。 物流业 原文已给出括注英文，统一用 the logistics industry（意译，logistics 不可数、行业整体加 the）。对应原文 物流业 (logistics industry)的发展，括注里的英文就是命题人指定译法，照用即可。 饮食 原文已括注 diet，统一用 diet 指「饮食/膳食」。注意 这在人们的饮食 (diet)变化上得到充分体现里 diet 指饮食习惯整体，与后文「饮食结构」的 diet 同源，全篇统一即可。</span></div></div></details>
 </div>
 
 
@@ -193,50 +187,42 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
-<div class="card">
-  <h2>怎么用这份包</h2>
-  <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
-    <span>③ 抄下错处</span><span>④ 整篇通读</span></div>
-  <div class="tip g">第二步是全流程最有价值的一步：<b>看你漏译了什么、时态用错了哪里</b>。
-  每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
-</div>
 
-<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 逐句对照（4 句）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
+
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 逐句对照 · 参考译文 · 译法要点</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>逐句对照（4 句）</h2>
   <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
   <div class="sent"><span class="snum">第 1 句</span><p class="szh">改革开放以来，中国人民生活水平不断提高，这在人们的饮食 (diet)变化上得到充分体现。</p><p class="sen">Since the reform and opening-up, the living standards of the Chinese people have improved steadily, which is fully reflected in the changes in people&#x27;s diet.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">「改革开放以来……不断提高」是从过去延续到现在的持续变化，此处偏离全篇基调，用现在完成时 have improved；这是 tenseBaseline 允许的局部偏离。</span></div><div class="chunk"><span class="k">语态</span><span class="v">「得到充分体现」是被动含义（被体现），用被动 is fully reflected in，正好契合英文被动多于汉语的习惯。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">「生活水平」用复数 living standards（英文习惯复数）；「变化」非一处，用复数 the changes。</span></div><div class="chunk"><span class="k">介词搭配</span><span class="v">「在……上体现」搭配 be reflected in（不是 on）；「饮食的变化」用 changes in people&#x27;s diet（in 表所属范围）。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">如今，人们不再满足于吃得饱，而是追求吃得更加安全、更加营养、更加健康，食物也愈来愈丰富多样，不再限于本地的农产品。</p><p class="sen">Today, people are no longer content with simply having enough to eat; instead, they pursue food that is safer, more nutritious and healthier. Food is also becoming more and more diverse, no longer being limited to local agricultural products.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调，用一般现在时：are no longer content / pursue / is becoming，描述如今的普遍状态。</span></div><div class="chunk"><span class="k">否定与含蓄否定</span><span class="v">「不再满足于」用 are no longer content with；「不再限于」用 no longer limited to——「不再」统一用 no longer，比 not...anymore 更书面。</span></div><div class="chunk"><span class="k">比较级</span><span class="v">「更安全/营养/健康」：单音节 safe→safer、healthy→healthier，多音节 nutritious→more nutritious；「愈来愈丰富多样」用 more and more diverse。</span></div><div class="chunk"><span class="k">单复数与冠词</span><span class="v">food（食物）作物质名词整体不可数、不加复数不加冠词；agricultural products（农产品）用复数。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">物流业 (logistics industry)的发展使人们很容易品尝到全国各地的特产。</p><p class="sen">The development of the logistics industry makes it easy for people to taste specialties from all over the country.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语核心是单数 the development，谓语用第三人称单数 enables / makes（不是 enable）。注意别被后面的 of the logistics industry 带偏成复数。</span></div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调用一般现在时 enables，陈述现在仍然成立的事实。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">「特产」不止一种，用复数 specialties。</span></div><div class="chunk"><span class="k">冠词</span><span class="v">特指物流业这一行业，用 the logistics industry；特指全国，用 the country。</span></div></div><div class="sent"><span class="snum">第 4 句</span><p class="szh">毫无疑问，食品质量与饮食结构的改善为增进人们健康提供了有力的保障。</p><p class="sen">Undoubtedly, the improvement in food quality and diet structure provides a strong guarantee for improving people&#x27;s health.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">虽然中文带「提供了」的「了」，但此处陈述的是一个持续成立的普遍结论，回指全篇基调用一般现在时 provides，而非过去时。</span></div><div class="chunk"><span class="k">主谓一致与单复数</span><span class="v">主语核心是单数 the improvement，谓语用 provides；「保障」可数、单数用 a strong guarantee（加 a）。</span></div><div class="chunk"><span class="k">介词搭配</span><span class="v">「…的改善」用 improvement in（in 表方面）；「为增进健康」用 for improving；「提供保障」provide a guarantee。</span></div><div class="chunk"><span class="k">用词准确</span><span class="v">「有力的保障」译 a strong / solid guarantee；「增进健康」译 improve / promote people&#x27;s health，避免中式的 add health。</span></div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 整篇参考译文</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>整篇参考译文</h2>
-  <details><summary>展开整篇（自己翻完再看）</summary>
+  <details style="margin-top:14px"><summary>整篇参考译文</summary>
     <div class="dbody"><p class="en">Since the reform and opening-up, the living standards of the Chinese people have improved steadily, which is fully reflected in the changes in people&#x27;s diet. Today, people are no longer content with simply having enough to eat; instead, they pursue food that is safer, more nutritious and healthier. Food is also becoming more and more diverse, no longer being limited to local agricultural products. The development of the logistics industry makes it easy for people to taste specialties from all over the country. Undoubtedly, the improvement in food quality and diet structure provides a strong guarantee for improving people&#x27;s health. 【衔接】 第1句到第2句：用 Today 自然承接时间线 第1句以 Since the reform and opening-up 起头讲「以来的变化」，第2句 如今正好用 Today 起头收到当下，时间线从「改革开放以来」推进到「如今」，无需额外关联词，靠这两个时间状语本身就连贯。 第2句内部：用分号/instead 显出「不再…而是…」的转折 人们不再满足于吃得饱，而是追求的「不是…而是…」是对比转折，英文在 are no longer content... 与 they pursue... 之间用分号加 instead 承接，把「否定旧状态、肯定新追求」的对比显化出来，比一个 but 更清楚。 第3句到第4句：用 Undoubtedly 收束为结论 第3句讲物流让人尝到各地特产（饮食更丰富的原因之一），第4句 毫无疑问用 Undoubtedly 起头，把前文铺陈收束为一个总结性结论，语气上自然成为全篇收尾。</p></div></details>
-  <div class="tip a">整篇译文是用来<b>感受节奏和衔接</b>的，不是用来背的。
-  重点看它怎么处理句间连接、怎么避免重复用词。</div>
+  <details><summary>句间衔接（3 处）</summary>
+    <div class="dbody">
+      <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
+      <div class="row"><span class="tag">衔接</span><div class="c"><b>第1句到第2句：用 Today 自然承接时间线</b>第1句以 Since the reform and opening-up 起头讲「以来的变化」，第2句 如今正好用 Today 起头收到当下，时间线从「改革开放以来」推进到「如今」，无需额外关联词，靠这两个时间状语本身就连贯。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第2句内部：用分号/instead 显出「不再…而是…」的转折</b>人们不再满足于吃得饱，而是追求的「不是…而是…」是对比转折，英文在 are no longer content... 与 they pursue... 之间用分号加 instead 承接，把「否定旧状态、肯定新追求」的对比显化出来，比一个 but 更清楚。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第3句到第4句：用 Undoubtedly 收束为结论</b>第3句讲物流让人尝到各地特产（饮食更丰富的原因之一），第4句 毫无疑问用 Undoubtedly 起头，把前文铺陈收束为一个总结性结论，语气上自然成为全篇收尾。</div></div>
+    </div></details>
+  <details><summary>译法要点（19 条）</summary>
+    <div class="dbody">
+      <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
+      <div class="vocab"><div class="w">改革开放</div><div class="d">拟定统一译法 the reform and opening-up（约定俗成的官方固定译名，首字母小写、连字符连接 opening-up）。这是中国时政文化的标准译法，全篇只用这一种，不要自造成 the reform and open policy 之类。对应原文 改革开放以来。</div></div><div class="vocab"><div class="w">物流业</div><div class="d">原文已给出括注英文，统一用 the logistics industry（意译，logistics 不可数、行业整体加 the）。对应原文 物流业 (logistics industry)的发展，括注里的英文就是命题人指定译法，照用即可。</div></div><div class="vocab"><div class="w">饮食</div><div class="d">原文已括注 diet，统一用 diet 指「饮食/膳食」。注意 这在人们的饮食 (diet)变化上得到充分体现里 diet 指饮食习惯整体，与后文「饮食结构」的 diet 同源，全篇统一即可。</div></div><div class="vocab"><div class="w">时态</div><div class="d">「改革开放以来……不断提高」是从过去延续到现在的持续变化，此处偏离全篇基调，用现在完成时 have improved；这是 tenseBaseline 允许的局部偏离。</div></div><div class="vocab"><div class="w">语态</div><div class="d">「得到充分体现」是被动含义（被体现），用被动 is fully reflected in，正好契合英文被动多于汉语的习惯。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">「生活水平」用复数 living standards（英文习惯复数）；「变化」非一处，用复数 the changes。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">「在……上体现」搭配 be reflected in（不是 on）；「饮食的变化」用 changes in people&#x27;s diet（in 表所属范围）。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调，用一般现在时：are no longer content / pursue / is becoming，描述如今的普遍状态。</div></div><div class="vocab"><div class="w">否定与含蓄否定</div><div class="d">「不再满足于」用 are no longer content with；「不再限于」用 no longer limited to——「不再」统一用 no longer，比 not...anymore 更书面。</div></div><div class="vocab"><div class="w">比较级</div><div class="d">「更安全/营养/健康」：单音节 safe→safer、healthy→healthier，多音节 nutritious→more nutritious；「愈来愈丰富多样」用 more and more diverse。</div></div><div class="vocab"><div class="w">单复数与冠词</div><div class="d">food（食物）作物质名词整体不可数、不加复数不加冠词；agricultural products（农产品）用复数。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语核心是单数 the development，谓语用第三人称单数 enables / makes（不是 enable）。注意别被后面的 of the logistics industry 带偏成复数。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调用一般现在时 enables，陈述现在仍然成立的事实。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">「特产」不止一种，用复数 specialties。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">特指物流业这一行业，用 the logistics industry；特指全国，用 the country。</div></div><div class="vocab"><div class="w">时态</div><div class="d">虽然中文带「提供了」的「了」，但此处陈述的是一个持续成立的普遍结论，回指全篇基调用一般现在时 provides，而非过去时。</div></div><div class="vocab"><div class="w">主谓一致与单复数</div><div class="d">主语核心是单数 the improvement，谓语用 provides；「保障」可数、单数用 a strong guarantee（加 a）。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">「…的改善」用 improvement in（in 表方面）；「为增进健康」用 for improving；「提供保障」provide a guarantee。</div></div><div class="vocab"><div class="w">用词准确</div><div class="d">「有力的保障」译 a strong / solid guarantee；「增进健康」译 improve / promote people&#x27;s health，避免中式的 add health。</div></div>
+    </div></details>
 </div>
 
-<div class="card lock"><div class="lockbar"><b>🔒 句间衔接（3 处）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>句间衔接（3 处）</h2>
-  <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
-  <div class="row"><span class="tag">衔接</span><div class="c"><b>第1句到第2句：用 Today 自然承接时间线</b>第1句以 Since the reform and opening-up 起头讲「以来的变化」，第2句 如今正好用 Today 起头收到当下，时间线从「改革开放以来」推进到「如今」，无需额外关联词，靠这两个时间状语本身就连贯。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第2句内部：用分号/instead 显出「不再…而是…」的转折</b>人们不再满足于吃得饱，而是追求的「不是…而是…」是对比转折，英文在 are no longer content... 与 they pursue... 之间用分号加 instead 承接，把「否定旧状态、肯定新追求」的对比显化出来，比一个 but 更清楚。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第3句到第4句：用 Undoubtedly 收束为结论</b>第3句讲物流让人尝到各地特产（饮食更丰富的原因之一），第4句 毫无疑问用 Undoubtedly 起头，把前文铺陈收束为一个总结性结论，语气上自然成为全篇收尾。</div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 译法要点（19 条）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>译法要点（19 条）</h2>
-  <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
-  <div class="vocab"><div class="w">改革开放</div><div class="d">拟定统一译法 the reform and opening-up（约定俗成的官方固定译名，首字母小写、连字符连接 opening-up）。这是中国时政文化的标准译法，全篇只用这一种，不要自造成 the reform and open policy 之类。对应原文 改革开放以来。</div></div><div class="vocab"><div class="w">物流业</div><div class="d">原文已给出括注英文，统一用 the logistics industry（意译，logistics 不可数、行业整体加 the）。对应原文 物流业 (logistics industry)的发展，括注里的英文就是命题人指定译法，照用即可。</div></div><div class="vocab"><div class="w">饮食</div><div class="d">原文已括注 diet，统一用 diet 指「饮食/膳食」。注意 这在人们的饮食 (diet)变化上得到充分体现里 diet 指饮食习惯整体，与后文「饮食结构」的 diet 同源，全篇统一即可。</div></div><div class="vocab"><div class="w">时态</div><div class="d">「改革开放以来……不断提高」是从过去延续到现在的持续变化，此处偏离全篇基调，用现在完成时 have improved；这是 tenseBaseline 允许的局部偏离。</div></div><div class="vocab"><div class="w">语态</div><div class="d">「得到充分体现」是被动含义（被体现），用被动 is fully reflected in，正好契合英文被动多于汉语的习惯。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">「生活水平」用复数 living standards（英文习惯复数）；「变化」非一处，用复数 the changes。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">「在……上体现」搭配 be reflected in（不是 on）；「饮食的变化」用 changes in people&#x27;s diet（in 表所属范围）。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调，用一般现在时：are no longer content / pursue / is becoming，描述如今的普遍状态。</div></div><div class="vocab"><div class="w">否定与含蓄否定</div><div class="d">「不再满足于」用 are no longer content with；「不再限于」用 no longer limited to——「不再」统一用 no longer，比 not...anymore 更书面。</div></div><div class="vocab"><div class="w">比较级</div><div class="d">「更安全/营养/健康」：单音节 safe→safer、healthy→healthier，多音节 nutritious→more nutritious；「愈来愈丰富多样」用 more and more diverse。</div></div><div class="vocab"><div class="w">单复数与冠词</div><div class="d">food（食物）作物质名词整体不可数、不加复数不加冠词；agricultural products（农产品）用复数。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语核心是单数 the development，谓语用第三人称单数 enables / makes（不是 enable）。注意别被后面的 of the logistics industry 带偏成复数。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调用一般现在时 enables，陈述现在仍然成立的事实。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">「特产」不止一种，用复数 specialties。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">特指物流业这一行业，用 the logistics industry；特指全国，用 the country。</div></div><div class="vocab"><div class="w">时态</div><div class="d">虽然中文带「提供了」的「了」，但此处陈述的是一个持续成立的普遍结论，回指全篇基调用一般现在时 provides，而非过去时。</div></div><div class="vocab"><div class="w">主谓一致与单复数</div><div class="d">主语核心是单数 the improvement，谓语用 provides；「保障」可数、单数用 a strong guarantee（加 a）。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">「…的改善」用 improvement in（in 表方面）；「为增进健康」用 for improving；「提供保障」provide a guarantee。</div></div><div class="vocab"><div class="w">用词准确</div><div class="d">「有力的保障」译 a strong / solid guarantee；「增进健康」译 improve / promote people&#x27;s health，避免中式的 add health。</div></div>
-</div>
-
-<div class="card">
-  <h2>翻译四句口诀</h2>
-  <table>
-    <tr><th>步骤</th><th>做什么</th></tr>
-    <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
-    <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
-    <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
-    <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 > 用词花</b></td></tr>
-  </table>
-</div>
+<details class="card">
+  <summary>📖 怎么译 · 流程与口诀（建议翻到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">流程</span><div class="c"><b>四步走</b>
+      ① 自己翻 → ② 逐句对照（最有价值的一步：看你漏译了什么、时态用错了哪里）
+      → ③ 抄下错处 → ④ 整篇通读。每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div></div>
+    <table>
+      <tr><th>步骤</th><th>做什么</th></tr>
+      <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
+      <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
+      <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
+      <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 &gt; 用词花</b></td></tr>
+    </table>
+  </div>
+</details>
 
 
 <script>
@@ -367,5 +353,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   }
 })();
 </script>
+
+
 </body>
 </html>

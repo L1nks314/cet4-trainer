@@ -104,7 +104,6 @@ tr:last-child td{border-bottom:0}
  line-height:1.5;white-space:nowrap}
 .pill.bad{background:var(--red-soft);color:var(--red-ink)}
 .pill.fix{background:var(--green-soft);color:var(--green-ink)}
-/* 折叠的语篇分析 */
 details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
  background:var(--card)}
 details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
@@ -117,7 +116,6 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
-
 /* ═══ 写作台 ═══ */
 .wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
  border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
@@ -140,6 +138,18 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .card.lock>*:not(.lockbar){display:none}
 .lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
  color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -148,21 +158,10 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 <h1>写作 · 2023年12月 第3套</h1>
 
 <div class="card">
-  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part I</span></div>
-  <div class="big">
-    <div><b>165</b><span>范文词数</span></div>
-    <div><b>3</b><span>段</span></div>
-    <div><b>30</b><span>分钟</span></div>
-  </div>
-  <div class="tip b">四级写作的命中点是<b>切题 + 结构清楚 + 语法不出错</b>。
-  用三段式（引入表态 / 主体展开 / 回扣收尾），比追求华丽句式稳得多。</div>
-</div>
-
-<div class="card">
-  <div class="chead"><h2>题目</h2><span class="cmeta">Directions</span></div>
-  <div class="prompt"><span class="lbl">Directions</span><br>Directions: Suppose the university newspaper is inviting submissions from the students for its coming edition on what in their university impresses them most.You are now to write an essay for submission. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.</div>
-  <div class="tip a"><b>先自己在纸上写完，再看下面的范文。</b>写作的提分全靠"写—对照—改"这个循环，
-  光看范文不动笔，等于没练。</div>
+  <div class="chead"><h2>题目</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>范文 165 词</span><span>三段式</span><span>要求 120–180 词</span></div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    Directions: Suppose the university newspaper is inviting submissions from the students for its coming edition on what in their university impresses them most.You are now to write an essay for submission. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.</div>
 </div>
 
 
@@ -187,47 +186,42 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
-<div class="card">
-  <h2>审题：这题到底要写什么</h2>
-  <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>写一物如何最打动你 一句话钉死：聚焦大学里某一个具体对象，说清它 impresses them most 的原因。题面要求 write an essay for submission，写的内容是 what in their university impresses them most，关键在 what（一个对象）＋ most（最，唯一），所以只能选一样东西写深，不能罗列学校的多个方面。</div></div>
-  <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>图书馆最打动我 选定中心：大学里最让我印象深刻的是学校图书馆，因为它既给我安静专注的环境，又有一次温暖的经历让我对它念念不忘——正面回应 what in their university impresses them most 中的单一对象与 most。</div></div>
-  <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>氛围让人沉静专注 要点一：图书馆安静明亮、书香环绕的氛围，让我第一次体会到沉浸学习的快乐，这是它打动我的第一层原因。 一次借书受助的经历 要点二：用一次亲身经历支撑——一位馆员耐心帮我找到一本绝版书，让我感到被善意对待，把抽象的『印象深刻』写实。 它改变了我对学习的态度 要点三：升华——图书馆让我从被动应付变成主动求知，成为我大学里最珍贵的角落，呼应 most。</div></div>
-  <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 点对象＋亮态度 首段：在校园众多事物中点出图书馆这一个对象，直接亮明它是 what in their university impresses them most 的答案，给全文定调。 第 2 段 细节＋经历讲原因 主体段：用氛围细节＋一次借书受助的亲身经历，具体说明它为何让我 impresses them most，把感受落到实处。 第 3 段 升华意义收尾 结尾段：把图书馆对我的意义升华一句——它如何改变了我，呼应开头并回扣 most。</div></div>
-</div>
 
-<div class="card">
-  <h2>谋篇：每段写什么（3 段）</h2>
-  <p class="hint">这是可以直接套用的框架 —— 换一道题，功能不变、内容替换。</p>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>众物之中独爱图书馆 本段落点：承认大学里值得说的东西很多，但唯独学校图书馆给我留下最深印象，呼应 what in their university impresses them most，为下文讲原因埋下话头</b>由泛收缩到一物 Among the many things on campus, it is ____ that has impressed me most. （把 ____ 换成你的对象，如 the library） 亮明主角并预告下文 Whenever I think of my university, ____ is the first thing that comes to my mind. （____ 填所选对象，引出下文原因）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>安静书香＋馆员相助 本段落点：先写图书馆安静明亮、书架林立的氛围让我沉下心来；再讲一次找绝版书时馆员耐心相助的经历，把它为何 impresses them most 写到具体可感</b>描写氛围 Quiet and well-lit, ____ offers a space where I can ____. （前段描写特征，后段说它给你什么） 引出一次经历 I still remember the day when ____. （填一件具体小事作为证据） 用从句升级表达 It was ____ who ____, which made me realize ____. （强调句＋定语从句，写出那件事的意义）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>它让我爱上主动求知 本段落点：图书馆让我从被动应付学习变成主动求知，成为大学里我最珍视的角落，呼应 impresses them most 收尾</b>由经历升华意义 Looking back, ____ is more than ____; it has taught me ____. （把对象升华成对你的意义） 首尾呼应收束 That is why ____ will always be ____ in my university life. （回扣开头，定格『最』）</div></div>
-</div>
 
-<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 参考范文（165 词）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 参考范文 · 逐段解析 · 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>参考范文（165 词）</h2>
-  <details><summary>展开范文（自己写完之后再看）</summary>
+  <details open><summary>范文 + 参考译文</summary>
     <div class="dbody">
       <div class="essay"><p class='en'>Among the many things on campus, it is the university library that has impressed me most. While my college offers modern labs and lively clubs, none of them stays in my heart as deeply as that quiet building.</p><p class='en'>Quiet and well-lit, the library offers a space where I can truly focus and lose myself in books. Surrounded by towering shelves, I felt the joy of learning for the very first time. What touched me even more was a small experience. I still remember the day when I was searching desperately for an out-of-print book. It was a gentle old librarian who spent half an hour helping me track it down, which made me realize that this place is warmed not only by knowledge but also by kindness.</p><p class='en'>Looking back, the library is more than a study room; it has taught me to seek knowledge actively rather than passively. That is why this quiet corner will always be the most unforgettable part of my university life.</p></div>
       <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>在校园众多事物之中，最让我印象深刻的是学校图书馆。尽管我的大学有现代化的实验室和活跃的社团，但没有一样像那座安静的楼那样深深留在我心里。</div>
     </div></details>
-  <div class="tip a">看范文时不要「读」，要<b>拆</b>：每段第一句做什么？观点句和理由句怎么连？
-  结尾怎么回扣题目？</div>
+  <details><summary>逐段解析（3 段）</summary>
+    <div class="dbody"><div class="row"><span class="tag">第1段</span><div class="c"><b>由泛收缩、一句亮主角 </b>首段用 Among the many things on campus, it is the university library that has impressed me most 由校园万物收缩到图书馆一个对象并亮明态度，正面回应 what in their university impresses them most；再用 none of them stays in my heart as deeply 把『最』写实。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>氛围＋经历双层落实 </b>主体段先用 Quiet and well-lit, the library offers a space 写氛围，再用 I still remember the day when 引出找绝版书受馆员相助的经历，并以强调句＋定语从句 It was a gentle old librarian who ... which made me realize 升级表达，把它为何 impresses them most 写到可感。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>升华＋首尾呼应 </b>结尾用 the library is more than a study room; it has taught me 由事及己升华，再以 That is why this quiet corner will always be the most unforgettable part 回扣开头、定格『最』。</div></div></div></details>
+  <details><summary>自检避坑</summary>
+    <div class="dbody">
+      <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">面面俱到无重点</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">My university has a big library, a nice canteen, many clubs and kind teachers. They all impress me. 这是面面俱到、无一写透。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">只锁定图书馆，并补上一次具体经历来证明它为何最打动你。</span></div></div><div class="pit-item"><div class="pit-t">只抒情不举证</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">The library impresses me most. I love it so much. It is really really good and important to me. 全是形容词堆叠。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">写出『安静明亮的环境＋馆员帮我找绝版书』这样的具体内容。</span></div></div><div class="pit-item"><div class="pit-t">误加称呼署名</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Dear Editor, I want to tell you ... Yours, Li Ming. 这违背了 write an essay for submission 的文体。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">去掉称呼与署名，写成连贯的文章正文。</span></div></div></div>
+      <table style="margin-top:12px">
+        <tr><th>自查项</th><th>怎么查</th></tr>
+        <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+        <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+        <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+        <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+      </table>
+    </div></details>
 </div>
 
-<div class="card lock"><div class="lockbar"><b>🔒 逐段解析（3 段）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>逐段解析（3 段）</h2>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>由泛收缩、一句亮主角 </b>首段用 Among the many things on campus, it is the university library that has impressed me most 由校园万物收缩到图书馆一个对象并亮明态度，正面回应 what in their university impresses them most；再用 none of them stays in my heart as deeply 把『最』写实。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>氛围＋经历双层落实 </b>主体段先用 Quiet and well-lit, the library offers a space 写氛围，再用 I still remember the day when 引出找绝版书受馆员相助的经历，并以强调句＋定语从句 It was a gentle old librarian who ... which made me realize 升级表达，把它为何 impresses them most 写到可感。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>升华＋首尾呼应 </b>结尾用 the library is more than a study room; it has taught me 由事及己升华，再以 That is why this quiet corner will always be the most unforgettable part 回扣开头、定格『最』。</div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>自检避坑</h2>
-  <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">面面俱到无重点</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">My university has a big library, a nice canteen, many clubs and kind teachers. They all impress me. 这是面面俱到、无一写透。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">只锁定图书馆，并补上一次具体经历来证明它为何最打动你。</span></div></div><div class="pit-item"><div class="pit-t">只抒情不举证</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">The library impresses me most. I love it so much. It is really really good and important to me. 全是形容词堆叠。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">写出『安静明亮的环境＋馆员帮我找绝版书』这样的具体内容。</span></div></div><div class="pit-item"><div class="pit-t">误加称呼署名</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Dear Editor, I want to tell you ... Yours, Li Ming. 这违背了 write an essay for submission 的文体。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">去掉称呼与署名，写成连贯的文章正文。</span></div></div></div>
-  <table style="margin-top:14px">
-    <tr><th>自查项</th><th>怎么查</th></tr>
-    <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
-    <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
-    <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
-    <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
-  </table>
-</div>
+<details class="card">
+  <summary>📖 怎么写 · 审题与谋篇（建议写到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>写一物如何最打动你 一句话钉死：聚焦大学里某一个具体对象，说清它 impresses them most 的原因。题面要求 write an essay for submission，写的内容是 what in their university impresses them most，关键在 what（一个对象）＋ most（最，唯一），所以只能选一样东西写深，不能罗列学校的多个方面。</div></div>
+    <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>图书馆最打动我 选定中心：大学里最让我印象深刻的是学校图书馆，因为它既给我安静专注的环境，又有一次温暖的经历让我对它念念不忘——正面回应 what in their university impresses them most 中的单一对象与 most。</div></div>
+    <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>氛围让人沉静专注 要点一：图书馆安静明亮、书香环绕的氛围，让我第一次体会到沉浸学习的快乐，这是它打动我的第一层原因。 一次借书受助的经历 要点二：用一次亲身经历支撑——一位馆员耐心帮我找到一本绝版书，让我感到被善意对待，把抽象的『印象深刻』写实。 它改变了我对学习的态度 要点三：升华——图书馆让我从被动应付变成主动求知，成为我大学里最珍贵的角落，呼应 most。</div></div>
+    <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 点对象＋亮态度 首段：在校园众多事物中点出图书馆这一个对象，直接亮明它是 what in their university impresses them most 的答案，给全文定调。 第 2 段 细节＋经历讲原因 主体段：用氛围细节＋一次借书受助的亲身经历，具体说明它为何让我 impresses them most，把感受落到实处。 第 3 段 升华意义收尾 结尾段：把图书馆对我的意义升华一句——它如何改变了我，呼应开头并回扣 most。</div></div>
+    <p class="hint" style="margin-top:12px">谋篇：每段写什么 —— 这是可以直接套用的框架，换一道题功能不变、内容替换。</p>
+    <div class="row"><span class="tag">第1段</span><div class="c"><b>众物之中独爱图书馆 本段落点：承认大学里值得说的东西很多，但唯独学校图书馆给我留下最深印象，呼应 what in their university impresses them most，为下文讲原因埋下话头</b>由泛收缩到一物 Among the many things on campus, it is ____ that has impressed me most. （把 ____ 换成你的对象，如 the library） 亮明主角并预告下文 Whenever I think of my university, ____ is the first thing that comes to my mind. （____ 填所选对象，引出下文原因）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>安静书香＋馆员相助 本段落点：先写图书馆安静明亮、书架林立的氛围让我沉下心来；再讲一次找绝版书时馆员耐心相助的经历，把它为何 impresses them most 写到具体可感</b>描写氛围 Quiet and well-lit, ____ offers a space where I can ____. （前段描写特征，后段说它给你什么） 引出一次经历 I still remember the day when ____. （填一件具体小事作为证据） 用从句升级表达 It was ____ who ____, which made me realize ____. （强调句＋定语从句，写出那件事的意义）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>它让我爱上主动求知 本段落点：图书馆让我从被动应付学习变成主动求知，成为大学里我最珍视的角落，呼应 impresses them most 收尾</b>由经历升华意义 Looking back, ____ is more than ____; it has taught me ____. （把对象升华成对你的意义） 首尾呼应收束 That is why ____ will always be ____ in my university life. （回扣开头，定格『最』）</div></div>
+  </div>
+</details>
 
 
 <script>
@@ -355,5 +349,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   }
 })();
 </script>
+
+
 </body>
 </html>

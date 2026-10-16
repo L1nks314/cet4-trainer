@@ -104,7 +104,6 @@ tr:last-child td{border-bottom:0}
  line-height:1.5;white-space:nowrap}
 .pill.bad{background:var(--red-soft);color:var(--red-ink)}
 .pill.fix{background:var(--green-soft);color:var(--green-ink)}
-/* 折叠的语篇分析 */
 details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
  background:var(--card)}
 details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
@@ -117,7 +116,6 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
-
 /* ═══ 写作台 ═══ */
 .wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
  border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
@@ -140,6 +138,18 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .card.lock>*:not(.lockbar){display:none}
 .lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
  color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -148,21 +158,10 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 <h1>写作 · 2023年6月 第2套</h1>
 
 <div class="card">
-  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part I</span></div>
-  <div class="big">
-    <div><b>158</b><span>范文词数</span></div>
-    <div><b>3</b><span>段</span></div>
-    <div><b>30</b><span>分钟</span></div>
-  </div>
-  <div class="tip b">四级写作的命中点是<b>切题 + 结构清楚 + 语法不出错</b>。
-  用三段式（引入表态 / 主体展开 / 回扣收尾），比追求华丽句式稳得多。</div>
-</div>
-
-<div class="card">
-  <div class="chead"><h2>题目</h2><span class="cmeta">Directions</span></div>
-  <div class="prompt"><span class="lbl">Directions</span><br>Directions: Suppose the student union of your university is organizing an online discussion on interpersonal relationships. You are to write an essay on ways to maintain a warm and friendly relationship with your classmates and on the benefits of such a relationship. You will have 30 minutes f or the task. You should write at least 120 words but no more than 180 words .</div>
-  <div class="tip a"><b>先自己在纸上写完，再看下面的范文。</b>写作的提分全靠"写—对照—改"这个循环，
-  光看范文不动笔，等于没练。</div>
+  <div class="chead"><h2>题目</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>范文 158 词</span><span>三段式</span><span>要求 120–180 词</span></div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    Directions: Suppose the student union of your university is organizing an online discussion on interpersonal relationships. You are to write an essay on ways to maintain a warm and friendly relationship with your classmates and on the benefits of such a relationship. You will have 30 minutes f or the task. You should write at least 120 words but no more than 180 words .</div>
 </div>
 
 
@@ -187,47 +186,42 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
-<div class="card">
-  <h2>审题：这题到底要写什么</h2>
-  <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>做法＋好处双任务 本题要写两块、缺一不可：一是维系良好同窗关系的具体做法，二是这种关系带来的好处。Directions 把任务说得很死——要写 ways to maintain a warm and friendly relationship with your classmates，同时还要写 on the benefits of such a relationship。注意第二个 on 是与第一个并列的独立任务，不是顺带一提，所以这篇不是单纯谈友谊重要，而是『怎么做＋有什么好』两条腿走路。</div></div>
-  <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>做法得当则关系受益 本篇中心：与同学维系温暖友好的关系并非靠运气，而是靠几项可操作的做法，而这样的关系会反过来给个人成长和集体氛围带来实实在在的好处。这一句把 Directions 要求的 ways to maintain a warm and friendly relationship with your classmates 与 the benefits of such a relationship 两块串成一条因果主线，避免写成互不相干的两段。</div></div>
-  <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>做法一·真诚沟通 第一条做法：主动且真诚地沟通。落到具体场景——课后多聊几句、有误会及时坦诚说开、认真倾听对方想法，而不是冷脸相对。这是对 ways to maintain a warm and friendly relationship with your classmates 的第一条具体回应。 做法二·互帮互助与尊重 第二条做法：在学习和生活上互帮互助、彼此尊重包容。比如一方落下笔记主动分享、室友习惯不同时互相迁就。把抽象的『友好』落成可感的行为，避免空喊口号。 好处·成长与归属感 好处一块：良好的同窗关系能缓解学习压力、推动共同进步，并营造集体归属感。这是对 the benefits of such a relationship 的正面回应，也是中心论点的落脚点。</div></div>
-  <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 引入并亮中心 点明在大学里良好的同窗关系很重要，自然引出 an online discussion on interpersonal relationships 的话题，并亮出『做法得当、关系受益』的中心。 第 2 段 分述具体做法 主体段，集中回应 ways to maintain a warm and friendly relationship with your classmates，分述真诚沟通、互帮互助与彼此尊重两到三条做法，并用例子落地。 第 3 段 点明好处并收尾 回应 the benefits of such a relationship，点出缓解压力、共同进步、营造归属感等好处，并呼应中心收束全文。</div></div>
-</div>
 
-<div class="card">
-  <h2>谋篇：每段写什么（3 段）</h2>
-  <p class="hint">这是可以直接套用的框架 —— 换一道题，功能不变、内容替换。</p>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>点重要性引出做法与好处 本段写：大学生活里和同学朝夕相处，一段温暖友好的关系既影响心情也影响成长；由此引出 ways to maintain a warm and friendly relationship with your classmates 与 the benefits of such a relationship 这两个要谈的问题，并表明良好关系靠用心经营、回报丰厚</b>陈述重要性 A ____ relationship plays an important part in our campus life.（在空位填关系类型，如 harmonious / friendly） 引出双任务 It is therefore worth thinking about how to ____ and what ____ it can bring.（前空填『维系它』，后空填『好处』）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>真诚沟通＋互助尊重两条做法 本段落实做法：做法一是真诚沟通——主动课后多聊、有误会及时说开、认真倾听；做法二是互帮互助、彼此尊重——分享笔记、迁就彼此习惯</b>每条都配一个具体校园场景，直接回应 ways to maintain a warm and friendly relationship with your classmates。 亮出本段范围 There are several practical ways to ____.（空位填本段主题，如 keep such a relationship） 分点过渡 First, we should ____. Besides, it also helps to ____.（两空各填一条做法的动作） 举例落地 For example, when ____, we can simply ____.（前空填具体情境，后空填具体做法）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>缓解压力·共同进步·归属感 本段写好处：做法得当后，温暖的同窗关系能缓解学习压力、带动共同进步、营造集体归属感，让大学生活更充实；最后呼应中心，回应 the benefits of such a relationship，重申良好关系值得用心维系</b>因果承接 As a result, such a relationship can ____.（空位填好处） 重申中心收尾 In short, ____ is well worth our effort.（空位填本篇核心对象，如 building such bonds）</div></div>
-</div>
 
-<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 参考范文（158 词）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 参考范文 · 逐段解析 · 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>参考范文（158 词）</h2>
-  <details><summary>展开范文（自己写完之后再看）</summary>
+  <details open><summary>范文 + 参考译文</summary>
     <div class="dbody">
       <div class="essay"><p class='en'>A warm and friendly relationship plays an important part in our campus life. Since we spend most of our time with classmates, it is worth thinking about how to maintain such a relationship and what benefits it can bring.</p><p class='en'>There are several practical ways to keep such a relationship close. First, we should communicate sincerely. For example, when a misunderstanding happens, we can simply talk it over honestly instead of staying cold. Besides, it also helps to support each other in study and daily life. When a classmate misses a lecture, sharing our notes and showing respect for different habits can quickly bring us closer.</p><p class='en'>As a result, such a relationship can bring us real benefits. It eases our pressure when courses get hard, pushes us to make progress together, and creates a strong sense of belonging in class. In short, building such warm bonds with our classmates is well worth our effort throughout the precious college years.</p></div>
       <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>温暖友好的关系在我们的校园生活中占有重要位置。既然我们大部分时间都和同学在一起，那么思考一下怎样维系这样的关系、它又能带来哪些好处，就很有必要。</div>
     </div></details>
-  <div class="tip a">看范文时不要「读」，要<b>拆</b>：每段第一句做什么？观点句和理由句怎么连？
-  结尾怎么回扣题目？</div>
+  <details><summary>逐段解析（3 段）</summary>
+    <div class="dbody"><div class="row"><span class="tag">第1段</span><div class="c"><b>引题并亮双任务 </b>首段用 plays an important part 落实『陈述重要性』句架，再用 how to maintain such a relationship and what benefits it can bring 把题目的『做法＋好处』两个任务一并引出，开门见山、方向明确，达成了 outline 第一段『引入并亮中心』的功能。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>分点举例写做法 </b>主体段用 First / Besides 分出真诚沟通、互助尊重两条做法，并各配一个场景——talk it over honestly 与 sharing our notes，把抽象的友好写实，落实了『分点＋举例展开』方法，回应了 ways to maintain a warm and friendly relationship with your classmates。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>因果收束写好处 </b>尾段以 As a result 承接前段做法，列出 eases our pressure、make progress together、sense of belonging 三项好处，再用 In short 重申中心，落实『因果收束法』，回应了 the benefits of such a relationship。</div></div></div></details>
+  <details><summary>自检避坑</summary>
+    <div class="dbody">
+      <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">只写做法漏好处</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">全文用三段细写真诚沟通、互帮互助、彼此尊重，结尾只一句 So a good relationship is very important. 便收尾——好处只剩一句空话。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">单独拿出一段写好处，落到缓解压力、共同进步、归属感等具体收益，让两个任务篇幅相当。</span></div></div><div class="pit-item"><div class="pit-t">口号堆砌无展开</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">We should be friendly. We should help each other. We should respect each other. 三句并列、各无展开。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">保留一两条，给每条配场景——We should help each other; for example, when a classmate misses a lecture, we can share our notes with him.</span></div></div><div class="pit-item"><div class="pit-t">万能开头不切题</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">With the rapid development of society, interpersonal relationships have become a hot topic among people. 空泛且未点同窗主题。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">A warm and friendly relationship with our classmates plays an important part in our campus life. 第一句即扣题。</span></div></div></div>
+      <table style="margin-top:12px">
+        <tr><th>自查项</th><th>怎么查</th></tr>
+        <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+        <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+        <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+        <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+      </table>
+    </div></details>
 </div>
 
-<div class="card lock"><div class="lockbar"><b>🔒 逐段解析（3 段）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>逐段解析（3 段）</h2>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>引题并亮双任务 </b>首段用 plays an important part 落实『陈述重要性』句架，再用 how to maintain such a relationship and what benefits it can bring 把题目的『做法＋好处』两个任务一并引出，开门见山、方向明确，达成了 outline 第一段『引入并亮中心』的功能。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>分点举例写做法 </b>主体段用 First / Besides 分出真诚沟通、互助尊重两条做法，并各配一个场景——talk it over honestly 与 sharing our notes，把抽象的友好写实，落实了『分点＋举例展开』方法，回应了 ways to maintain a warm and friendly relationship with your classmates。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>因果收束写好处 </b>尾段以 As a result 承接前段做法，列出 eases our pressure、make progress together、sense of belonging 三项好处，再用 In short 重申中心，落实『因果收束法』，回应了 the benefits of such a relationship。</div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>自检避坑</h2>
-  <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">只写做法漏好处</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">全文用三段细写真诚沟通、互帮互助、彼此尊重，结尾只一句 So a good relationship is very important. 便收尾——好处只剩一句空话。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">单独拿出一段写好处，落到缓解压力、共同进步、归属感等具体收益，让两个任务篇幅相当。</span></div></div><div class="pit-item"><div class="pit-t">口号堆砌无展开</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">We should be friendly. We should help each other. We should respect each other. 三句并列、各无展开。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">保留一两条，给每条配场景——We should help each other; for example, when a classmate misses a lecture, we can share our notes with him.</span></div></div><div class="pit-item"><div class="pit-t">万能开头不切题</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">With the rapid development of society, interpersonal relationships have become a hot topic among people. 空泛且未点同窗主题。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">A warm and friendly relationship with our classmates plays an important part in our campus life. 第一句即扣题。</span></div></div></div>
-  <table style="margin-top:14px">
-    <tr><th>自查项</th><th>怎么查</th></tr>
-    <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
-    <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
-    <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
-    <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
-  </table>
-</div>
+<details class="card">
+  <summary>📖 怎么写 · 审题与谋篇（建议写到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>做法＋好处双任务 本题要写两块、缺一不可：一是维系良好同窗关系的具体做法，二是这种关系带来的好处。Directions 把任务说得很死——要写 ways to maintain a warm and friendly relationship with your classmates，同时还要写 on the benefits of such a relationship。注意第二个 on 是与第一个并列的独立任务，不是顺带一提，所以这篇不是单纯谈友谊重要，而是『怎么做＋有什么好』两条腿走路。</div></div>
+    <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>做法得当则关系受益 本篇中心：与同学维系温暖友好的关系并非靠运气，而是靠几项可操作的做法，而这样的关系会反过来给个人成长和集体氛围带来实实在在的好处。这一句把 Directions 要求的 ways to maintain a warm and friendly relationship with your classmates 与 the benefits of such a relationship 两块串成一条因果主线，避免写成互不相干的两段。</div></div>
+    <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>做法一·真诚沟通 第一条做法：主动且真诚地沟通。落到具体场景——课后多聊几句、有误会及时坦诚说开、认真倾听对方想法，而不是冷脸相对。这是对 ways to maintain a warm and friendly relationship with your classmates 的第一条具体回应。 做法二·互帮互助与尊重 第二条做法：在学习和生活上互帮互助、彼此尊重包容。比如一方落下笔记主动分享、室友习惯不同时互相迁就。把抽象的『友好』落成可感的行为，避免空喊口号。 好处·成长与归属感 好处一块：良好的同窗关系能缓解学习压力、推动共同进步，并营造集体归属感。这是对 the benefits of such a relationship 的正面回应，也是中心论点的落脚点。</div></div>
+    <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 引入并亮中心 点明在大学里良好的同窗关系很重要，自然引出 an online discussion on interpersonal relationships 的话题，并亮出『做法得当、关系受益』的中心。 第 2 段 分述具体做法 主体段，集中回应 ways to maintain a warm and friendly relationship with your classmates，分述真诚沟通、互帮互助与彼此尊重两到三条做法，并用例子落地。 第 3 段 点明好处并收尾 回应 the benefits of such a relationship，点出缓解压力、共同进步、营造归属感等好处，并呼应中心收束全文。</div></div>
+    <p class="hint" style="margin-top:12px">谋篇：每段写什么 —— 这是可以直接套用的框架，换一道题功能不变、内容替换。</p>
+    <div class="row"><span class="tag">第1段</span><div class="c"><b>点重要性引出做法与好处 本段写：大学生活里和同学朝夕相处，一段温暖友好的关系既影响心情也影响成长；由此引出 ways to maintain a warm and friendly relationship with your classmates 与 the benefits of such a relationship 这两个要谈的问题，并表明良好关系靠用心经营、回报丰厚</b>陈述重要性 A ____ relationship plays an important part in our campus life.（在空位填关系类型，如 harmonious / friendly） 引出双任务 It is therefore worth thinking about how to ____ and what ____ it can bring.（前空填『维系它』，后空填『好处』）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>真诚沟通＋互助尊重两条做法 本段落实做法：做法一是真诚沟通——主动课后多聊、有误会及时说开、认真倾听；做法二是互帮互助、彼此尊重——分享笔记、迁就彼此习惯</b>每条都配一个具体校园场景，直接回应 ways to maintain a warm and friendly relationship with your classmates。 亮出本段范围 There are several practical ways to ____.（空位填本段主题，如 keep such a relationship） 分点过渡 First, we should ____. Besides, it also helps to ____.（两空各填一条做法的动作） 举例落地 For example, when ____, we can simply ____.（前空填具体情境，后空填具体做法）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>缓解压力·共同进步·归属感 本段写好处：做法得当后，温暖的同窗关系能缓解学习压力、带动共同进步、营造集体归属感，让大学生活更充实；最后呼应中心，回应 the benefits of such a relationship，重申良好关系值得用心维系</b>因果承接 As a result, such a relationship can ____.（空位填好处） 重申中心收尾 In short, ____ is well worth our effort.（空位填本篇核心对象，如 building such bonds）</div></div>
+  </div>
+</details>
 
 
 <script>
@@ -355,5 +349,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   }
 })();
 </script>
+
+
 </body>
 </html>

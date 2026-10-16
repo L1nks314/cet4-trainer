@@ -104,7 +104,6 @@ tr:last-child td{border-bottom:0}
  line-height:1.5;white-space:nowrap}
 .pill.bad{background:var(--red-soft);color:var(--red-ink)}
 .pill.fix{background:var(--green-soft);color:var(--green-ink)}
-/* 折叠的语篇分析 */
 details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
  background:var(--card)}
 details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
@@ -117,7 +116,6 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
-
 /* ═══ 写作台 ═══ */
 .wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
  border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
@@ -140,6 +138,18 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .card.lock>*:not(.lockbar){display:none}
 .lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
  color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -148,21 +158,10 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 <h1>写作 · 2025年12月 第1套</h1>
 
 <div class="card">
-  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part I</span></div>
-  <div class="big">
-    <div><b>147</b><span>范文词数</span></div>
-    <div><b>3</b><span>段</span></div>
-    <div><b>30</b><span>分钟</span></div>
-  </div>
-  <div class="tip b">四级写作的命中点是<b>切题 + 结构清楚 + 语法不出错</b>。
-  用三段式（引入表态 / 主体展开 / 回扣收尾），比追求华丽句式稳得多。</div>
-</div>
-
-<div class="card">
-  <div class="chead"><h2>题目</h2><span class="cmeta">Directions</span></div>
-  <div class="prompt"><span class="lbl">Directions</span><br>Directions : Suppose the student union of your university is collecting opinions on improving its work for the coming year. You are now to write a response by suggesting how it can better enrich student life. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.</div>
-  <div class="tip a"><b>先自己在纸上写完，再看下面的范文。</b>写作的提分全靠"写—对照—改"这个循环，
-  光看范文不动笔，等于没练。</div>
+  <div class="chead"><h2>题目</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>范文 147 词</span><span>三段式</span><span>要求 120–180 词</span></div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    Directions : Suppose the student union of your university is collecting opinions on improving its work for the coming year. You are now to write a response by suggesting how it can better enrich student life. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.</div>
 </div>
 
 
@@ -187,47 +186,42 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
-<div class="card">
-  <h2>审题：这题到底要写什么</h2>
-  <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>给学生会提丰富生活的建议 本题以学生身份，就学生会 collecting opinions on improving its work for the coming year 作出回应，只有一个——suggesting how it can better enrich student life，即围绕怎样让课余生活更丰富给出建议，而不是泛泛评价学生会的工作。</div></div>
-  <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>乐意为丰富校园生活献策 本篇交际目的：真诚回应学生会征询，并就 how it can better enrich student life 给出 2-3 条具体可行的建议，表达支持。</div></div>
-  <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>增设多样社团 建议增设摄影、辩论等更多学生社团，让每个人都能找到兴趣、结交新朋友。 组织文体赛事 定期举办运动会与艺术节，缓解学习压力、增强集体归属感。 举办讲座工作坊 邀请专家开设讲座和工作坊，开阔视野、为未来发展做准备。</div></div>
-  <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 回应征询并表态 点明得知学生会正在 collecting opinions，表示乐意就丰富校园生活提出建议。 第 2 段 分点给出建议 并列给出 2-3 条丰富生活的具体建议，每条配一句好处。 第 3 段 表达期待与支持 相信建议被采纳会让校园生活更精彩，并表示愿随时提供帮助。</div></div>
-</div>
 
-<div class="card">
-  <h2>谋篇：每段写什么（3 段）</h2>
-  <p class="hint">这是可以直接套用的框架 —— 换一道题，功能不变、内容替换。</p>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>感谢征询亮立场 写出很高兴学生会正在 collecting opinions，愿意分享几条让校园生活更丰富的想法</b>亮明回应立场 I am truly glad that ..., and I would like to share a few thoughts on ...</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>三条丰富生活的建议 分点写增设社团、组织文体赛事、举办讲座工作坊三条建议，各配一句好处：找到兴趣交友、缓解压力增强归属、开阔视野助力发展</b>提出建议 I suggest that ...; It would be helpful if ...; Another idea is to ... 补充理由 ..., because such ... would ... / ..., which would ...</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>期待采纳并表支持 相信建议若被采纳会让日常校园生活更愉快，并表示随时乐意为学生会提供帮助</b>收尾表支持 I believe these suggestions, if adopted, will ...; I am always ready to offer any help ...</div></div>
-</div>
 
-<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 参考范文（147 词）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 参考范文 · 逐段解析 · 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>参考范文（147 词）</h2>
-  <details><summary>展开范文（自己写完之后再看）</summary>
+  <details open><summary>范文 + 参考译文</summary>
     <div class="dbody">
       <div class="essay"><p class='en'>I am truly glad that the student union is collecting our opinions for the coming year, and I would like to share a few thoughts on how campus life could become richer and more colourful.</p><p class='en'>To begin with, I suggest that more student clubs be set up, ranging from photography to debating, so that everyone can find a hobby and make new friends. It would also be helpful if the union organized regular sports meets and art festivals, because such events relax us after study and build a stronger sense of community. Another idea is to invite experts to hold lectures and workshops, which would broaden our horizons and prepare us for future careers.</p><p class='en'>I believe these suggestions, if adopted, will make our daily life on campus far more enjoyable. Thank you for listening, and I am always ready to offer any help the union may need.</p></div>
       <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>我很高兴学生会正在为新的一年征集我们的意见，我想就如何让校园生活变得更丰富多彩分享几点想法。首先，我建议增设更多学生社团，从摄影到辩论，让每个人都能找到兴趣爱好、结识新朋友。如果学生会能定期组织运动会和艺术节也会很有帮助，因为这类活动能让我们在学习之余放松身心，并增强集体归属感。另一个想法是邀请专家来举办讲座和工作坊，这能开阔我们的视野，为未来的职业发展做准备。我相信这些建议如果被采纳，会让我们的日常校园生活变得愉快得多。感谢倾听，我随时乐意为学生会提供任何需要的帮助。</div>
     </div></details>
-  <div class="tip a">看范文时不要「读」，要<b>拆</b>：每段第一句做什么？观点句和理由句怎么连？
-  结尾怎么回扣题目？</div>
+  <details><summary>逐段解析（3 段）</summary>
+    <div class="dbody"><div class="row"><span class="tag">第1段</span><div class="c"><b>开门见山扣焦点 </b>开头用『I am truly glad that the student union is collecting our opinions』回应征询，再用『share a few thoughts on how campus life could become richer』亮出立场，一句话落实了第一段『回应征询并表态』的功能。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>三条建议各带理由 </b>三句都走『建议+理由』：『I suggest that more student clubs be set up ... so that everyone can find a hobby』『It would also be helpful if ... because such events relax us』『Another idea is to invite experts ... which would broaden our horizons』，用 To begin with / also / Another idea 分隔，落实分点给建议的功能。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>回扣中心表支持 </b>『I believe these suggestions, if adopted, will make our daily life on campus far more enjoyable』回扣丰富生活的中心，末句『I am always ready to offer any help』积极表态收尾，无称呼落款。</div></div></div></details>
+  <details><summary>自检避坑</summary>
+    <div class="dbody">
+      <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">泛谈改进工作</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">The student union should hold more meetings and improve its management. —— 这在谈内部管理、偏离了焦点。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">The union could set up more clubs and hold art festivals to enrich our life after class.</span></div></div><div class="pit-item"><div class="pit-t">只列口号无细节</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Hold more activities. Set up more clubs. Invite experts. —— 干巴巴堆口号、字数也不够。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">I suggest setting up more clubs so that students can find their hobbies and make friends.</span></div></div><div class="pit-item"><div class="pit-t">误加称呼落款</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">开头写 Dear Student Union, 结尾写 Yours sincerely, Li Ming —— 本题无需称呼与署名，删掉后直接从表态句开写。</span></div></div></div>
+      <table style="margin-top:12px">
+        <tr><th>自查项</th><th>怎么查</th></tr>
+        <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+        <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+        <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+        <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+      </table>
+    </div></details>
 </div>
 
-<div class="card lock"><div class="lockbar"><b>🔒 逐段解析（3 段）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>逐段解析（3 段）</h2>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>开门见山扣焦点 </b>开头用『I am truly glad that the student union is collecting our opinions』回应征询，再用『share a few thoughts on how campus life could become richer』亮出立场，一句话落实了第一段『回应征询并表态』的功能。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>三条建议各带理由 </b>三句都走『建议+理由』：『I suggest that more student clubs be set up ... so that everyone can find a hobby』『It would also be helpful if ... because such events relax us』『Another idea is to invite experts ... which would broaden our horizons』，用 To begin with / also / Another idea 分隔，落实分点给建议的功能。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>回扣中心表支持 </b>『I believe these suggestions, if adopted, will make our daily life on campus far more enjoyable』回扣丰富生活的中心，末句『I am always ready to offer any help』积极表态收尾，无称呼落款。</div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>自检避坑</h2>
-  <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">泛谈改进工作</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">The student union should hold more meetings and improve its management. —— 这在谈内部管理、偏离了焦点。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">The union could set up more clubs and hold art festivals to enrich our life after class.</span></div></div><div class="pit-item"><div class="pit-t">只列口号无细节</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Hold more activities. Set up more clubs. Invite experts. —— 干巴巴堆口号、字数也不够。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">I suggest setting up more clubs so that students can find their hobbies and make friends.</span></div></div><div class="pit-item"><div class="pit-t">误加称呼落款</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">开头写 Dear Student Union, 结尾写 Yours sincerely, Li Ming —— 本题无需称呼与署名，删掉后直接从表态句开写。</span></div></div></div>
-  <table style="margin-top:14px">
-    <tr><th>自查项</th><th>怎么查</th></tr>
-    <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
-    <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
-    <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
-    <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
-  </table>
-</div>
+<details class="card">
+  <summary>📖 怎么写 · 审题与谋篇（建议写到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>给学生会提丰富生活的建议 本题以学生身份，就学生会 collecting opinions on improving its work for the coming year 作出回应，只有一个——suggesting how it can better enrich student life，即围绕怎样让课余生活更丰富给出建议，而不是泛泛评价学生会的工作。</div></div>
+    <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>乐意为丰富校园生活献策 本篇交际目的：真诚回应学生会征询，并就 how it can better enrich student life 给出 2-3 条具体可行的建议，表达支持。</div></div>
+    <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>增设多样社团 建议增设摄影、辩论等更多学生社团，让每个人都能找到兴趣、结交新朋友。 组织文体赛事 定期举办运动会与艺术节，缓解学习压力、增强集体归属感。 举办讲座工作坊 邀请专家开设讲座和工作坊，开阔视野、为未来发展做准备。</div></div>
+    <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 回应征询并表态 点明得知学生会正在 collecting opinions，表示乐意就丰富校园生活提出建议。 第 2 段 分点给出建议 并列给出 2-3 条丰富生活的具体建议，每条配一句好处。 第 3 段 表达期待与支持 相信建议被采纳会让校园生活更精彩，并表示愿随时提供帮助。</div></div>
+    <p class="hint" style="margin-top:12px">谋篇：每段写什么 —— 这是可以直接套用的框架，换一道题功能不变、内容替换。</p>
+    <div class="row"><span class="tag">第1段</span><div class="c"><b>感谢征询亮立场 写出很高兴学生会正在 collecting opinions，愿意分享几条让校园生活更丰富的想法</b>亮明回应立场 I am truly glad that ..., and I would like to share a few thoughts on ...</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>三条丰富生活的建议 分点写增设社团、组织文体赛事、举办讲座工作坊三条建议，各配一句好处：找到兴趣交友、缓解压力增强归属、开阔视野助力发展</b>提出建议 I suggest that ...; It would be helpful if ...; Another idea is to ... 补充理由 ..., because such ... would ... / ..., which would ...</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>期待采纳并表支持 相信建议若被采纳会让日常校园生活更愉快，并表示随时乐意为学生会提供帮助</b>收尾表支持 I believe these suggestions, if adopted, will ...; I am always ready to offer any help ...</div></div>
+  </div>
+</details>
 
 
 <script>
@@ -355,5 +349,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   }
 })();
 </script>
+
+
 </body>
 </html>

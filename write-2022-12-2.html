@@ -104,7 +104,6 @@ tr:last-child td{border-bottom:0}
  line-height:1.5;white-space:nowrap}
 .pill.bad{background:var(--red-soft);color:var(--red-ink)}
 .pill.fix{background:var(--green-soft);color:var(--green-ink)}
-/* 折叠的语篇分析 */
 details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
  background:var(--card)}
 details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
@@ -117,7 +116,6 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
-
 /* ═══ 写作台 ═══ */
 .wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
  border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
@@ -140,6 +138,18 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .card.lock>*:not(.lockbar){display:none}
 .lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
  color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -148,21 +158,10 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 <h1>写作 · 2022年12月 第2套</h1>
 
 <div class="card">
-  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part I</span></div>
-  <div class="big">
-    <div><b>155</b><span>范文词数</span></div>
-    <div><b>3</b><span>段</span></div>
-    <div><b>30</b><span>分钟</span></div>
-  </div>
-  <div class="tip b">四级写作的命中点是<b>切题 + 结构清楚 + 语法不出错</b>。
-  用三段式（引入表态 / 主体展开 / 回扣收尾），比追求华丽句式稳得多。</div>
-</div>
-
-<div class="card">
-  <div class="chead"><h2>题目</h2><span class="cmeta">Directions</span></div>
-  <div class="prompt"><span class="lbl">Directions</span><br>Directions: In this task, you are to write an essay on the importance o f developing a healthy lifestyle among college students. You will have 30 minutes for the task. You should write at least 120 words but no more than 180 words.</div>
-  <div class="tip a"><b>先自己在纸上写完，再看下面的范文。</b>写作的提分全靠"写—对照—改"这个循环，
-  光看范文不动笔，等于没练。</div>
+  <div class="chead"><h2>题目</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>范文 155 词</span><span>三段式</span><span>要求 120–180 词</span></div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    Directions: In this task, you are to write an essay on the importance o f developing a healthy lifestyle among college students. You will have 30 minutes for the task. You should write at least 120 words but no more than 180 words.</div>
 </div>
 
 
@@ -187,47 +186,42 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
-<div class="card">
-  <h2>审题：这题到底要写什么</h2>
-  <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>论证健康生活方式对大学生的重要性 任务动词是 essay，限定语是 write an essay on the importance o f developing a healthy lifestyle among college students。核心不是介绍怎么保持健康，而是论证「为什么它对大学生这一群体重要」——题眼是 importance 与 college students，全文的每个理由都要回答「为什么重要」，而不是罗列做法。</div></div>
-  <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>健康生活方式是大学成功的根基 中心论点：对大学生而言，健康的生活方式不是可有可无的习惯，而是学业与成长的根基。它直接呼应题眼 the importance o f developing a healthy lifestyle，且把落点钉在「大学生」这一主体上，立场旗帜鲜明。</div></div>
-  <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>健康身体提升学习效率 第一个理由——身体状态直接决定学习效率。对着 college students 追问「为什么重要」，最贴身的答案就是：睡好吃好、坚持锻炼的人上课更专注，学习产出更高。 规律作息稳定情绪心理 第二个理由——健康作息稳住情绪与心理。久坐不动、外卖度日容易焦虑，而规律运动能缓解考试压力与离家孤独感，这是大学生活里可感的真实收益。</div></div>
-  <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 开门见山亮立场 首段直接抛出中心论点：健康生活方式对大学生至关重要，是学业成功的根基，让阅卷人第一眼抓到观点。 第 2 段 两理由配例证展开 主体段用 For one thing / For another 领起两个分论点，各配一个大学生场景细节做论据，正面论证「为什么重要」。 第 3 段 重申升华呼吁 尾段重申立场并升华：越早养成越受益，把论证收束成一句有力的呼吁。</div></div>
-</div>
 
-<div class="card">
-  <h2>谋篇：每段写什么（3 段）</h2>
-  <p class="hint">这是可以直接套用的框架 —— 换一道题，功能不变、内容替换。</p>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>健康生活方式是大学成功的根基 落点：先一句 A healthy lifestyle plays a vital role 亮明对 college students 至关重要，再用「课业与屏幕让校园生活越来越忙」做背景，收到「它不是小习惯而是根基」这一立场</b>亮明重要性观点 ___ plays a vital role in ___. （把「健康生活方式」填主语、「大学生的成长/学业」填对象，一句话钉住重要性） 背景铺垫引出 As ___ grows busier with ___, I firmly believe that ___ is not merely ___ but the foundation of ___. （前半填校园背景，后半用「不是……而是……」抬高立场）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>效率与情绪两个理由落地 落点：理由一「健康身体提升学习效率」，配「熬夜赶 due、靠外卖度日的人第二天难以专注」做反例；理由二「规律作息稳定情绪」，配「久坐生焦虑、短跑缓解考试压力与离家孤独」做对比，都紧扣 developing a healthy lifestyle among college students</b>并列引出理由 For one thing, ___. For another, ___. （两句分别领起两个分论点，结构清爽） 对比式举例 A student who ___ will ___, while ___ keep(s) ___. （前半写不健康的后果，while 后写健康的好处，形成对比论证） 让步转折加层次 ___, whereas ___. （用 whereas 把负面情形与正面收益对照，增加论证层次）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申根基地位并呼吁尽早养成 落点：先重申「健康生活方式对大学生不是可选项而是必需」，再升华「越早养成，就能带更多精力与自信进入学业和未来」，回扣中心、发出呼吁</b>收束重申立场 In conclusion, ___ is not optional but essential for ___. （换词重申，避免与首段重复） 递进式升华呼吁 The sooner we ___, the more ___ we will ___. （用「越早……越……」把观点推向行动号召）</div></div>
-</div>
 
-<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 参考范文（155 词）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 参考范文 · 逐段解析 · 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>参考范文（155 词）</h2>
-  <details><summary>展开范文（自己写完之后再看）</summary>
+  <details open><summary>范文 + 参考译文</summary>
     <div class="dbody">
       <div class="essay"><p class='en'>A healthy lifestyle plays a vital role in the life of every college student. As campus life grows busier with assignments and screens, I firmly believe that keeping fit, eating well and sleeping regularly is not a trivial habit but the very foundation of a successful university experience.</p><p class='en'>For one thing, a sound body directly boosts learning efficiency. A student who stays up all night rushing a due date and lives on takeout will struggle to concentrate the next morning, while regular exercise and balanced meals keep the mind sharp in class. For another, a healthy routine stabilizes our emotions. Sitting still for hours breeds anxiety, whereas a short run often washes away the pressure of exams and eases loneliness far from home.</p><p class='en'>In conclusion, a healthy lifestyle is not optional but essential for college students. The sooner we build it, the more energy and confidence we will carry into our studies and future lives.</p></div>
       <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>健康的生活方式在每一位大学生的生活中都起着至关重要的作用。随着课业与屏幕让校园生活越来越忙，我坚信保持锻炼、好好吃饭、规律睡眠并非无关紧要的小习惯，而是成功大学生活的根基。</div>
     </div></details>
-  <div class="tip a">看范文时不要「读」，要<b>拆</b>：每段第一句做什么？观点句和理由句怎么连？
-  结尾怎么回扣题目？</div>
+  <details><summary>逐段解析（3 段）</summary>
+    <div class="dbody"><div class="row"><span class="tag">第1段</span><div class="c"><b>观点前置立中心 </b>首句 A healthy lifestyle plays a vital role 直接落实「亮明重要性观点」句架，观点前置；第二句用 not a trivial habit but the very foundation 抬高立场，完成 outline 的「开门见山亮立场」功能。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>两理由各配场景 </b>用 For one thing / For another 领起效率与情绪两个分论点，各配 stays up all night rushing a due date、lives on takeout、Sitting still for hours 等大学生场景，并用 while / whereas 做对比，落实「理由加场景例证」，论证不空。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申加升华收束 </b>In conclusion 换词重申 not optional but essential，再用 The sooner we build it, the more ... 升华成呼吁，落实「重申升华呼吁」功能，结尾不烂尾。</div></div></div></details>
+  <details><summary>自检避坑</summary>
+    <div class="dbody">
+      <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">空喊口号无例证</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">We should keep healthy. Health is very important. We should do sports and sleep well.（三句都是口号、没有一个理由和例证）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">A student who stays up all night rushing a due date will struggle to concentrate the next morning.（用具体场景证明健康为何重要）。</span></div></div><div class="pit-item"><div class="pit-t">写成做法清单跑题</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">First, go to bed early. Second, eat more vegetables. Third, exercise every day.（纯做法清单，避开了题眼 importance）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">A healthy routine boosts learning efficiency and eases anxiety, which is why it matters so much to college students.（落到「为什么重要」）。</span></div></div><div class="pit-item"><div class="pit-t">开篇不表态埋观点</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Nowadays, many things are changing in our life, and people talk about many topics every day.（绕圈子、迟迟不表态）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">A healthy lifestyle is essential for every college student.（首句就把立场亮出来）。</span></div></div><div class="pit-item"><div class="pit-t">同义反复注水超标</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Health is important. A healthy life is important. Being healthy is really very important for us.（三句同义反复凑字数）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">A healthy lifestyle is important because it keeps our body strong and our mind focused.（一句说清、给出原因）。</span></div></div></div>
+      <table style="margin-top:12px">
+        <tr><th>自查项</th><th>怎么查</th></tr>
+        <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+        <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+        <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+        <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+      </table>
+    </div></details>
 </div>
 
-<div class="card lock"><div class="lockbar"><b>🔒 逐段解析（3 段）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>逐段解析（3 段）</h2>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>观点前置立中心 </b>首句 A healthy lifestyle plays a vital role 直接落实「亮明重要性观点」句架，观点前置；第二句用 not a trivial habit but the very foundation 抬高立场，完成 outline 的「开门见山亮立场」功能。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>两理由各配场景 </b>用 For one thing / For another 领起效率与情绪两个分论点，各配 stays up all night rushing a due date、lives on takeout、Sitting still for hours 等大学生场景，并用 while / whereas 做对比，落实「理由加场景例证」，论证不空。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申加升华收束 </b>In conclusion 换词重申 not optional but essential，再用 The sooner we build it, the more ... 升华成呼吁，落实「重申升华呼吁」功能，结尾不烂尾。</div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>自检避坑</h2>
-  <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">空喊口号无例证</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">We should keep healthy. Health is very important. We should do sports and sleep well.（三句都是口号、没有一个理由和例证）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">A student who stays up all night rushing a due date will struggle to concentrate the next morning.（用具体场景证明健康为何重要）。</span></div></div><div class="pit-item"><div class="pit-t">写成做法清单跑题</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">First, go to bed early. Second, eat more vegetables. Third, exercise every day.（纯做法清单，避开了题眼 importance）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">A healthy routine boosts learning efficiency and eases anxiety, which is why it matters so much to college students.（落到「为什么重要」）。</span></div></div><div class="pit-item"><div class="pit-t">开篇不表态埋观点</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Nowadays, many things are changing in our life, and people talk about many topics every day.（绕圈子、迟迟不表态）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">A healthy lifestyle is essential for every college student.（首句就把立场亮出来）。</span></div></div><div class="pit-item"><div class="pit-t">同义反复注水超标</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Health is important. A healthy life is important. Being healthy is really very important for us.（三句同义反复凑字数）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">A healthy lifestyle is important because it keeps our body strong and our mind focused.（一句说清、给出原因）。</span></div></div></div>
-  <table style="margin-top:14px">
-    <tr><th>自查项</th><th>怎么查</th></tr>
-    <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
-    <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
-    <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
-    <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
-  </table>
-</div>
+<details class="card">
+  <summary>📖 怎么写 · 审题与谋篇（建议写到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>论证健康生活方式对大学生的重要性 任务动词是 essay，限定语是 write an essay on the importance o f developing a healthy lifestyle among college students。核心不是介绍怎么保持健康，而是论证「为什么它对大学生这一群体重要」——题眼是 importance 与 college students，全文的每个理由都要回答「为什么重要」，而不是罗列做法。</div></div>
+    <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>健康生活方式是大学成功的根基 中心论点：对大学生而言，健康的生活方式不是可有可无的习惯，而是学业与成长的根基。它直接呼应题眼 the importance o f developing a healthy lifestyle，且把落点钉在「大学生」这一主体上，立场旗帜鲜明。</div></div>
+    <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>健康身体提升学习效率 第一个理由——身体状态直接决定学习效率。对着 college students 追问「为什么重要」，最贴身的答案就是：睡好吃好、坚持锻炼的人上课更专注，学习产出更高。 规律作息稳定情绪心理 第二个理由——健康作息稳住情绪与心理。久坐不动、外卖度日容易焦虑，而规律运动能缓解考试压力与离家孤独感，这是大学生活里可感的真实收益。</div></div>
+    <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 开门见山亮立场 首段直接抛出中心论点：健康生活方式对大学生至关重要，是学业成功的根基，让阅卷人第一眼抓到观点。 第 2 段 两理由配例证展开 主体段用 For one thing / For another 领起两个分论点，各配一个大学生场景细节做论据，正面论证「为什么重要」。 第 3 段 重申升华呼吁 尾段重申立场并升华：越早养成越受益，把论证收束成一句有力的呼吁。</div></div>
+    <p class="hint" style="margin-top:12px">谋篇：每段写什么 —— 这是可以直接套用的框架，换一道题功能不变、内容替换。</p>
+    <div class="row"><span class="tag">第1段</span><div class="c"><b>健康生活方式是大学成功的根基 落点：先一句 A healthy lifestyle plays a vital role 亮明对 college students 至关重要，再用「课业与屏幕让校园生活越来越忙」做背景，收到「它不是小习惯而是根基」这一立场</b>亮明重要性观点 ___ plays a vital role in ___. （把「健康生活方式」填主语、「大学生的成长/学业」填对象，一句话钉住重要性） 背景铺垫引出 As ___ grows busier with ___, I firmly believe that ___ is not merely ___ but the foundation of ___. （前半填校园背景，后半用「不是……而是……」抬高立场）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>效率与情绪两个理由落地 落点：理由一「健康身体提升学习效率」，配「熬夜赶 due、靠外卖度日的人第二天难以专注」做反例；理由二「规律作息稳定情绪」，配「久坐生焦虑、短跑缓解考试压力与离家孤独」做对比，都紧扣 developing a healthy lifestyle among college students</b>并列引出理由 For one thing, ___. For another, ___. （两句分别领起两个分论点，结构清爽） 对比式举例 A student who ___ will ___, while ___ keep(s) ___. （前半写不健康的后果，while 后写健康的好处，形成对比论证） 让步转折加层次 ___, whereas ___. （用 whereas 把负面情形与正面收益对照，增加论证层次）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申根基地位并呼吁尽早养成 落点：先重申「健康生活方式对大学生不是可选项而是必需」，再升华「越早养成，就能带更多精力与自信进入学业和未来」，回扣中心、发出呼吁</b>收束重申立场 In conclusion, ___ is not optional but essential for ___. （换词重申，避免与首段重复） 递进式升华呼吁 The sooner we ___, the more ___ we will ___. （用「越早……越……」把观点推向行动号召）</div></div>
+  </div>
+</details>
 
 
 <script>
@@ -355,5 +349,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   }
 })();
 </script>
+
+
 </body>
 </html>

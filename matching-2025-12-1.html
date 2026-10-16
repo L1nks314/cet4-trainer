@@ -164,6 +164,11 @@ tr:last-child td{border-bottom:0}
 #markBar .sw.on{border-color:var(--blue,#2563eb);box-shadow:0 0 0 2px rgba(37,99,235,.25)}
 #markCanvas{position:absolute;top:0;left:0;z-index:8980;pointer-events:none}
 #markCanvas.act{pointer-events:auto;cursor:crosshair;touch-action:pan-y}
+
+/* 补齐缺失样式（与写作页同源） */
+.tag{flex:0 0 auto;min-width:48px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;padding:3px 9px;text-align:center;white-space:nowrap}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink,var(--blue))}
 </style>
 </head>
 <body>

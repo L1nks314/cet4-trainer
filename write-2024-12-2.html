@@ -104,7 +104,6 @@ tr:last-child td{border-bottom:0}
  line-height:1.5;white-space:nowrap}
 .pill.bad{background:var(--red-soft);color:var(--red-ink)}
 .pill.fix{background:var(--green-soft);color:var(--green-ink)}
-/* 折叠的语篇分析 */
 details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
  background:var(--card)}
 details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
@@ -117,7 +116,6 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
-
 /* ═══ 写作台 ═══ */
 .wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
  border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
@@ -140,6 +138,18 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .card.lock>*:not(.lockbar){display:none}
 .lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
  color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -148,21 +158,10 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 <h1>写作 · 2024年12月 第2套</h1>
 
 <div class="card">
-  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part I</span></div>
-  <div class="big">
-    <div><b>157</b><span>范文词数</span></div>
-    <div><b>3</b><span>段</span></div>
-    <div><b>30</b><span>分钟</span></div>
-  </div>
-  <div class="tip b">四级写作的命中点是<b>切题 + 结构清楚 + 语法不出错</b>。
-  用三段式（引入表态 / 主体展开 / 回扣收尾），比追求华丽句式稳得多。</div>
-</div>
-
-<div class="card">
-  <div class="chead"><h2>题目</h2><span class="cmeta">Directions</span></div>
-  <div class="prompt"><span class="lbl">Directions</span><br>Directions: Suppose the university newspaper is inviting submissions from the students for its coming edition on how to enrich students&#x27; knowledge of traditional Chinese culture. You are now to write an essay for submission. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.</div>
-  <div class="tip a"><b>先自己在纸上写完，再看下面的范文。</b>写作的提分全靠"写—对照—改"这个循环，
-  光看范文不动笔，等于没练。</div>
+  <div class="chead"><h2>题目</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>范文 157 词</span><span>三段式</span><span>要求 120–180 词</span></div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    Directions: Suppose the university newspaper is inviting submissions from the students for its coming edition on how to enrich students&#x27; knowledge of traditional Chinese culture. You are now to write an essay for submission. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.</div>
 </div>
 
 
@@ -187,47 +186,42 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
-<div class="card">
-  <h2>审题：这题到底要写什么</h2>
-  <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>怎样丰富传统文化认知 题眼是 how to enrich students&#x27; knowledge of traditional Chinese culture，核心是回答『怎么做』——给出丰富学生对中华传统文化认知的具体办法，而不是论证传统文化为什么重要。同时 You are now to write an essay for submission，交际目的是向校报投一篇有说服力、办法能落地的征文。</div></div>
-  <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>多渠道丰富文化认知 中心一句话：要真正丰富学生对中华传统文化的认知，应把正规学习、亲身体验与新媒体传播结合起来。它直接回应 how to enrich students&#x27; knowledge of traditional Chinese culture，是一个可以落地展开的立场，而非泛泛的『文化很重要』。</div></div>
-  <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>开选修课与讲座 学校层面：开设古典文学、书法、传统节日等选修课和定期讲座，为学生打下系统的知识基础。这是最直接的『正规学习』渠道。 组织文化体验活动 学生层面：组织剪纸、茶艺等动手体验活动，让学生亲身感受传统文化的魅力，而不只是纸上读到，体验比死记更能留住认知。 借新媒体传播 工具层面：用短视频、图文推送等新媒体传播文化知识，以年轻人喜欢的方式扩大覆盖面，让文化认知走进日常。</div></div>
-  <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 点题引出投稿 回应校报征稿，点明主题——如何丰富学生对传统文化的认知——并一句话说明其意义，亮出本文将给出的中心（多渠道办法）。 第 2 段 并列展开三办法 主体段：按选修课与讲座、文化体验活动、新媒体传播三条办法逐一展开，每条配一句理由或例子，用过渡词串起。 第 3 段 总结并呼吁 收束全文：把三条办法归结为一句，重申结合正规学习、亲身体验与现代技术的价值，并表达希望建议对大家有益的呼吁。</div></div>
-</div>
 
-<div class="card">
-  <h2>谋篇：每段写什么（3 段）</h2>
-  <p class="hint">这是可以直接套用的框架 —— 换一道题，功能不变、内容替换。</p>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>亮主题与中心 点出传统文化塑造民族身份但不少学生了解甚少，作为校报投稿人愿分享几条丰富认知的实用办法，呼应 its coming edition on how to enrich students&#x27; knowledge of traditional Chinese culture</b>点出话题意义 ___ is a treasure that shapes our national identity, yet many students today know little about it. 以投稿人身份引出中心 As a contributor to ___, I would like to share several practical ways to ___.</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>选修课·体验·新媒体 依次写：开设古典文学、书法、传统节日的选修课与讲座打基础；组织剪纸、茶艺等动手体验让学生亲身感受；利用短视频、图文推送等新媒体以年轻人喜欢的方式传播——正是 how to enrich students&#x27; knowledge of traditional Chinese culture 要的具体做法</b>首条办法起头 To begin with, our university could ___, so as to ___. 追加并列办法 In addition, ___ are equally important. By ___, students can ___. 递进补充第三条 Moreover, we can make full use of ___ to ___ in a way that appeals to young people.</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>结合三途径呼吁 把正规学习、亲身体验与现代技术三条合起来，指出这样能让学生更深地欣赏传统文化，并表达希望这些建议对大家有益的呼吁</b>归总收束 In conclusion, combining ___, ___ and ___ would help students ___. 面向读者呼吁 I sincerely hope these suggestions will ___.</div></div>
-</div>
 
-<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 参考范文（157 词）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 参考范文 · 逐段解析 · 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>参考范文（157 词）</h2>
-  <details><summary>展开范文（自己写完之后再看）</summary>
+  <details open><summary>范文 + 参考译文</summary>
     <div class="dbody">
       <div class="essay"><p class='en'>Traditional Chinese culture is a treasure that shapes our national identity, yet many students today know little about it. As a contributor to our university newspaper, I would like to share several practical ways to enrich students&#x27; understanding of this precious heritage.</p><p class='en'>To begin with, our university could offer optional courses and regular lectures on classical literature, calligraphy and traditional festivals, so as to build a solid foundation of knowledge. In addition, hands-on activities are equally important. By organizing cultural experiences such as paper-cutting workshops or tea ceremonies, students can feel the charm of tradition rather than merely reading about it. Moreover, we can make full use of new media, posting short videos and articles online to spread cultural knowledge in a way that appeals to young people.</p><p class='en'>In conclusion, combining formal learning, personal experience and modern technology would help students appreciate traditional Chinese culture far more deeply. I sincerely hope these suggestions will benefit us all.</p></div>
       <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>中华传统文化是塑造我们民族身份的瑰宝，然而如今许多学生对它知之甚少。作为校报的一名投稿人，我想分享几条丰富学生对这份珍贵遗产认知的实用办法。</div>
     </div></details>
-  <div class="tip a">看范文时不要「读」，要<b>拆</b>：每段第一句做什么？观点句和理由句怎么连？
-  结尾怎么回扣题目？</div>
+  <details><summary>逐段解析（3 段）</summary>
+    <div class="dbody"><div class="row"><span class="tag">第1段</span><div class="c"><b>两句扣题亮中心 </b>落实『扣征稿点主题』：首句用『___ is a treasure ... yet ...』点出意义，第二句以投稿人身份『As a contributor to our university newspaper, I would like to share several practical ways』亮出中心，两句内就回扣 how to enrich students&#x27; knowledge of traditional Chinese culture，不绕圈。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>三办法各带理由 </b>落实『一条办法一句理由』：To begin with 领起选修课并用『so as to build a solid foundation』给理由；In addition 领起体验活动并用『students can feel the charm of tradition rather than merely reading about it』说明好处；Moreover 领起新媒体。三条办法都具体到剪纸、茶艺、短视频，避免空喊。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>归总呼应结尾 </b>落实『归总加呼吁』：In conclusion 把 formal learning, personal experience and modern technology 三条收成一句，重申价值，末句『I sincerely hope these suggestions will benefit us all』面向读者呼吁，首尾呼应、结构完整。</div></div></div></details>
+  <details><summary>自检避坑</summary>
+    <div class="dbody">
+      <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">偏成重要性论说</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">『Traditional Chinese culture is very important because it has a long history, so we should all love it.』——通篇论证重要性，答非所问。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">给办法：『Our university could offer optional courses on calligraphy and traditional festivals to enrich students&#x27; knowledge.』</span></div></div><div class="pit-item"><div class="pit-t">空喊要重视</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">『Everyone must pay attention to traditional culture and take it seriously.』——空洞无细节。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">『By organizing paper-cutting workshops and tea ceremonies, students can experience traditional culture firsthand.』</span></div></div><div class="pit-item"><div class="pit-t">误加书信框架</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">『Dear Editor, I am writing to ... Yours sincerely, Li Ming』——错把 essay 当书信。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">直接开篇：『Traditional Chinese culture deserves far more attention from us students, and here are some practical ways to learn about it.』</span></div></div></div>
+      <table style="margin-top:12px">
+        <tr><th>自查项</th><th>怎么查</th></tr>
+        <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+        <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+        <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+        <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+      </table>
+    </div></details>
 </div>
 
-<div class="card lock"><div class="lockbar"><b>🔒 逐段解析（3 段）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>逐段解析（3 段）</h2>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>两句扣题亮中心 </b>落实『扣征稿点主题』：首句用『___ is a treasure ... yet ...』点出意义，第二句以投稿人身份『As a contributor to our university newspaper, I would like to share several practical ways』亮出中心，两句内就回扣 how to enrich students&#x27; knowledge of traditional Chinese culture，不绕圈。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>三办法各带理由 </b>落实『一条办法一句理由』：To begin with 领起选修课并用『so as to build a solid foundation』给理由；In addition 领起体验活动并用『students can feel the charm of tradition rather than merely reading about it』说明好处；Moreover 领起新媒体。三条办法都具体到剪纸、茶艺、短视频，避免空喊。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>归总呼应结尾 </b>落实『归总加呼吁』：In conclusion 把 formal learning, personal experience and modern technology 三条收成一句，重申价值，末句『I sincerely hope these suggestions will benefit us all』面向读者呼吁，首尾呼应、结构完整。</div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>自检避坑</h2>
-  <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">偏成重要性论说</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">『Traditional Chinese culture is very important because it has a long history, so we should all love it.』——通篇论证重要性，答非所问。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">给办法：『Our university could offer optional courses on calligraphy and traditional festivals to enrich students&#x27; knowledge.』</span></div></div><div class="pit-item"><div class="pit-t">空喊要重视</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">『Everyone must pay attention to traditional culture and take it seriously.』——空洞无细节。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">『By organizing paper-cutting workshops and tea ceremonies, students can experience traditional culture firsthand.』</span></div></div><div class="pit-item"><div class="pit-t">误加书信框架</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">『Dear Editor, I am writing to ... Yours sincerely, Li Ming』——错把 essay 当书信。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">直接开篇：『Traditional Chinese culture deserves far more attention from us students, and here are some practical ways to learn about it.』</span></div></div></div>
-  <table style="margin-top:14px">
-    <tr><th>自查项</th><th>怎么查</th></tr>
-    <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
-    <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
-    <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
-    <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
-  </table>
-</div>
+<details class="card">
+  <summary>📖 怎么写 · 审题与谋篇（建议写到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>怎样丰富传统文化认知 题眼是 how to enrich students&#x27; knowledge of traditional Chinese culture，核心是回答『怎么做』——给出丰富学生对中华传统文化认知的具体办法，而不是论证传统文化为什么重要。同时 You are now to write an essay for submission，交际目的是向校报投一篇有说服力、办法能落地的征文。</div></div>
+    <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>多渠道丰富文化认知 中心一句话：要真正丰富学生对中华传统文化的认知，应把正规学习、亲身体验与新媒体传播结合起来。它直接回应 how to enrich students&#x27; knowledge of traditional Chinese culture，是一个可以落地展开的立场，而非泛泛的『文化很重要』。</div></div>
+    <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>开选修课与讲座 学校层面：开设古典文学、书法、传统节日等选修课和定期讲座，为学生打下系统的知识基础。这是最直接的『正规学习』渠道。 组织文化体验活动 学生层面：组织剪纸、茶艺等动手体验活动，让学生亲身感受传统文化的魅力，而不只是纸上读到，体验比死记更能留住认知。 借新媒体传播 工具层面：用短视频、图文推送等新媒体传播文化知识，以年轻人喜欢的方式扩大覆盖面，让文化认知走进日常。</div></div>
+    <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 点题引出投稿 回应校报征稿，点明主题——如何丰富学生对传统文化的认知——并一句话说明其意义，亮出本文将给出的中心（多渠道办法）。 第 2 段 并列展开三办法 主体段：按选修课与讲座、文化体验活动、新媒体传播三条办法逐一展开，每条配一句理由或例子，用过渡词串起。 第 3 段 总结并呼吁 收束全文：把三条办法归结为一句，重申结合正规学习、亲身体验与现代技术的价值，并表达希望建议对大家有益的呼吁。</div></div>
+    <p class="hint" style="margin-top:12px">谋篇：每段写什么 —— 这是可以直接套用的框架，换一道题功能不变、内容替换。</p>
+    <div class="row"><span class="tag">第1段</span><div class="c"><b>亮主题与中心 点出传统文化塑造民族身份但不少学生了解甚少，作为校报投稿人愿分享几条丰富认知的实用办法，呼应 its coming edition on how to enrich students&#x27; knowledge of traditional Chinese culture</b>点出话题意义 ___ is a treasure that shapes our national identity, yet many students today know little about it. 以投稿人身份引出中心 As a contributor to ___, I would like to share several practical ways to ___.</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>选修课·体验·新媒体 依次写：开设古典文学、书法、传统节日的选修课与讲座打基础；组织剪纸、茶艺等动手体验让学生亲身感受；利用短视频、图文推送等新媒体以年轻人喜欢的方式传播——正是 how to enrich students&#x27; knowledge of traditional Chinese culture 要的具体做法</b>首条办法起头 To begin with, our university could ___, so as to ___. 追加并列办法 In addition, ___ are equally important. By ___, students can ___. 递进补充第三条 Moreover, we can make full use of ___ to ___ in a way that appeals to young people.</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>结合三途径呼吁 把正规学习、亲身体验与现代技术三条合起来，指出这样能让学生更深地欣赏传统文化，并表达希望这些建议对大家有益的呼吁</b>归总收束 In conclusion, combining ___, ___ and ___ would help students ___. 面向读者呼吁 I sincerely hope these suggestions will ___.</div></div>
+  </div>
+</details>
 
 
 <script>
@@ -355,5 +349,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   }
 })();
 </script>
+
+
 </body>
 </html>

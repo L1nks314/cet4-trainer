@@ -104,7 +104,6 @@ tr:last-child td{border-bottom:0}
  line-height:1.5;white-space:nowrap}
 .pill.bad{background:var(--red-soft);color:var(--red-ink)}
 .pill.fix{background:var(--green-soft);color:var(--green-ink)}
-/* 折叠的语篇分析 */
 details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
  background:var(--card)}
 details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
@@ -139,6 +138,18 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .card.lock>*:not(.lockbar){display:none}
 .lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
  color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -147,28 +158,11 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 <h1>汉译英 · 2025年6月 第1套</h1>
 
 <div class="card">
-  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part IV</span></div>
-  <div class="big">
-    <div><b>171</b><span>中文字数</span></div>
-    <div><b>5</b><span>句</span></div>
-    <div><b>30</b><span>分钟</span></div>
-  </div>
-  <div class="tip b">翻译评分只看四件事：<b>意思说全、语法没错、表达通顺、用词准确</b>。
-  翻得漂亮不加分，翻错了狠狠扣 —— 所以目标是<b>不出错</b>，不是出彩。</div>
-</div>
-
-<div class="card">
-  <div class="chead"><h2>中文原文</h2><span class="cmeta">5 句</span></div>
-  
+  <div class="chead"><h2>中文原文</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>5 句</span><span>段落翻译</span><span>要求 140–180 词</span></div>
   <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
     <span class="zh">被誉为&quot;杂交水稻(hybrid rice)之父&quot;的袁隆平和他的科研团队克服重重困难,研发出了一种超级杂交水稻。这项技术获得了举世公认的巨大成功。通过这项技术的应用,水稻抗旱抗病能力更强,能适应不同的气候和土壤条件,产量可提高20-30%。超级杂交水稻营养丰富,口感更佳。目前,这项技术已经在许多国家得到广泛应用,为全球粮食安全做出了重大贡献。</span></div>
-  <div class="tip a"><b>先自己翻一遍再看下面。</b>用纸笔或另一个文档写，写完再逐句对照 ——
-  直接看答案等于没练。</div>
-  <details class="dig"><summary>语篇分析 · 主旨 / 时态 / 译法（建议自己翻完再看）</summary><div class="dbody">
-        <div class="chunk"><span class="k">主旨</span><span class="v">介绍袁隆平团队研发超级杂交水稻及其全球贡献 这段属于「人物 + 科技成就」类的客观介绍，主线是 被誉为&quot;杂交水稻(hybrid rice)之父&quot;的袁隆平和他的科研团队克服重重困难,研发出了一种超级杂交水稻，再展开技术的优势与全球影响。它有两条时间层：研发、获得成功、做出贡献是**已经完成**的事；而技术本身的特性（抗旱抗病、营养丰富、口感佳）是**当下普遍成立**的事实。语体客观、用词平实，无需文学化修辞。</span></div>
-        <div class="chunk"><span class="k">时态</span><span class="v">一般现在时 全篇主体在客观陈述这项技术「现在具备的特性与现状」——水稻抗旱抗病能力更强,能适应不同的气候和土壤条件、超级杂交水稻营养丰富,口感更佳、目前,这项技术已经在许多国家得到广泛应用都是当前普遍事实，故主时态定为一般现在时。仅「克服困难、研发出、获得成功、做出重大贡献」这几个**已完成的动作**偏离基调，用一般过去时或现在完成时。</span></div>
-        <div class="chunk"><span class="k">译法</span><span class="v">袁隆平 统一译法定为 Yuan Longping（姓在前、名在后的全拼，姓首字母与名首字母均大写，名 Longping 连写不加连字符）。全篇只出现一次，但作为人名必须一次定准、不可写成 Yuan Long Ping 或 Longping Yuan。锚回原文 袁隆平。 杂交水稻 原文已给出英文 hybrid rice，直接采用，全篇统一用 hybrid rice。锚回原文 杂交水稻(hybrid rice)。 超级杂交水稻 在 hybrid rice 基础上加 super，定为 super hybrid rice，全篇统一。注意它在原文反复以「这项技术 / 超级杂交水稻」指代同一对象，英文里第二次起可用 the technology 或 it 承接，但首次出现用全称。锚回原文 超级杂交水稻。 杂交水稻之父 意译为 the father of hybrid rice（约定俗成的荣誉称号译法，father 前加定冠词 the）。锚回原文 &quot;杂交水稻(hybrid rice)之父&quot;。 粮食安全 固定术语，统一译为 food security（不是 food safety——food safety 指食品卫生安全，food security 才指「粮食供给充足」，这是四级高频易错点）。锚回原文 全球粮食安全。</span></div>
-  </div></details>
+  <details class="dig"><summary>语篇分析 · 主旨 / 时态 / 译法（建议自己翻完再看）</summary><div class="dbody"><div class="chunk"><span class="k">主旨</span><span class="v">介绍袁隆平团队研发超级杂交水稻及其全球贡献 这段属于「人物 + 科技成就」类的客观介绍，主线是 被誉为&quot;杂交水稻(hybrid rice)之父&quot;的袁隆平和他的科研团队克服重重困难,研发出了一种超级杂交水稻，再展开技术的优势与全球影响。它有两条时间层：研发、获得成功、做出贡献是**已经完成**的事；而技术本身的特性（抗旱抗病、营养丰富、口感佳）是**当下普遍成立**的事实。语体客观、用词平实，无需文学化修辞。</span></div><div class="chunk"><span class="k">时态</span><span class="v">一般现在时 全篇主体在客观陈述这项技术「现在具备的特性与现状」——水稻抗旱抗病能力更强,能适应不同的气候和土壤条件、超级杂交水稻营养丰富,口感更佳、目前,这项技术已经在许多国家得到广泛应用都是当前普遍事实，故主时态定为一般现在时。仅「克服困难、研发出、获得成功、做出重大贡献」这几个**已完成的动作**偏离基调，用一般过去时或现在完成时。</span></div><div class="chunk"><span class="k">译法</span><span class="v">袁隆平 统一译法定为 Yuan Longping（姓在前、名在后的全拼，姓首字母与名首字母均大写，名 Longping 连写不加连字符）。全篇只出现一次，但作为人名必须一次定准、不可写成 Yuan Long Ping 或 Longping Yuan。锚回原文 袁隆平。 杂交水稻 原文已给出英文 hybrid rice，直接采用，全篇统一用 hybrid rice。锚回原文 杂交水稻(hybrid rice)。 超级杂交水稻 在 hybrid rice 基础上加 super，定为 super hybrid rice，全篇统一。注意它在原文反复以「这项技术 / 超级杂交水稻」指代同一对象，英文里第二次起可用 the technology 或 it 承接，但首次出现用全称。锚回原文 超级杂交水稻。 杂交水稻之父 意译为 the father of hybrid rice（约定俗成的荣誉称号译法，father 前加定冠词 the）。锚回原文 &quot;杂交水稻(hybrid rice)之父&quot;。 粮食安全 固定术语，统一译为 food security（不是 food safety——food safety 指食品卫生安全，food security 才指「粮食供给充足」，这是四级高频易错点）。锚回原文 全球粮食安全。</span></div></div></details>
 </div>
 
 
@@ -193,50 +187,42 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
-<div class="card">
-  <h2>怎么用这份包</h2>
-  <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
-    <span>③ 抄下错处</span><span>④ 整篇通读</span></div>
-  <div class="tip g">第二步是全流程最有价值的一步：<b>看你漏译了什么、时态用错了哪里</b>。
-  每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
-</div>
 
-<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 逐句对照（5 句）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
+
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 逐句对照 · 参考译文 · 译法要点</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>逐句对照（5 句）</h2>
   <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
   <div class="sent"><span class="snum">第 1 句</span><p class="szh">被誉为&quot;杂交水稻(hybrid rice)之父&quot;的袁隆平和他的科研团队克服重重困难,研发出了一种超级杂交水稻。</p><p class="sen">Yuan Longping, known as the father of hybrid rice, and his research team, overcoming numerous difficulties, developed a super hybrid rice.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">研发出是已完成的历史动作，偏离全篇现在时基调，用一般过去时 developed。研发出了的「了」也提示动作已完成。</span></div><div class="chunk"><span class="k">语态</span><span class="v">「被誉为」是被动，但降级成定语后用过去分词 known as 表被动含义，无需写成完整被动从句 who is known as。</span></div><div class="chunk"><span class="k">单复数与冠词</span><span class="v">一种超级杂交水稻的「一种」→不定冠词 a，a super hybrid rice；father 作独一无二的称号，前加定冠词 the father of hybrid rice。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">「克服困难」固定搭配 overcome difficulties；「重重困难」用 numerous / many difficulties，不要逐字译成 heavy difficulties。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">这项技术获得了举世公认的巨大成功。</p><p class="sen">This technology has achieved great success recognized worldwide.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">「获得成功」是已取得并延续至今的结果，宜用现在完成时 has achieved，强调对现在的影响；用一般过去时 achieved 亦可。这是合理偏离现在时基调的一处。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语 This technology 是单数第三人称，完成时助动词用 has 不用 have。</span></div><div class="chunk"><span class="k">单复数与冠词</span><span class="v">success 在此表「一次成功（成就）」可数化，配 a great success；若视作抽象不可数则用 great success 不加冠词，二者均可，但需自洽。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">通过这项技术的应用,水稻抗旱抗病能力更强,能适应不同的气候和土壤条件,产量可提高20-30%。</p><p class="sen">With the application of this technology, the rice has stronger resistance to drought and disease and can adapt to different climates and soil conditions, and its yield can increase by 20 to 30 percent.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">全句陈述技术带来的当前普遍效果，回指全篇基调用一般现在时：has、can adapt、can increase。</span></div><div class="chunk"><span class="k">单复数与冠词</span><span class="v">不同的气候和土壤条件→different climates and soil conditions，conditions 用复数表「各种条件」；抗病的「病」泛指各类病害，disease 用不可数或 diseases 均可。</span></div><div class="chunk"><span class="k">数字与百分比</span><span class="v">产量可提高20-30%译为 increase by 20 to 30 percent。提高「幅度」用 increase by（不是 increase to「提高到」）；20-30% 写成 20 to 30 percent 或 20%-30%，区间用 to 连接。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">「抗……能力」用 resistance to drought and disease（resistance 后接 to）；「适应……条件」用 adapt to conditions。</span></div></div><div class="sent"><span class="snum">第 4 句</span><p class="szh">超级杂交水稻营养丰富,口感更佳。</p><p class="sen">Super hybrid rice is rich in nutrition and tastes better.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">陈述水稻当前固有特性，用一般现在时 is、tastes，回指全篇基调。</span></div><div class="chunk"><span class="v">主谓一致与第三人称单数 Super hybrid rice 视作不可数/单数，谓语 tastes 加 -s（第三人称单数），别漏掉这个 s。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">「营养丰富」用 be rich in nutrition 或形容词 nutritious；「口感更佳」用 taste better，taste 此处是连系动词后接形容词 better，不用 well。</span></div></div><div class="sent"><span class="snum">第 5 句</span><p class="szh">目前,这项技术已经在许多国家得到广泛应用,为全球粮食安全做出了重大贡献。</p><p class="sen">Currently, this technology has been widely applied in many countries, making great contributions to global food security.</p><div class="strat">主语策略：转被动</div><div class="chunk"><span class="k">时态</span><span class="v">目前+已经提示动作完成并延续到现在，用现在完成时：has been applied、has made。这是合理偏离现在时基调处。</span></div><div class="chunk"><span class="k">语态</span><span class="v">「得到广泛应用」用被动 has been widely applied；副词 widely 放在 been 与 applied 之间。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">「做出贡献」固定搭配 make a contribution / make contributions to sth；contribution 后接 to + 名词（to food security），别用 for。</span></div><div class="chunk"><span class="k">术语</span><span class="v">全球粮食安全→global food security，务必是 food security（粮食供给安全）不是 food safety（食品卫生安全）。</span></div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 整篇参考译文</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>整篇参考译文</h2>
-  <details><summary>展开整篇（自己翻完再看）</summary>
+  <details style="margin-top:14px"><summary>整篇参考译文</summary>
     <div class="dbody"><p class="en">Yuan Longping, known as the father of hybrid rice, and his research team, overcoming numerous difficulties, developed a super hybrid rice. This technology has achieved great success recognized worldwide. With the application of this technology, the rice has stronger resistance to drought and disease and can adapt to different climates and soil conditions, and its yield can increase by 20 to 30 percent. In addition, super hybrid rice is rich in nutrition and tastes better. Currently, this technology has been widely applied in many countries, making great contributions to global food security. 【衔接】 第1句与第2句之间——用 This technology 承接避免重复 第1句末尾是 a super hybrid rice，第2句中文 这项技术指的就是它。译文用 This technology 承接，既呼应上句、又不重复整串名词，读者自然知道说的是同一对象。 第3句句首——补 With 状语显「靠技术带来效益」的逻辑 第3句 通过这项技术的应用是承接第2句「成功」后进一步说明效益。译文句首用 With the application of this technology 作状语，把「正是这项技术带来下列好处」的逻辑显化，衔接上下文。 第4句与前句之间——可用 In addition 或保留主语显并列 第4句 超级杂交水稻营养丰富,口感更佳是在第3句「抗逆、增产」之外再补一项优点。可在句首补 In addition / Moreover 显出递进；本定稿保留 Super hybrid rice 作主语回扣主题，亦清晰。 第5句句首——用 Currently 标时间、收束到全球影响 第5句 目前把视角从「技术特性」转到「当下全球应用与贡献」，是全篇收尾。译文句首用 Currently 标出时间转换，让整篇从「研发→优势→现状贡献」一条线读下来。</p></div></details>
-  <div class="tip a">整篇译文是用来<b>感受节奏和衔接</b>的，不是用来背的。
-  重点看它怎么处理句间连接、怎么避免重复用词。</div>
+  <details><summary>句间衔接（4 处）</summary>
+    <div class="dbody">
+      <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
+      <div class="row"><span class="tag">衔接</span><div class="c"><b>第1句与第2句之间——用 This technology 承接避免重复</b>第1句末尾是 a super hybrid rice，第2句中文 这项技术指的就是它。译文用 This technology 承接，既呼应上句、又不重复整串名词，读者自然知道说的是同一对象。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第3句句首——补 With 状语显「靠技术带来效益」的逻辑</b>第3句 通过这项技术的应用是承接第2句「成功」后进一步说明效益。译文句首用 With the application of this technology 作状语，把「正是这项技术带来下列好处」的逻辑显化，衔接上下文。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第4句与前句之间——可用 In addition 或保留主语显并列</b>第4句 超级杂交水稻营养丰富,口感更佳是在第3句「抗逆、增产」之外再补一项优点。可在句首补 In addition / Moreover 显出递进；本定稿保留 Super hybrid rice 作主语回扣主题，亦清晰。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第5句句首——用 Currently 标时间、收束到全球影响</b>第5句 目前把视角从「技术特性」转到「当下全球应用与贡献」，是全篇收尾。译文句首用 Currently 标出时间转换，让整篇从「研发→优势→现状贡献」一条线读下来。</div></div>
+    </div></details>
+  <details><summary>译法要点（23 条）</summary>
+    <div class="dbody">
+      <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
+      <div class="vocab"><div class="w">袁隆平</div><div class="d">统一译法定为 Yuan Longping（姓在前、名在后的全拼，姓首字母与名首字母均大写，名 Longping 连写不加连字符）。全篇只出现一次，但作为人名必须一次定准、不可写成 Yuan Long Ping 或 Longping Yuan。锚回原文 袁隆平。</div></div><div class="vocab"><div class="w">杂交水稻</div><div class="d">原文已给出英文 hybrid rice，直接采用，全篇统一用 hybrid rice。锚回原文 杂交水稻(hybrid rice)。</div></div><div class="vocab"><div class="w">超级杂交水稻</div><div class="d">在 hybrid rice 基础上加 super，定为 super hybrid rice，全篇统一。注意它在原文反复以「这项技术 / 超级杂交水稻」指代同一对象，英文里第二次起可用 the technology 或 it 承接，但首次出现用全称。锚回原文 超级杂交水稻。</div></div><div class="vocab"><div class="w">杂交水稻之父</div><div class="d">意译为 the father of hybrid rice（约定俗成的荣誉称号译法，father 前加定冠词 the）。锚回原文 &quot;杂交水稻(hybrid rice)之父&quot;。</div></div><div class="vocab"><div class="w">粮食安全</div><div class="d">固定术语，统一译为 food security（不是 food safety——food safety 指食品卫生安全，food security 才指「粮食供给充足」，这是四级高频易错点）。锚回原文 全球粮食安全。</div></div><div class="vocab"><div class="w">时态</div><div class="d">研发出是已完成的历史动作，偏离全篇现在时基调，用一般过去时 developed。研发出了的「了」也提示动作已完成。</div></div><div class="vocab"><div class="w">语态</div><div class="d">「被誉为」是被动，但降级成定语后用过去分词 known as 表被动含义，无需写成完整被动从句 who is known as。</div></div><div class="vocab"><div class="w">单复数与冠词</div><div class="d">一种超级杂交水稻的「一种」→不定冠词 a，a super hybrid rice；father 作独一无二的称号，前加定冠词 the father of hybrid rice。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">「克服困难」固定搭配 overcome difficulties；「重重困难」用 numerous / many difficulties，不要逐字译成 heavy difficulties。</div></div><div class="vocab"><div class="w">时态</div><div class="d">「获得成功」是已取得并延续至今的结果，宜用现在完成时 has achieved，强调对现在的影响；用一般过去时 achieved 亦可。这是合理偏离现在时基调的一处。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 This technology 是单数第三人称，完成时助动词用 has 不用 have。</div></div><div class="vocab"><div class="w">单复数与冠词</div><div class="d">success 在此表「一次成功（成就）」可数化，配 a great success；若视作抽象不可数则用 great success 不加冠词，二者均可，但需自洽。</div></div><div class="vocab"><div class="w">时态</div><div class="d">全句陈述技术带来的当前普遍效果，回指全篇基调用一般现在时：has、can adapt、can increase。</div></div><div class="vocab"><div class="w">单复数与冠词</div><div class="d">不同的气候和土壤条件→different climates and soil conditions，conditions 用复数表「各种条件」；抗病的「病」泛指各类病害，disease 用不可数或 diseases 均可。</div></div><div class="vocab"><div class="w">数字与百分比</div><div class="d">产量可提高20-30%译为 increase by 20 to 30 percent。提高「幅度」用 increase by（不是 increase to「提高到」）；20-30% 写成 20 to 30 percent 或 20%-30%，区间用 to 连接。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">「抗……能力」用 resistance to drought and disease（resistance 后接 to）；「适应……条件」用 adapt to conditions。</div></div><div class="vocab"><div class="w">时态</div><div class="d">陈述水稻当前固有特性，用一般现在时 is、tastes，回指全篇基调。</div></div><div class="vocab"><div class="w">主谓一致与第三人称单数</div><div class="d">Super hybrid rice 视作不可数/单数，谓语 tastes 加 -s（第三人称单数），别漏掉这个 s。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">「营养丰富」用 be rich in nutrition 或形容词 nutritious；「口感更佳」用 taste better，taste 此处是连系动词后接形容词 better，不用 well。</div></div><div class="vocab"><div class="w">时态</div><div class="d">目前+已经提示动作完成并延续到现在，用现在完成时：has been applied、has made。这是合理偏离现在时基调处。</div></div><div class="vocab"><div class="w">语态</div><div class="d">「得到广泛应用」用被动 has been widely applied；副词 widely 放在 been 与 applied 之间。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">「做出贡献」固定搭配 make a contribution / make contributions to sth；contribution 后接 to + 名词（to food security），别用 for。</div></div><div class="vocab"><div class="w">术语</div><div class="d">全球粮食安全→global food security，务必是 food security（粮食供给安全）不是 food safety（食品卫生安全）。</div></div>
+    </div></details>
 </div>
 
-<div class="card lock"><div class="lockbar"><b>🔒 句间衔接（4 处）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>句间衔接（4 处）</h2>
-  <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
-  <div class="row"><span class="tag">衔接</span><div class="c"><b>第1句与第2句之间——用 This technology 承接避免重复</b>第1句末尾是 a super hybrid rice，第2句中文 这项技术指的就是它。译文用 This technology 承接，既呼应上句、又不重复整串名词，读者自然知道说的是同一对象。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第3句句首——补 With 状语显「靠技术带来效益」的逻辑</b>第3句 通过这项技术的应用是承接第2句「成功」后进一步说明效益。译文句首用 With the application of this technology 作状语，把「正是这项技术带来下列好处」的逻辑显化，衔接上下文。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第4句与前句之间——可用 In addition 或保留主语显并列</b>第4句 超级杂交水稻营养丰富,口感更佳是在第3句「抗逆、增产」之外再补一项优点。可在句首补 In addition / Moreover 显出递进；本定稿保留 Super hybrid rice 作主语回扣主题，亦清晰。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第5句句首——用 Currently 标时间、收束到全球影响</b>第5句 目前把视角从「技术特性」转到「当下全球应用与贡献」，是全篇收尾。译文句首用 Currently 标出时间转换，让整篇从「研发→优势→现状贡献」一条线读下来。</div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 译法要点（23 条）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>译法要点（23 条）</h2>
-  <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
-  <div class="vocab"><div class="w">袁隆平</div><div class="d">统一译法定为 Yuan Longping（姓在前、名在后的全拼，姓首字母与名首字母均大写，名 Longping 连写不加连字符）。全篇只出现一次，但作为人名必须一次定准、不可写成 Yuan Long Ping 或 Longping Yuan。锚回原文 袁隆平。</div></div><div class="vocab"><div class="w">杂交水稻</div><div class="d">原文已给出英文 hybrid rice，直接采用，全篇统一用 hybrid rice。锚回原文 杂交水稻(hybrid rice)。</div></div><div class="vocab"><div class="w">超级杂交水稻</div><div class="d">在 hybrid rice 基础上加 super，定为 super hybrid rice，全篇统一。注意它在原文反复以「这项技术 / 超级杂交水稻」指代同一对象，英文里第二次起可用 the technology 或 it 承接，但首次出现用全称。锚回原文 超级杂交水稻。</div></div><div class="vocab"><div class="w">杂交水稻之父</div><div class="d">意译为 the father of hybrid rice（约定俗成的荣誉称号译法，father 前加定冠词 the）。锚回原文 &quot;杂交水稻(hybrid rice)之父&quot;。</div></div><div class="vocab"><div class="w">粮食安全</div><div class="d">固定术语，统一译为 food security（不是 food safety——food safety 指食品卫生安全，food security 才指「粮食供给充足」，这是四级高频易错点）。锚回原文 全球粮食安全。</div></div><div class="vocab"><div class="w">时态</div><div class="d">研发出是已完成的历史动作，偏离全篇现在时基调，用一般过去时 developed。研发出了的「了」也提示动作已完成。</div></div><div class="vocab"><div class="w">语态</div><div class="d">「被誉为」是被动，但降级成定语后用过去分词 known as 表被动含义，无需写成完整被动从句 who is known as。</div></div><div class="vocab"><div class="w">单复数与冠词</div><div class="d">一种超级杂交水稻的「一种」→不定冠词 a，a super hybrid rice；father 作独一无二的称号，前加定冠词 the father of hybrid rice。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">「克服困难」固定搭配 overcome difficulties；「重重困难」用 numerous / many difficulties，不要逐字译成 heavy difficulties。</div></div><div class="vocab"><div class="w">时态</div><div class="d">「获得成功」是已取得并延续至今的结果，宜用现在完成时 has achieved，强调对现在的影响；用一般过去时 achieved 亦可。这是合理偏离现在时基调的一处。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 This technology 是单数第三人称，完成时助动词用 has 不用 have。</div></div><div class="vocab"><div class="w">单复数与冠词</div><div class="d">success 在此表「一次成功（成就）」可数化，配 a great success；若视作抽象不可数则用 great success 不加冠词，二者均可，但需自洽。</div></div><div class="vocab"><div class="w">时态</div><div class="d">全句陈述技术带来的当前普遍效果，回指全篇基调用一般现在时：has、can adapt、can increase。</div></div><div class="vocab"><div class="w">单复数与冠词</div><div class="d">不同的气候和土壤条件→different climates and soil conditions，conditions 用复数表「各种条件」；抗病的「病」泛指各类病害，disease 用不可数或 diseases 均可。</div></div><div class="vocab"><div class="w">数字与百分比</div><div class="d">产量可提高20-30%译为 increase by 20 to 30 percent。提高「幅度」用 increase by（不是 increase to「提高到」）；20-30% 写成 20 to 30 percent 或 20%-30%，区间用 to 连接。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">「抗……能力」用 resistance to drought and disease（resistance 后接 to）；「适应……条件」用 adapt to conditions。</div></div><div class="vocab"><div class="w">时态</div><div class="d">陈述水稻当前固有特性，用一般现在时 is、tastes，回指全篇基调。</div></div><div class="vocab"><div class="w">主谓一致与第三人称单数</div><div class="d">Super hybrid rice 视作不可数/单数，谓语 tastes 加 -s（第三人称单数），别漏掉这个 s。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">「营养丰富」用 be rich in nutrition 或形容词 nutritious；「口感更佳」用 taste better，taste 此处是连系动词后接形容词 better，不用 well。</div></div><div class="vocab"><div class="w">时态</div><div class="d">目前+已经提示动作完成并延续到现在，用现在完成时：has been applied、has made。这是合理偏离现在时基调处。</div></div><div class="vocab"><div class="w">语态</div><div class="d">「得到广泛应用」用被动 has been widely applied；副词 widely 放在 been 与 applied 之间。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">「做出贡献」固定搭配 make a contribution / make contributions to sth；contribution 后接 to + 名词（to food security），别用 for。</div></div><div class="vocab"><div class="w">术语</div><div class="d">全球粮食安全→global food security，务必是 food security（粮食供给安全）不是 food safety（食品卫生安全）。</div></div>
-</div>
-
-<div class="card">
-  <h2>翻译四句口诀</h2>
-  <table>
-    <tr><th>步骤</th><th>做什么</th></tr>
-    <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
-    <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
-    <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
-    <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 > 用词花</b></td></tr>
-  </table>
-</div>
+<details class="card">
+  <summary>📖 怎么译 · 流程与口诀（建议翻到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">流程</span><div class="c"><b>四步走</b>
+      ① 自己翻 → ② 逐句对照（最有价值的一步：看你漏译了什么、时态用错了哪里）
+      → ③ 抄下错处 → ④ 整篇通读。每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div></div>
+    <table>
+      <tr><th>步骤</th><th>做什么</th></tr>
+      <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
+      <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
+      <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
+      <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 &gt; 用词花</b></td></tr>
+    </table>
+  </div>
+</details>
 
 
 <script>
@@ -367,5 +353,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   }
 })();
 </script>
+
+
 </body>
 </html>

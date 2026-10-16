@@ -104,7 +104,6 @@ tr:last-child td{border-bottom:0}
  line-height:1.5;white-space:nowrap}
 .pill.bad{background:var(--red-soft);color:var(--red-ink)}
 .pill.fix{background:var(--green-soft);color:var(--green-ink)}
-/* 折叠的语篇分析 */
 details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
  background:var(--card)}
 details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
@@ -139,6 +138,18 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .card.lock>*:not(.lockbar){display:none}
 .lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
  color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -147,28 +158,11 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 <h1>汉译英 · 2024年12月 第3套</h1>
 
 <div class="card">
-  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part IV</span></div>
-  <div class="big">
-    <div><b>180</b><span>中文字数</span></div>
-    <div><b>3</b><span>句</span></div>
-    <div><b>30</b><span>分钟</span></div>
-  </div>
-  <div class="tip b">翻译评分只看四件事：<b>意思说全、语法没错、表达通顺、用词准确</b>。
-  翻得漂亮不加分，翻错了狠狠扣 —— 所以目标是<b>不出错</b>，不是出彩。</div>
-</div>
-
-<div class="card">
-  <div class="chead"><h2>中文原文</h2><span class="cmeta">3 句</span></div>
-  
+  <div class="chead"><h2>中文原文</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>3 句</span><span>段落翻译</span><span>要求 140–180 词</span></div>
   <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
     <span class="zh">敦煌莫高窟 (Mogao Grottoes) 数字展示中心于2014年开放启用, 是莫高窟保护利用工程的重要组成部分。展示中心采用数字技术和多媒体展示手段, 使游客进入洞窟参观之前就能了解莫高窟的历史文化, 鉴赏莫高窟的艺术经典。这将减少开放洞窟的数量, 缩短游客在洞窟内的逗留时间, 减轻参观对莫高窟造成的影响, 以使这一世界文化遗产得到妥善保护、长久利用。</span></div>
-  <div class="tip a"><b>先自己翻一遍再看下面。</b>用纸笔或另一个文档写，写完再逐句对照 ——
-  直接看答案等于没练。</div>
-  <details class="dig"><summary>语篇分析 · 主旨 / 时态 / 译法（建议自己翻完再看）</summary><div class="dbody">
-        <div class="chunk"><span class="k">主旨</span><span class="v">客观介绍敦煌莫高窟数字展示中心 全篇是一段客观说明文，介绍一个文化设施的功能与作用：敦煌莫高窟 (Mogao Grottoes) 数字展示中心于2014年开放启用, 是莫高窟保护利用工程的重要组成部分。语体属四级最常考的中国文化/文化遗产介绍类，全程客观陈述事实，不带主观情感，用词应平实、正式。</span></div>
-        <div class="chunk"><span class="k">时态</span><span class="v">一般现在时 全篇主体在客观陈述展示中心当下的功能与作用——展示中心采用数字技术和多媒体展示手段描述的是它现在持续做的事，属普遍事实，故以一般现在时为主时态。只有&quot;2014年开放启用&quot;这一已完成的历史动作用一般过去时，&quot;这将减少……&quot;表对未来的预期用 will，均属基调之外的合理偏离。</span></div>
-        <div class="chunk"><span class="k">译法</span><span class="v">敦煌莫高窟 敦煌莫高窟 (Mogao Grottoes)——原文已给出约定俗成的官方译名 the Mogao Grottoes（也作 the Mogao Caves），考生直接照用即可，全篇统一，不要自己另译成 Dunhuang Cave 之类。 数字展示中心 数字展示中心——定为 the Digital Exhibition Center，全篇反复出现，统一用此译法；下文再次提到&quot;展示中心&quot;时可用 the center 承接，但首次给出全称。 世界文化遗产 这一世界文化遗产——固定译法 World Cultural Heritage（site），此处指莫高窟本身，译作 this World Cultural Heritage site，前后只用这一种说法。</span></div>
-  </div></details>
+  <details class="dig"><summary>语篇分析 · 主旨 / 时态 / 译法（建议自己翻完再看）</summary><div class="dbody"><div class="chunk"><span class="k">主旨</span><span class="v">客观介绍敦煌莫高窟数字展示中心 全篇是一段客观说明文，介绍一个文化设施的功能与作用：敦煌莫高窟 (Mogao Grottoes) 数字展示中心于2014年开放启用, 是莫高窟保护利用工程的重要组成部分。语体属四级最常考的中国文化/文化遗产介绍类，全程客观陈述事实，不带主观情感，用词应平实、正式。</span></div><div class="chunk"><span class="k">时态</span><span class="v">一般现在时 全篇主体在客观陈述展示中心当下的功能与作用——展示中心采用数字技术和多媒体展示手段描述的是它现在持续做的事，属普遍事实，故以一般现在时为主时态。只有&quot;2014年开放启用&quot;这一已完成的历史动作用一般过去时，&quot;这将减少……&quot;表对未来的预期用 will，均属基调之外的合理偏离。</span></div><div class="chunk"><span class="k">译法</span><span class="v">敦煌莫高窟 敦煌莫高窟 (Mogao Grottoes)——原文已给出约定俗成的官方译名 the Mogao Grottoes（也作 the Mogao Caves），考生直接照用即可，全篇统一，不要自己另译成 Dunhuang Cave 之类。 数字展示中心 数字展示中心——定为 the Digital Exhibition Center，全篇反复出现，统一用此译法；下文再次提到&quot;展示中心&quot;时可用 the center 承接，但首次给出全称。 世界文化遗产 这一世界文化遗产——固定译法 World Cultural Heritage（site），此处指莫高窟本身，译作 this World Cultural Heritage site，前后只用这一种说法。</span></div></div></details>
 </div>
 
 
@@ -193,50 +187,42 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
-<div class="card">
-  <h2>怎么用这份包</h2>
-  <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
-    <span>③ 抄下错处</span><span>④ 整篇通读</span></div>
-  <div class="tip g">第二步是全流程最有价值的一步：<b>看你漏译了什么、时态用错了哪里</b>。
-  每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
-</div>
 
-<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 逐句对照（3 句）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
+
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 逐句对照 · 参考译文 · 译法要点</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>逐句对照（3 句）</h2>
   <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
   <div class="sent"><span class="snum">第 1 句</span><p class="szh">敦煌莫高窟 (Mogao Grottoes) 数字展示中心于2014年开放启用, 是莫高窟保护利用工程的重要组成部分。</p><p class="sen">The Mogao Grottoes Digital Exhibition Center, which opened in 2014, is an important part of the project for the protection and utilization of the Mogao Grottoes.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">&quot;开放启用&quot;是2014年已完成的动作→用一般过去时 opened in 2014；主句&quot;是……组成部分&quot;是延续至今的事实→用一般现在时 is。一句之内两个时态各有所指，不矛盾。</span></div><div class="chunk"><span class="k">冠词</span><span class="v">展示中心是特指的唯一机构→前面加定冠词 the；an important part 中&quot;重要组成部分&quot;是泛指其中一个部分→用不定冠词 an（part 以元音音素开头前面用 a 不用 an？part 以辅音 /p/ 开头，故是 an important 因 important 以元音开头）。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">Grottoes 本身是&quot;洞窟&quot;的复数（grotto→grottoes），是约定俗成的专名一部分，照抄即可，不要误写成单数 grotto。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">展示中心采用数字技术和多媒体展示手段, 使游客进入洞窟参观之前就能了解莫高窟的历史文化, 鉴赏莫高窟的艺术经典。</p><p class="sen">The center adopts digital technology and multimedia means, enabling visitors to learn about the history and culture of the Mogao Grottoes and appreciate its artistic classics before they enter the caves.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调一般现在时：中心&quot;采用&quot;技术是现在持续的常态→adopts；时间状语从句 before they enter 也用现在时。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语 The center 是第三人称单数→谓语用 adopts，别漏掉词尾 s。</span></div><div class="chunk"><span class="k">介词搭配</span><span class="v">&quot;了解某事物&quot;用 learn about/understand；&quot;鉴赏艺术&quot;用 appreciate（及物，直接跟宾语，不加介词）。&quot;进入洞窟&quot;是 enter the caves，enter 及物不加 into。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">&quot;游客&quot;泛指一类人→用复数 visitors，相应代词用 they；&quot;洞窟&quot;不止一个→caves 复数；&quot;艺术经典&quot;是多件作品→the artistic classics 复数。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">这将减少开放洞窟的数量, 缩短游客在洞窟内的逗留时间, 减轻参观对莫高窟造成的影响, 以使这一世界文化遗产得到妥善保护、长久利用。</p><p class="sen">This will reduce the number of open caves, shorten the time visitors stay inside, and lessen the impact of visits on the Mogao Grottoes, so that this World Cultural Heritage site can be properly protected and used over the long term.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">&quot;这将……&quot;明确表对未来的预期/效果→用 will + 动词原形 reduce/shorten/lessen，这是基调一般现在时之外的合理偏离。</span></div><div class="chunk"><span class="k">语态</span><span class="v">&quot;遗产得到妥善保护、长久利用&quot;——遗产是&quot;被保护、被利用&quot;的承受者，中文的&quot;得到&quot;提示这里要用英文被动：can be properly protected and used。这是汉译英最易漏的点：中文不显的被动，英文要显化。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">&quot;开放洞窟的数量&quot;→the number of open caves（caves 复数）；&quot;逗留时间&quot;是不可数→the time visitors stay，不加复数。</span></div><div class="chunk"><span class="k">介词搭配</span><span class="v">&quot;参观对莫高窟造成的影响&quot;用 the impact of... on...（impact on 固定搭配）；&quot;减少……的数量&quot;用 reduce the number of...。</span></div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 整篇参考译文</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>整篇参考译文</h2>
-  <details><summary>展开整篇（自己翻完再看）</summary>
+  <details style="margin-top:14px"><summary>整篇参考译文</summary>
     <div class="dbody"><p class="en">The Mogao Grottoes Digital Exhibition Center, which opened in 2014, is an important part of the project for the protection and utilization of the Mogao Grottoes. The center adopts digital technology and multimedia means, enabling visitors to learn about the history and culture of the Mogao Grottoes and appreciate its artistic classics before they enter the caves. This will reduce the number of open caves, shorten the time visitors stay inside, and lessen the impact of visits on the Mogao Grottoes, so that this World Cultural Heritage site can be properly protected and used over the long term. 【衔接】 第1句到第2句：用 the center 承接避免重复全称 第1句已给出全称 The Mogao Grottoes Digital Exhibition Center，第2句再说展示中心时不必重复整串，改用 The center 承接即可，简洁又不歧义。 第2句到第3句：用 This 指代承接前句做法 第3句中文主语这将减少开放洞窟的数量的&quot;这&quot;，指代第2句&quot;中心采用数字技术使游客提前了解&quot;这一整套做法，英文用 This 开头承接，把两句的因果/递进关系自然带出，读者一看就知道&quot;这&quot;指什么。</p></div></details>
-  <div class="tip a">整篇译文是用来<b>感受节奏和衔接</b>的，不是用来背的。
-  重点看它怎么处理句间连接、怎么避免重复用词。</div>
+  <details><summary>句间衔接（2 处）</summary>
+    <div class="dbody">
+      <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
+      <div class="row"><span class="tag">衔接</span><div class="c"><b>第1句到第2句：用 the center 承接避免重复全称</b>第1句已给出全称 The Mogao Grottoes Digital Exhibition Center，第2句再说展示中心时不必重复整串，改用 The center 承接即可，简洁又不歧义。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第2句到第3句：用 This 指代承接前句做法</b>第3句中文主语这将减少开放洞窟的数量的&quot;这&quot;，指代第2句&quot;中心采用数字技术使游客提前了解&quot;这一整套做法，英文用 This 开头承接，把两句的因果/递进关系自然带出，读者一看就知道&quot;这&quot;指什么。</div></div>
+    </div></details>
+  <details><summary>译法要点（14 条）</summary>
+    <div class="dbody">
+      <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
+      <div class="vocab"><div class="w">敦煌莫高窟</div><div class="d">敦煌莫高窟 (Mogao Grottoes)——原文已给出约定俗成的官方译名 the Mogao Grottoes（也作 the Mogao Caves），考生直接照用即可，全篇统一，不要自己另译成 Dunhuang Cave 之类。</div></div><div class="vocab"><div class="w">数字展示中心</div><div class="d">数字展示中心——定为 the Digital Exhibition Center，全篇反复出现，统一用此译法；下文再次提到&quot;展示中心&quot;时可用 the center 承接，但首次给出全称。</div></div><div class="vocab"><div class="w">世界文化遗产</div><div class="d">这一世界文化遗产——固定译法 World Cultural Heritage（site），此处指莫高窟本身，译作 this World Cultural Heritage site，前后只用这一种说法。</div></div><div class="vocab"><div class="w">时态</div><div class="d">&quot;开放启用&quot;是2014年已完成的动作→用一般过去时 opened in 2014；主句&quot;是……组成部分&quot;是延续至今的事实→用一般现在时 is。一句之内两个时态各有所指，不矛盾。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">展示中心是特指的唯一机构→前面加定冠词 the；an important part 中&quot;重要组成部分&quot;是泛指其中一个部分→用不定冠词 an（part 以元音音素开头前面用 a 不用 an？part 以辅音 /p/ 开头，故是 an important 因 important 以元音开头）。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">Grottoes 本身是&quot;洞窟&quot;的复数（grotto→grottoes），是约定俗成的专名一部分，照抄即可，不要误写成单数 grotto。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调一般现在时：中心&quot;采用&quot;技术是现在持续的常态→adopts；时间状语从句 before they enter 也用现在时。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 The center 是第三人称单数→谓语用 adopts，别漏掉词尾 s。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">&quot;了解某事物&quot;用 learn about/understand；&quot;鉴赏艺术&quot;用 appreciate（及物，直接跟宾语，不加介词）。&quot;进入洞窟&quot;是 enter the caves，enter 及物不加 into。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;游客&quot;泛指一类人→用复数 visitors，相应代词用 they；&quot;洞窟&quot;不止一个→caves 复数；&quot;艺术经典&quot;是多件作品→the artistic classics 复数。</div></div><div class="vocab"><div class="w">时态</div><div class="d">&quot;这将……&quot;明确表对未来的预期/效果→用 will + 动词原形 reduce/shorten/lessen，这是基调一般现在时之外的合理偏离。</div></div><div class="vocab"><div class="w">语态</div><div class="d">&quot;遗产得到妥善保护、长久利用&quot;——遗产是&quot;被保护、被利用&quot;的承受者，中文的&quot;得到&quot;提示这里要用英文被动：can be properly protected and used。这是汉译英最易漏的点：中文不显的被动，英文要显化。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;开放洞窟的数量&quot;→the number of open caves（caves 复数）；&quot;逗留时间&quot;是不可数→the time visitors stay，不加复数。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">&quot;参观对莫高窟造成的影响&quot;用 the impact of... on...（impact on 固定搭配）；&quot;减少……的数量&quot;用 reduce the number of...。</div></div>
+    </div></details>
 </div>
 
-<div class="card lock"><div class="lockbar"><b>🔒 句间衔接（2 处）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>句间衔接（2 处）</h2>
-  <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
-  <div class="row"><span class="tag">衔接</span><div class="c"><b>第1句到第2句：用 the center 承接避免重复全称</b>第1句已给出全称 The Mogao Grottoes Digital Exhibition Center，第2句再说展示中心时不必重复整串，改用 The center 承接即可，简洁又不歧义。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第2句到第3句：用 This 指代承接前句做法</b>第3句中文主语这将减少开放洞窟的数量的&quot;这&quot;，指代第2句&quot;中心采用数字技术使游客提前了解&quot;这一整套做法，英文用 This 开头承接，把两句的因果/递进关系自然带出，读者一看就知道&quot;这&quot;指什么。</div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 译法要点（14 条）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>译法要点（14 条）</h2>
-  <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
-  <div class="vocab"><div class="w">敦煌莫高窟</div><div class="d">敦煌莫高窟 (Mogao Grottoes)——原文已给出约定俗成的官方译名 the Mogao Grottoes（也作 the Mogao Caves），考生直接照用即可，全篇统一，不要自己另译成 Dunhuang Cave 之类。</div></div><div class="vocab"><div class="w">数字展示中心</div><div class="d">数字展示中心——定为 the Digital Exhibition Center，全篇反复出现，统一用此译法；下文再次提到&quot;展示中心&quot;时可用 the center 承接，但首次给出全称。</div></div><div class="vocab"><div class="w">世界文化遗产</div><div class="d">这一世界文化遗产——固定译法 World Cultural Heritage（site），此处指莫高窟本身，译作 this World Cultural Heritage site，前后只用这一种说法。</div></div><div class="vocab"><div class="w">时态</div><div class="d">&quot;开放启用&quot;是2014年已完成的动作→用一般过去时 opened in 2014；主句&quot;是……组成部分&quot;是延续至今的事实→用一般现在时 is。一句之内两个时态各有所指，不矛盾。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">展示中心是特指的唯一机构→前面加定冠词 the；an important part 中&quot;重要组成部分&quot;是泛指其中一个部分→用不定冠词 an（part 以元音音素开头前面用 a 不用 an？part 以辅音 /p/ 开头，故是 an important 因 important 以元音开头）。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">Grottoes 本身是&quot;洞窟&quot;的复数（grotto→grottoes），是约定俗成的专名一部分，照抄即可，不要误写成单数 grotto。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调一般现在时：中心&quot;采用&quot;技术是现在持续的常态→adopts；时间状语从句 before they enter 也用现在时。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 The center 是第三人称单数→谓语用 adopts，别漏掉词尾 s。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">&quot;了解某事物&quot;用 learn about/understand；&quot;鉴赏艺术&quot;用 appreciate（及物，直接跟宾语，不加介词）。&quot;进入洞窟&quot;是 enter the caves，enter 及物不加 into。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;游客&quot;泛指一类人→用复数 visitors，相应代词用 they；&quot;洞窟&quot;不止一个→caves 复数；&quot;艺术经典&quot;是多件作品→the artistic classics 复数。</div></div><div class="vocab"><div class="w">时态</div><div class="d">&quot;这将……&quot;明确表对未来的预期/效果→用 will + 动词原形 reduce/shorten/lessen，这是基调一般现在时之外的合理偏离。</div></div><div class="vocab"><div class="w">语态</div><div class="d">&quot;遗产得到妥善保护、长久利用&quot;——遗产是&quot;被保护、被利用&quot;的承受者，中文的&quot;得到&quot;提示这里要用英文被动：can be properly protected and used。这是汉译英最易漏的点：中文不显的被动，英文要显化。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">&quot;开放洞窟的数量&quot;→the number of open caves（caves 复数）；&quot;逗留时间&quot;是不可数→the time visitors stay，不加复数。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">&quot;参观对莫高窟造成的影响&quot;用 the impact of... on...（impact on 固定搭配）；&quot;减少……的数量&quot;用 reduce the number of...。</div></div>
-</div>
-
-<div class="card">
-  <h2>翻译四句口诀</h2>
-  <table>
-    <tr><th>步骤</th><th>做什么</th></tr>
-    <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
-    <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
-    <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
-    <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 > 用词花</b></td></tr>
-  </table>
-</div>
+<details class="card">
+  <summary>📖 怎么译 · 流程与口诀（建议翻到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">流程</span><div class="c"><b>四步走</b>
+      ① 自己翻 → ② 逐句对照（最有价值的一步：看你漏译了什么、时态用错了哪里）
+      → ③ 抄下错处 → ④ 整篇通读。每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div></div>
+    <table>
+      <tr><th>步骤</th><th>做什么</th></tr>
+      <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
+      <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
+      <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
+      <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 &gt; 用词花</b></td></tr>
+    </table>
+  </div>
+</details>
 
 
 <script>
@@ -367,5 +353,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   }
 })();
 </script>
+
+
 </body>
 </html>

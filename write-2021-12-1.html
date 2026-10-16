@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>写作 · 2021年12月 第1套</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--soft:#fafbfc;--grey:#f2f3f5;--line:#e5e8ec;--line2:#eff1f4;
+ --track:#e8ebef;--txt:#1b1e23;--txt2:#2b303a;--txt3:#3d434e;--sub:#6b7280;--sub2:#a8b0bb;
+ --blue:#2563eb;--blue-soft:#eef3ff;--green:#0d8a52;--green-soft:#e8f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;
+ --amber-line:#f0dfb8;--green-line:#bfe3cf;--purple:#7c5cff;--purple-soft:#f2eeff;
+ --blue-ink:#123a75;--green-ink:#0d5232;--amber-ink:#7a5b00;--red-ink:#8a2318;--purple-ink:#3f2a7a;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05)}
+@media (prefers-color-scheme: dark){:root{--bg:#101216;--card:#191c21;--soft:#20242a;
+ --grey:#22262c;--line:#2c313a;--line2:#242930;--track:#2a2f38;--txt:#e9ebee;--txt2:#d7dade;
+ --txt3:#c3c8cf;--sub:#98a0aa;--sub2:#6b7280;--blue:#6b96fb;--blue-soft:#1a2742;
+ --green:#41d18f;--green-soft:#14301f;--red:#ef7261;--red-soft:#371d19;--amber:#e0a53f;
+ --amber-soft:#312713;--amber-line:#4a3a1c;--green-line:#1f4530;--purple:#a98cff;
+ --purple-soft:#241c3d;--blue-ink:#a9c6ff;--green-ink:#7fe0b0;--amber-ink:#f0c469;
+ --red-ink:#ffa79a;--purple-ink:#c3a9ff;--shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28);
+ color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:20px;margin:2px 0 14px;font-weight:800;padding-left:12px;
+ border-left:4px solid var(--blue);line-height:1.25;letter-spacing:.2px}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:12px;flex-wrap:wrap}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.hint{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 12px}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.72;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.big{display:flex;gap:9px;margin-bottom:12px}
+.big div{flex:1;background:var(--blue-soft);border-radius:10px;padding:10px 8px;text-align:center}
+.big b{display:block;font-size:18px;font-weight:800;color:var(--blue)}
+.big span{font-size:11.5px;color:var(--sub)}
+.prompt{font-size:14.6px;line-height:1.9;background:var(--soft);border-radius:11px;
+ padding:14px;border:1px solid var(--line);text-align:justify}
+.prompt .lbl{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue);
+ color:#fff;border-radius:6px;padding:2px 9px;margin-bottom:9px}
+.zh{font-size:15px;line-height:2;text-align:justify;letter-spacing:.2px}
+.en{font-size:14.6px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.essay p{margin:0 0 12px}
+.essay p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;
+ background:var(--card)}
+details>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:14.4px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details[open]>summary::before{content:"▾"}
+details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
+.sent{border-bottom:1px solid var(--line2);padding:13px 0}
+.sent:last-child{border-bottom:0}
+.snum{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue-soft);
+ color:var(--blue);border-radius:6px;padding:2px 9px;margin-bottom:7px}
+.szh{font-size:15px;line-height:1.9;margin:0 0 9px}
+.sen{font-size:14.6px;line-height:1.85;margin:0;padding:10px 12px;background:var(--green-soft);
+ border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
+.strat{display:inline-block;font-size:12px;color:var(--purple);
+ background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
+.chunk{display:flex;gap:9px;margin:8px 0;font-size:13.4px;line-height:1.75;align-items:flex-start}
+.chunk .k{flex:0 0 auto;min-width:60px;text-align:center;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:3px 9px;line-height:1.5;
+ font-size:12px;white-space:nowrap}
+.chunk .v{flex:1;min-width:0;color:var(--txt2)}
+.row{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line2);align-items:flex-start}
+.row:last-child{border-bottom:0}
+.row .tag{flex:0 0 auto;min-width:48px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;padding:3px 9px;text-align:center;white-space:nowrap}
+.row .c{flex:1;min-width:0;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:4px}
+.row .c .sub2{font-weight:400;color:var(--sub);font-size:12.5px;margin-left:4px}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+.vocab{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid var(--line2);
+ font-size:13.4px;align-items:flex-start}
+.vocab:last-child{border-bottom:0}
+.vocab .w{flex:0 0 auto;min-width:96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;min-width:0;color:var(--txt2);line-height:1.72}
+.pit{border-radius:12px;background:var(--red-soft);padding:13px 14px;font-size:13.4px;
+ line-height:1.75;color:var(--red-ink);margin-top:10px}
+.pit-h{font-weight:700;font-size:13.6px;margin-bottom:10px}
+.pit-item{background:var(--card);border:1px solid var(--line);border-radius:10px;
+ padding:11px 12px;margin-top:9px}
+.pit-t{font-weight:700;font-size:13.4px;color:var(--red-ink);margin-bottom:6px;
+ display:flex;align-items:center;gap:7px;line-height:1.5}
+.pit-t::before{content:"";width:3px;height:13px;border-radius:2px;background:var(--red);
+ flex:0 0 auto}
+.pit-line{display:flex;gap:8px;margin-top:6px;font-size:13px;line-height:1.72;align-items:flex-start}
+.pit-line .tx{flex:1;min-width:0;color:var(--txt2)}
+.pill{flex:0 0 auto;font-size:11px;font-weight:700;border-radius:5px;padding:2px 7px;
+ line-height:1.5;white-space:nowrap}
+.pill.bad{background:var(--red-soft);color:var(--red-ink)}
+.pill.fix{background:var(--green-soft);color:var(--green-ink)}
+details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
+ background:var(--card)}
+details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px;color:var(--txt)}
+details.dig>summary::-webkit-details-marker{display:none}
+details.dig>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details.dig[open]>summary::before{content:"▾"}
+details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
+ border-radius:18px;padding:5px 13px;color:var(--sub)}
+.flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+/* ═══ 写作台 ═══ */
+.wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
+.wbtn:hover{border-color:var(--blue);color:var(--blue)}
+.wbtn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.wbtn.primary:hover{filter:brightness(1.08);color:#fff}
+.wbar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.wbar .tmv{font-weight:800;font-size:17px;color:var(--blue);font-variant-numeric:tabular-nums;
+ letter-spacing:.5px}
+.wbar .cnt{margin-left:auto;font-size:13px;font-weight:700;color:var(--sub)}
+#wpText{width:100%;min-height:230px;resize:vertical;padding:14px 16px;border-radius:12px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);font:inherit;
+ font-size:14.5px;line-height:1.95;box-sizing:border-box}
+#wpText:focus{outline:none;border-color:var(--blue)}
+.wrow{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.wst{font-size:13px;font-weight:700;color:var(--sub);line-height:1.6}
+.wdone{background:var(--green-soft,#eaf7ef);border:1px solid var(--green);
+ color:var(--green);padding:11px 14px;border-radius:11px;font-size:13.5px;font-weight:700;
+ margin-bottom:12px;line-height:1.65}
+.card.lock>*:not(.lockbar){display:none}
+.lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
+ color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
+</style>
+</head>
+<body>
+
+<a class="back" href="writing.html">← 返回写作与翻译</a>
+<h1>写作 · 2021年12月 第1套</h1>
+
+<div class="card">
+  <div class="chead"><h2>题目</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>范文 171 词</span><span>三段式</span><span>要求 120–180 词</span></div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    Directions: Suppose your school is organizing an orientation program to help the freshmen adapt to the new environment and academic studies. You are now to write a proposal, which may include its aim, duration, participants and activities. You will have 30 minutes to write the proposal. You should write at least 120 words but no more than 180 words.</div>
+</div>
+
+
+<div class="card" id="wpad">
+  <h2>写作台</h2>
+  <div id="wpIdle">
+    <p class="hint">建议 30 分钟内写满 120–180 词，写完后点提交 —— 范文与逐段解析才会解锁。</p>
+    <div class="wrow"><button class="wbtn primary" id="wpStart">✍️ 开始写作</button></div>
+  </div>
+  <div id="wpEdit" style="display:none">
+    <div class="wbar">
+      <span class="tmv" id="wpTimer">30:00</span>
+      <button class="wbtn" id="wpPause" style="padding:5px 12px;font-size:12.5px">⏸ 暂停</button>
+      <span class="cnt" id="wpCount">0 词</span>
+    </div>
+    <textarea id="wpText" placeholder="在这里写你的作文…（题目在上方，写完点下面的提交）"></textarea>
+    <div class="wrow">
+      <button class="wbtn primary" id="wpSubmit">📷 提交并解锁参考</button>
+      <button class="wbtn" id="wpSync" style="display:none">☁ 把文字发给我批改</button>
+      <button class="wbtn" id="wpReset" style="display:none">🔄 重新练习</button>
+    </div>
+    <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
+  </div>
+</div>
+
+
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 参考范文 · 逐段解析 · 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
+  <h2>参考范文（171 词）</h2>
+  <details open><summary>范文 + 参考译文</summary>
+    <div class="dbody">
+      <div class="essay"><p class='en'>A Proposal for the Freshmen Orientation Program Our school is planning an orientation program for this year&#x27;s freshmen, and its main arrangements are proposed below. The program aims to help new students adapt to the new environment and academic studies as smoothly and quickly as possible.</p><p class='en'>In terms of duration, the program will last for one week, starting from the day of registration. As for the participants, it is open to all incoming freshmen, and it will be organized by the Student Union together with volunteer seniors and several advisers from each department.</p><p class='en'>A variety of activities will be arranged during the week. First, campus tours and library workshops will help newcomers find their way around. Second, group meetings with academic advisers will introduce course selection and effective study methods. Finally, evening social parties will give students a chance to make new friends and relax.</p><p class='en'>We are confident that this program will give every freshman a warm and confident start. Your approval and support would be highly appreciated. The Student Union</p></div>
+      <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>新生入学适应方案 本校正为今年的新生筹办一个入学适应项目，主要安排如下。该项目旨在帮助新生尽可能顺利、迅速地适应新环境与学业。</div>
+    </div></details>
+  <details><summary>逐段解析（4 段）</summary>
+    <div class="dbody"><div class="row"><span class="tag">第1段</span><div class="c"><b>标题＋主旨句落地 </b>本段用标题 A Proposal for the Freshmen Orientation Program 点题，开头句 our school is planning ... arrangements are proposed below 总起，再用 The program aims to help new students adapt ... 把 aim 前置，正是『开头一句亮方案主旨』方法的落地。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>两标签领出两要点 </b>In terms of duration 领出『one week, starting from the day of registration』写死时长，As for the participants 领出『all incoming freshmen』『organized by the Student Union ...』写清人员，一句一要点，覆盖 duration 与 participants。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>First/Second/Finally 写实活动 </b>先用 A variety of activities will be arranged 总起，再以 First / Second / Finally 分列三类活动，且每条都补了作用（help newcomers find their way around、introduce course selection、make new friends），实现『分点罗列活动』且不空泛。</div></div><div class="row"><span class="tag">第4段</span><div class="c"><b>信心＋请求＋组织落款 </b>We are confident that ... a warm and confident start 表信心并回扣目的，Your approval and support would be highly appreciated 客气请求批准，末行以 The Student Union 落款，避免出现真名。</div></div></div></details>
+  <details><summary>自检避坑</summary>
+    <div class="dbody">
+      <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">空谈重要性无安排</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Adapting to a new environment is very important for every freshman, so we should pay great attention to it.（通篇这种感慨，没有时长、人员、活动）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">直接写 The program will last for one week and offer campus tours, study workshops and social parties for all freshmen. 用可执行安排替掉空泛感慨。</span></div></div><div class="pit-item"><div class="pit-t">活动笼统无细节</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">We will organize many interesting and colorful activities for the freshmen.（说了等于没说）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">We will arrange campus tours, library workshops and group meetings with academic advisers to help freshmen settle in. 把活动名和用途都写出来。</span></div></div><div class="pit-item"><div class="pit-t">只写活动漏时长人员</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">只有一大段活动描述，全文找不到项目持续多久、面向谁。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">补一句 The one-week program is open to all incoming freshmen and organized by the Student Union. 一句同时补齐 duration 与 participants 两项。</span></div></div><div class="pit-item"><div class="pit-t">落款暴露真名</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">末尾写 Yours, Li Ming（暴露姓名，且口吻偏私信）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">落款改为 The Student Union，既符合考试要求，也贴合提交校方的正式方案口吻。</span></div></div></div>
+      <table style="margin-top:12px">
+        <tr><th>自查项</th><th>怎么查</th></tr>
+        <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+        <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+        <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+        <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+      </table>
+    </div></details>
+</div>
+
+<details class="card">
+  <summary>📖 怎么写 · 审题与谋篇（建议写到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>写一份新生入学适应方案 本题要写的是 write a proposal，并且要求已经把必写框架给死：which may include its aim, duration, participants and activities。所以本篇的不是论证入学适应有多重要，而是拿出一套包含目的、时长、参与者、活动四块的可执行安排。</div></div>
+    <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>一套帮新生尽快适应的可执行方案 全篇要达成的交际目的：向校方提交一套安排，用来 help the freshmen adapt to the new environment and academic studies，让新生尽快融入校园与学业。这句是全篇的主心骨，四个要点都围着它转。</div></div>
+    <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>目的：助新生适应环境与学业 对应要点 aim：写清方案的目的是帮助新生适应新环境与学业，即 help the freshmen adapt to the new environment and academic studies。 时长：为期一周 对应要点 duration：给出项目持续多久，本篇定为入学报到起的一周，让安排显得具体可落地。 参与者：全体新生＋组织方 对应要点 participants：说清面向哪些人（全体新生）以及由谁组织（学生会、高年级志愿者与各院系顾问），把 its aim, duration, participants and activities 里的 participants 一项写实。 活动：三类具体安排 对应要点 activities：给出可执行的具体活动——校园导览与图书馆工作坊、选课与学习方法指导会、晚间社交派对，避免只说『开展一些活动』这类空话。</div></div>
+    <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 标题＋主旨句点目的 拟标题表明这是新生入学方案，开头一句总起并点明方案目的（aim），即 help the freshmen adapt to the new environment and academic studies。 第 2 段 交代时长与参与者 一段之内讲清 duration（为期多久）与 participants（面向谁、由谁组织）两个要点。 第 3 段 分点铺开活动 单独成段，用 First / Second / Finally 分点列出具体活动（activities），把安排写实。 第 4 段 礼貌收尾＋落款 表达信心、请求校方批准与支持，末尾以组织身份落款。</div></div>
+    <p class="hint" style="margin-top:12px">谋篇：每段写什么 —— 这是可以直接套用的框架，换一道题功能不变、内容替换。</p>
+    <div class="row"><span class="tag">第1段</span><div class="c"><b>点题＋写明目的 标题表明这是新生入学方案，开头总起后点明目的是帮新生尽快适应，呼应 help the freshmen adapt to the new environment and academic studies</b>亮明方案主旨 To help ___, our school proposes ___, and the main arrangements are outlined below.（空位填『帮谁做什么』与『提出的方案名』） 点明目的 The program aims to help ___ as ___ as possible.（空位填服务对象与目标状态，专门承接 aim 这一要点）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>一周＋全体新生由学生会组织 时长定为入学报到起的一周（duration），参与者为全体新生、由学生会联合高年级志愿者与各院系顾问组织（participants），落实 its aim, duration, participants and activities 中的两项</b>交代时长 In terms of duration, the program will last for ___, starting from ___.（空位填时长与起始时间） 交代参与者 As for the participants, it is open to ___, and it will be organized by ___.（空位填面向对象与组织方）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>导览＋选课指导＋社交派对 落实要点 activities：校园导览与图书馆工作坊帮新生熟悉环境、与学业顾问的会面指导选课与学习方法、晚间社交派对帮新生交友，三类活动分别对应适应环境与学业两条线</b>总起活动 A variety of activities will be arranged during ___.（空位填时段，引出后面的分点） 分点＋点功能 First, ___ will help ___; second, ___ will introduce ___; finally, ___ will give students a chance to ___.（每个空位填一个活动及其作用）</div></div><div class="row"><span class="tag">第4段</span><div class="c"><b>表信心＋请批准＋组织落款 表达方案将帮每位新生顺利起步的信心，回扣 help the freshmen adapt to the new environment and academic studies，请求校方批准支持，落款用组织身份而非真名</b>表达信心回扣目的 We are confident that ___ will ___.（空位填方案名与预期效果，收束时呼应开头的目的） 礼貌请求批准 Your approval and support would be highly appreciated.（固定客气收尾句，适用于各类提交给上级/校方的方案）</div></div>
+  </div>
+</details>
+
+
+<script>
+(function(){
+  var slot = document.getElementById('wpad');
+  if (!slot) return;
+  var TOPIC = "cet4-67f4d286a543c3aca5af06b1910625b0749ce20d4052";
+  var KEY = 'cet4write:' + (location.pathname.split('/').pop() || 'x');
+  var TOTAL = 30 * 60;
+  var idle = document.getElementById('wpIdle'), edit = document.getElementById('wpEdit');
+  var ta = document.getElementById('wpText'), tmv = document.getElementById('wpTimer');
+  var cnt = document.getElementById('wpCount'), st = document.getElementById('wpSt');
+  var btnP = document.getElementById('wpPause'), btnS = document.getElementById('wpSync');
+  var state = {draft:'', used:0, done:false};
+  var left = TOTAL, tid = null, running = false;
+
+  function fmt(s){ s = Math.max(0, s|0);
+    var m = Math.floor(s/60), x = s%60;
+    return (m<10?'0':'')+m+':'+(x<10?'0':'')+x; }
+  function words(t){ t = (t||'').trim(); if(!t) return 0;
+    return t.split(/\s+/).filter(function(w){ return /[A-Za-z0-9]/.test(w); }).length; }
+  function save(){ state.draft = ta.value;
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}') || {}; }catch(e){ return {}; } }
+  function tick(){ state.used++;
+    left = TOTAL - state.used;
+    tmv.textContent = fmt(left);
+    if (left <= 0){ clearInterval(tid); running = false; tmv.textContent = '00:00';
+      st.style.color = 'var(--amber)';
+      st.textContent = '⏰ 30 分钟到。还可以继续写，写完了再提交。'; }
+    if (state.used % 10 === 0) save();
+  }
+  function updCnt(){ cnt.textContent = words(ta.value) + ' 词'; }
+
+  function unlock(scroll){
+    state.done = true;
+    var locks = document.querySelectorAll('.card.lock');
+    for (var i=0;i<locks.length;i++){
+      var b = locks[i].querySelector('.lockbar');
+      if (b) b.parentNode.removeChild(b);
+      locks[i].classList.remove('lock');
+    }
+    var ref = document.getElementById('refcard');
+    if (ref){ var ds = ref.querySelectorAll('details');
+      for (var j=0;j<ds.length;j++) ds[j].open = true; }
+    save();
+    if (scroll && ref) ref.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  document.getElementById('wpStart').addEventListener('click', function(){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    if (!running){ running = true; tid = setInterval(tick, 1000); }
+    ta.focus(); updCnt(); save();
+  });
+
+  btnP.addEventListener('click', function(){
+    if (running){ clearInterval(tid); running = false; btnP.textContent = '▶ 继续'; }
+    else { running = true; tid = setInterval(tick, 1000); btnP.textContent = '⏸ 暂停'; }
+  });
+
+  ta.addEventListener('input', function(){ updCnt(); save(); });
+
+  var armed = false;
+  var btnSub = document.getElementById('wpSubmit');
+  function disarm(){
+    armed = false;
+    btnSub.textContent = '📷 提交并解锁参考';
+    btnSub.classList.add('primary');
+  }
+  btnSub.addEventListener('click', function(){
+    if (!armed){
+      armed = true;
+      btnSub.textContent = '⚠️ 再点一次，确认提交';
+      btnSub.classList.remove('primary');
+      st.style.color = 'var(--amber)';
+      st.innerHTML = '确认提交？提交后参考会解锁。想重来可以点「🔄 重新练习」。';
+      setTimeout(function(){
+        if (armed){ disarm(); st.style.color = 'var(--sub)';
+          st.textContent = '还没提交，可以继续写。'; }
+      }, 6000);
+      return;
+    }
+    disarm();
+    var n = words(ta.value);
+    if (running){ clearInterval(tid); running = false; }
+    var m = Math.floor(state.used/60), s = state.used % 60;
+    st.style.color = 'var(--green)';
+    st.innerHTML = '✅ 已解锁 · 用时 ' + m + ' 分 ' + s + ' 秒' + (n ? ' · ' + n + ' 词' : '')
+      + '。把<b>手写照片发到主对话</b>，我来识别并逐句批改。';
+    if (n > 0) btnS.style.display = 'inline-block';
+    document.getElementById('wpReset').style.display = 'inline-block';
+    unlock(true);
+  });
+
+  document.getElementById('wpReset').addEventListener('click', function(){
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    location.reload();
+  });
+
+  btnS.addEventListener('click', function(){
+    if (!ta.value.trim()){ return; }
+    btnS.disabled = true; btnS.textContent = '同步中…';
+    var d = new Date();
+    var ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    fetch('https://ntfy.sh/' + TOPIC, { method:'POST',
+      body: JSON.stringify({t:'rep', kind:'writing', date:ds, page:document.title,
+        text:'【写作提交】' + ds + ' · ' + words(ta.value) + ' 词\n\n' + ta.value})
+    }).then(function(x){
+      if (x.ok){ btnS.textContent = '✓ 已发送'; btnS.style.color = 'var(--green)';
+        st.innerHTML = '✓ 已上云。回到主对话说一句「看回执」，我给你逐句批改。'; }
+      else { btnS.disabled = false; btnS.textContent = '☁ 重试同步'; }
+    }).catch(function(){ btnS.disabled = false; btnS.textContent = '☁ 重试同步'; });
+  });
+
+  var d0 = load();
+  state.draft = d0.draft || ''; state.used = d0.used || 0; state.done = !!d0.done;
+  if (state.draft){ ta.value = state.draft; updCnt(); }
+  if (state.done){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    left = TOTAL - state.used; tmv.textContent = fmt(left);
+    unlock(false);
+    btnS.style.display = 'inline-block';
+    document.getElementById('wpReset').style.display = 'inline-block';
+    st.innerHTML = '（本篇已提交过，参考已解锁 · 想重练点「🔄 重新练习」）';
+  }
+})();
+</script>
+
+
+</body>
+</html>

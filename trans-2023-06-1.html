@@ -104,7 +104,6 @@ tr:last-child td{border-bottom:0}
  line-height:1.5;white-space:nowrap}
 .pill.bad{background:var(--red-soft);color:var(--red-ink)}
 .pill.fix{background:var(--green-soft);color:var(--green-ink)}
-/* 折叠的语篇分析 */
 details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
  background:var(--card)}
 details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
@@ -139,6 +138,18 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .card.lock>*:not(.lockbar){display:none}
 .lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
  color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -147,28 +158,11 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 <h1>汉译英 · 2023年6月 第1套</h1>
 
 <div class="card">
-  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part IV</span></div>
-  <div class="big">
-    <div><b>153</b><span>中文字数</span></div>
-    <div><b>3</b><span>句</span></div>
-    <div><b>30</b><span>分钟</span></div>
-  </div>
-  <div class="tip b">翻译评分只看四件事：<b>意思说全、语法没错、表达通顺、用词准确</b>。
-  翻得漂亮不加分，翻错了狠狠扣 —— 所以目标是<b>不出错</b>，不是出彩。</div>
-</div>
-
-<div class="card">
-  <div class="chead"><h2>中文原文</h2><span class="cmeta">3 句</span></div>
-  
+  <div class="chead"><h2>中文原文</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>3 句</span><span>段落翻译</span><span>要求 140–180 词</span></div>
   <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
     <span class="zh">中国越来越重视终身教育,发展继续教育是构建终身教育体系的有效途径。高校作为人才培养的基地, 拥有先进的教学理念和优越的教学资源, 理应成为继续教育的办学主体。因此，近年来许多高校适应社会需求, 加强与用人单位沟通, 努力探索一条符合中国国情的继续教育发展新路, 以使继续教育在国家发展战略中发挥更大的作用。</span></div>
-  <div class="tip a"><b>先自己翻一遍再看下面。</b>用纸笔或另一个文档写，写完再逐句对照 ——
-  直接看答案等于没练。</div>
-  <details class="dig"><summary>语篇分析 · 主旨 / 时态 / 译法（建议自己翻完再看）</summary><div class="dbody">
-        <div class="chunk"><span class="k">主旨</span><span class="v">中国终身教育与高校继续教育现状介绍 整段是一篇客观说明文，讲中国对终身教育的态度与高校在继续教育中的角色定位：中国越来越重视终身教育、理应成为继续教育的办学主体。语体是政策／社会现象的客观陈述（这正是四级汉译英最常考的方向），不带个人情感，措辞偏正式、书面。</span></div>
-        <div class="chunk"><span class="k">时态</span><span class="v">一般现在时 通篇陈述的是中国当前的普遍态度与高校当下的客观状况、应然角色，不是某个已完结的历史事件，如 中国越来越重视终身教育、高校作为人才培养的基地、理应成为继续教育的办学主体 讲的都是现状与常态，故全篇以一般现在时为主。第三句 近年来许多高校……努力探索 是延续到现在的动作，可用现在完成时或一般现在时，仍属现在范畴、不与基调冲突。</span></div>
-        <div class="chunk"><span class="k">译法</span><span class="v">终身教育 统一译作 lifelong education。这是 终身教育 的约定俗成英译，全篇两处都用它（lifelong 一词，注意是合写、不加连字符也通行）。 继续教育 统一译作 continuing education。继续教育 全篇出现多次（办学主体、发展新路、发挥作用），务必前后一律用同一译法，切勿一会儿 continuing、一会儿 further education 混着来。 高校 统一译作 universities（或 colleges and universities）。高校 在第二、三句反复出现，泛指这一类机构，故用复数 universities；不要写成单数 university。 用人单位 意译作 employers。用人单位 指招聘和使用人才的单位，英文最自然的对应就是 employers，不必硬译成 employing units 之类的中式表达。 中国国情 意译作 China&#x27;s national conditions 或 the actual conditions of China。符合中国国情 是高频文化负载短语，记一个固定说法 in line with China&#x27;s national conditions 即可全篇复用。</span></div>
-  </div></details>
+  <details class="dig"><summary>语篇分析 · 主旨 / 时态 / 译法（建议自己翻完再看）</summary><div class="dbody"><div class="chunk"><span class="k">主旨</span><span class="v">中国终身教育与高校继续教育现状介绍 整段是一篇客观说明文，讲中国对终身教育的态度与高校在继续教育中的角色定位：中国越来越重视终身教育、理应成为继续教育的办学主体。语体是政策／社会现象的客观陈述（这正是四级汉译英最常考的方向），不带个人情感，措辞偏正式、书面。</span></div><div class="chunk"><span class="k">时态</span><span class="v">一般现在时 通篇陈述的是中国当前的普遍态度与高校当下的客观状况、应然角色，不是某个已完结的历史事件，如 中国越来越重视终身教育、高校作为人才培养的基地、理应成为继续教育的办学主体 讲的都是现状与常态，故全篇以一般现在时为主。第三句 近年来许多高校……努力探索 是延续到现在的动作，可用现在完成时或一般现在时，仍属现在范畴、不与基调冲突。</span></div><div class="chunk"><span class="k">译法</span><span class="v">终身教育 统一译作 lifelong education。这是 终身教育 的约定俗成英译，全篇两处都用它（lifelong 一词，注意是合写、不加连字符也通行）。 继续教育 统一译作 continuing education。继续教育 全篇出现多次（办学主体、发展新路、发挥作用），务必前后一律用同一译法，切勿一会儿 continuing、一会儿 further education 混着来。 高校 统一译作 universities（或 colleges and universities）。高校 在第二、三句反复出现，泛指这一类机构，故用复数 universities；不要写成单数 university。 用人单位 意译作 employers。用人单位 指招聘和使用人才的单位，英文最自然的对应就是 employers，不必硬译成 employing units 之类的中式表达。 中国国情 意译作 China&#x27;s national conditions 或 the actual conditions of China。符合中国国情 是高频文化负载短语，记一个固定说法 in line with China&#x27;s national conditions 即可全篇复用。</span></div></div></details>
 </div>
 
 
@@ -193,50 +187,42 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
-<div class="card">
-  <h2>怎么用这份包</h2>
-  <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
-    <span>③ 抄下错处</span><span>④ 整篇通读</span></div>
-  <div class="tip g">第二步是全流程最有价值的一步：<b>看你漏译了什么、时态用错了哪里</b>。
-  每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
-</div>
 
-<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 逐句对照（3 句）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
+
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 逐句对照 · 参考译文 · 译法要点</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>逐句对照（3 句）</h2>
   <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
   <div class="sent"><span class="snum">第 1 句</span><p class="szh">中国越来越重视终身教育,发展继续教育是构建终身教育体系的有效途径。</p><p class="sen">China attaches increasing importance to lifelong education, and developing continuing education is an effective way to build a lifelong education system.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调用一般现在时：attaches、is 都用现在时，陈述的是中国当前的态度与一条客观成立的途径。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">‘重视’的地道搭配是 attach importance to sth；‘越来越重视’把 importance 前加 increasing／growing（attaches increasing importance to），或整句用 pays more and more attention to，避免逐字译成 more and more value。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">后句主语是动名词短语 Developing continuing education，视作单数第三人称，谓语用 is（不是 are）。</span></div><div class="chunk"><span class="k">冠词</span><span class="v">‘一条有效途径’是泛指的一种途径，用不定冠词 an effective way；‘终身教育体系’泛指这一体系，a lifelong education system。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">高校作为人才培养的基地, 拥有先进的教学理念和优越的教学资源, 理应成为继续教育的办学主体。</p><p class="sen">As a base for cultivating talent, universities, possessing advanced teaching philosophies and superior teaching resources, should be the main providers of continuing education.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">情态动词</span><span class="v">‘理应’含‘按理应当’的语气，用 should（should be／should become）最贴切，比 must 委婉、比 will 准确。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">主语 universities 用复数泛指这一类机构，谓语 should be 不受单复数影响；表语‘办学主体’指多所高校共同承担，用复数 the main providers／the main body 视所选词而定。</span></div><div class="chunk"><span class="k">时态</span><span class="v">should be 本身就是现在语气，符合全篇一般现在时基调，不必改时态。</span></div><div class="chunk"><span class="k">搭配</span><span class="v">‘人才培养的基地’译 a base for cultivating／training talent（talent 表‘人才’作不可数集合名词，不加 s）；‘办学主体’取意为‘主要办学者’译 the main providers，避免直译 running-school subject 这类中式词。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">因此，近年来许多高校适应社会需求, 加强与用人单位沟通, 努力探索一条符合中国国情的继续教育发展新路, 以使继续教育在国家发展战略中发挥更大的作用。</p><p class="sen">Therefore, in recent years, many universities have been exploring a new path of continuing education that suits China&#x27;s national conditions by adapting to social needs and strengthening communication with employers, so as to enable continuing education to play a greater role in the national development strategy.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">近年来 配‘一直在探索’这一延续到现在的动作，用现在完成进行时 have been exploring 最贴切；这属现在范畴，与全篇一般现在时基调不冲突。若把握不准，用一般现在时 explore 也可接受。</span></div><div class="chunk"><span class="k">主谓一致</span><span class="v">主语 many universities 是复数，助动词用 have（have been exploring），不是 has。</span></div><div class="chunk"><span class="k">冠词</span><span class="v">‘一条新路’首次提及、泛指一条，用 a new path；‘国家发展战略’特指中国这一既定战略，用 the national development strategy。</span></div><div class="chunk"><span class="k">介词搭配</span><span class="v">‘适应’用 adapt to，‘加强与……沟通’用 strengthen communication with，‘发挥作用’用 play a role in，‘符合国情’用 suit／meet／be in line with China&#x27;s national conditions——这几个介词搭配错一个就丢分。</span></div><div class="chunk"><span class="k">逻辑关联</span><span class="v">句首‘因此’承接上文的结论，用 Therefore 引出，逗号隔开。</span></div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 整篇参考译文</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>整篇参考译文</h2>
-  <details><summary>展开整篇（自己翻完再看）</summary>
+  <details style="margin-top:14px"><summary>整篇参考译文</summary>
     <div class="dbody"><p class="en">China attaches increasing importance to lifelong education, and developing continuing education is an effective way to build a lifelong education system. As a base for cultivating talent, universities, possessing advanced teaching philosophies and superior teaching resources, should be the main providers of continuing education. Therefore, in recent years, many universities have been exploring a new path of continuing education that suits China&#x27;s national conditions by adapting to social needs and strengthening communication with employers, so as to enable continuing education to play a greater role in the national development strategy. 【衔接】 第1句与第2句之间：用主题衔接，避免重复 continuing education 第1句尾落在 lifelong education system，第2句承接谈‘高校该当继续教育的主体’，话题自然顺承，无须硬加关联词。注意第2句主语直接用 universities 即可，不必回指上句。 第2句与第3句之间：用 Therefore 显出因果 中文 因此 已点明第3句是承前两句（高校理应成为主体）而来的行动结果，英文定稿在第3句句首保留 Therefore，把这层因果显化，让整篇逻辑链清晰。 第3句内部：用 continuing education 串起首尾，保持术语一致 第3句既出现 a new path of continuing education，末尾又 enable continuing education to play a greater role，前后都用同一译法 continuing education 承接同一概念，整篇术语统一、读着连贯。</p></div></details>
-  <div class="tip a">整篇译文是用来<b>感受节奏和衔接</b>的，不是用来背的。
-  重点看它怎么处理句间连接、怎么避免重复用词。</div>
+  <details><summary>句间衔接（3 处）</summary>
+    <div class="dbody">
+      <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
+      <div class="row"><span class="tag">衔接</span><div class="c"><b>第1句与第2句之间：用主题衔接，避免重复 continuing education</b>第1句尾落在 lifelong education system，第2句承接谈‘高校该当继续教育的主体’，话题自然顺承，无须硬加关联词。注意第2句主语直接用 universities 即可，不必回指上句。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第2句与第3句之间：用 Therefore 显出因果</b>中文 因此 已点明第3句是承前两句（高校理应成为主体）而来的行动结果，英文定稿在第3句句首保留 Therefore，把这层因果显化，让整篇逻辑链清晰。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第3句内部：用 continuing education 串起首尾，保持术语一致</b>第3句既出现 a new path of continuing education，末尾又 enable continuing education to play a greater role，前后都用同一译法 continuing education 承接同一概念，整篇术语统一、读着连贯。</div></div>
+    </div></details>
+  <details><summary>译法要点（18 条）</summary>
+    <div class="dbody">
+      <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
+      <div class="vocab"><div class="w">终身教育</div><div class="d">统一译作 lifelong education。这是 终身教育 的约定俗成英译，全篇两处都用它（lifelong 一词，注意是合写、不加连字符也通行）。</div></div><div class="vocab"><div class="w">继续教育</div><div class="d">统一译作 continuing education。继续教育 全篇出现多次（办学主体、发展新路、发挥作用），务必前后一律用同一译法，切勿一会儿 continuing、一会儿 further education 混着来。</div></div><div class="vocab"><div class="w">高校</div><div class="d">统一译作 universities（或 colleges and universities）。高校 在第二、三句反复出现，泛指这一类机构，故用复数 universities；不要写成单数 university。</div></div><div class="vocab"><div class="w">用人单位</div><div class="d">意译作 employers。用人单位 指招聘和使用人才的单位，英文最自然的对应就是 employers，不必硬译成 employing units 之类的中式表达。</div></div><div class="vocab"><div class="w">中国国情</div><div class="d">意译作 China&#x27;s national conditions 或 the actual conditions of China。符合中国国情 是高频文化负载短语，记一个固定说法 in line with China&#x27;s national conditions 即可全篇复用。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调用一般现在时：attaches、is 都用现在时，陈述的是中国当前的态度与一条客观成立的途径。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">‘重视’的地道搭配是 attach importance to sth；‘越来越重视’把 importance 前加 increasing／growing（attaches increasing importance to），或整句用 pays more and more attention to，避免逐字译成 more and more value。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">后句主语是动名词短语 Developing continuing education，视作单数第三人称，谓语用 is（不是 are）。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">‘一条有效途径’是泛指的一种途径，用不定冠词 an effective way；‘终身教育体系’泛指这一体系，a lifelong education system。</div></div><div class="vocab"><div class="w">情态动词</div><div class="d">‘理应’含‘按理应当’的语气，用 should（should be／should become）最贴切，比 must 委婉、比 will 准确。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">主语 universities 用复数泛指这一类机构，谓语 should be 不受单复数影响；表语‘办学主体’指多所高校共同承担，用复数 the main providers／the main body 视所选词而定。</div></div><div class="vocab"><div class="w">时态</div><div class="d">should be 本身就是现在语气，符合全篇一般现在时基调，不必改时态。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">‘人才培养的基地’译 a base for cultivating／training talent（talent 表‘人才’作不可数集合名词，不加 s）；‘办学主体’取意为‘主要办学者’译 the main providers，避免直译 running-school subject 这类中式词。</div></div><div class="vocab"><div class="w">时态</div><div class="d">近年来 配‘一直在探索’这一延续到现在的动作，用现在完成进行时 have been exploring 最贴切；这属现在范畴，与全篇一般现在时基调不冲突。若把握不准，用一般现在时 explore 也可接受。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 many universities 是复数，助动词用 have（have been exploring），不是 has。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">‘一条新路’首次提及、泛指一条，用 a new path；‘国家发展战略’特指中国这一既定战略，用 the national development strategy。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">‘适应’用 adapt to，‘加强与……沟通’用 strengthen communication with，‘发挥作用’用 play a role in，‘符合国情’用 suit／meet／be in line with China&#x27;s national conditions——这几个介词搭配错一个就丢分。</div></div><div class="vocab"><div class="w">逻辑关联</div><div class="d">句首‘因此’承接上文的结论，用 Therefore 引出，逗号隔开。</div></div>
+    </div></details>
 </div>
 
-<div class="card lock"><div class="lockbar"><b>🔒 句间衔接（3 处）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>句间衔接（3 处）</h2>
-  <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
-  <div class="row"><span class="tag">衔接</span><div class="c"><b>第1句与第2句之间：用主题衔接，避免重复 continuing education</b>第1句尾落在 lifelong education system，第2句承接谈‘高校该当继续教育的主体’，话题自然顺承，无须硬加关联词。注意第2句主语直接用 universities 即可，不必回指上句。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第2句与第3句之间：用 Therefore 显出因果</b>中文 因此 已点明第3句是承前两句（高校理应成为主体）而来的行动结果，英文定稿在第3句句首保留 Therefore，把这层因果显化，让整篇逻辑链清晰。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第3句内部：用 continuing education 串起首尾，保持术语一致</b>第3句既出现 a new path of continuing education，末尾又 enable continuing education to play a greater role，前后都用同一译法 continuing education 承接同一概念，整篇术语统一、读着连贯。</div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 译法要点（18 条）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>译法要点（18 条）</h2>
-  <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
-  <div class="vocab"><div class="w">终身教育</div><div class="d">统一译作 lifelong education。这是 终身教育 的约定俗成英译，全篇两处都用它（lifelong 一词，注意是合写、不加连字符也通行）。</div></div><div class="vocab"><div class="w">继续教育</div><div class="d">统一译作 continuing education。继续教育 全篇出现多次（办学主体、发展新路、发挥作用），务必前后一律用同一译法，切勿一会儿 continuing、一会儿 further education 混着来。</div></div><div class="vocab"><div class="w">高校</div><div class="d">统一译作 universities（或 colleges and universities）。高校 在第二、三句反复出现，泛指这一类机构，故用复数 universities；不要写成单数 university。</div></div><div class="vocab"><div class="w">用人单位</div><div class="d">意译作 employers。用人单位 指招聘和使用人才的单位，英文最自然的对应就是 employers，不必硬译成 employing units 之类的中式表达。</div></div><div class="vocab"><div class="w">中国国情</div><div class="d">意译作 China&#x27;s national conditions 或 the actual conditions of China。符合中国国情 是高频文化负载短语，记一个固定说法 in line with China&#x27;s national conditions 即可全篇复用。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调用一般现在时：attaches、is 都用现在时，陈述的是中国当前的态度与一条客观成立的途径。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">‘重视’的地道搭配是 attach importance to sth；‘越来越重视’把 importance 前加 increasing／growing（attaches increasing importance to），或整句用 pays more and more attention to，避免逐字译成 more and more value。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">后句主语是动名词短语 Developing continuing education，视作单数第三人称，谓语用 is（不是 are）。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">‘一条有效途径’是泛指的一种途径，用不定冠词 an effective way；‘终身教育体系’泛指这一体系，a lifelong education system。</div></div><div class="vocab"><div class="w">情态动词</div><div class="d">‘理应’含‘按理应当’的语气，用 should（should be／should become）最贴切，比 must 委婉、比 will 准确。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">主语 universities 用复数泛指这一类机构，谓语 should be 不受单复数影响；表语‘办学主体’指多所高校共同承担，用复数 the main providers／the main body 视所选词而定。</div></div><div class="vocab"><div class="w">时态</div><div class="d">should be 本身就是现在语气，符合全篇一般现在时基调，不必改时态。</div></div><div class="vocab"><div class="w">搭配</div><div class="d">‘人才培养的基地’译 a base for cultivating／training talent（talent 表‘人才’作不可数集合名词，不加 s）；‘办学主体’取意为‘主要办学者’译 the main providers，避免直译 running-school subject 这类中式词。</div></div><div class="vocab"><div class="w">时态</div><div class="d">近年来 配‘一直在探索’这一延续到现在的动作，用现在完成进行时 have been exploring 最贴切；这属现在范畴，与全篇一般现在时基调不冲突。若把握不准，用一般现在时 explore 也可接受。</div></div><div class="vocab"><div class="w">主谓一致</div><div class="d">主语 many universities 是复数，助动词用 have（have been exploring），不是 has。</div></div><div class="vocab"><div class="w">冠词</div><div class="d">‘一条新路’首次提及、泛指一条，用 a new path；‘国家发展战略’特指中国这一既定战略，用 the national development strategy。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">‘适应’用 adapt to，‘加强与……沟通’用 strengthen communication with，‘发挥作用’用 play a role in，‘符合国情’用 suit／meet／be in line with China&#x27;s national conditions——这几个介词搭配错一个就丢分。</div></div><div class="vocab"><div class="w">逻辑关联</div><div class="d">句首‘因此’承接上文的结论，用 Therefore 引出，逗号隔开。</div></div>
-</div>
-
-<div class="card">
-  <h2>翻译四句口诀</h2>
-  <table>
-    <tr><th>步骤</th><th>做什么</th></tr>
-    <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
-    <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
-    <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
-    <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 > 用词花</b></td></tr>
-  </table>
-</div>
+<details class="card">
+  <summary>📖 怎么译 · 流程与口诀（建议翻到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">流程</span><div class="c"><b>四步走</b>
+      ① 自己翻 → ② 逐句对照（最有价值的一步：看你漏译了什么、时态用错了哪里）
+      → ③ 抄下错处 → ④ 整篇通读。每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div></div>
+    <table>
+      <tr><th>步骤</th><th>做什么</th></tr>
+      <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
+      <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
+      <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
+      <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 &gt; 用词花</b></td></tr>
+    </table>
+  </div>
+</details>
 
 
 <script>
@@ -367,5 +353,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   }
 })();
 </script>
+
+
 </body>
 </html>

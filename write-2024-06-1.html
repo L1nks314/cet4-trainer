@@ -104,7 +104,6 @@ tr:last-child td{border-bottom:0}
  line-height:1.5;white-space:nowrap}
 .pill.bad{background:var(--red-soft);color:var(--red-ink)}
 .pill.fix{background:var(--green-soft);color:var(--green-ink)}
-/* 折叠的语篇分析 */
 details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
  background:var(--card)}
 details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
@@ -117,7 +116,6 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
-
 /* ═══ 写作台 ═══ */
 .wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
  border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
@@ -140,6 +138,18 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .card.lock>*:not(.lockbar){display:none}
 .lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
  color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -148,21 +158,10 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 <h1>写作 · 2024年6月 第1套</h1>
 
 <div class="card">
-  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part I</span></div>
-  <div class="big">
-    <div><b>158</b><span>范文词数</span></div>
-    <div><b>3</b><span>段</span></div>
-    <div><b>30</b><span>分钟</span></div>
-  </div>
-  <div class="tip b">四级写作的命中点是<b>切题 + 结构清楚 + 语法不出错</b>。
-  用三段式（引入表态 / 主体展开 / 回扣收尾），比追求华丽句式稳得多。</div>
-</div>
-
-<div class="card">
-  <div class="chead"><h2>题目</h2><span class="cmeta">Directions</span></div>
-  <div class="prompt"><span class="lbl">Directions</span><br>Directions : Suppose your university is seeking students’ opinions on whether university libraries should be open to the public. You are now to write an essay to express your view. You will have 30 minutes for the task. You should write at least 120 words but no more than 180 words.</div>
-  <div class="tip a"><b>先自己在纸上写完，再看下面的范文。</b>写作的提分全靠"写—对照—改"这个循环，
-  光看范文不动笔，等于没练。</div>
+  <div class="chead"><h2>题目</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>范文 158 词</span><span>三段式</span><span>要求 120–180 词</span></div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    Directions : Suppose your university is seeking students’ opinions on whether university libraries should be open to the public. You are now to write an essay to express your view. You will have 30 minutes for the task. You should write at least 120 words but no more than 180 words.</div>
 </div>
 
 
@@ -187,47 +186,42 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
-<div class="card">
-  <h2>审题：这题到底要写什么</h2>
-  <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>选边论说图书馆是否对外开放 本题的：就 whether university libraries should be open to the public 这一争议，write an essay to express your view。关键在 express your view——不是罗列「有人赞成有人反对」的中立分析，而是自己选定一方并论证。所以第一句就要亮出「我支持」或「我反对」，全篇围绕这一立场展开。</div></div>
-  <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>赞成有条件对外开放 本篇立场：大学图书馆应当向公众开放，但要配上合理的管理措施。这样既正面回应了 express your view 的选边要求，又用「有条件」给后文的让步段留了出口，避免被反方的「挤占资源」轻易驳倒。</div></div>
-  <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>促进知识共享 使用者层面的理由：许多藏书和学术资源长期闲置，向公众开放能盘活它们，把校园图书馆变成全民终身学习的场所。 提升公共文化 社会层面的理由：普通市民能免费接触到平时接触不到的知识领域，缩小大学与社会之间的鸿沟，丰富整个社区的文化生活。 配套管理化解隐忧 预留的让步点：承认外来人流可能挤占座位、打扰在校生，但可通过限定开放时段、登记预约等措施化解，从而守住「有条件开放」的立场。</div></div>
-  <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 引争议+亮立场 首段：先点出「图书馆是否该对公众开放」这一争议话题，随即用一句话亮明本篇立场——支持有条件开放。 第 2 段 分论点论证 主体段：给出两条支撑理由（促进知识共享、提升公共文化），每条配一句展开或具体后果，用连接词串成论证链。 第 3 段 让步+重申 尾段：先承认反方顾虑（挤占资源），再转折提出管理办法化解，最后重申立场收尾。</div></div>
-</div>
 
-<div class="card">
-  <h2>谋篇：每段写什么（3 段）</h2>
-  <p class="hint">这是可以直接套用的框架 —— 换一道题，功能不变、内容替换。</p>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>抛争议并表态支持 落到本题：先点出 whether university libraries should be open to the public 是当下热议话题，再明确表态——支持开放，但附上「合理管理」这一前提，为第三段的让步埋下伏笔</b>引入争议 Whether ___ should ___ has sparked heated debate in recent years. 亮明立场 In my view, ___ should ___, provided that ___.</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>两条理由各配后果 本段落两点：其一，开放能盘活闲置藏书、让图书馆成为终身学习场所（知识共享）；其二，普通市民能免费探索陌生领域、缩小大学与社会的距离（公共文化）</b>每条都跟一个具体的人或后果，而不是停在「开放很重要」这种空话上。 分论点主题句 Firstly, opening ___ promotes ___. 举例落地 For instance, ___ could ___, which ___. 递进连接 Moreover, such ___ enriches/strengthens ___.</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>认顾虑再驳回重申 本段承认外来人流可能挤占座位、打扰在校生，随即用「限定时段+登记预约」把顾虑化解，最后重申：图书馆应向公众开放，只要在校生的学习需求得到保障</b>让步转折 Admittedly, ___ may ___. Yet this problem can be eased by ___. 重申收尾 Therefore, I firmly believe ___ should ___, so long as ___.</div></div>
-</div>
 
-<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 参考范文（158 词）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 参考范文 · 逐段解析 · 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>参考范文（158 词）</h2>
-  <details><summary>展开范文（自己写完之后再看）</summary>
+  <details open><summary>范文 + 参考译文</summary>
     <div class="dbody">
       <div class="essay"><p class='en'>Whether university libraries should open their doors to the public has sparked heated debate in recent years. In my view, these libraries should indeed be accessible to ordinary citizens, provided that reasonable management measures are in place.</p><p class='en'>Two reasons support my position. Firstly, opening university libraries promotes the sharing of knowledge. Many valuable books and academic resources sit idle on the shelves, and allowing the public to use them turns campus libraries into vibrant centers of lifelong learning. Moreover, such openness enriches the cultural life of the whole community. For instance, a retired worker or a curious teenager could freely explore fields they never studied at school, which narrows the gap between universities and society.</p><p class='en'>Admittedly, outside visitors may strain limited seats and disturb students. Yet this problem can be eased by setting fixed visiting hours and registration rules. Therefore, I firmly believe university libraries should welcome the public, so long as students&#x27; study needs are fully protected.</p></div>
       <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>近年来，大学图书馆是否应向公众开放，引发了热烈讨论。在我看来，这些图书馆确实应当向普通市民开放，前提是要有合理的管理措施。</div>
     </div></details>
-  <div class="tip a">看范文时不要「读」，要<b>拆</b>：每段第一句做什么？观点句和理由句怎么连？
-  结尾怎么回扣题目？</div>
+  <details><summary>逐段解析（3 段）</summary>
+    <div class="dbody"><div class="row"><span class="tag">第1段</span><div class="c"><b>引争议+表态一步到位 </b>本段落实「开门见山亮立场」：第一句 Whether ... has sparked heated debate 抛出争议话题，第二句 In my view ... provided that ... 立即表态并加上「合理管理」前提，既兑现 express your view 的选边要求，又为尾段让步埋线。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>两理由各按点理例收 </b>本段兑现「点—理—例—收」：Firstly 领出知识共享这一分论点，用「藏书闲置→盘活」给出后果；Moreover 递进到公共文化，用「退休工人/好奇少年」这个具体例子落地，最后 which narrows the gap 一句把话题收回中心，避免空喊口号。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>先让步再驳回收尾 </b>本段落实「让步后重申」：Admittedly 承认挤占座位的顾虑，Yet 转折给出限时与登记的解决办法，Therefore 重申立场并用 so long as 补上折中条件，呼应首段的「有条件开放」。</div></div></div></details>
+  <details><summary>自检避坑</summary>
+    <div class="dbody">
+      <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">中立不表态</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">「Some people think libraries should open to the public, while others disagree. Both sides have their own reasons.」——通篇中立、没选边，丢掉 express your view。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">「In my view, university libraries should be open to the public.」先亮立场，再展开理由。</span></div></div><div class="pit-item"><div class="pit-t">空泛喊口号</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">「Opening libraries is very important and good for everyone.」——空洞无据。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">「Opening libraries benefits ordinary citizens, for a retired worker could borrow academic books he has no other access to.」用具体的人和后果把理由撑起来。</span></div></div><div class="pit-item"><div class="pit-t">误当应用文写信</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">开头写「Dear Sir, I am writing to express my view...」，结尾加「Yours sincerely, Li Ming」。本题要写 essay，应删去这些书信元素，改为直接以「Whether university libraries should open to the public has sparked heated debate.」开篇。</span></div></div></div>
+      <table style="margin-top:12px">
+        <tr><th>自查项</th><th>怎么查</th></tr>
+        <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+        <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+        <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+        <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+      </table>
+    </div></details>
 </div>
 
-<div class="card lock"><div class="lockbar"><b>🔒 逐段解析（3 段）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>逐段解析（3 段）</h2>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>引争议+表态一步到位 </b>本段落实「开门见山亮立场」：第一句 Whether ... has sparked heated debate 抛出争议话题，第二句 In my view ... provided that ... 立即表态并加上「合理管理」前提，既兑现 express your view 的选边要求，又为尾段让步埋线。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>两理由各按点理例收 </b>本段兑现「点—理—例—收」：Firstly 领出知识共享这一分论点，用「藏书闲置→盘活」给出后果；Moreover 递进到公共文化，用「退休工人/好奇少年」这个具体例子落地，最后 which narrows the gap 一句把话题收回中心，避免空喊口号。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>先让步再驳回收尾 </b>本段落实「让步后重申」：Admittedly 承认挤占座位的顾虑，Yet 转折给出限时与登记的解决办法，Therefore 重申立场并用 so long as 补上折中条件，呼应首段的「有条件开放」。</div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>自检避坑</h2>
-  <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">中立不表态</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">「Some people think libraries should open to the public, while others disagree. Both sides have their own reasons.」——通篇中立、没选边，丢掉 express your view。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">「In my view, university libraries should be open to the public.」先亮立场，再展开理由。</span></div></div><div class="pit-item"><div class="pit-t">空泛喊口号</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">「Opening libraries is very important and good for everyone.」——空洞无据。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">「Opening libraries benefits ordinary citizens, for a retired worker could borrow academic books he has no other access to.」用具体的人和后果把理由撑起来。</span></div></div><div class="pit-item"><div class="pit-t">误当应用文写信</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">开头写「Dear Sir, I am writing to express my view...」，结尾加「Yours sincerely, Li Ming」。本题要写 essay，应删去这些书信元素，改为直接以「Whether university libraries should open to the public has sparked heated debate.」开篇。</span></div></div></div>
-  <table style="margin-top:14px">
-    <tr><th>自查项</th><th>怎么查</th></tr>
-    <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
-    <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
-    <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
-    <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
-  </table>
-</div>
+<details class="card">
+  <summary>📖 怎么写 · 审题与谋篇（建议写到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>选边论说图书馆是否对外开放 本题的：就 whether university libraries should be open to the public 这一争议，write an essay to express your view。关键在 express your view——不是罗列「有人赞成有人反对」的中立分析，而是自己选定一方并论证。所以第一句就要亮出「我支持」或「我反对」，全篇围绕这一立场展开。</div></div>
+    <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>赞成有条件对外开放 本篇立场：大学图书馆应当向公众开放，但要配上合理的管理措施。这样既正面回应了 express your view 的选边要求，又用「有条件」给后文的让步段留了出口，避免被反方的「挤占资源」轻易驳倒。</div></div>
+    <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>促进知识共享 使用者层面的理由：许多藏书和学术资源长期闲置，向公众开放能盘活它们，把校园图书馆变成全民终身学习的场所。 提升公共文化 社会层面的理由：普通市民能免费接触到平时接触不到的知识领域，缩小大学与社会之间的鸿沟，丰富整个社区的文化生活。 配套管理化解隐忧 预留的让步点：承认外来人流可能挤占座位、打扰在校生，但可通过限定开放时段、登记预约等措施化解，从而守住「有条件开放」的立场。</div></div>
+    <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 引争议+亮立场 首段：先点出「图书馆是否该对公众开放」这一争议话题，随即用一句话亮明本篇立场——支持有条件开放。 第 2 段 分论点论证 主体段：给出两条支撑理由（促进知识共享、提升公共文化），每条配一句展开或具体后果，用连接词串成论证链。 第 3 段 让步+重申 尾段：先承认反方顾虑（挤占资源），再转折提出管理办法化解，最后重申立场收尾。</div></div>
+    <p class="hint" style="margin-top:12px">谋篇：每段写什么 —— 这是可以直接套用的框架，换一道题功能不变、内容替换。</p>
+    <div class="row"><span class="tag">第1段</span><div class="c"><b>抛争议并表态支持 落到本题：先点出 whether university libraries should be open to the public 是当下热议话题，再明确表态——支持开放，但附上「合理管理」这一前提，为第三段的让步埋下伏笔</b>引入争议 Whether ___ should ___ has sparked heated debate in recent years. 亮明立场 In my view, ___ should ___, provided that ___.</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>两条理由各配后果 本段落两点：其一，开放能盘活闲置藏书、让图书馆成为终身学习场所（知识共享）；其二，普通市民能免费探索陌生领域、缩小大学与社会的距离（公共文化）</b>每条都跟一个具体的人或后果，而不是停在「开放很重要」这种空话上。 分论点主题句 Firstly, opening ___ promotes ___. 举例落地 For instance, ___ could ___, which ___. 递进连接 Moreover, such ___ enriches/strengthens ___.</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>认顾虑再驳回重申 本段承认外来人流可能挤占座位、打扰在校生，随即用「限定时段+登记预约」把顾虑化解，最后重申：图书馆应向公众开放，只要在校生的学习需求得到保障</b>让步转折 Admittedly, ___ may ___. Yet this problem can be eased by ___. 重申收尾 Therefore, I firmly believe ___ should ___, so long as ___.</div></div>
+  </div>
+</details>
 
 
 <script>
@@ -355,5 +349,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   }
 })();
 </script>
+
+
 </body>
 </html>

@@ -104,7 +104,6 @@ tr:last-child td{border-bottom:0}
  line-height:1.5;white-space:nowrap}
 .pill.bad{background:var(--red-soft);color:var(--red-ink)}
 .pill.fix{background:var(--green-soft);color:var(--green-ink)}
-/* 折叠的语篇分析 */
 details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
  background:var(--card)}
 details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
@@ -117,7 +116,6 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
-
 /* ═══ 写作台 ═══ */
 .wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
  border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
@@ -140,6 +138,18 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .card.lock>*:not(.lockbar){display:none}
 .lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
  color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -148,21 +158,10 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 <h1>写作 · 2023年12月 第2套</h1>
 
 <div class="card">
-  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part I</span></div>
-  <div class="big">
-    <div><b>155</b><span>范文词数</span></div>
-    <div><b>3</b><span>段</span></div>
-    <div><b>30</b><span>分钟</span></div>
-  </div>
-  <div class="tip b">四级写作的命中点是<b>切题 + 结构清楚 + 语法不出错</b>。
-  用三段式（引入表态 / 主体展开 / 回扣收尾），比追求华丽句式稳得多。</div>
-</div>
-
-<div class="card">
-  <div class="chead"><h2>题目</h2><span class="cmeta">Directions</span></div>
-  <div class="prompt"><span class="lbl">Directions</span><br>Directions: Suppose the university newspaper is inviting submissions from the students for its coming edition on the recent development in their hometown.You are now to write an essay for submission. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.</div>
-  <div class="tip a"><b>先自己在纸上写完，再看下面的范文。</b>写作的提分全靠"写—对照—改"这个循环，
-  光看范文不动笔，等于没练。</div>
+  <div class="chead"><h2>题目</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>范文 155 词</span><span>三段式</span><span>要求 120–180 词</span></div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    Directions: Suppose the university newspaper is inviting submissions from the students for its coming edition on the recent development in their hometown.You are now to write an essay for submission. You will have 30 minutes to write the essay. You should write at least 120 words but no more than 180 words.</div>
 </div>
 
 
@@ -187,47 +186,42 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
-<div class="card">
-  <h2>审题：这题到底要写什么</h2>
-  <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>为校报写谈家乡发展的短文 任务被一句话钉死：write an essay for submission，主题是 the recent development in their hometown——即写一篇投给校报的短文，谈你家乡近来的发展变化。注意核心词是 recent development（近来的发展），要写的是「最近变了什么、变得怎样」，不是泛泛介绍家乡的地理风物。</div></div>
-  <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>家乡近年变化显著、生活更便利 中心立场定为：响应 the recent development in their hometown，我的家乡在近几年发生了显著而真切的变化，让生活变得更方便、更宜居。这一句既扣住「recent development」，又给后文留出可展开的方向。</div></div>
-  <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>交通：高铁/路网带来便利 选「交通」为第一个具体方面：过去去省城要颠簸数小时，如今高铁开通、公路拓宽，出行时间大幅缩短。这是最能体现 recent development 且人人有体感的切口。 环境：旧河整治、绿地增多 选「环境」为第二个方面：曾经污染的河道经过整治变清，新增公园绿地，居民傍晚有了散步休闲的去处。一交通一环境，一硬一软，互补且都易写出具体画面。</div></div>
-  <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 点题：家乡变化显著并预告方面 开篇呼应 the recent development in their hometown，点出家乡近年变化巨大，并预告下文要谈交通与环境两个方面。 第 2 段 主体：对比＋事例展开两点变化 用「过去—如今」对比，分别把交通和环境的具体变化与好处写实，让读者看到画面。 第 3 段 收束：抒发自豪并展望 总结这些变化带来的获得感，表达对家乡的自豪与对未来的期待，呼应校报投稿的场景。</div></div>
-</div>
 
-<div class="card">
-  <h2>谋篇：每段写什么（3 段）</h2>
-  <p class="hint">这是可以直接套用的框架 —— 换一道题，功能不变、内容替换。</p>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>总述近年变化大并预告交通、环境 落点：紧扣 the recent development in their hometown，写「这些年我家乡变化惊人」，并点明最打动我的是交通和环境两方面，引出主体</b>亮明总变化 Over the past few years, my hometown has undergone remarkable changes. （把 remarkable changes 换成你家乡的总体变化） 预告分点 Among them, the changes in ___ and ___ have impressed me the most. （横线填要谈的两个方面）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>交通与环境的前后对比及好处 落点：交通——过去去省城要颠簸数小时，如今高铁两小时直达、公路拓宽，出行省时省心；环境——曾经发臭的河道经整治变清，新建公园绿地，傍晚居民有了散步去处</b>两点都写出具体画面与好处。 引出过去情形 In the past, it used to ___. （填从前的不便或旧貌） 转到现在对比 Now, however, ___, which makes ___ much more convenient. （前空填新变化，后空填带来的好处） 再添一个方面 Another change worth mentioning is ___. （引出第二个方面，避免两段重复同一句式）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>为家乡自豪并展望更美好未来 落点：把交通、环境的改善收拢为「家乡越来越宜居」，表达身为家乡人的自豪，并相信它会发展得更好——给校报读者一个温暖的收束</b>总评收拢 All these changes have made my hometown a better place to live in. （可把 a better place 替换为你的总评） 展望未来 I firmly believe that it will become even more ___ in the years to come. （横线填对未来的期待）</div></div>
-</div>
 
-<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 参考范文（155 词）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 参考范文 · 逐段解析 · 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>参考范文（155 词）</h2>
-  <details><summary>展开范文（自己写完之后再看）</summary>
+  <details open><summary>范文 + 参考译文</summary>
     <div class="dbody">
       <div class="essay"><p class='en'>Over the past few years, my hometown has undergone remarkable changes. As a student writing for our university newspaper, I would like to share two of them that have impressed me the most: transportation and the environment.</p><p class='en'>In the past, it used to take us hours of bumpy driving to reach the provincial capital. Now, however, a new high-speed railway gets us there in just two hours, and the widened roads have made daily travel far more convenient. Another change worth mentioning is the environment. The small river that once smelled terrible has been cleaned up, and several green parks have been built along its banks, where families now enjoy walking after dinner.</p><p class='en'>All these changes have made my hometown a much better place to live in. As someone who grew up there, I feel truly proud, and I firmly believe that it will become even more beautiful and livable in the years to come.</p></div>
       <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>在过去几年里，我的家乡发生了惊人的变化。作为一名为校报投稿的学生，我想分享其中最打动我的两点：交通和环境。</div>
     </div></details>
-  <div class="tip a">看范文时不要「读」，要<b>拆</b>：每段第一句做什么？观点句和理由句怎么连？
-  结尾怎么回扣题目？</div>
+  <details><summary>逐段解析（3 段）</summary>
+    <div class="dbody"><div class="row"><span class="tag">第1段</span><div class="c"><b>总述＋点明投稿身份并预告两点 </b>开头用 Over the past few years, my hometown has undergone remarkable changes 亮出总变化，落实了「亮明总变化」句架；再用 share two of them ... transportation and the environment 预告分点，同时 writing for our university newspaper 点明投稿身份，扣住 the university newspaper is inviting submissions from the students 的场景。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>两组过去→如今→好处的对比 </b>交通用 In the past, it used to ... / Now, however ... 的对比句架写出高铁与拓路；环境用 Another change worth mentioning is the environment 自然过渡，再以 once smelled terrible 对 has been cleaned up 形成对比，families now enjoy walking after dinner 给出具体画面，落实了「对比展开」方法。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>总评收拢＋自豪展望 </b>用 All these changes have made my hometown a much better place to live in 把两点收拢，再以 I feel truly proud 与 I firmly believe that it will become even more beautiful and livable 抒发自豪并展望，落实「收尾＝总评感受＋展望」，给校报读者一个情感落点。</div></div></div></details>
+  <details><summary>自检避坑</summary>
+    <div class="dbody">
+      <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">只喊口号无事例</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">My hometown has developed very fast. Everything is much better now. The economy is good and people are happy.（全是抽象判断，读者看不到任何变化）。改：补上「高铁两小时直达省城」「臭河整治后建成公园」这类具体场景。</span></div></div><div class="pit-item"><div class="pit-t">罗列十项各一句</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">The roads are wider. The schools are bigger. The hospital is new. The Internet is faster. The shops are more.（十项流水账，无重点无展开）。改：砍到交通＋环境两点，各自展开成「过去→如今→好处」。</span></div></div><div class="pit-item"><div class="pit-t">写成私人日记</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Dear diary, today I went back home and felt so happy. I miss my mom&#x27;s food so much.（私人日记口吻，与家乡发展和校报读者都无关）。改：</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">As a student writing for our university newspaper, I would like to share... 并聚焦家乡的客观变化。</span></div></div></div>
+      <table style="margin-top:12px">
+        <tr><th>自查项</th><th>怎么查</th></tr>
+        <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+        <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+        <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+        <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+      </table>
+    </div></details>
 </div>
 
-<div class="card lock"><div class="lockbar"><b>🔒 逐段解析（3 段）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>逐段解析（3 段）</h2>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>总述＋点明投稿身份并预告两点 </b>开头用 Over the past few years, my hometown has undergone remarkable changes 亮出总变化，落实了「亮明总变化」句架；再用 share two of them ... transportation and the environment 预告分点，同时 writing for our university newspaper 点明投稿身份，扣住 the university newspaper is inviting submissions from the students 的场景。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>两组过去→如今→好处的对比 </b>交通用 In the past, it used to ... / Now, however ... 的对比句架写出高铁与拓路；环境用 Another change worth mentioning is the environment 自然过渡，再以 once smelled terrible 对 has been cleaned up 形成对比，families now enjoy walking after dinner 给出具体画面，落实了「对比展开」方法。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>总评收拢＋自豪展望 </b>用 All these changes have made my hometown a much better place to live in 把两点收拢，再以 I feel truly proud 与 I firmly believe that it will become even more beautiful and livable 抒发自豪并展望，落实「收尾＝总评感受＋展望」，给校报读者一个情感落点。</div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>自检避坑</h2>
-  <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">只喊口号无事例</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">My hometown has developed very fast. Everything is much better now. The economy is good and people are happy.（全是抽象判断，读者看不到任何变化）。改：补上「高铁两小时直达省城」「臭河整治后建成公园」这类具体场景。</span></div></div><div class="pit-item"><div class="pit-t">罗列十项各一句</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">The roads are wider. The schools are bigger. The hospital is new. The Internet is faster. The shops are more.（十项流水账，无重点无展开）。改：砍到交通＋环境两点，各自展开成「过去→如今→好处」。</span></div></div><div class="pit-item"><div class="pit-t">写成私人日记</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Dear diary, today I went back home and felt so happy. I miss my mom&#x27;s food so much.（私人日记口吻，与家乡发展和校报读者都无关）。改：</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">As a student writing for our university newspaper, I would like to share... 并聚焦家乡的客观变化。</span></div></div></div>
-  <table style="margin-top:14px">
-    <tr><th>自查项</th><th>怎么查</th></tr>
-    <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
-    <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
-    <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
-    <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
-  </table>
-</div>
+<details class="card">
+  <summary>📖 怎么写 · 审题与谋篇（建议写到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>为校报写谈家乡发展的短文 任务被一句话钉死：write an essay for submission，主题是 the recent development in their hometown——即写一篇投给校报的短文，谈你家乡近来的发展变化。注意核心词是 recent development（近来的发展），要写的是「最近变了什么、变得怎样」，不是泛泛介绍家乡的地理风物。</div></div>
+    <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>家乡近年变化显著、生活更便利 中心立场定为：响应 the recent development in their hometown，我的家乡在近几年发生了显著而真切的变化，让生活变得更方便、更宜居。这一句既扣住「recent development」，又给后文留出可展开的方向。</div></div>
+    <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>交通：高铁/路网带来便利 选「交通」为第一个具体方面：过去去省城要颠簸数小时，如今高铁开通、公路拓宽，出行时间大幅缩短。这是最能体现 recent development 且人人有体感的切口。 环境：旧河整治、绿地增多 选「环境」为第二个方面：曾经污染的河道经过整治变清，新增公园绿地，居民傍晚有了散步休闲的去处。一交通一环境，一硬一软，互补且都易写出具体画面。</div></div>
+    <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 点题：家乡变化显著并预告方面 开篇呼应 the recent development in their hometown，点出家乡近年变化巨大，并预告下文要谈交通与环境两个方面。 第 2 段 主体：对比＋事例展开两点变化 用「过去—如今」对比，分别把交通和环境的具体变化与好处写实，让读者看到画面。 第 3 段 收束：抒发自豪并展望 总结这些变化带来的获得感，表达对家乡的自豪与对未来的期待，呼应校报投稿的场景。</div></div>
+    <p class="hint" style="margin-top:12px">谋篇：每段写什么 —— 这是可以直接套用的框架，换一道题功能不变、内容替换。</p>
+    <div class="row"><span class="tag">第1段</span><div class="c"><b>总述近年变化大并预告交通、环境 落点：紧扣 the recent development in their hometown，写「这些年我家乡变化惊人」，并点明最打动我的是交通和环境两方面，引出主体</b>亮明总变化 Over the past few years, my hometown has undergone remarkable changes. （把 remarkable changes 换成你家乡的总体变化） 预告分点 Among them, the changes in ___ and ___ have impressed me the most. （横线填要谈的两个方面）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>交通与环境的前后对比及好处 落点：交通——过去去省城要颠簸数小时，如今高铁两小时直达、公路拓宽，出行省时省心；环境——曾经发臭的河道经整治变清，新建公园绿地，傍晚居民有了散步去处</b>两点都写出具体画面与好处。 引出过去情形 In the past, it used to ___. （填从前的不便或旧貌） 转到现在对比 Now, however, ___, which makes ___ much more convenient. （前空填新变化，后空填带来的好处） 再添一个方面 Another change worth mentioning is ___. （引出第二个方面，避免两段重复同一句式）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>为家乡自豪并展望更美好未来 落点：把交通、环境的改善收拢为「家乡越来越宜居」，表达身为家乡人的自豪，并相信它会发展得更好——给校报读者一个温暖的收束</b>总评收拢 All these changes have made my hometown a better place to live in. （可把 a better place 替换为你的总评） 展望未来 I firmly believe that it will become even more ___ in the years to come. （横线填对未来的期待）</div></div>
+  </div>
+</details>
 
 
 <script>
@@ -355,5 +349,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   }
 })();
 </script>
+
+
 </body>
 </html>

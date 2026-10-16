@@ -104,7 +104,6 @@ tr:last-child td{border-bottom:0}
  line-height:1.5;white-space:nowrap}
 .pill.bad{background:var(--red-soft);color:var(--red-ink)}
 .pill.fix{background:var(--green-soft);color:var(--green-ink)}
-/* 折叠的语篇分析 */
 details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
  background:var(--card)}
 details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
@@ -117,7 +116,6 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
-
 /* ═══ 写作台 ═══ */
 .wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
  border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
@@ -140,6 +138,18 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .card.lock>*:not(.lockbar){display:none}
 .lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
  color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -148,21 +158,10 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 <h1>写作 · 2024年6月 第3套</h1>
 
 <div class="card">
-  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part I</span></div>
-  <div class="big">
-    <div><b>145</b><span>范文词数</span></div>
-    <div><b>3</b><span>段</span></div>
-    <div><b>30</b><span>分钟</span></div>
-  </div>
-  <div class="tip b">四级写作的命中点是<b>切题 + 结构清楚 + 语法不出错</b>。
-  用三段式（引入表态 / 主体展开 / 回扣收尾），比追求华丽句式稳得多。</div>
-</div>
-
-<div class="card">
-  <div class="chead"><h2>题目</h2><span class="cmeta">Directions</span></div>
-  <div class="prompt"><span class="lbl">Directions</span><br>Directions: Suppose your university is seeking students’ opinions on whether university canteens should be open to the public. You are now to write an essay to express your view. You will have 30 minutes for the task. You will have 30 minutes for the task. You should write at least 120 words but no more than 180 words.</div>
-  <div class="tip a"><b>先自己在纸上写完，再看下面的范文。</b>写作的提分全靠"写—对照—改"这个循环，
-  光看范文不动笔，等于没练。</div>
+  <div class="chead"><h2>题目</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>范文 145 词</span><span>三段式</span><span>要求 120–180 词</span></div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    Directions: Suppose your university is seeking students’ opinions on whether university canteens should be open to the public. You are now to write an essay to express your view. You will have 30 minutes for the task. You will have 30 minutes for the task. You should write at least 120 words but no more than 180 words.</div>
 </div>
 
 
@@ -187,47 +186,42 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
-<div class="card">
-  <h2>审题：这题到底要写什么</h2>
-  <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>对食堂开放表态 本题只有一件：就 whether university canteens should be open to the public 亮出你自己的立场并加以论证。express your view 中的 your view 说明必须选边站、给出个人观点，不能只做中立的正反分析。</div></div>
-  <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>赞成有序开放 本篇立场：赞成高校食堂在有序管理的前提下对公众开放。就 whether university canteens should be open to the public 明确站在『应该开放』一边，全文都围绕这一句展开。</div></div>
-  <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>便民惠及周边 开放能为周边居民和上班族提供干净又便宜的餐食，缓解校园周边的就餐压力——这是支持开放最实在的理由。 增收反哺学生 外来就餐带来的额外收入可用于改善食堂设备、甚至为学生降低菜价，让开放形成正向循环。 让步并给对策 承认开放可能带来拥挤和食品安全隐患，但用设定固定开放时段、门口登记等管理手段可以化解——先退一步再驳回，论证更稳。</div></div>
-  <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 点题并亮立场 引出食堂是否对公众开放的争议，并直接给出赞成有序开放的总观点。 第 2 段 分论点加让步论证 用便民、增收两条理由支撑立场，并让步回应拥挤与安全顾虑。 第 3 段 重申立场收束 重申赞成有序开放，并升华到学校与社会共享的意义。</div></div>
-</div>
 
-<div class="card">
-  <h2>谋篇：每段写什么（3 段）</h2>
-  <p class="hint">这是可以直接套用的框架 —— 换一道题，功能不变、内容替换。</p>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>引出争议表明赞成 把 whether university canteens should be open to the public 这一争议引出，随即表明自己赞成在有序管理下开放的总观点</b>引出话题 Recently, our university has been collecting opinions on whether ___.（把 ___ 换成本题争议） 亮明观点 In my view, ___ is a wise move that benefits both ___ and ___.（填入你的主张与受益方）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>便民增收加回应顾虑 写足两条理由：食堂餐食干净便宜可缓解周边就餐压力、外来收入能反哺学生；再让步承认拥挤与安全顾虑，并用固定时段、门口登记等对策化解</b>并列理由 For one thing, ___; for another, ___.（两条理由各填一句） 让步转折 Admittedly, ___; however, ___ can be eased by ___.（先认反方一点，再给对策）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申赞成并升华 重申赞成有序开放的立场，并升华到『学生需求优先的前提下，共享食堂让学校成为社会更温暖的一部分』</b>重申立场 Therefore, I firmly believe that ___ is worthwhile.（填入你的主张） 收尾升华 As long as ___, ___ makes ___.（用一个条件句把意义拔高）</div></div>
-</div>
 
-<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 参考范文（145 词）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 参考范文 · 逐段解析 · 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>参考范文（145 词）</h2>
-  <details><summary>展开范文（自己写完之后再看）</summary>
+  <details open><summary>范文 + 参考译文</summary>
     <div class="dbody">
       <div class="essay"><p class='en'>Recently, our university has been collecting opinions on whether campus canteens should welcome outside visitors. In my view, opening them to the public is a wise move that benefits both the campus and the community.</p><p class='en'>For one thing, university canteens usually offer clean and affordable meals, so opening them can relieve the dining pressure faced by nearby residents and office workers who struggle to find cheap lunches. For another, the extra income earned from these visitors allows canteens to upgrade their equipment and even lower prices for students. Admittedly, more diners may cause crowding and raise safety concerns; however, such problems can be eased by setting fixed visiting hours and checking visitors at the gate.</p><p class='en'>Therefore, I firmly believe that a properly managed open canteen is worthwhile. As long as student needs come first, sharing this resource makes our university a warmer part of society.</p></div>
       <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>最近，我校正在征集大家对『校园食堂是否应向公众开放』的意见。在我看来，向公众开放是明智之举，校园和社区双方都能从中受益。</div>
     </div></details>
-  <div class="tip a">看范文时不要「读」，要<b>拆</b>：每段第一句做什么？观点句和理由句怎么连？
-  结尾怎么回扣题目？</div>
+  <details><summary>逐段解析（3 段）</summary>
+    <div class="dbody"><div class="row"><span class="tag">第1段</span><div class="c"><b>开门见山表态 </b>首段用 In my view, opening them to the public is a wise move 一句直接亮牌，落实了『点题句加表态句』方法，开头即满足 express your view。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>两理由加让步 </b>段内 For one thing… For another… 摆出便民、增收两条理由，并落到 nearby residents、lower prices for students 等具体场景，再用 Admittedly…however… 让步回应拥挤与安全，论证有据。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申并升华 </b>结尾 Therefore, I firmly believe… 重申立场，末句 As long as student needs come first 把话题拔高到共享意义，与开头呼应形成闭环。</div></div></div></details>
+  <details><summary>自检避坑</summary>
+    <div class="dbody">
+      <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">只分析不表态</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">『Opening canteens has both advantages and disadvantages.』通篇如此却始终不说自己支持哪边。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">『Opening canteens has some drawbacks, but in my view its benefits clearly outweigh them.』——先亮出赞成的立场再展开。</span></div></div><div class="pit-item"><div class="pit-t">理由空泛喊口号</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">『Opening canteens is good and brings many benefits to everybody.』空洞无物。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">『Opening canteens offers nearby office workers a clean and cheap lunch, easing the dining pressure around campus.』——落到具体人群和场景。</span></div></div><div class="pit-item"><div class="pit-t">误加称呼署名</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">开头写『Dear Sir,』结尾署『Yours, Li Ming』，把观点短文写成了书信。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">直接以 Recently, our university… 开篇、以升华句收尾，全程不加称呼与落款。</span></div></div></div>
+      <table style="margin-top:12px">
+        <tr><th>自查项</th><th>怎么查</th></tr>
+        <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+        <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+        <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+        <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+      </table>
+    </div></details>
 </div>
 
-<div class="card lock"><div class="lockbar"><b>🔒 逐段解析（3 段）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>逐段解析（3 段）</h2>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>开门见山表态 </b>首段用 In my view, opening them to the public is a wise move 一句直接亮牌，落实了『点题句加表态句』方法，开头即满足 express your view。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>两理由加让步 </b>段内 For one thing… For another… 摆出便民、增收两条理由，并落到 nearby residents、lower prices for students 等具体场景，再用 Admittedly…however… 让步回应拥挤与安全，论证有据。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申并升华 </b>结尾 Therefore, I firmly believe… 重申立场，末句 As long as student needs come first 把话题拔高到共享意义，与开头呼应形成闭环。</div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>自检避坑</h2>
-  <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">只分析不表态</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">『Opening canteens has both advantages and disadvantages.』通篇如此却始终不说自己支持哪边。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">『Opening canteens has some drawbacks, but in my view its benefits clearly outweigh them.』——先亮出赞成的立场再展开。</span></div></div><div class="pit-item"><div class="pit-t">理由空泛喊口号</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">『Opening canteens is good and brings many benefits to everybody.』空洞无物。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">『Opening canteens offers nearby office workers a clean and cheap lunch, easing the dining pressure around campus.』——落到具体人群和场景。</span></div></div><div class="pit-item"><div class="pit-t">误加称呼署名</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">开头写『Dear Sir,』结尾署『Yours, Li Ming』，把观点短文写成了书信。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">直接以 Recently, our university… 开篇、以升华句收尾，全程不加称呼与落款。</span></div></div></div>
-  <table style="margin-top:14px">
-    <tr><th>自查项</th><th>怎么查</th></tr>
-    <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
-    <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
-    <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
-    <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
-  </table>
-</div>
+<details class="card">
+  <summary>📖 怎么写 · 审题与谋篇（建议写到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>对食堂开放表态 本题只有一件：就 whether university canteens should be open to the public 亮出你自己的立场并加以论证。express your view 中的 your view 说明必须选边站、给出个人观点，不能只做中立的正反分析。</div></div>
+    <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>赞成有序开放 本篇立场：赞成高校食堂在有序管理的前提下对公众开放。就 whether university canteens should be open to the public 明确站在『应该开放』一边，全文都围绕这一句展开。</div></div>
+    <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>便民惠及周边 开放能为周边居民和上班族提供干净又便宜的餐食，缓解校园周边的就餐压力——这是支持开放最实在的理由。 增收反哺学生 外来就餐带来的额外收入可用于改善食堂设备、甚至为学生降低菜价，让开放形成正向循环。 让步并给对策 承认开放可能带来拥挤和食品安全隐患，但用设定固定开放时段、门口登记等管理手段可以化解——先退一步再驳回，论证更稳。</div></div>
+    <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 点题并亮立场 引出食堂是否对公众开放的争议，并直接给出赞成有序开放的总观点。 第 2 段 分论点加让步论证 用便民、增收两条理由支撑立场，并让步回应拥挤与安全顾虑。 第 3 段 重申立场收束 重申赞成有序开放，并升华到学校与社会共享的意义。</div></div>
+    <p class="hint" style="margin-top:12px">谋篇：每段写什么 —— 这是可以直接套用的框架，换一道题功能不变、内容替换。</p>
+    <div class="row"><span class="tag">第1段</span><div class="c"><b>引出争议表明赞成 把 whether university canteens should be open to the public 这一争议引出，随即表明自己赞成在有序管理下开放的总观点</b>引出话题 Recently, our university has been collecting opinions on whether ___.（把 ___ 换成本题争议） 亮明观点 In my view, ___ is a wise move that benefits both ___ and ___.（填入你的主张与受益方）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>便民增收加回应顾虑 写足两条理由：食堂餐食干净便宜可缓解周边就餐压力、外来收入能反哺学生；再让步承认拥挤与安全顾虑，并用固定时段、门口登记等对策化解</b>并列理由 For one thing, ___; for another, ___.（两条理由各填一句） 让步转折 Admittedly, ___; however, ___ can be eased by ___.（先认反方一点，再给对策）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申赞成并升华 重申赞成有序开放的立场，并升华到『学生需求优先的前提下，共享食堂让学校成为社会更温暖的一部分』</b>重申立场 Therefore, I firmly believe that ___ is worthwhile.（填入你的主张） 收尾升华 As long as ___, ___ makes ___.（用一个条件句把意义拔高）</div></div>
+  </div>
+</details>
 
 
 <script>
@@ -355,5 +349,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   }
 })();
 </script>
+
+
 </body>
 </html>

@@ -104,7 +104,6 @@ tr:last-child td{border-bottom:0}
  line-height:1.5;white-space:nowrap}
 .pill.bad{background:var(--red-soft);color:var(--red-ink)}
 .pill.fix{background:var(--green-soft);color:var(--green-ink)}
-/* 折叠的语篇分析 */
 details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
  background:var(--card)}
 details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
@@ -117,7 +116,6 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
-
 /* ═══ 写作台 ═══ */
 .wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
  border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
@@ -140,6 +138,18 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .card.lock>*:not(.lockbar){display:none}
 .lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
  color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -148,21 +158,10 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 <h1>写作 · 2022年6月 第1套</h1>
 
 <div class="card">
-  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part I</span></div>
-  <div class="big">
-    <div><b>145</b><span>范文词数</span></div>
-    <div><b>3</b><span>段</span></div>
-    <div><b>30</b><span>分钟</span></div>
-  </div>
-  <div class="tip b">四级写作的命中点是<b>切题 + 结构清楚 + 语法不出错</b>。
-  用三段式（引入表态 / 主体展开 / 回扣收尾），比追求华丽句式稳得多。</div>
-</div>
-
-<div class="card">
-  <div class="chead"><h2>题目</h2><span class="cmeta">Directions</span></div>
-  <div class="prompt"><span class="lbl">Directions</span><br>Directions: Suppose you are going to write a proposal to your school library for improving its service. You are to write about its current problems and possible solutions to these problems. You will have 30 minutes to write the proposal. You should write at least 120 words but no more than 180 words.</div>
-  <div class="tip a"><b>先自己在纸上写完，再看下面的范文。</b>写作的提分全靠"写—对照—改"这个循环，
-  光看范文不动笔，等于没练。</div>
+  <div class="chead"><h2>题目</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>范文 145 词</span><span>三段式</span><span>要求 120–180 词</span></div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    Directions: Suppose you are going to write a proposal to your school library for improving its service. You are to write about its current problems and possible solutions to these problems. You will have 30 minutes to write the proposal. You should write at least 120 words but no more than 180 words.</div>
 </div>
 
 
@@ -187,47 +186,42 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
-<div class="card">
-  <h2>审题：这题到底要写什么</h2>
-  <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>写图书馆改进建议书 本题要写一封建议书：write a proposal to your school library for improving its service。它有两个绑在一起的子任务，必须一一对应地写全——its current problems and possible solutions to these problems，即先摆图书馆现在的问题、再给出针对这些问题的可行办法，只谈问题不给对策就等于只做了一半。</div></div>
-  <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>提改进建议助力提升服务 本篇交际目的一句话钉死：以读者身份向图书馆提出具体、可行的改进建议，帮助它 improving its service——落点始终是‘让服务更好’，而不是发泄不满。</div></div>
-  <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>开放时间过短 问题：图书馆晚上关门太早，考试周备考的同学不够用（这是 current problems 中很具体的一条）；对策：延长开放时间，尤其在考试周开放到更晚。问题具体到‘开放时间’这个场景，说服力比笼统的‘服务不好’强得多。 缺少安静自习区 问题：阅览区常有噪音、没有单独的安静区，难以专注；对策：设一间静音自习室并提醒读者小声。这条正是 possible solutions to these problems 要求的‘针对问题给办法’，与上一条并列，凑够 1–2 组即可展开成一段。</div></div>
-  <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 亮身份点目的 开头段：自报身份（常来的学生/读者），一句话说明本文目的是向图书馆提改进建议，呼应 improving its service。 第 2 段 问题配对策的主体段 主体段：分‘First… Second…’逐条陈述具体问题，每个问题后紧跟一条可行对策，做到 current problems and possible solutions to these problems 一一对应。 第 3 段 礼貌收束促采纳 结尾段：概括这些改动的价值，礼貌致谢并表达希望建议被采纳，体现建议书的得体。</div></div>
-</div>
 
-<div class="card">
-  <h2>谋篇：每段写什么（3 段）</h2>
-  <p class="hint">这是可以直接套用的框架 —— 换一道题，功能不变、内容替换。</p>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>学生身份＋提建议目的 落点：表明自己是常在图书馆自习的学生，写这封信是想就 improving its service 提几点建议</b>自我介绍表明身份 I am a ___ who ___, and I am writing to propose ___.（横线填你的身份和要提的建议方向） 点明写作目的 The purpose of this proposal is to ___.（横线填‘提出几点改进图书馆服务的建议’）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>两组问题＋对策 落点：第一组——晚上关门太早，考试周不够用，建议延长开放时间；第二组——阅览区吵、无安静区，建议设静音室并提醒读者小声</b>两组正好写全 current problems and possible solutions to these problems。 分点提出问题 First, ___; Second, ___.（横线各填一个具体问题，保证问题分点清晰） 给出建议式对策 I suggest ___ / It would be advisable to ___.（横线填对应的解决办法，语气客气不生硬）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>点明价值＋期待采纳 落点：说明这些建议简单却有效、能让图书馆更受欢迎，感谢考虑并希望尽快采纳</b>总结价值 These changes are simple yet ___, and would ___.（横线填改动的好处，如‘effective’‘让更多学生受益’） 礼貌表达期待 Thank you for considering my suggestions, and I sincerely hope ___.（横线填‘它们能被采纳’）</div></div>
-</div>
 
-<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 参考范文（145 词）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 参考范文 · 逐段解析 · 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>参考范文（145 词）</h2>
-  <details><summary>展开范文（自己写完之后再看）</summary>
+  <details open><summary>范文 + 参考译文</summary>
     <div class="dbody">
       <div class="essay"><p class='en'>I am a sophomore who spends most of my free time studying in our school library. As a frequent user, I am writing to propose several improvements that I believe would enhance its service.</p><p class='en'>Two problems stand out. First, the library closes at nine every evening, which is too early for students who prepare for exams late at night; I suggest extending the opening hours to eleven during examination weeks. Second, the reading area is often noisy because there is no separated quiet zone, so it is hard to concentrate. It would be advisable to set aside a silent room and remind readers to keep their voices down.</p><p class='en'>I believe these changes are simple yet effective, and they would make the library far more welcoming to every student. Thank you very much for considering my suggestions, and I sincerely hope they can be adopted soon.</p></div>
       <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>我是一名大二学生，空闲时间大多在学校图书馆自习。作为一名常客，我写这封建议书，想提出几点我认为能提升图书馆服务的改进意见。</div>
     </div></details>
-  <div class="tip a">看范文时不要「读」，要<b>拆</b>：每段第一句做什么？观点句和理由句怎么连？
-  结尾怎么回扣题目？</div>
+  <details><summary>逐段解析（3 段）</summary>
+    <div class="dbody"><div class="row"><span class="tag">第1段</span><div class="c"><b>身份＋目的一句到位 </b>用‘I am a sophomore who…’自报身份、‘I am writing to propose…’直接点明目的，落实了开头段‘亮身份点目的’的功能，呼应 improving its service，没有多余铺垫。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>First/Second 问题紧跟对策 </b>‘Two problems stand out. First… I suggest…; Second… It would be advisable to…’两组都是问题后立刻接对策，把 current problems and possible solutions to these problems 一一写全，且用了建议式表达保持客气。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>价值＋致谢收尾 </b>‘simple yet effective… Thank you very much for considering… I sincerely hope they can be adopted’先讲好处再礼貌致谢，体现建议书的建设性与得体，收束干净。</div></div></div></details>
+  <details><summary>自检避坑</summary>
+    <div class="dbody">
+      <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">写成抱怨信</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">‘Your library is terrible. You always close too early and never care about students.’——纯发泄、无对策、语气生硬。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">‘The library closes rather early, so I suggest extending the opening hours during exam weeks.’先点问题、立刻给建议、语气客气。</span></div></div><div class="pit-item"><div class="pit-t">问题太笼统</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">‘The service of the library is not good and should be improved.’——空话，没说哪不好，也没法给对策。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">‘There are too few seats during exam weeks, so I suggest adding more study desks on each floor.’有具体场景，对策也随之而来。</span></div></div><div class="pit-item"><div class="pit-t">方案答非所问</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">问题写‘the reading room is too noisy’，对策却写‘the library should buy more computers’——牛头不对马嘴。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">‘the reading room is too noisy, so it would be advisable to set aside a quiet zone.’对策正对噪音问题。</span></div></div></div>
+      <table style="margin-top:12px">
+        <tr><th>自查项</th><th>怎么查</th></tr>
+        <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+        <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+        <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+        <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+      </table>
+    </div></details>
 </div>
 
-<div class="card lock"><div class="lockbar"><b>🔒 逐段解析（3 段）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>逐段解析（3 段）</h2>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>身份＋目的一句到位 </b>用‘I am a sophomore who…’自报身份、‘I am writing to propose…’直接点明目的，落实了开头段‘亮身份点目的’的功能，呼应 improving its service，没有多余铺垫。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>First/Second 问题紧跟对策 </b>‘Two problems stand out. First… I suggest…; Second… It would be advisable to…’两组都是问题后立刻接对策，把 current problems and possible solutions to these problems 一一写全，且用了建议式表达保持客气。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>价值＋致谢收尾 </b>‘simple yet effective… Thank you very much for considering… I sincerely hope they can be adopted’先讲好处再礼貌致谢，体现建议书的建设性与得体，收束干净。</div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>自检避坑</h2>
-  <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">写成抱怨信</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">‘Your library is terrible. You always close too early and never care about students.’——纯发泄、无对策、语气生硬。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">‘The library closes rather early, so I suggest extending the opening hours during exam weeks.’先点问题、立刻给建议、语气客气。</span></div></div><div class="pit-item"><div class="pit-t">问题太笼统</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">‘The service of the library is not good and should be improved.’——空话，没说哪不好，也没法给对策。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">‘There are too few seats during exam weeks, so I suggest adding more study desks on each floor.’有具体场景，对策也随之而来。</span></div></div><div class="pit-item"><div class="pit-t">方案答非所问</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">问题写‘the reading room is too noisy’，对策却写‘the library should buy more computers’——牛头不对马嘴。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">‘the reading room is too noisy, so it would be advisable to set aside a quiet zone.’对策正对噪音问题。</span></div></div></div>
-  <table style="margin-top:14px">
-    <tr><th>自查项</th><th>怎么查</th></tr>
-    <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
-    <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
-    <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
-    <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
-  </table>
-</div>
+<details class="card">
+  <summary>📖 怎么写 · 审题与谋篇（建议写到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>写图书馆改进建议书 本题要写一封建议书：write a proposal to your school library for improving its service。它有两个绑在一起的子任务，必须一一对应地写全——its current problems and possible solutions to these problems，即先摆图书馆现在的问题、再给出针对这些问题的可行办法，只谈问题不给对策就等于只做了一半。</div></div>
+    <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>提改进建议助力提升服务 本篇交际目的一句话钉死：以读者身份向图书馆提出具体、可行的改进建议，帮助它 improving its service——落点始终是‘让服务更好’，而不是发泄不满。</div></div>
+    <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>开放时间过短 问题：图书馆晚上关门太早，考试周备考的同学不够用（这是 current problems 中很具体的一条）；对策：延长开放时间，尤其在考试周开放到更晚。问题具体到‘开放时间’这个场景，说服力比笼统的‘服务不好’强得多。 缺少安静自习区 问题：阅览区常有噪音、没有单独的安静区，难以专注；对策：设一间静音自习室并提醒读者小声。这条正是 possible solutions to these problems 要求的‘针对问题给办法’，与上一条并列，凑够 1–2 组即可展开成一段。</div></div>
+    <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 亮身份点目的 开头段：自报身份（常来的学生/读者），一句话说明本文目的是向图书馆提改进建议，呼应 improving its service。 第 2 段 问题配对策的主体段 主体段：分‘First… Second…’逐条陈述具体问题，每个问题后紧跟一条可行对策，做到 current problems and possible solutions to these problems 一一对应。 第 3 段 礼貌收束促采纳 结尾段：概括这些改动的价值，礼貌致谢并表达希望建议被采纳，体现建议书的得体。</div></div>
+    <p class="hint" style="margin-top:12px">谋篇：每段写什么 —— 这是可以直接套用的框架，换一道题功能不变、内容替换。</p>
+    <div class="row"><span class="tag">第1段</span><div class="c"><b>学生身份＋提建议目的 落点：表明自己是常在图书馆自习的学生，写这封信是想就 improving its service 提几点建议</b>自我介绍表明身份 I am a ___ who ___, and I am writing to propose ___.（横线填你的身份和要提的建议方向） 点明写作目的 The purpose of this proposal is to ___.（横线填‘提出几点改进图书馆服务的建议’）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>两组问题＋对策 落点：第一组——晚上关门太早，考试周不够用，建议延长开放时间；第二组——阅览区吵、无安静区，建议设静音室并提醒读者小声</b>两组正好写全 current problems and possible solutions to these problems。 分点提出问题 First, ___; Second, ___.（横线各填一个具体问题，保证问题分点清晰） 给出建议式对策 I suggest ___ / It would be advisable to ___.（横线填对应的解决办法，语气客气不生硬）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>点明价值＋期待采纳 落点：说明这些建议简单却有效、能让图书馆更受欢迎，感谢考虑并希望尽快采纳</b>总结价值 These changes are simple yet ___, and would ___.（横线填改动的好处，如‘effective’‘让更多学生受益’） 礼貌表达期待 Thank you for considering my suggestions, and I sincerely hope ___.（横线填‘它们能被采纳’）</div></div>
+  </div>
+</details>
 
 
 <script>
@@ -355,5 +349,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   }
 })();
 </script>
+
+
 </body>
 </html>

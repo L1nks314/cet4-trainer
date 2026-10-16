@@ -104,7 +104,6 @@ tr:last-child td{border-bottom:0}
  line-height:1.5;white-space:nowrap}
 .pill.bad{background:var(--red-soft);color:var(--red-ink)}
 .pill.fix{background:var(--green-soft);color:var(--green-ink)}
-/* 折叠的语篇分析 */
 details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
  background:var(--card)}
 details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
@@ -139,6 +138,18 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .card.lock>*:not(.lockbar){display:none}
 .lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
  color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -147,28 +158,11 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 <h1>汉译英 · 2024年6月 第1套</h1>
 
 <div class="card">
-  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part IV</span></div>
-  <div class="big">
-    <div><b>167</b><span>中文字数</span></div>
-    <div><b>4</b><span>句</span></div>
-    <div><b>30</b><span>分钟</span></div>
-  </div>
-  <div class="tip b">翻译评分只看四件事：<b>意思说全、语法没错、表达通顺、用词准确</b>。
-  翻得漂亮不加分，翻错了狠狠扣 —— 所以目标是<b>不出错</b>，不是出彩。</div>
-</div>
-
-<div class="card">
-  <div class="chead"><h2>中文原文</h2><span class="cmeta">4 句</span></div>
-  
+  <div class="chead"><h2>中文原文</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>4 句</span><span>段落翻译</span><span>要求 140–180 词</span></div>
   <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
     <span class="zh">四合院(siheyuan)是中国一种传统的住宅建筑，其特点是房屋建造在一个院子的四周，将院子合围在中间。四合院通常冬暖夏凉，环境舒适，尤其适合大家庭居住。四合院在中国各地有多种类型，其中以北京的四合院最为典型。如今，随着现代城市的发展，传统的四合院已逐渐减少，但因其独特的建筑风格，四合院对中国文化的传承和中国历史的研究具有重要意义。</span></div>
-  <div class="tip a"><b>先自己翻一遍再看下面。</b>用纸笔或另一个文档写，写完再逐句对照 ——
-  直接看答案等于没练。</div>
-  <details class="dig"><summary>语篇分析 · 主旨 / 时态 / 译法（建议自己翻完再看）</summary><div class="dbody">
-        <div class="chunk"><span class="k">主旨</span><span class="v">客观介绍中国传统住宅四合院 整段在介绍一种中国传统民居：开篇 四合院(siheyuan)是中国一种传统的住宅建筑 就把它定义清楚，随后讲它的特点、舒适度、地域类型与文化意义。这属于「中国文化/民居介绍」类客观说明文，不是讲某段历史故事，语体平实、面向读者科普。</span></div>
-        <div class="chunk"><span class="k">时态</span><span class="v">一般现在时 全篇是在客观陈述四合院「现在仍然如此」的特征与现状——是什么、有什么特点、适合谁住、哪种最典型，都是不随时间变的事实性介绍，如 其特点是房屋建造在一个院子的四周、四合院通常冬暖夏凉，故以一般现在时为主时态。只有末句 传统的四合院已逐渐减少 表「已经发生并持续到现在的变化」，那一处才偏离基调改用现在完成时。</span></div>
-        <div class="chunk"><span class="k">译法</span><span class="v">四合院 原文已自带括号注音 四合院(siheyuan)，故全篇统一译为音译加同位语解释 the siheyuan (a traditional Chinese courtyard house)，首次出现时给出解释，之后统一用 siheyuan 或 courtyard house，不要一会儿 siheyuan 一会儿又另造别的拼法。 北京 对应 北京的四合院，用国际通用约定俗成译名 Beijing，全篇统一，不要写成 Peking 或拼错。 大家庭 对应 大家庭，指几代同堂的大家族，统一译为 large families（含老少几代人之意），不要误解成「伟大的家庭」。</span></div>
-  </div></details>
+  <details class="dig"><summary>语篇分析 · 主旨 / 时态 / 译法（建议自己翻完再看）</summary><div class="dbody"><div class="chunk"><span class="k">主旨</span><span class="v">客观介绍中国传统住宅四合院 整段在介绍一种中国传统民居：开篇 四合院(siheyuan)是中国一种传统的住宅建筑 就把它定义清楚，随后讲它的特点、舒适度、地域类型与文化意义。这属于「中国文化/民居介绍」类客观说明文，不是讲某段历史故事，语体平实、面向读者科普。</span></div><div class="chunk"><span class="k">时态</span><span class="v">一般现在时 全篇是在客观陈述四合院「现在仍然如此」的特征与现状——是什么、有什么特点、适合谁住、哪种最典型，都是不随时间变的事实性介绍，如 其特点是房屋建造在一个院子的四周、四合院通常冬暖夏凉，故以一般现在时为主时态。只有末句 传统的四合院已逐渐减少 表「已经发生并持续到现在的变化」，那一处才偏离基调改用现在完成时。</span></div><div class="chunk"><span class="k">译法</span><span class="v">四合院 原文已自带括号注音 四合院(siheyuan)，故全篇统一译为音译加同位语解释 the siheyuan (a traditional Chinese courtyard house)，首次出现时给出解释，之后统一用 siheyuan 或 courtyard house，不要一会儿 siheyuan 一会儿又另造别的拼法。 北京 对应 北京的四合院，用国际通用约定俗成译名 Beijing，全篇统一，不要写成 Peking 或拼错。 大家庭 对应 大家庭，指几代同堂的大家族，统一译为 large families（含老少几代人之意），不要误解成「伟大的家庭」。</span></div></div></details>
 </div>
 
 
@@ -193,50 +187,42 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
-<div class="card">
-  <h2>怎么用这份包</h2>
-  <div class="flow"><span class="on">① 自己翻</span><span>② 逐句对照</span>
-    <span>③ 抄下错处</span><span>④ 整篇通读</span></div>
-  <div class="tip g">第二步是全流程最有价值的一步：<b>看你漏译了什么、时态用错了哪里</b>。
-  每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div>
-</div>
 
-<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 逐句对照（4 句）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
+
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 逐句对照 · 参考译文 · 译法要点</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
   <h2>逐句对照（4 句）</h2>
   <p class="hint">每句给出：中文原句 · 参考英译 · 主语策略 · 语法要点。</p>
   <div class="sent"><span class="snum">第 1 句</span><p class="szh">四合院(siheyuan)是中国一种传统的住宅建筑，其特点是房屋建造在一个院子的四周，将院子合围在中间。</p><p class="sen">The siheyuan is a traditional Chinese residential building, characterized by houses built on the four sides of a courtyard, enclosing it in the middle.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">回指全篇基调，客观介绍用一般现在时，is，不要用过去时。</span></div><div class="chunk"><span class="k">冠词与单复数</span><span class="v">泛指这一类建筑，可用 The siheyuan 作类指，或用复数 Siheyuan are…；表语 a traditional residential building 是单数可数名词，必须带不定冠词 a。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">「房屋」建在四周不止一间，译 houses 用复数；「一个院子」是单数特指，a courtyard。</span></div><div class="chunk"><span class="k">介词搭配</span><span class="v">「在院子的四周」用 on four sides of a courtyard；「在中间」用 in the middle，介词不要漏。</span></div></div><div class="sent"><span class="snum">第 2 句</span><p class="szh">四合院通常冬暖夏凉，环境舒适，尤其适合大家庭居住。</p><p class="sen">It is usually warm in winter and cool in summer, providing a comfortable environment that is especially suitable for large families.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">通常性、习惯性的特征，回指基调用一般现在时 is。</span></div><div class="chunk"><span class="k">副词与表达</span><span class="v">「通常」用 usually 置于 be 动词后；「冬暖夏凉」是中文四字格，拆成 warm in winter and cool in summer 两组对仗，不要生造单词。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">「大家庭」指多个这样的家庭，用复数 large families；「尤其」用 especially。</span></div></div><div class="sent"><span class="snum">第 3 句</span><p class="szh">四合院在中国各地有多种类型，其中以北京的四合院最为典型。</p><p class="sen">There are various types of siheyuan across China, among which the ones in Beijing are the most typical.</p><div class="strat">主语策略：There be</div><div class="chunk"><span class="k">时态</span><span class="v">陈述客观分布现状，用一般现在时 are。</span></div><div class="chunk"><span class="k">单复数</span><span class="v">「多种类型」用复数 various types；故 There 后接 are 而非 is。</span></div><div class="chunk"><span class="k">最高级</span><span class="v">「最为典型」用最高级 the most typical，前面别漏定冠词 the。</span></div><div class="chunk"><span class="k">介词搭配</span><span class="v">「在中国各地」用 across China 或 throughout China；「北京的四合院」用 the ones / those in Beijing。</span></div></div><div class="sent"><span class="snum">第 4 句</span><p class="szh">如今，随着现代城市的发展，传统的四合院已逐渐减少，但因其独特的建筑风格，四合院对中国文化的传承和中国历史的研究具有重要意义。</p><p class="sen">Nowadays, with the development of modern cities, traditional siheyuan have gradually decreased; however, owing to their unique architectural style, they remain of great significance to the inheritance of Chinese culture and the study of Chinese history.</p><div class="strat">主语策略：原句主语</div><div class="chunk"><span class="k">时态</span><span class="v">「已逐渐减少」表已发生且延续至今的变化，偏离基调用现在完成时 have gradually decreased / declined；后半「具有重要意义」是当下事实，回到一般现在时 are。</span></div><div class="chunk"><span class="k">单复数与主谓一致</span><span class="v">traditional siheyuan 视作复数群体，谓语用 have；后半 they are of great significance。</span></div><div class="chunk"><span class="k">介词搭配</span><span class="v">「具有重要意义」用 be of great significance to 或 play an important role in；「对…的传承」the inheritance of，「对…的研究」the study of，介词 to / of / in 不要混。</span></div><div class="chunk"><span class="k">用词</span><span class="v">「独特的建筑风格」译 unique architectural style，architectural 是形容词形式，别误用名词 architecture 作定语。</span></div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 整篇参考译文</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>整篇参考译文</h2>
-  <details><summary>展开整篇（自己翻完再看）</summary>
+  <details style="margin-top:14px"><summary>整篇参考译文</summary>
     <div class="dbody"><p class="en">The siheyuan is a traditional Chinese residential building, characterized by houses built on the four sides of a courtyard, enclosing it in the middle. It is usually warm in winter and cool in summer, providing a comfortable environment that is especially suitable for large families. There are various types of siheyuan across China, among which the ones in Beijing are the most typical. Nowadays, with the development of modern cities, traditional siheyuan have gradually decreased; however, owing to their unique architectural style, they remain of great significance to the inheritance of Chinese culture and the study of Chinese history. 【衔接】 第1、2句之间：用 It 承接避免重复主语 第二句中文又出现主语 四合院通常冬暖夏凉，紧跟在第一句之后。英文里第二句改用代词 It 承接，不重复 The siheyuan，读起来更顺、避免名词堆砌。 第3句之后另起一层：用 Nowadays 标出时间转折 第四句开头的 如今 把话题从「四合院的固有特征」切到「当下的变化与意义」，英文用句首 Nowadays 显式标出这一时间层次的转换，让整篇从「介绍特征」自然过渡到「现状与价值」。 第4句内部：用 however 显化转折逻辑 中文 但因其独特的建筑风格 的「但」是减少与意义之间的转折，英文用分号加 however 把这层「虽然减少、但仍重要」的逻辑明确显出来，不让两个意思平铺。</p></div></details>
-  <div class="tip a">整篇译文是用来<b>感受节奏和衔接</b>的，不是用来背的。
-  重点看它怎么处理句间连接、怎么避免重复用词。</div>
+  <details><summary>句间衔接（3 处）</summary>
+    <div class="dbody">
+      <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
+      <div class="row"><span class="tag">衔接</span><div class="c"><b>第1、2句之间：用 It 承接避免重复主语</b>第二句中文又出现主语 四合院通常冬暖夏凉，紧跟在第一句之后。英文里第二句改用代词 It 承接，不重复 The siheyuan，读起来更顺、避免名词堆砌。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第3句之后另起一层：用 Nowadays 标出时间转折</b>第四句开头的 如今 把话题从「四合院的固有特征」切到「当下的变化与意义」，英文用句首 Nowadays 显式标出这一时间层次的转换，让整篇从「介绍特征」自然过渡到「现状与价值」。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第4句内部：用 however 显化转折逻辑</b>中文 但因其独特的建筑风格 的「但」是减少与意义之间的转折，英文用分号加 however 把这层「虽然减少、但仍重要」的逻辑明确显出来，不让两个意思平铺。</div></div>
+    </div></details>
+  <details><summary>译法要点（18 条）</summary>
+    <div class="dbody">
+      <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
+      <div class="vocab"><div class="w">四合院</div><div class="d">原文已自带括号注音 四合院(siheyuan)，故全篇统一译为音译加同位语解释 the siheyuan (a traditional Chinese courtyard house)，首次出现时给出解释，之后统一用 siheyuan 或 courtyard house，不要一会儿 siheyuan 一会儿又另造别的拼法。</div></div><div class="vocab"><div class="w">北京</div><div class="d">对应 北京的四合院，用国际通用约定俗成译名 Beijing，全篇统一，不要写成 Peking 或拼错。</div></div><div class="vocab"><div class="w">大家庭</div><div class="d">对应 大家庭，指几代同堂的大家族，统一译为 large families（含老少几代人之意），不要误解成「伟大的家庭」。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调，客观介绍用一般现在时，is，不要用过去时。</div></div><div class="vocab"><div class="w">冠词与单复数</div><div class="d">泛指这一类建筑，可用 The siheyuan 作类指，或用复数 Siheyuan are…；表语 a traditional residential building 是单数可数名词，必须带不定冠词 a。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">「房屋」建在四周不止一间，译 houses 用复数；「一个院子」是单数特指，a courtyard。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">「在院子的四周」用 on four sides of a courtyard；「在中间」用 in the middle，介词不要漏。</div></div><div class="vocab"><div class="w">时态</div><div class="d">通常性、习惯性的特征，回指基调用一般现在时 is。</div></div><div class="vocab"><div class="w">副词与表达</div><div class="d">「通常」用 usually 置于 be 动词后；「冬暖夏凉」是中文四字格，拆成 warm in winter and cool in summer 两组对仗，不要生造单词。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">「大家庭」指多个这样的家庭，用复数 large families；「尤其」用 especially。</div></div><div class="vocab"><div class="w">时态</div><div class="d">陈述客观分布现状，用一般现在时 are。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">「多种类型」用复数 various types；故 There 后接 are 而非 is。</div></div><div class="vocab"><div class="w">最高级</div><div class="d">「最为典型」用最高级 the most typical，前面别漏定冠词 the。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">「在中国各地」用 across China 或 throughout China；「北京的四合院」用 the ones / those in Beijing。</div></div><div class="vocab"><div class="w">时态</div><div class="d">「已逐渐减少」表已发生且延续至今的变化，偏离基调用现在完成时 have gradually decreased / declined；后半「具有重要意义」是当下事实，回到一般现在时 are。</div></div><div class="vocab"><div class="w">单复数与主谓一致</div><div class="d">traditional siheyuan 视作复数群体，谓语用 have；后半 they are of great significance。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">「具有重要意义」用 be of great significance to 或 play an important role in；「对…的传承」the inheritance of，「对…的研究」the study of，介词 to / of / in 不要混。</div></div><div class="vocab"><div class="w">用词</div><div class="d">「独特的建筑风格」译 unique architectural style，architectural 是形容词形式，别误用名词 architecture 作定语。</div></div>
+    </div></details>
 </div>
 
-<div class="card lock"><div class="lockbar"><b>🔒 句间衔接（3 处）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>句间衔接（3 处）</h2>
-  <p class="hint">翻译丢分常常不在单词，而在<b>句子之间没接上</b>。这几处是本题的关键连接点。</p>
-  <div class="row"><span class="tag">衔接</span><div class="c"><b>第1、2句之间：用 It 承接避免重复主语</b>第二句中文又出现主语 四合院通常冬暖夏凉，紧跟在第一句之后。英文里第二句改用代词 It 承接，不重复 The siheyuan，读起来更顺、避免名词堆砌。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第3句之后另起一层：用 Nowadays 标出时间转折</b>第四句开头的 如今 把话题从「四合院的固有特征」切到「当下的变化与意义」，英文用句首 Nowadays 显式标出这一时间层次的转换，让整篇从「介绍特征」自然过渡到「现状与价值」。</div></div><div class="row"><span class="tag">衔接</span><div class="c"><b>第4句内部：用 however 显化转折逻辑</b>中文 但因其独特的建筑风格 的「但」是减少与意义之间的转折，英文用分号加 however 把这层「虽然减少、但仍重要」的逻辑明确显出来，不让两个意思平铺。</div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 译法要点（18 条）</b><br>完成并提交后解锁 —— 先自己写，再看才有效果。</div>
-  <h2>译法要点（18 条）</h2>
-  <p class="hint">这些词/词组是本题的踩分点，考前值得回头再看。</p>
-  <div class="vocab"><div class="w">四合院</div><div class="d">原文已自带括号注音 四合院(siheyuan)，故全篇统一译为音译加同位语解释 the siheyuan (a traditional Chinese courtyard house)，首次出现时给出解释，之后统一用 siheyuan 或 courtyard house，不要一会儿 siheyuan 一会儿又另造别的拼法。</div></div><div class="vocab"><div class="w">北京</div><div class="d">对应 北京的四合院，用国际通用约定俗成译名 Beijing，全篇统一，不要写成 Peking 或拼错。</div></div><div class="vocab"><div class="w">大家庭</div><div class="d">对应 大家庭，指几代同堂的大家族，统一译为 large families（含老少几代人之意），不要误解成「伟大的家庭」。</div></div><div class="vocab"><div class="w">时态</div><div class="d">回指全篇基调，客观介绍用一般现在时，is，不要用过去时。</div></div><div class="vocab"><div class="w">冠词与单复数</div><div class="d">泛指这一类建筑，可用 The siheyuan 作类指，或用复数 Siheyuan are…；表语 a traditional residential building 是单数可数名词，必须带不定冠词 a。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">「房屋」建在四周不止一间，译 houses 用复数；「一个院子」是单数特指，a courtyard。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">「在院子的四周」用 on four sides of a courtyard；「在中间」用 in the middle，介词不要漏。</div></div><div class="vocab"><div class="w">时态</div><div class="d">通常性、习惯性的特征，回指基调用一般现在时 is。</div></div><div class="vocab"><div class="w">副词与表达</div><div class="d">「通常」用 usually 置于 be 动词后；「冬暖夏凉」是中文四字格，拆成 warm in winter and cool in summer 两组对仗，不要生造单词。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">「大家庭」指多个这样的家庭，用复数 large families；「尤其」用 especially。</div></div><div class="vocab"><div class="w">时态</div><div class="d">陈述客观分布现状，用一般现在时 are。</div></div><div class="vocab"><div class="w">单复数</div><div class="d">「多种类型」用复数 various types；故 There 后接 are 而非 is。</div></div><div class="vocab"><div class="w">最高级</div><div class="d">「最为典型」用最高级 the most typical，前面别漏定冠词 the。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">「在中国各地」用 across China 或 throughout China；「北京的四合院」用 the ones / those in Beijing。</div></div><div class="vocab"><div class="w">时态</div><div class="d">「已逐渐减少」表已发生且延续至今的变化，偏离基调用现在完成时 have gradually decreased / declined；后半「具有重要意义」是当下事实，回到一般现在时 are。</div></div><div class="vocab"><div class="w">单复数与主谓一致</div><div class="d">traditional siheyuan 视作复数群体，谓语用 have；后半 they are of great significance。</div></div><div class="vocab"><div class="w">介词搭配</div><div class="d">「具有重要意义」用 be of great significance to 或 play an important role in；「对…的传承」the inheritance of，「对…的研究」the study of，介词 to / of / in 不要混。</div></div><div class="vocab"><div class="w">用词</div><div class="d">「独特的建筑风格」译 unique architectural style，architectural 是形容词形式，别误用名词 architecture 作定语。</div></div>
-</div>
-
-<div class="card">
-  <h2>翻译四句口诀</h2>
-  <table>
-    <tr><th>步骤</th><th>做什么</th></tr>
-    <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
-    <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
-    <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
-    <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 > 用词花</b></td></tr>
-  </table>
-</div>
+<details class="card">
+  <summary>📖 怎么译 · 流程与口诀（建议翻到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">流程</span><div class="c"><b>四步走</b>
+      ① 自己翻 → ② 逐句对照（最有价值的一步：看你漏译了什么、时态用错了哪里）
+      → ③ 抄下错处 → ④ 整篇通读。每处对照都要落到「我错在哪」，不要只扫一眼参考译文。</div></div>
+    <table>
+      <tr><th>步骤</th><th>做什么</th></tr>
+      <tr><td>拆句</td><td>中文爱用长句流水句，先按句号切开，一句一句译</td></tr>
+      <tr><td>定主干</td><td>每句先定主谓宾，再补修饰成分</td></tr>
+      <tr><td>四项自查</td><td>时态一致？单复数？冠词？介词搭配？</td></tr>
+      <tr><td>不押宝难词</td><td>没把握的高难表达就换简单的说法，<b>意思对 &gt; 用词花</b></td></tr>
+    </table>
+  </div>
+</details>
 
 
 <script>
@@ -367,5 +353,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   }
 })();
 </script>
+
+
 </body>
 </html>

@@ -104,7 +104,6 @@ tr:last-child td{border-bottom:0}
  line-height:1.5;white-space:nowrap}
 .pill.bad{background:var(--red-soft);color:var(--red-ink)}
 .pill.fix{background:var(--green-soft);color:var(--green-ink)}
-/* 折叠的语篇分析 */
 details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
  background:var(--card)}
 details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
@@ -117,7 +116,6 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
-
 /* ═══ 写作台 ═══ */
 .wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
  border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
@@ -140,6 +138,18 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .card.lock>*:not(.lockbar){display:none}
 .lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
  color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -148,21 +158,10 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 <h1>写作 · 2022年12月 第1套</h1>
 
 <div class="card">
-  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part I</span></div>
-  <div class="big">
-    <div><b>169</b><span>范文词数</span></div>
-    <div><b>3</b><span>段</span></div>
-    <div><b>30</b><span>分钟</span></div>
-  </div>
-  <div class="tip b">四级写作的命中点是<b>切题 + 结构清楚 + 语法不出错</b>。
-  用三段式（引入表态 / 主体展开 / 回扣收尾），比追求华丽句式稳得多。</div>
-</div>
-
-<div class="card">
-  <div class="chead"><h2>题目</h2><span class="cmeta">Directions</span></div>
-  <div class="prompt"><span class="lbl">Directions</span><br>Directions: In this task, you are to write an essay on the role of physical exercise in achieving success at college. You will have 30 minutes for the task. You should write at least 120 words but no more than 180 words.</div>
-  <div class="tip a"><b>先自己在纸上写完，再看下面的范文。</b>写作的提分全靠"写—对照—改"这个循环，
-  光看范文不动笔，等于没练。</div>
+  <div class="chead"><h2>题目</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>范文 169 词</span><span>三段式</span><span>要求 120–180 词</span></div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    Directions: In this task, you are to write an essay on the role of physical exercise in achieving success at college. You will have 30 minutes for the task. You should write at least 120 words but no more than 180 words.</div>
 </div>
 
 
@@ -187,47 +186,42 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
-<div class="card">
-  <h2>审题：这题到底要写什么</h2>
-  <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>论锻炼对大学成功的作用 一句话钉死：本篇要论证体育锻炼在大学取得成功中扮演的角色，即 the role of physical exercise in achieving success at college。重心是『作用』，不是『锻炼方法』也不是『我爱的运动』。</div></div>
-  <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>锻炼是大学成功的基石 中心论点：体育锻炼并非课业的对立面，而是支撑大学成功的基石。它直接回应 the role of physical exercise in achieving success at college 中的 role，亮明『不可或缺』的立场。</div></div>
-  <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>强健体魄保障学习精力 锻炼增强体质、提升专注与续航力，让学生扛得住备考与连堂课，这是大学成功的体力底盘——直接服务于 achieving success at college。 运动缓解压力提升心理韧性 考试、社团、求职的多重压力下，规律运动能释放紧张、稳定情绪，使人保持清醒与抗挫力，是学业可持续的心理保障。 坚持锻炼磨炼自律品格 每日定时锻炼需要自我管理，这份自律与团队运动里的协作精神会迁移到学习中，转化为按计划推进任务的能力，呼应题目所问的 role。</div></div>
-  <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 亮明立场 开门见山指出体育锻炼对大学成功不可或缺，呼应 the role of physical exercise in achieving success at college，为全文定调。 第 2 段 分角度论证 从身体、心理、自律三个角度论证锻炼如何助力 achieving success at college，每个角度配一个具体校园场景。 第 3 段 重申并呼吁 重申锻炼是大学成功的基石，呼吁同学把锻炼纳入日常，收束全文。</div></div>
-</div>
 
-<div class="card">
-  <h2>谋篇：每段写什么（3 段）</h2>
-  <p class="hint">这是可以直接套用的框架 —— 换一道题，功能不变、内容替换。</p>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>锻炼是大学成功的关键 落点：承认许多大学生埋头课业、忽视锻炼，随即转折点明体育锻炼其实是 achieving success at college 的关键支撑，亮出全篇立场</b>引出话题 While many students tend to ___, it is often overlooked that ___.（用一个普遍现象引出，再带出被忽视的真相） 亮明立场 In my view, ___ plays an indispensable role in ___.（直接表态，填入本题的『锻炼』与『大学成功』）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>身体心理自律三角度 落点：角度一，规律锻炼强健体魄、保障应对密集课业的精力；角度二，运动缓解考试与求职压力、提升心理韧性；角度三，坚持锻炼磨炼自律并迁移到学习</b>三点共同支撑 the role of physical exercise，每点各配一个校园场景。 首个分论点 First, regular ___ helps students ___, which ___.（first 引出第一角度，which 从句回扣中心） 递进添角度 Moreover / In addition, ___ also ___.（moreover 自然加上第二、三个角度，避免角度间断裂） 举例落地 For instance, a student who ___ is more likely to ___.（用一个具体场景把抽象观点坐实）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申基石并呼吁行动 落点：重申体育锻炼是 achieving success at college 不可或缺的基石，呼吁同学主动把锻炼纳入日常作息，而非等到身心透支才补救</b>重申中心 In short, ___ is by no means ___; rather, it is ___.（用 by no means 否定误解、rather 给出正解，重申立场） 行动呼吁 Therefore, every student is advised to ___.（以建议句收尾，发出号召）</div></div>
-</div>
 
-<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 参考范文（169 词）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 参考范文 · 逐段解析 · 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>参考范文（169 词）</h2>
-  <details><summary>展开范文（自己写完之后再看）</summary>
+  <details open><summary>范文 + 参考译文</summary>
     <div class="dbody">
       <div class="essay"><p class='en'>While many college students bury themselves in books and treat workouts as a waste of time, it is often overlooked that physical exercise plays an indispensable role in achieving success at college. In my view, staying active is not the enemy of study but its solid foundation.</p><p class='en'>First, regular exercise strengthens the body and guarantees the energy that intense coursework demands. A student who jogs every morning is more likely to stay focused through back-to-back lectures than one who never moves. Moreover, working out is a powerful way to relieve stress. When exams and job hunting pile up, a quick run on the track can wash away tension and rebuild mental resilience. In addition, sticking to a fixed exercise routine cultivates self-discipline, and this habit naturally transfers to managing study plans on time.</p><p class='en'>In short, physical exercise is by no means a distraction; rather, it is the cornerstone of college success. Therefore, every student is advised to fit regular workouts into daily life before body and mind break down.</p></div>
       <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>当许多大学生埋头书本、把锻炼当作浪费时间时，人们常常忽视：体育锻炼在大学取得成功中扮演着不可或缺的角色。在我看来，保持运动并非学习的敌人，而是它坚实的根基。</div>
     </div></details>
-  <div class="tip a">看范文时不要「读」，要<b>拆</b>：每段第一句做什么？观点句和理由句怎么连？
-  结尾怎么回扣题目？</div>
+  <details><summary>逐段解析（3 段）</summary>
+    <div class="dbody"><div class="row"><span class="tag">第1段</span><div class="c"><b>现象引入加亮立场 </b>本段先用 While many college students bury themselves in books 引出忽视锻炼的普遍现象，再用 physical exercise plays an indispensable role in achieving success at college 斩钉截铁亮出立场，落实了第一段『亮明立场』的功能，且把题眼 role 直接写进首段。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>三角度各带场景 </b>本段用 First / Moreover / In addition 串起身体、心理、自律三个角度，每个角度都配了校园场景（晨跑保持专注、操场短跑驱散紧张、固定作息培养自律），落实了『主题句加理由加例子加小结』的论证方法，避免了只喊口号。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>否定误解再呼吁 </b>本段用 by no means a distraction; rather, it is the cornerstone 否定误解、重申立场，再用 every student is advised to fit regular workouts into daily life 发出行动呼吁，落实了结尾段『重申加呼吁』的功能。</div></div></div></details>
+  <details><summary>自检避坑</summary>
+    <div class="dbody">
+      <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">写成锻炼方法</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">『To stay healthy, you should run three times a week and eat more vegetables.』——这是在教人怎么锻炼，完全没碰 the role of physical exercise in achieving success at college 里的 role。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">换成『Running regularly keeps students energetic enough to handle heavy coursework.』，把动作改成『对大学成功的作用』。</span></div></div><div class="pit-item"><div class="pit-t">只喊口号无例证</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">『Exercise is very important. It is good for us. We should all do exercise because it helps a lot.』——三句都在重复『重要』，没有任何论证，且在注水凑字。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">换成带场景的论证，如『A student who jogs every morning stays focused through back-to-back lectures.』</span></div></div><div class="pit-item"><div class="pit-t">中式英语逐字直译</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">『Open exercise can let your body become more strong and study very high.』——『open exercise』『study very high』都是逐字硬翻，不成英文。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">用地道搭配重写，如『Regular exercise builds a stronger body and boosts academic performance.』</span></div></div></div>
+      <table style="margin-top:12px">
+        <tr><th>自查项</th><th>怎么查</th></tr>
+        <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+        <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+        <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+        <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+      </table>
+    </div></details>
 </div>
 
-<div class="card lock"><div class="lockbar"><b>🔒 逐段解析（3 段）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>逐段解析（3 段）</h2>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>现象引入加亮立场 </b>本段先用 While many college students bury themselves in books 引出忽视锻炼的普遍现象，再用 physical exercise plays an indispensable role in achieving success at college 斩钉截铁亮出立场，落实了第一段『亮明立场』的功能，且把题眼 role 直接写进首段。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>三角度各带场景 </b>本段用 First / Moreover / In addition 串起身体、心理、自律三个角度，每个角度都配了校园场景（晨跑保持专注、操场短跑驱散紧张、固定作息培养自律），落实了『主题句加理由加例子加小结』的论证方法，避免了只喊口号。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>否定误解再呼吁 </b>本段用 by no means a distraction; rather, it is the cornerstone 否定误解、重申立场，再用 every student is advised to fit regular workouts into daily life 发出行动呼吁，落实了结尾段『重申加呼吁』的功能。</div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>自检避坑</h2>
-  <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">写成锻炼方法</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">『To stay healthy, you should run three times a week and eat more vegetables.』——这是在教人怎么锻炼，完全没碰 the role of physical exercise in achieving success at college 里的 role。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">换成『Running regularly keeps students energetic enough to handle heavy coursework.』，把动作改成『对大学成功的作用』。</span></div></div><div class="pit-item"><div class="pit-t">只喊口号无例证</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">『Exercise is very important. It is good for us. We should all do exercise because it helps a lot.』——三句都在重复『重要』，没有任何论证，且在注水凑字。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">换成带场景的论证，如『A student who jogs every morning stays focused through back-to-back lectures.』</span></div></div><div class="pit-item"><div class="pit-t">中式英语逐字直译</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">『Open exercise can let your body become more strong and study very high.』——『open exercise』『study very high』都是逐字硬翻，不成英文。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">用地道搭配重写，如『Regular exercise builds a stronger body and boosts academic performance.』</span></div></div></div>
-  <table style="margin-top:14px">
-    <tr><th>自查项</th><th>怎么查</th></tr>
-    <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
-    <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
-    <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
-    <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
-  </table>
-</div>
+<details class="card">
+  <summary>📖 怎么写 · 审题与谋篇（建议写到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>论锻炼对大学成功的作用 一句话钉死：本篇要论证体育锻炼在大学取得成功中扮演的角色，即 the role of physical exercise in achieving success at college。重心是『作用』，不是『锻炼方法』也不是『我爱的运动』。</div></div>
+    <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>锻炼是大学成功的基石 中心论点：体育锻炼并非课业的对立面，而是支撑大学成功的基石。它直接回应 the role of physical exercise in achieving success at college 中的 role，亮明『不可或缺』的立场。</div></div>
+    <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>强健体魄保障学习精力 锻炼增强体质、提升专注与续航力，让学生扛得住备考与连堂课，这是大学成功的体力底盘——直接服务于 achieving success at college。 运动缓解压力提升心理韧性 考试、社团、求职的多重压力下，规律运动能释放紧张、稳定情绪，使人保持清醒与抗挫力，是学业可持续的心理保障。 坚持锻炼磨炼自律品格 每日定时锻炼需要自我管理，这份自律与团队运动里的协作精神会迁移到学习中，转化为按计划推进任务的能力，呼应题目所问的 role。</div></div>
+    <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 亮明立场 开门见山指出体育锻炼对大学成功不可或缺，呼应 the role of physical exercise in achieving success at college，为全文定调。 第 2 段 分角度论证 从身体、心理、自律三个角度论证锻炼如何助力 achieving success at college，每个角度配一个具体校园场景。 第 3 段 重申并呼吁 重申锻炼是大学成功的基石，呼吁同学把锻炼纳入日常，收束全文。</div></div>
+    <p class="hint" style="margin-top:12px">谋篇：每段写什么 —— 这是可以直接套用的框架，换一道题功能不变、内容替换。</p>
+    <div class="row"><span class="tag">第1段</span><div class="c"><b>锻炼是大学成功的关键 落点：承认许多大学生埋头课业、忽视锻炼，随即转折点明体育锻炼其实是 achieving success at college 的关键支撑，亮出全篇立场</b>引出话题 While many students tend to ___, it is often overlooked that ___.（用一个普遍现象引出，再带出被忽视的真相） 亮明立场 In my view, ___ plays an indispensable role in ___.（直接表态，填入本题的『锻炼』与『大学成功』）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>身体心理自律三角度 落点：角度一，规律锻炼强健体魄、保障应对密集课业的精力；角度二，运动缓解考试与求职压力、提升心理韧性；角度三，坚持锻炼磨炼自律并迁移到学习</b>三点共同支撑 the role of physical exercise，每点各配一个校园场景。 首个分论点 First, regular ___ helps students ___, which ___.（first 引出第一角度，which 从句回扣中心） 递进添角度 Moreover / In addition, ___ also ___.（moreover 自然加上第二、三个角度，避免角度间断裂） 举例落地 For instance, a student who ___ is more likely to ___.（用一个具体场景把抽象观点坐实）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申基石并呼吁行动 落点：重申体育锻炼是 achieving success at college 不可或缺的基石，呼吁同学主动把锻炼纳入日常作息，而非等到身心透支才补救</b>重申中心 In short, ___ is by no means ___; rather, it is ___.（用 by no means 否定误解、rather 给出正解，重申立场） 行动呼吁 Therefore, every student is advised to ___.（以建议句收尾，发出号召）</div></div>
+  </div>
+</details>
 
 
 <script>
@@ -355,5 +349,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   }
 })();
 </script>
+
+
 </body>
 </html>

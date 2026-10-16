@@ -104,7 +104,6 @@ tr:last-child td{border-bottom:0}
  line-height:1.5;white-space:nowrap}
 .pill.bad{background:var(--red-soft);color:var(--red-ink)}
 .pill.fix{background:var(--green-soft);color:var(--green-ink)}
-/* 折叠的语篇分析 */
 details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
  background:var(--card)}
 details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
@@ -117,7 +116,6 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
  border-radius:18px;padding:5px 13px;color:var(--sub)}
 .flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
-
 /* ═══ 写作台 ═══ */
 .wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
  border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
@@ -140,6 +138,18 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 .card.lock>*:not(.lockbar){display:none}
 .lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
  color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -148,21 +158,10 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 <h1>写作 · 2023年6月 第1套</h1>
 
 <div class="card">
-  <div class="chead"><h2>本篇概况</h2><span class="cmeta">Part I</span></div>
-  <div class="big">
-    <div><b>172</b><span>范文词数</span></div>
-    <div><b>3</b><span>段</span></div>
-    <div><b>30</b><span>分钟</span></div>
-  </div>
-  <div class="tip b">四级写作的命中点是<b>切题 + 结构清楚 + 语法不出错</b>。
-  用三段式（引入表态 / 主体展开 / 回扣收尾），比追求华丽句式稳得多。</div>
-</div>
-
-<div class="card">
-  <div class="chead"><h2>题目</h2><span class="cmeta">Directions</span></div>
-  <div class="prompt"><span class="lbl">Directions</span><br>Directions: For this part, you are allowed 30 minutes to write an essay that begins with the sentence &quot;Today there is a growing awareness that mental well-being needs to be given as much attention as physical health.&quot; You can make comments, cite examples or use your personal experiences to develop your essay. You should write at least 120 words but no more than 180 words.</div>
-  <div class="tip a"><b>先自己在纸上写完，再看下面的范文。</b>写作的提分全靠"写—对照—改"这个循环，
-  光看范文不动笔，等于没练。</div>
+  <div class="chead"><h2>题目</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>范文 172 词</span><span>三段式</span><span>要求 120–180 词</span></div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    Directions: For this part, you are allowed 30 minutes to write an essay that begins with the sentence &quot;Today there is a growing awareness that mental well-being needs to be given as much attention as physical health.&quot; You can make comments, cite examples or use your personal experiences to develop your essay. You should write at least 120 words but no more than 180 words.</div>
 </div>
 
 
@@ -187,47 +186,42 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
-<div class="card">
-  <h2>审题：这题到底要写什么</h2>
-  <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>顺首句论证心理健康同等重要 要写一篇议论文，开头照抄 Today there is a growing awareness that mental well-being needs to be given as much attention as physical health.，然后用 make comments, cite examples or use your personal experiences 的方式展开论证：为什么心理健康该和身体健康一样被重视、该怎么重视。注意首句已经把中心论点给定了，你的活儿是论证它，不是再去讨论别的。</div></div>
-  <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>心理与身体健康应同等被重视 中心论点直接沿用首句已确立的观点：mental well-being needs to be given as much attention as physical health。正文全程为这一句服务，不推翻、不另立新主题。</div></div>
-  <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>忽视心理健康的代价 第一个要点回答「为什么重要」：长期忽视心理健康会带来真实代价，可落到学业与工作压力上——焦虑、失眠、注意力下降，最终连身体也跟着垮。这一点用 make comments 的评论方式展开。 用个人经历佐证 第二个要点用 use your personal experiences 的方式落地：举一个考试焦虑（exam anxiety）的亲历，说明主动疏导情绪后状态如何改善，让论证有具体画面而非空喊口号。</div></div>
-  <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 照抄首句＋点题 原样抄写 Today there is a growing awareness that mental well-being needs to be given as much attention as physical health.，再补一句表明本文要论证它、点出心理健康为何不可忽视。 第 2 段 主体论证 主体段：先评论忽视心理健康的代价（压力、焦虑会反噬身体与表现），再用一段个人考试焦虑经历佐证，理由＋例子双管齐下。 第 3 段 结论呼吁 结尾段：重申心理与身体健康应同等对待，呼应首句，并以一句简短倡议收束全文。</div></div>
-</div>
 
-<div class="card">
-  <h2>谋篇：每段写什么（3 段）</h2>
-  <p class="hint">这是可以直接套用的框架 —— 换一道题，功能不变、内容替换。</p>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>首句＋为何不容忽视 照抄 Today there is a growing awareness that mental well-being needs to be given as much attention as physical health.，再补一句：在快节奏的现代生活里，这一认识尤其重要，因为被忽视的心理问题往往悄悄拖垮一个人</b>承接首句点题 This view deserves our serious attention, especially when ____ .（填「现代生活节奏快／压力普遍」等本题背景） 亮出本文走向 In my view, ____ for two main reasons.（填本文要论证的核心判断）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>代价＋考试焦虑亲历 先评论：长期忽视心理健康会带来焦虑、失眠，反过来损害身体与表现，正应了 as much attention as physical health；再举个人经历：一次大考前我因焦虑彻夜难眠、成绩失常，后来通过倾诉与规律作息调整心态才恢复，亲身印证心理状态值得同等照料</b>亮明分论点 To begin with, ignoring ____ can cost us dearly.（填本段要谈的对象，如 our mental state） 引出个人例子 Take my own experience as an example: ____ .（填一句你的亲历概述） 小结回扣 This taught me that ____ .（填本段从经历得出、回扣中心的结论）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申同等重视＋呼吁 重申应像照顾身体一样照顾内心，呼应 as much attention as physical health；并呼吁个人主动关注情绪、社会给予更多支持，让心理健康真正被同等对待</b>重申立场 In conclusion, we should value ____ as much as ____ .（填 our minds / our bodies 之类的本题对象） 收尾呼吁 Only in this way can we ____ .（填本题期望达成的结果，如 live a truly healthy life）</div></div>
-</div>
 
-<div class="card lock" id="refcard"><div class="lockbar"><b>🔒 参考范文（172 词）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 参考范文 · 逐段解析 · 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
   <h2>参考范文（172 词）</h2>
-  <details><summary>展开范文（自己写完之后再看）</summary>
+  <details open><summary>范文 + 参考译文</summary>
     <div class="dbody">
       <div class="essay"><p class='en'>Today there is a growing awareness that mental well-being needs to be given as much attention as physical health. This view deserves our serious attention, especially when modern life keeps us under constant pressure and quiet mental troubles often go unnoticed.</p><p class='en'>To begin with, ignoring our inner state can cost us dearly. Long-term stress and anxiety lead to sleeplessness and poor concentration, which in turn damage both our bodies and our performance. Take my own experience as an example: before an important exam, I was so anxious that I could not sleep for nights and ended up doing far worse than usual. Only after I talked to my friends and kept a regular routine did my mind settle down and my results recover. This taught me that the mind clearly deserves the same care we give the body.</p><p class='en'>In conclusion, we should value our minds as much as our bodies. Only when individuals pay attention to their feelings and society offers more support can we truly live a healthy and balanced life.</p></div>
       <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>如今，人们越来越意识到，心理健康需要得到与身体健康同等的重视。这一观点值得我们认真对待，尤其是在现代生活让我们持续承受压力、悄无声息的心理困扰常被忽视的当下。</div>
     </div></details>
-  <div class="tip a">看范文时不要「读」，要<b>拆</b>：每段第一句做什么？观点句和理由句怎么连？
-  结尾怎么回扣题目？</div>
+  <details><summary>逐段解析（3 段）</summary>
+    <div class="dbody"><div class="row"><span class="tag">第1段</span><div class="c"><b>抄句后接钩子 </b>首句逐字照抄给定句 Today there is a growing awareness that mental well-being needs to be given as much attention as physical health.，紧接一句 This view deserves our serious attention 点题，落实了「抄句后立刻接钩子」，把给定句接成自己的论证起点。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>理由加例子 </b>本段照「主题句→理由→例子→小结」展开：To begin with, ignoring our inner state can cost us dearly 是主题句，随后给失眠、注意力下降的理由，再用 Take my own experience as an example 引出考试焦虑亲历，最后 This taught me that... 回扣中心，兑现了「理由加例子撑满一段」。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申加呼吁 </b>结尾仅两句：In conclusion, we should value our minds as much as our bodies 重申立场、呼应 as much attention as physical health；Only when... can we 句呼吁个人与社会共同行动，收得简短利落，未再展开新例。</div></div></div></details>
+  <details><summary>自检避坑</summary>
+    <div class="dbody">
+      <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">改写首句</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Nowadays many people think the mind is as important as the body.（这是把首句改写复述，违反照抄要求）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">原样照抄 Today there is a growing awareness that mental well-being needs to be given as much attention as physical health.，再接论证。</span></div></div><div class="pit-item"><div class="pit-t">通篇空话</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Mental health is very important. We must pay attention to it. It is good for everyone.（三句都在重复「重要」，没有任何例子）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">换成考试焦虑导致失眠、成绩下滑的亲历，用 use your personal experiences 把观点撑起来。</span></div></div><div class="pit-item"><div class="pit-t">重复凑字</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Health is important. Mental health is important. Physical health is also important. Both kinds of health are very important.（四句同义反复纯凑字）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">合并成一句立论，把省下的字数用于展开考试焦虑那个例子。</span></div></div></div>
+      <table style="margin-top:12px">
+        <tr><th>自查项</th><th>怎么查</th></tr>
+        <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+        <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+        <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+        <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+      </table>
+    </div></details>
 </div>
 
-<div class="card lock"><div class="lockbar"><b>🔒 逐段解析（3 段）</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>逐段解析（3 段）</h2>
-  <div class="row"><span class="tag">第1段</span><div class="c"><b>抄句后接钩子 </b>首句逐字照抄给定句 Today there is a growing awareness that mental well-being needs to be given as much attention as physical health.，紧接一句 This view deserves our serious attention 点题，落实了「抄句后立刻接钩子」，把给定句接成自己的论证起点。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>理由加例子 </b>本段照「主题句→理由→例子→小结」展开：To begin with, ignoring our inner state can cost us dearly 是主题句，随后给失眠、注意力下降的理由，再用 Take my own experience as an example 引出考试焦虑亲历，最后 This taught me that... 回扣中心，兑现了「理由加例子撑满一段」。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申加呼吁 </b>结尾仅两句：In conclusion, we should value our minds as much as our bodies 重申立场、呼应 as much attention as physical health；Only when... can we 句呼吁个人与社会共同行动，收得简短利落，未再展开新例。</div></div>
-</div>
-
-<div class="card lock"><div class="lockbar"><b>🔒 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
-  <h2>自检避坑</h2>
-  <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">改写首句</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Nowadays many people think the mind is as important as the body.（这是把首句改写复述，违反照抄要求）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">原样照抄 Today there is a growing awareness that mental well-being needs to be given as much attention as physical health.，再接论证。</span></div></div><div class="pit-item"><div class="pit-t">通篇空话</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Mental health is very important. We must pay attention to it. It is good for everyone.（三句都在重复「重要」，没有任何例子）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">换成考试焦虑导致失眠、成绩下滑的亲历，用 use your personal experiences 把观点撑起来。</span></div></div><div class="pit-item"><div class="pit-t">重复凑字</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Health is important. Mental health is important. Physical health is also important. Both kinds of health are very important.（四句同义反复纯凑字）。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">合并成一句立论，把省下的字数用于展开考试焦虑那个例子。</span></div></div></div>
-  <table style="margin-top:14px">
-    <tr><th>自查项</th><th>怎么查</th></tr>
-    <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
-    <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
-    <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
-    <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
-  </table>
-</div>
+<details class="card">
+  <summary>📖 怎么写 · 审题与谋篇（建议写到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>顺首句论证心理健康同等重要 要写一篇议论文，开头照抄 Today there is a growing awareness that mental well-being needs to be given as much attention as physical health.，然后用 make comments, cite examples or use your personal experiences 的方式展开论证：为什么心理健康该和身体健康一样被重视、该怎么重视。注意首句已经把中心论点给定了，你的活儿是论证它，不是再去讨论别的。</div></div>
+    <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>心理与身体健康应同等被重视 中心论点直接沿用首句已确立的观点：mental well-being needs to be given as much attention as physical health。正文全程为这一句服务，不推翻、不另立新主题。</div></div>
+    <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>忽视心理健康的代价 第一个要点回答「为什么重要」：长期忽视心理健康会带来真实代价，可落到学业与工作压力上——焦虑、失眠、注意力下降，最终连身体也跟着垮。这一点用 make comments 的评论方式展开。 用个人经历佐证 第二个要点用 use your personal experiences 的方式落地：举一个考试焦虑（exam anxiety）的亲历，说明主动疏导情绪后状态如何改善，让论证有具体画面而非空喊口号。</div></div>
+    <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 照抄首句＋点题 原样抄写 Today there is a growing awareness that mental well-being needs to be given as much attention as physical health.，再补一句表明本文要论证它、点出心理健康为何不可忽视。 第 2 段 主体论证 主体段：先评论忽视心理健康的代价（压力、焦虑会反噬身体与表现），再用一段个人考试焦虑经历佐证，理由＋例子双管齐下。 第 3 段 结论呼吁 结尾段：重申心理与身体健康应同等对待，呼应首句，并以一句简短倡议收束全文。</div></div>
+    <p class="hint" style="margin-top:12px">谋篇：每段写什么 —— 这是可以直接套用的框架，换一道题功能不变、内容替换。</p>
+    <div class="row"><span class="tag">第1段</span><div class="c"><b>首句＋为何不容忽视 照抄 Today there is a growing awareness that mental well-being needs to be given as much attention as physical health.，再补一句：在快节奏的现代生活里，这一认识尤其重要，因为被忽视的心理问题往往悄悄拖垮一个人</b>承接首句点题 This view deserves our serious attention, especially when ____ .（填「现代生活节奏快／压力普遍」等本题背景） 亮出本文走向 In my view, ____ for two main reasons.（填本文要论证的核心判断）</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>代价＋考试焦虑亲历 先评论：长期忽视心理健康会带来焦虑、失眠，反过来损害身体与表现，正应了 as much attention as physical health；再举个人经历：一次大考前我因焦虑彻夜难眠、成绩失常，后来通过倾诉与规律作息调整心态才恢复，亲身印证心理状态值得同等照料</b>亮明分论点 To begin with, ignoring ____ can cost us dearly.（填本段要谈的对象，如 our mental state） 引出个人例子 Take my own experience as an example: ____ .（填一句你的亲历概述） 小结回扣 This taught me that ____ .（填本段从经历得出、回扣中心的结论）</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申同等重视＋呼吁 重申应像照顾身体一样照顾内心，呼应 as much attention as physical health；并呼吁个人主动关注情绪、社会给予更多支持，让心理健康真正被同等对待</b>重申立场 In conclusion, we should value ____ as much as ____ .（填 our minds / our bodies 之类的本题对象） 收尾呼吁 Only in this way can we ____ .（填本题期望达成的结果，如 live a truly healthy life）</div></div>
+  </div>
+</details>
 
 
 <script>
@@ -355,5 +349,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
   }
 })();
 </script>
+
+
 </body>
 </html>

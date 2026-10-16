@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>写作 · 2021年6月 第1套</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--soft:#fafbfc;--grey:#f2f3f5;--line:#e5e8ec;--line2:#eff1f4;
+ --track:#e8ebef;--txt:#1b1e23;--txt2:#2b303a;--txt3:#3d434e;--sub:#6b7280;--sub2:#a8b0bb;
+ --blue:#2563eb;--blue-soft:#eef3ff;--green:#0d8a52;--green-soft:#e8f7ef;
+ --red:#c0392b;--red-soft:#fdecea;--amber:#b45309;--amber-soft:#fef6e7;
+ --amber-line:#f0dfb8;--green-line:#bfe3cf;--purple:#7c5cff;--purple-soft:#f2eeff;
+ --blue-ink:#123a75;--green-ink:#0d5232;--amber-ink:#7a5b00;--red-ink:#8a2318;--purple-ink:#3f2a7a;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05)}
+@media (prefers-color-scheme: dark){:root{--bg:#101216;--card:#191c21;--soft:#20242a;
+ --grey:#22262c;--line:#2c313a;--line2:#242930;--track:#2a2f38;--txt:#e9ebee;--txt2:#d7dade;
+ --txt3:#c3c8cf;--sub:#98a0aa;--sub2:#6b7280;--blue:#6b96fb;--blue-soft:#1a2742;
+ --green:#41d18f;--green-soft:#14301f;--red:#ef7261;--red-soft:#371d19;--amber:#e0a53f;
+ --amber-soft:#312713;--amber-line:#4a3a1c;--green-line:#1f4530;--purple:#a98cff;
+ --purple-soft:#241c3d;--blue-ink:#a9c6ff;--green-ink:#7fe0b0;--amber-ink:#f0c469;
+ --red-ink:#ffa79a;--purple-ink:#c3a9ff;--shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28);
+ color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:14px 13px 48px;max-width:760px;margin:0 auto}
+a.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+h1{font-size:20px;margin:2px 0 14px;font-weight:800;padding-left:12px;
+ border-left:4px solid var(--blue);line-height:1.25;letter-spacing:.2px}
+h2{font-size:16px;margin:0 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;
+ margin-bottom:14px;box-shadow:var(--shadow)}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;
+ margin-bottom:12px;flex-wrap:wrap}
+.cmeta{font-size:12.5px;color:var(--sub)}
+.hint{font-size:13px;color:var(--sub);line-height:1.75;margin:0 0 12px}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.72;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink);border:1px solid var(--amber-line)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.big{display:flex;gap:9px;margin-bottom:12px}
+.big div{flex:1;background:var(--blue-soft);border-radius:10px;padding:10px 8px;text-align:center}
+.big b{display:block;font-size:18px;font-weight:800;color:var(--blue)}
+.big span{font-size:11.5px;color:var(--sub)}
+.prompt{font-size:14.6px;line-height:1.9;background:var(--soft);border-radius:11px;
+ padding:14px;border:1px solid var(--line);text-align:justify}
+.prompt .lbl{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue);
+ color:#fff;border-radius:6px;padding:2px 9px;margin-bottom:9px}
+.zh{font-size:15px;line-height:2;text-align:justify;letter-spacing:.2px}
+.en{font-size:14.6px;line-height:1.95;text-align:justify;letter-spacing:.1px}
+.essay p{margin:0 0 12px}
+.essay p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;
+ background:var(--card)}
+details>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:14.4px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details[open]>summary::before{content:"▾"}
+details .dbody{padding:14px 15px;border-top:1px solid var(--line)}
+.sent{border-bottom:1px solid var(--line2);padding:13px 0}
+.sent:last-child{border-bottom:0}
+.snum{display:inline-block;font-size:11.5px;font-weight:700;background:var(--blue-soft);
+ color:var(--blue);border-radius:6px;padding:2px 9px;margin-bottom:7px}
+.szh{font-size:15px;line-height:1.9;margin:0 0 9px}
+.sen{font-size:14.6px;line-height:1.85;margin:0;padding:10px 12px;background:var(--green-soft);
+ border-radius:9px;border-left:3px solid var(--green);color:var(--green-ink)}
+.strat{display:inline-block;font-size:12px;color:var(--purple);
+ background:var(--purple-soft);border-radius:6px;padding:2px 9px;margin:9px 0 6px}
+.chunk{display:flex;gap:9px;margin:8px 0;font-size:13.4px;line-height:1.75;align-items:flex-start}
+.chunk .k{flex:0 0 auto;min-width:60px;text-align:center;font-weight:700;color:var(--amber);
+ background:var(--amber-soft);border-radius:6px;padding:3px 9px;line-height:1.5;
+ font-size:12px;white-space:nowrap}
+.chunk .v{flex:1;min-width:0;color:var(--txt2)}
+.row{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line2);align-items:flex-start}
+.row:last-child{border-bottom:0}
+.row .tag{flex:0 0 auto;min-width:48px;font-size:11.5px;font-weight:700;color:var(--blue);
+ background:var(--blue-soft);border-radius:6px;padding:3px 9px;text-align:center;white-space:nowrap}
+.row .c{flex:1;min-width:0;font-size:13.8px;line-height:1.78}
+.row .c b{display:block;font-size:14.2px;margin-bottom:4px}
+.row .c .sub2{font-weight:400;color:var(--sub);font-size:12.5px;margin-left:4px}
+table{width:100%;border-collapse:collapse;font-size:13.4px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--sub);background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+.vocab{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid var(--line2);
+ font-size:13.4px;align-items:flex-start}
+.vocab:last-child{border-bottom:0}
+.vocab .w{flex:0 0 auto;min-width:96px;font-weight:700;color:var(--green)}
+.vocab .d{flex:1;min-width:0;color:var(--txt2);line-height:1.72}
+.pit{border-radius:12px;background:var(--red-soft);padding:13px 14px;font-size:13.4px;
+ line-height:1.75;color:var(--red-ink);margin-top:10px}
+.pit-h{font-weight:700;font-size:13.6px;margin-bottom:10px}
+.pit-item{background:var(--card);border:1px solid var(--line);border-radius:10px;
+ padding:11px 12px;margin-top:9px}
+.pit-t{font-weight:700;font-size:13.4px;color:var(--red-ink);margin-bottom:6px;
+ display:flex;align-items:center;gap:7px;line-height:1.5}
+.pit-t::before{content:"";width:3px;height:13px;border-radius:2px;background:var(--red);
+ flex:0 0 auto}
+.pit-line{display:flex;gap:8px;margin-top:6px;font-size:13px;line-height:1.72;align-items:flex-start}
+.pit-line .tx{flex:1;min-width:0;color:var(--txt2)}
+.pill{flex:0 0 auto;font-size:11px;font-weight:700;border-radius:5px;padding:2px 7px;
+ line-height:1.5;white-space:nowrap}
+.pill.bad{background:var(--red-soft);color:var(--red-ink)}
+.pill.fix{background:var(--green-soft);color:var(--green-ink)}
+details.dig{border:1px solid var(--line);border-radius:12px;margin-top:12px;overflow:hidden;
+ background:var(--card)}
+details.dig>summary{padding:12px 15px;background:var(--soft);cursor:pointer;font-size:13.8px;
+ font-weight:700;list-style:none;display:flex;align-items:center;gap:8px;color:var(--txt)}
+details.dig>summary::-webkit-details-marker{display:none}
+details.dig>summary::before{content:"▸";color:var(--blue);font-size:13px}
+details.dig[open]>summary::before{content:"▾"}
+details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12.5px;background:var(--soft);border:1px solid var(--line);
+ border-radius:18px;padding:5px 13px;color:var(--sub)}
+.flow span.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:700}
+/* ═══ 写作台 ═══ */
+.wbtn{font:inherit;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);cursor:pointer;transition:.15s}
+.wbtn:hover{border-color:var(--blue);color:var(--blue)}
+.wbtn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.wbtn.primary:hover{filter:brightness(1.08);color:#fff}
+.wbar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.wbar .tmv{font-weight:800;font-size:17px;color:var(--blue);font-variant-numeric:tabular-nums;
+ letter-spacing:.5px}
+.wbar .cnt{margin-left:auto;font-size:13px;font-weight:700;color:var(--sub)}
+#wpText{width:100%;min-height:230px;resize:vertical;padding:14px 16px;border-radius:12px;
+ border:1px solid var(--line);background:var(--soft);color:var(--txt);font:inherit;
+ font-size:14.5px;line-height:1.95;box-sizing:border-box}
+#wpText:focus{outline:none;border-color:var(--blue)}
+.wrow{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.wst{font-size:13px;font-weight:700;color:var(--sub);line-height:1.6}
+.wdone{background:var(--green-soft,#eaf7ef);border:1px solid var(--green);
+ color:var(--green);padding:11px 14px;border-radius:11px;font-size:13.5px;font-weight:700;
+ margin-bottom:12px;line-height:1.65}
+.card.lock>*:not(.lockbar){display:none}
+.lockbar{padding:14px 16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line2);
+ color:var(--sub);font-size:13.5px;font-weight:600;line-height:1.75}
+
+/* ═══ 概况信息条 + 折叠卡（与阅读详情页统一）═══ */
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 3px}
+.meta span{font-size:12.5px;font-weight:600;color:var(--sub);background:var(--soft);
+ border-radius:8px;padding:4px 11px;line-height:1.5}
+details.card{padding:0;overflow:hidden}
+details.card>summary{padding:16px 18px;cursor:pointer;font-size:15.5px;font-weight:700;
+ color:var(--blue);list-style:none;user-select:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:hover{opacity:.82}
+details.card .fd{padding:0 18px 18px}
+details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14px}
+</style>
+</head>
+<body>
+
+<a class="back" href="writing.html">← 返回写作与翻译</a>
+<h1>写作 · 2021年6月 第1套</h1>
+
+<div class="card">
+  <div class="chead"><h2>题目</h2><span class="cmeta">建议 30 分钟</span></div>
+  <div class="meta"><span>范文 139 词</span><span>三段式</span><span>要求 120–180 词</span></div>
+  <div class="prompt" style="margin-top:12px"><span class="lbl">Directions</span><br>
+    Directions: For this part , you are allowed 30 minutes to write an essay titled“Are people becoming addicted to technology?”.The statement given below is for your reference. You should write at least 120 words but no more than 180 words. Numerous studies claim that addiction to technology is real and it has the same effect on the brain as drug addiction.</div>
+</div>
+
+
+<div class="card" id="wpad">
+  <h2>写作台</h2>
+  <div id="wpIdle">
+    <p class="hint">建议 30 分钟内写满 120–180 词，写完后点提交 —— 范文与逐段解析才会解锁。</p>
+    <div class="wrow"><button class="wbtn primary" id="wpStart">✍️ 开始写作</button></div>
+  </div>
+  <div id="wpEdit" style="display:none">
+    <div class="wbar">
+      <span class="tmv" id="wpTimer">30:00</span>
+      <button class="wbtn" id="wpPause" style="padding:5px 12px;font-size:12.5px">⏸ 暂停</button>
+      <span class="cnt" id="wpCount">0 词</span>
+    </div>
+    <textarea id="wpText" placeholder="在这里写你的作文…（题目在上方，写完点下面的提交）"></textarea>
+    <div class="wrow">
+      <button class="wbtn primary" id="wpSubmit">📷 提交并解锁参考</button>
+      <button class="wbtn" id="wpSync" style="display:none">☁ 把文字发给我批改</button>
+      <button class="wbtn" id="wpReset" style="display:none">🔄 重新练习</button>
+    </div>
+    <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
+  </div>
+</div>
+
+
+<div class="card lock" id="refcard">
+  <div class="lockbar"><b>🔒 参考范文 · 逐段解析 · 自检避坑</b><br>完成写作并提交后解锁 —— 先自己写完，再看才有效果。</div>
+  <h2>参考范文（139 词）</h2>
+  <details open><summary>范文 + 参考译文</summary>
+    <div class="dbody">
+      <div class="essay"><p class='en'>Are people becoming addicted to technology? My answer is a definite yes. As numerous studies claim that addiction to technology is real, this problem deserves our serious attention.</p><p class='en'>Signs of such addiction are everywhere in daily life. Many people check their smartphones the moment they wake up and keep scrolling short videos until midnight. While technology is designed to make life easier, an increasing number of us feel anxious once we are separated from our screens. As a result, real conversations, sleep and study are all disturbed, which shows that our reliance has quietly turned into dependence.</p><p class='en'>In my view, therefore, people are indeed getting hooked on technology. However, this does not mean we should abandon it. What matters is to use technology in a rational way, setting limits on screen time and leaving room for the real world.</p></div>
+      <div class="tip g" style="margin-top:14px"><b>参考译文</b><br>人们正在对技术上瘾吗？我的回答是肯定的。既然大量研究都声称技术成瘾真实存在，这个问题就值得我们认真对待。</div>
+    </div></details>
+  <details><summary>逐段解析（3 段）</summary>
+    <div class="dbody"><div class="row"><span class="tag">第1段</span><div class="c"><b>开门见山表态到位 </b>首句直接回应标题问句、用 My answer is a definite yes 亮立场，落实了‘开门见山表态’；再借 As numerous studies claim ... 化用参考素材引出话题，避免了整段照抄。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>现象分析两不缺 </b>先用 check their smartphones the moment they wake up 等具体画面摆现象，再用 While ... 让步转折、As a result ... which shows that ... 因果回扣，完整走了‘现象—分析—回扣’三步，没停在罗列现象。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申加建议收束 </b>用 people are indeed getting hooked 换词重申立场，再以 However ... what matters is to ... 退一步给出设屏幕时间上限的建议，落实了‘重申＋落地建议’，首尾呼应。</div></div></div></details>
+  <details><summary>自检避坑</summary>
+    <div class="dbody">
+      <div class="pit"><div class="pit-h">典型低分写法 · 反面示例与改法</div><div class="pit-item"><div class="pit-t">整段照抄参考句</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">全篇反复写 Studies claim that addiction to technology is real and it has the same effect on the brain as drug addiction，几乎照抄题干。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">把它压成一句引子，如 As some studies warn, technology can be as addictive as drugs，其余用自己的现象和分析展开。</span></div></div><div class="pit-item"><div class="pit-t">只谈利弊不表态</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Technology brings convenience, but it also causes some problems，全篇如此却始终不说人们是否正在上瘾。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">结尾明确落定，如 Therefore, I firmly believe that people are indeed becoming addicted to technology。</span></div></div><div class="pit-item"><div class="pit-t">举例空泛无细节</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">Technology is everywhere and everyone uses it a lot，读者看不到任何具体行为。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">换成可感细节，如 Many students scroll short videos in bed until after midnight，让论证立得住。</span></div></div><div class="pit-item"><div class="pit-t">重复凑字数</div><div class="pit-line"><span class="pill bad">反面示例</span><span class="tx">为凑词把 People are addicted to technology 反复用三种说法写三遍。</span></div><div class="pit-line"><span class="pill fix">改法</span><span class="tx">删去重复，改补一条新内容，如指出上瘾如何挤占睡眠：Many people stay up late scrolling and feel tired the next day。</span></div></div></div>
+      <table style="margin-top:12px">
+        <tr><th>自查项</th><th>怎么查</th></tr>
+        <tr><td>切题</td><td>每段是否都在回应题目要求？有没有跑题句？</td></tr>
+        <tr><td>结构</td><td>三段的开头句能不能单独拎出来读懂全文脉络？</td></tr>
+        <tr><td>语言</td><td>时态统一吗？第三人称单数、主谓一致有没有错？</td></tr>
+        <tr><td>字数</td><td>120–180 词。少于 120 直接扣分，超过 180 也扣</td></tr>
+      </table>
+    </div></details>
+</div>
+
+<details class="card">
+  <summary>📖 怎么写 · 审题与谋篇（建议写到一半卡住了再看）</summary>
+  <div class="fd">
+    <div class="row"><span class="tag">任务</span><div class="c"><b>核心任务</b>就‘是否上瘾’明确表态 本题要求以 Are people becoming addicted to technology? 为题写一篇议论文，全文必须正面回答这个是非问、给出一个清楚的立场，不能只堆技术的利弊却不表态。</div></div>
+    <div class="row"><span class="tag">立意</span><div class="c"><b>中心立意</b>旗帜鲜明答‘是，正在上瘾’ 中心立场：人们确实正在对技术上瘾。开篇可借 Numerous studies claim that addiction to technology is real and it has the same effect on the brain as drug addiction 这句参考素材引出话题或作论据，但只当引子，主体论证要自己展开，不能整段照抄。</div></div>
+    <div class="row"><span class="tag">要点</span><div class="c"><b>要展开的要点</b>日常刷屏的沉迷现象 从贴近生活的场景取材：睡醒第一件事是摸手机、睡前刷短视频到半夜、走路吃饭都低头看屏。这些具体画面正是‘正在上瘾’最直观的证据，比空喊一句技术无处不在有说服力。 上瘾带来的真实代价 点明危害才算回答了‘为什么算上瘾’：离开屏幕就焦虑、睡眠和面对面交流被挤占、学习分心。这与参考素材说的 the same effect on the brain as drug addiction 相呼应，把‘依赖’升级为‘上瘾’。 理性使用的对策 结尾给出一条落地建议——给屏幕时间设上限、把注意力留一部分给现实世界，让文章从‘诊断问题’走到‘给出态度’，收束更完整。</div></div>
+    <div class="row"><span class="tag">大纲</span><div class="c"><b>段落大纲</b>第 1 段 回应问句＋亮立场 针对 Are people becoming addicted to technology? 直接给出‘是’的回答，并借参考研究引出话题。 第 2 段 现象＋影响论证 先摆日常刷屏的具体现象，再用让步转折与因果句点出它造成的代价，把‘算上瘾’论证清楚。 第 3 段 重申＋理性建议 换一种说法重申‘正在上瘾’的立场，退一步补上理性使用技术的建议收尾。</div></div>
+    <p class="hint" style="margin-top:12px">谋篇：每段写什么 —— 这是可以直接套用的框架，换一道题功能不变、内容替换。</p>
+    <div class="row"><span class="tag">第1段</span><div class="c"><b>答‘是’并引出话题 正面回答 Are people becoming addicted to technology?：是的</b>随后化用参考素材，说明既然研究都称技术成瘾真实存在，这个问题值得重视。 直接表态句架 My answer is a definite yes/no. —— 用一句斩钉截铁地回应标题问句，把立场钉死。 引素材入题句架 As [背景/研究] ..., this problem deserves our serious attention. —— 借背景把话题自然引进来。</div></div><div class="row"><span class="tag">第2段</span><div class="c"><b>刷屏现象＋代价 现象层：睡醒先摸手机、刷短视频到半夜；分析层：离开屏幕就焦虑，交流、睡眠、学习被挤占；回扣：依赖已悄悄变成 dependence，正对应参考素材说的成瘾</b>举现象过渡句架 Signs of ... are everywhere in daily life: many people ... —— 由概括一句领起，再落到具体画面。 让步转折 While ..., an increasing number of us ... —— 先承认技术的好处，再转折点出问题所在。 因果回扣句架 As a result, ..., which shows that ... —— 用结果句点明危害并把话题拉回中心论点。</div></div><div class="row"><span class="tag">第3段</span><div class="c"><b>重申立场＋理性用技术 重申人们确实正在被技术‘套牢’；随后转折说明这不等于要抛弃技术，关键是理性使用：限制屏幕时间、把注意力留一部分给现实世界</b>换词重申句架 In my view, therefore, ... are indeed ... —— 用同义表达重申立场，避免与首段雷同。 退一步给建议句架 However, this does not mean we should ...; what matters is to ... —— 先退一步再给出落地建议收尾。</div></div>
+  </div>
+</details>
+
+
+<script>
+(function(){
+  var slot = document.getElementById('wpad');
+  if (!slot) return;
+  var TOPIC = "cet4-67f4d286a543c3aca5af06b1910625b0749ce20d4052";
+  var KEY = 'cet4write:' + (location.pathname.split('/').pop() || 'x');
+  var TOTAL = 30 * 60;
+  var idle = document.getElementById('wpIdle'), edit = document.getElementById('wpEdit');
+  var ta = document.getElementById('wpText'), tmv = document.getElementById('wpTimer');
+  var cnt = document.getElementById('wpCount'), st = document.getElementById('wpSt');
+  var btnP = document.getElementById('wpPause'), btnS = document.getElementById('wpSync');
+  var state = {draft:'', used:0, done:false};
+  var left = TOTAL, tid = null, running = false;
+
+  function fmt(s){ s = Math.max(0, s|0);
+    var m = Math.floor(s/60), x = s%60;
+    return (m<10?'0':'')+m+':'+(x<10?'0':'')+x; }
+  function words(t){ t = (t||'').trim(); if(!t) return 0;
+    return t.split(/\s+/).filter(function(w){ return /[A-Za-z0-9]/.test(w); }).length; }
+  function save(){ state.draft = ta.value;
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}') || {}; }catch(e){ return {}; } }
+  function tick(){ state.used++;
+    left = TOTAL - state.used;
+    tmv.textContent = fmt(left);
+    if (left <= 0){ clearInterval(tid); running = false; tmv.textContent = '00:00';
+      st.style.color = 'var(--amber)';
+      st.textContent = '⏰ 30 分钟到。还可以继续写，写完了再提交。'; }
+    if (state.used % 10 === 0) save();
+  }
+  function updCnt(){ cnt.textContent = words(ta.value) + ' 词'; }
+
+  function unlock(scroll){
+    state.done = true;
+    var locks = document.querySelectorAll('.card.lock');
+    for (var i=0;i<locks.length;i++){
+      var b = locks[i].querySelector('.lockbar');
+      if (b) b.parentNode.removeChild(b);
+      locks[i].classList.remove('lock');
+    }
+    var ref = document.getElementById('refcard');
+    if (ref){ var ds = ref.querySelectorAll('details');
+      for (var j=0;j<ds.length;j++) ds[j].open = true; }
+    save();
+    if (scroll && ref) ref.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  document.getElementById('wpStart').addEventListener('click', function(){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    if (!running){ running = true; tid = setInterval(tick, 1000); }
+    ta.focus(); updCnt(); save();
+  });
+
+  btnP.addEventListener('click', function(){
+    if (running){ clearInterval(tid); running = false; btnP.textContent = '▶ 继续'; }
+    else { running = true; tid = setInterval(tick, 1000); btnP.textContent = '⏸ 暂停'; }
+  });
+
+  ta.addEventListener('input', function(){ updCnt(); save(); });
+
+  var armed = false;
+  var btnSub = document.getElementById('wpSubmit');
+  function disarm(){
+    armed = false;
+    btnSub.textContent = '📷 提交并解锁参考';
+    btnSub.classList.add('primary');
+  }
+  btnSub.addEventListener('click', function(){
+    if (!armed){
+      armed = true;
+      btnSub.textContent = '⚠️ 再点一次，确认提交';
+      btnSub.classList.remove('primary');
+      st.style.color = 'var(--amber)';
+      st.innerHTML = '确认提交？提交后参考会解锁。想重来可以点「🔄 重新练习」。';
+      setTimeout(function(){
+        if (armed){ disarm(); st.style.color = 'var(--sub)';
+          st.textContent = '还没提交，可以继续写。'; }
+      }, 6000);
+      return;
+    }
+    disarm();
+    var n = words(ta.value);
+    if (running){ clearInterval(tid); running = false; }
+    var m = Math.floor(state.used/60), s = state.used % 60;
+    st.style.color = 'var(--green)';
+    st.innerHTML = '✅ 已解锁 · 用时 ' + m + ' 分 ' + s + ' 秒' + (n ? ' · ' + n + ' 词' : '')
+      + '。把<b>手写照片发到主对话</b>，我来识别并逐句批改。';
+    if (n > 0) btnS.style.display = 'inline-block';
+    document.getElementById('wpReset').style.display = 'inline-block';
+    unlock(true);
+  });
+
+  document.getElementById('wpReset').addEventListener('click', function(){
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    location.reload();
+  });
+
+  btnS.addEventListener('click', function(){
+    if (!ta.value.trim()){ return; }
+    btnS.disabled = true; btnS.textContent = '同步中…';
+    var d = new Date();
+    var ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    fetch('https://ntfy.sh/' + TOPIC, { method:'POST',
+      body: JSON.stringify({t:'rep', kind:'writing', date:ds, page:document.title,
+        text:'【写作提交】' + ds + ' · ' + words(ta.value) + ' 词\n\n' + ta.value})
+    }).then(function(x){
+      if (x.ok){ btnS.textContent = '✓ 已发送'; btnS.style.color = 'var(--green)';
+        st.innerHTML = '✓ 已上云。回到主对话说一句「看回执」，我给你逐句批改。'; }
+      else { btnS.disabled = false; btnS.textContent = '☁ 重试同步'; }
+    }).catch(function(){ btnS.disabled = false; btnS.textContent = '☁ 重试同步'; });
+  });
+
+  var d0 = load();
+  state.draft = d0.draft || ''; state.used = d0.used || 0; state.done = !!d0.done;
+  if (state.draft){ ta.value = state.draft; updCnt(); }
+  if (state.done){
+    idle.style.display = 'none'; edit.style.display = 'block';
+    left = TOTAL - state.used; tmv.textContent = fmt(left);
+    unlock(false);
+    btnS.style.display = 'inline-block';
+    document.getElementById('wpReset').style.display = 'inline-block';
+    st.innerHTML = '（本篇已提交过，参考已解锁 · 想重练点「🔄 重新练习」）';
+  }
+})();
+</script>
+
+
+</body>
+</html>
