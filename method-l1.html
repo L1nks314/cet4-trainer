@@ -328,18 +328,14 @@
   var cv = document.getElementById('markCanvas');
   if (!cv) return;
   var ctx = cv.getContext('2d');
-
-  /* ── 笔迹数据：滚动时可整体重绘 ── */
   var strokes = [], cur = null;
+  var SC = [];
 
   function rz(){
     var w = document.documentElement.scrollWidth || window.innerWidth;
     var h = document.documentElement.scrollHeight || window.innerHeight;
     if (w !== cv.width || h !== cv.height){ cv.width = w; cv.height = h; drawAll(); }
   }
-
-  /* 找可滚动容器（分栏等），其滚动时重绘笔迹 */
-  var SC = [];
   function scanSC(){
     SC = [];
     var all = document.querySelectorAll('div,section,article,aside');
@@ -354,23 +350,32 @@
       }
     }
   }
+  function rectOf(c){
+    var r = c.getBoundingClientRect();
+    return {l:r.left + window.pageXOffset, t:r.top + window.pageYOffset, w:r.width, h:r.height};
+  }
   function ownerOf(x, y){
-    /* 用「可见区域」判断归属，并取最小面积的容器（最内层优先）——
-       横屏并排、竖屏上下排列都能正确分辨笔迹属于哪一栏 */
     var best = null, bestA = Infinity;
     for (var i=0;i<SC.length;i++){
-      var c = SC[i], r = c.getBoundingClientRect();
-      var l = r.left + window.pageXOffset, t = r.top + window.pageYOffset;
-      if (x >= l && x <= l + r.width && y >= t && y <= t + r.height){
-        var a = r.width * r.height;
+      var c = SC[i], b = rectOf(c);
+      if (x >= b.l && x <= b.l + b.w && y >= b.t && y <= b.t + b.h){
+        var a = b.w * b.h;
         if (a < bestA){ bestA = a; best = c; }
       }
     }
     return best ? {c:best, c0:best.scrollTop} : {c:null, c0:0};
   }
-  function drawOne(s){
+  function inCur(x, y){
+    if (!cur || !cur.c) return true;
+    var b = rectOf(cur.c);
+    return x >= b.l && x <= b.l + b.w && y >= b.t && y <= b.t + b.h;
+  }
+  function clipTo(c){
+    var b = rectOf(c);
+    ctx.beginPath(); ctx.rect(b.l, b.t, b.w, b.h); ctx.clip();
+  }
+  function pathOf(s, dy){
     var pts = s.pts; if (!pts.length) return;
-    var dy = s.c ? (s.c0 - s.c.scrollTop) : 0;
     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     ctx.globalCompositeOperation = s.era ? 'destination-out' : 'source-over';
     if (!s.era) ctx.strokeStyle = s.color;
@@ -392,6 +397,13 @@
     }
     ctx.globalCompositeOperation = 'source-over';
   }
+  function drawOne(s){
+    var dy = s.c ? (s.c0 - s.c.scrollTop) : 0;
+    ctx.save();
+    if (s.c) clipTo(s.c);                 /* 限制在所属栏内 —— 笔迹不会飞出分栏 */
+    pathOf(s, dy);
+    ctx.restore();
+  }
   function drawAll(){
     ctx.clearRect(0, 0, cv.width, cv.height);
     for (var i=0;i<strokes.length;i++) drawOne(strokes[i]);
@@ -402,7 +414,6 @@
   setTimeout(scanSC, 500);
   window.addEventListener('load', scanSC);
 
-  /* ── 模式 / 颜色 / 粗细 ── */
   var pen = document.getElementById('mkPen'), era = document.getElementById('mkErase'),
       clr = document.getElementById('mkClear');
   var mode = 'off', color = '#1b1e23', baseW = 3, drawing = false;
@@ -412,6 +423,7 @@
     cv.classList.toggle('act', m !== 'off');
     if (pen) pen.classList.toggle('on', m === 'draw');
     if (era) era.classList.toggle('on', m === 'erase');
+    if (m !== 'off') scanSC();
   }
   if (pen) pen.addEventListener('click', function(){ setMode(mode === 'draw' ? 'off' : 'draw'); });
   if (era) era.addEventListener('click', function(){ setMode(mode === 'erase' ? 'off' : 'erase'); });
@@ -448,7 +460,7 @@
     if (mode === 'erase') return Math.max(12, baseW * 5);
     return Math.max(0.7, baseW * (0.35 + pressure(e)));
   }
-  function addPt(x, y, w){
+  function paintSeg(x, y, w){
     var pts = cur.pts, q = pts[pts.length - 1];
     var dy = cur.c ? (cur.c0 - cur.c.scrollTop) : 0;
     var mx = (q[0]+x)/2, my = (q[1]+y)/2;
@@ -465,48 +477,64 @@
     pts.push([x, y, w]);
   }
 
-  /* 事件挂在 document，捕获阶段拦截；只处理笔和鼠标 —— 手指留给浏览器滚动/点选 */
   var EXCLUDE = 'button,a,input,textarea,select,label,#markBar';
   function hitUI(t, x, y){
     if (t && t.closest && t.closest(EXCLUDE)) return true;
-    var bar = document.getElementById('markBar');       /* 坐标兜底：落在画笔面板上也不画 */
-    if (bar){
-      var r = bar.getBoundingClientRect();
-      if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) return true;
-    }
+    var bar = document.getElementById('markBar');
+    if (bar){ var r = bar.getBoundingClientRect();
+      if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) return true; }
     return false;
+  }
+
+  /* 每帧统一绘制本帧全部采样点：既跟手又不丢笔迹 */
+  var buf = [], rafId = 0;
+  function flush(){
+    rafId = 0;
+    if (!cur || !buf.length) return;
+    ctx.save();
+    if (cur.c) clipTo(cur.c);
+    for (var i=0;i<buf.length;i++){
+      if (inCur(buf[i][0], buf[i][1])) paintSeg(buf[i][0], buf[i][1], buf[i][2]);
+    }
+    ctx.restore();
+    buf = [];
   }
 
   document.addEventListener('pointerdown', function(e){
     if (mode === 'off') return;
-    if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;   /* 手指不做画 */
-    if (hitUI(e.target, e.clientX, e.clientY)) return;                  /* 点在控件上不画 */
-    drawing = true;
+    if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
+    if (hitUI(e.target, e.clientX, e.clientY)) return;
+    drawing = true; buf = [];
     var o = ownerOf(e.pageX, e.pageY);
     cur = {pts:[[e.pageX, e.pageY, widthOf(e)]], color:color, era:(mode === 'erase'),
            c:o.c, c0:o.c0, mid:[e.pageX, e.pageY]};
     strokes.push(cur);
+    ctx.save();
+    if (cur.c) clipTo(cur.c);
     if (mode !== 'erase'){
       var w = widthOf(e);
       ctx.fillStyle = color;
       ctx.beginPath(); ctx.arc(e.pageX, e.pageY, w/2, 0, 6.2832); ctx.fill();
     }
+    ctx.restore();
     e.preventDefault();
   }, {capture:true, passive:false});
 
   document.addEventListener('pointermove', function(e){
-    if (!drawing || mode === 'off' || !cur) return;
+    if (!drawing || !cur) return;
     if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
     var evs = (typeof e.getCoalescedEvents === 'function') ? e.getCoalescedEvents() : null;
-    if (evs && evs.length){ for (var i=0;i<evs.length;i++) addPt(evs[i].pageX, evs[i].pageY, widthOf(evs[i])); }
-    else addPt(e.pageX, e.pageY, widthOf(e));
+    if (evs && evs.length){ for (var i=0;i<evs.length;i++) buf.push([evs[i].pageX, evs[i].pageY, widthOf(evs[i])]); }
+    else buf.push([e.pageX, e.pageY, widthOf(e)]);
+    if (!rafId) rafId = requestAnimationFrame(flush);
     e.preventDefault();
   }, {capture:true, passive:false});
 
   ['pointerup','pointercancel'].forEach(function(ev){
     document.addEventListener(ev, function(e){
       if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
-      drawing = false; cur = null;
+      if (rafId){ cancelAnimationFrame(rafId); rafId = 0; flush(); }
+      drawing = false; cur = null; buf = [];
     }, {capture:true});
   });
 })();
