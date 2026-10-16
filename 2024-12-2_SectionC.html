@@ -146,25 +146,6 @@
   .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:#16181d;
     color:#fff;padding:11px 22px;border-radius:24px;font-size:14px;opacity:0;transition:.3s;pointer-events:none;z-index:99;}
   .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
-  /* ---------- 听写自动比对 ---------- */
-  textarea#dictIn{min-height:150px;font-family:inherit;font-size:15px;line-height:1.95;}
-  .dstat{background:var(--blue-soft);border-radius:10px;padding:12px 15px;font-size:14.5px;margin-top:14px;line-height:1.95;}
-  .dstat b{font-size:19px;color:#123a75;}
-  .dview{font-size:15.5px;line-height:2.4;margin-top:14px;padding:14px;background:var(--soft);
-    border:1px solid var(--line);border-radius:10px;}
-  .dview .dok{background:#e9f7f0;border-radius:3px;padding:1px 3px;}
-  .dview .ddel{background:#fde2e0;color:#a0281a;text-decoration:line-through;border-radius:3px;padding:1px 3px;}
-  .dview .dsub{background:#fff0cc;color:#8a5a00;border-bottom:2px solid #e0a800;border-radius:3px;padding:1px 3px;}
-  .dview .dins{background:#eee;color:#8a8a8a;text-decoration:line-through;border-radius:3px;padding:1px 3px;font-size:13px;}
-  .dview .dbr{display:block;height:0;margin:11px 0;border-top:1px dashed var(--line);}
-  .dlegend{font-size:12.5px;color:var(--sub);margin-top:9px;line-height:2;}
-  .dan{margin-top:14px;font-size:14px;}
-  .dan .row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line);}
-  .dan .row:last-child{border-bottom:none;}
-  .dan .bar2{flex:1;height:8px;background:#eceff3;border-radius:4px;overflow:hidden;}
-  .dan .bar2 i{display:block;height:100%;border-radius:4px;}
-  .dan .cat{flex:0 0 116px;font-size:13.5px;}
-  .dan .cnt{flex:0 0 62px;text-align:right;font-size:13.5px;color:var(--sub);}
   footer{text-align:center;color:var(--sub);font-size:12.5px;margin-top:26px;line-height:1.9;}
 
 .syncbtn{margin-left:10px;padding:11px 20px;border:0;border-radius:11px;background:var(--green);
@@ -237,7 +218,6 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
  border-radius:22px;z-index:8990;opacity:0;pointer-events:none;
  transition:opacity .18s ease,transform .18s ease}
 #penToast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-.dstip{margin-top:11px;background:var(--blue-soft);color:var(--blue);border-radius:11px;padding:11px 14px;font-size:13.2px;line-height:1.75}
 
 /* ═══ 听写模式 ═══ */
 #dictBar{display:none;margin-top:11px;background:var(--amber-soft);border:1.5px solid var(--amber);
@@ -247,6 +227,19 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 #dictBar button{border:1.5px solid var(--line);background:#fff;border-radius:9px;padding:7px 13px;
  font-size:13px;font-weight:700;font-family:inherit;color:inherit;cursor:pointer}
 #dictBar button.pri{background:var(--blue);border-color:var(--blue);color:#fff}
+
+/* ═══ 逐句听写本 ═══ */
+#dictCard.hide{display:none}
+.dpwrap{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;line-height:0}
+.dpwrap canvas{display:block;touch-action:none}
+.dpbtns{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.dpbtns .btn{width:auto;flex:0 0 auto;padding:11px 17px;font-size:14px;margin:0;line-height:1.2}
+.dpcnt{margin-left:auto;font-size:12.5px;color:var(--sub)}
+.dpout{margin-top:14px}
+.dphint{font-size:13px;color:var(--sub);margin-bottom:9px;line-height:1.7}
+.dpout img{width:100%;border:1px solid var(--line);border-radius:10px;background:#fff}
+.dpout .btn{margin-top:10px;width:auto}
+@media (max-width:560px){ .dpcnt{flex:1 0 100%;text-align:right;margin-top:2px} }
 </style>
 <noscript><style>
   .locked-sec{filter:none !important;opacity:1 !important;pointer-events:auto !important;user-select:auto !important;}
@@ -313,33 +306,27 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 
 
 
-<div class="card" id="dictCard">
-  <h2><span class="num">5</span>听写区 · 自动比对</h2>
-  <p class="hint">用「慢速」逐句听写，把写下来的内容贴进框里（大小写和标点都不用管）。点比对，它会<b>逐词</b>告诉你哪几个词漏了、哪几个听错了，并自动判断是「连读漏听」还是「生词不认识」。</p>
-  <textarea id="dictIn" placeholder="把你听写的内容贴在这里……"></textarea>
-  <button class="btn btn-primary" id="dictBtn">比对 · 自动标错</button>
-  <button class="btn btn-ghost" id="dictPhoto">📷 手写听写 · 拍照交批改</button>
-  <div class="dstip" id="dictPhotoTip" style="display:none">把这篇的<b>手写听写照片</b>直接发到主对话即可 —— 我会逐词识别，标出<b>漏听</b>与<b>听错</b>，并归因（连读漏听 / 生词 / 拼写）。</div>
-  <button class="btn btn-ghost" id="dictClear">清空重来</button>
-  <div id="dictOut" style="display:none">
-    <div class="dstat" id="dictStat"></div>
-    <div class="dview" id="dictView"></div>
-    <div class="dlegend">颜色说明：<span style="background:#e9f7f0;padding:1px 5px;border-radius:3px;">绿=听对</span>
-      <span style="background:#fde2e0;color:#a0281a;text-decoration:line-through;padding:1px 5px;border-radius:3px;">红=漏听</span>
-      <span style="background:#fff0cc;color:#8a5a00;border-bottom:2px solid #e0a800;padding:1px 5px;border-radius:3px;">黄=听错</span>
-      <span style="background:#eee;color:#8a8a8a;text-decoration:line-through;padding:1px 5px;border-radius:3px;font-size:12px;">灰=多写</span></div>
-    <div class="dan" id="dictAnalysis"></div>
+<div class="card hide" id="dictCard">
+  <h2><span class="num">5</span>逐句听写本</h2>
+  <p class="hint">点播放器里的 <b>✍️ 听写模式</b>：每句播完会自动暂停，本子会<b>自动跳到那一行</b>。用笔直接写在行上，卡住就空着点「下一句」——空着的地方就是你没听出来的。写完整本点「📷 导出听写照」，把图发我批改。</p>
+  <div class="dpwrap" id="dpWrap"></div>
+  <div class="dpbtns">
+    <button class="btn btn-ghost" id="dpUndo">↩︎ 撤销一笔</button>
+    <button class="btn btn-ghost" id="dpClear">🗑 清空重写</button>
+    <button class="btn btn-primary" id="dpSave">📷 导出听写照</button>
+    <span class="dpcnt" id="dpCnt"></span>
+  </div>
+  <div class="dpout" id="dpOut" style="display:none">
+    <div class="dphint">长按下面这张图存到相册（或直接截图），发到主对话，我<b>逐词</b>给你标出漏听、听错，并归因（连读漏听 / 生词 / 拼写）。</div>
+    <img id="dpImg" alt="听写照">
+    <a class="btn btn-ghost" id="dpDl" download="听写照.png">⬇︎ 下载到本地</a>
   </div>
 </div>
 
 
-
 <div class="card" id="receiptCard">
   <h2><span class="num">6</span>交卷回执</h2>
-  <p class="hint">把下面这段发给我（截图或直接复制都行），我立刻给你出错因归因和改善方法。听写区的比对结果会自动并进来。</p>
-  <div class="fld"><label>听写留白处数</label>
-    <input type="number" id="blankNum" min="0" value="0" placeholder="0">
-    <span class="hint" style="margin:0;">听写时有多少处完全没听出来？</span></div>
+  <p class="hint">把下面这段发给我（截图或直接复制都行），<b>连同上面的听写照</b>，我立刻给出错因归因和改善方法。</p>
   <div class="fld"><label>最难的一句</label>
     <input type="text" id="hardest" placeholder="选填，贴你听不出来的一句"></div>
   <textarea id="receipt" readonly></textarea>
@@ -353,7 +340,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
   <div class="line" data-li="0"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">第一段。</span></div><div class="en"><span class="w" data-li="0" data-wi="0">Passage</span> <span class="w" data-li="0" data-wi="1">1.</span></div></div><div class="line" data-li="1"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">发射通常是对环境危害最大的阶段。任何太空任务，都包含大量的燃料在几分钟内就燃烧殆尽。</span></div><div class="en"><span class="w mk" data-li="1" data-wi="0">Liftoff</span> <span class="w mk" data-li="1" data-wi="1">is</span> <span class="w mk" data-li="1" data-wi="2">usually</span> <span class="w mk" data-li="1" data-wi="3">the</span> <span class="w" data-li="1" data-wi="4">most</span> <span class="w" data-li="1" data-wi="5">environmentally</span> <span class="w" data-li="1" data-wi="6">harmful</span> <span class="w" data-li="1" data-wi="7">stage</span> <span class="w" data-li="1" data-wi="8">of</span> <span class="w" data-li="1" data-wi="9">any</span> <span class="w" data-li="1" data-wi="10">space</span> <span class="w mk" data-li="1" data-wi="11">mission,</span> <span class="w mk" data-li="1" data-wi="12">with</span> <span class="w" data-li="1" data-wi="13">vast</span> <span class="w mk" data-li="1" data-wi="14">quantities</span> <span class="w mk" data-li="1" data-wi="15">of</span> <span class="w" data-li="1" data-wi="16">fuel</span> <span class="w mk" data-li="1" data-wi="17">burnt</span> <span class="w mk" data-li="1" data-wi="18">up</span> <span class="w mk" data-li="1" data-wi="19">in</span> <span class="w mk" data-li="1" data-wi="20">a</span> <span class="w mk" data-li="1" data-wi="21">matter</span> <span class="w mk" data-li="1" data-wi="22">of</span> <span class="w" data-li="1" data-wi="23">minutes.</span></div></div><div class="line" data-li="2"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">例如，SpaceX 的猎鹰 9 号火箭可以发射 112 枚火箭。数吨精炼燃料，排放约336吨二氧化碳。</span></div><div class="en"><span class="w" data-li="2" data-wi="0">For</span> <span class="w" data-li="2" data-wi="1">instance,</span> <span class="w" data-li="2" data-wi="2">SpaceX's</span> <span class="w" data-li="2" data-wi="3">Falcon</span> <span class="w" data-li="2" data-wi="4">9</span> <span class="w" data-li="2" data-wi="5">gets</span> <span class="w" data-li="2" data-wi="6">through</span> <span class="w" data-li="2" data-wi="7">112</span> <span class="w mk" data-li="2" data-wi="8">tons</span> <span class="w mk" data-li="2" data-wi="9">of</span> <span class="w" data-li="2" data-wi="10">refined</span> <span class="w" data-li="2" data-wi="11">fuel,</span> <span class="w" data-li="2" data-wi="12">emitting</span> <span class="w" data-li="2" data-wi="13">about</span> <span class="w" data-li="2" data-wi="14">336</span> <span class="w mk" data-li="2" data-wi="15">tons</span> <span class="w mk" data-li="2" data-wi="16">of</span> <span class="w" data-li="2" data-wi="17">CO2.</span></div></div><div class="line" data-li="3"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">这是你的平均产量所产生的等效产量。驾车环游世界近70圈。</span></div><div class="en"><span class="w mk" data-li="3" data-wi="0">This</span> <span class="w mk" data-li="3" data-wi="1">is</span> <span class="w mk" data-li="3" data-wi="2">the</span> <span class="w" data-li="3" data-wi="3">equivalent</span> <span class="w" data-li="3" data-wi="4">produced</span> <span class="w" data-li="3" data-wi="5">by</span> <span class="w" data-li="3" data-wi="6">your</span> <span class="w" data-li="3" data-wi="7">average</span> <span class="w" data-li="3" data-wi="8">car</span> <span class="w" data-li="3" data-wi="9">driving</span> <span class="w" data-li="3" data-wi="10">almost</span> <span class="w" data-li="3" data-wi="11">70</span> <span class="w" data-li="3" data-wi="12">times</span> <span class="w mk" data-li="3" data-wi="13">around</span> <span class="w mk" data-li="3" data-wi="14">the</span> <span class="w" data-li="3" data-wi="15">world.</span></div></div><div class="line" data-li="4"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">除了温室气体，火箭发动机还会排放其他气体。破坏臭氧层的颗粒物。</span></div><div class="en"><span class="w" data-li="4" data-wi="0">As</span> <span class="w mk" data-li="4" data-wi="1">well</span> <span class="w mk" data-li="4" data-wi="2">as</span> <span class="w" data-li="4" data-wi="3">greenhouse</span> <span class="w" data-li="4" data-wi="4">gases,</span> <span class="w" data-li="4" data-wi="5">rocket</span> <span class="w" data-li="4" data-wi="6">engines</span> <span class="w" data-li="4" data-wi="7">emit</span> <span class="w mk" data-li="4" data-wi="8">particles</span> <span class="w mk" data-li="4" data-wi="9">that</span> <span class="w" data-li="4" data-wi="10">destroy</span> <span class="w" data-li="4" data-wi="11">ozone.</span></div></div><div class="line" data-li="5"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">这些问题正变得越来越紧迫。商业太空飞行的兴起。</span></div><div class="en"><span class="w" data-li="5" data-wi="0">These</span> <span class="w mk" data-li="5" data-wi="1">issues</span> <span class="w mk" data-li="5" data-wi="2">are</span> <span class="w" data-li="5" data-wi="3">growing</span> <span class="w" data-li="5" data-wi="4">more</span> <span class="w mk" data-li="5" data-wi="5">pressing</span> <span class="w mk" data-li="5" data-wi="6">with</span> <span class="w mk" data-li="5" data-wi="7">the</span> <span class="w" data-li="5" data-wi="8">emergence</span> <span class="w" data-li="5" data-wi="9">of</span> <span class="w" data-li="5" data-wi="10">commercial</span> <span class="w" data-li="5" data-wi="11">spaceflight.</span></div></div><div class="line" data-li="6"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">2020年共进行了114次太空发射，但是每未来一年。</span></div><div class="en"><span class="w" data-li="6" data-wi="0">There</span> <span class="w" data-li="6" data-wi="1">were</span> <span class="w" data-li="6" data-wi="2">114</span> <span class="w" data-li="6" data-wi="3">space</span> <span class="w mk" data-li="6" data-wi="4">launches</span> <span class="w mk" data-li="6" data-wi="5">in</span> <span class="w" data-li="6" data-wi="6">2020,</span> <span class="w" data-li="6" data-wi="7">but</span> <span class="w" data-li="6" data-wi="8">there</span> <span class="w mk" data-li="6" data-wi="9">may</span> <span class="w mk" data-li="6" data-wi="10">be</span> <span class="w mk" data-li="6" data-wi="11">up</span> <span class="w mk" data-li="6" data-wi="12">to</span> <span class="w" data-li="6" data-wi="13">1,000</span> <span class="w" data-li="6" data-wi="14">per</span> <span class="w mk" data-li="6" data-wi="15">year</span> <span class="w mk" data-li="6" data-wi="16">in</span> <span class="w" data-li="6" data-wi="17">future.</span></div></div><div class="line" data-li="7"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">可持续燃料是实现这一目标的首要任务。更环保的太空旅行。</span></div><div class="en"><span class="w" data-li="7" data-wi="0">Sustainable</span> <span class="w mk" data-li="7" data-wi="1">fuels</span> <span class="w mk" data-li="7" data-wi="2">are</span> <span class="w" data-li="7" data-wi="3">the</span> <span class="w" data-li="7" data-wi="4">top</span> <span class="w mk" data-li="7" data-wi="5">priority</span> <span class="w mk" data-li="7" data-wi="6">to</span> <span class="w" data-li="7" data-wi="7">enable</span> <span class="w" data-li="7" data-wi="8">greener</span> <span class="w" data-li="7" data-wi="9">space</span> <span class="w" data-li="7" data-wi="10">travel.</span></div></div><div class="line" data-li="8"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">目前的航天器使用多种燃料，但是大多数能源都以化石燃料为基础。</span></div><div class="en"><span class="w" data-li="8" data-wi="0">Current</span> <span class="w" data-li="8" data-wi="1">spacecraft</span> <span class="w" data-li="8" data-wi="2">use</span> <span class="w" data-li="8" data-wi="3">a</span> <span class="w mk" data-li="8" data-wi="4">variety</span> <span class="w mk" data-li="8" data-wi="5">of</span> <span class="w mk" data-li="8" data-wi="6">fuels,</span> <span class="w mk" data-li="8" data-wi="7">but</span> <span class="w mk" data-li="8" data-wi="8">most</span> <span class="w mk" data-li="8" data-wi="9">are</span> <span class="w mk" data-li="8" data-wi="10">based</span> <span class="w mk" data-li="8" data-wi="11">on</span> <span class="w" data-li="8" data-wi="12">fossil</span> <span class="w" data-li="8" data-wi="13">fuels.</span></div></div><div class="line" data-li="9"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">一种可能更环保的选择是液氢。氧。</span></div><div class="en"><span class="w" data-li="9" data-wi="0">One</span> <span class="w" data-li="9" data-wi="1">potentially</span> <span class="w" data-li="9" data-wi="2">greener</span> <span class="w mk" data-li="9" data-wi="3">option</span> <span class="w mk" data-li="9" data-wi="4">is</span> <span class="w" data-li="9" data-wi="5">liquid</span> <span class="w mk" data-li="9" data-wi="6">hydrogen</span> <span class="w mk" data-li="9" data-wi="7">and</span> <span class="w" data-li="9" data-wi="8">oxygen.</span></div></div><div class="line" data-li="10"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">利用太阳能可以可持续地获取氢气。将水分解成氧气的能力氢。</span></div><div class="en"><span class="w mk" data-li="10" data-wi="0">Hydrogen</span> <span class="w mk" data-li="10" data-wi="1">can</span> <span class="w mk" data-li="10" data-wi="2">be</span> <span class="w" data-li="10" data-wi="3">obtained</span> <span class="w" data-li="10" data-wi="4">sustainably</span> <span class="w" data-li="10" data-wi="5">by</span> <span class="w" data-li="10" data-wi="6">using</span> <span class="w" data-li="10" data-wi="7">solar</span> <span class="w mk" data-li="10" data-wi="8">power</span> <span class="w mk" data-li="10" data-wi="9">to</span> <span class="w" data-li="10" data-wi="10">break</span> <span class="w" data-li="10" data-wi="11">water</span> <span class="w mk" data-li="10" data-wi="12">down</span> <span class="w mk" data-li="10" data-wi="13">into</span> <span class="w mk" data-li="10" data-wi="14">oxygen</span> <span class="w mk" data-li="10" data-wi="15">and</span> <span class="w" data-li="10" data-wi="16">hydrogen.</span></div></div><div class="line" data-li="11"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">可重复使用的火箭可以减少一些……与太空飞行相关的废物。</span></div><div class="en"><span class="w" data-li="11" data-wi="0">Reusable</span> <span class="w mk" data-li="11" data-wi="1">rockets</span> <span class="w mk" data-li="11" data-wi="2">can</span> <span class="w" data-li="11" data-wi="3">cut</span> <span class="w mk" data-li="11" data-wi="4">down</span> <span class="w mk" data-li="11" data-wi="5">on</span> <span class="w" data-li="11" data-wi="6">some</span> <span class="w mk" data-li="11" data-wi="7">of</span> <span class="w mk" data-li="11" data-wi="8">the</span> <span class="w" data-li="11" data-wi="9">waste</span> <span class="w mk" data-li="11" data-wi="10">associated</span> <span class="w mk" data-li="11" data-wi="11">with</span> <span class="w" data-li="11" data-wi="12">spaceflight.</span></div></div><div class="line" data-li="12"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">传统上，增压器、燃料箱和其他部件是被视为可有可无，但引导他们回归以可控的方式利用地球，可以开启新的可能性。</span></div><div class="en"><span class="w" data-li="12" data-wi="0">Traditionally,</span> <span class="w" data-li="12" data-wi="1">boosters,</span> <span class="w" data-li="12" data-wi="2">fuel</span> <span class="w mk" data-li="12" data-wi="3">tanks</span> <span class="w mk" data-li="12" data-wi="4">and</span> <span class="w" data-li="12" data-wi="5">other</span> <span class="w mk" data-li="12" data-wi="6">components</span> <span class="w mk" data-li="12" data-wi="7">are</span> <span class="w mk" data-li="12" data-wi="8">treated</span> <span class="w mk" data-li="12" data-wi="9">as</span> <span class="w" data-li="12" data-wi="10">expendable,</span> <span class="w" data-li="12" data-wi="11">but</span> <span class="w mk" data-li="12" data-wi="12">guiding</span> <span class="w mk" data-li="12" data-wi="13">them</span> <span class="w mk" data-li="12" data-wi="14">back</span> <span class="w mk" data-li="12" data-wi="15">to</span> <span class="w mk" data-li="12" data-wi="16">Earth</span> <span class="w mk" data-li="12" data-wi="17">in</span> <span class="w mk" data-li="12" data-wi="18">a</span> <span class="w" data-li="12" data-wi="19">controlled</span> <span class="w" data-li="12" data-wi="20">manner</span> <span class="w" data-li="12" data-wi="21">opens</span> <span class="w" data-li="12" data-wi="22">new</span> <span class="w" data-li="12" data-wi="23">possibilities.</span></div></div><div class="line" data-li="13"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">猎鹰9号的大部分组件都可以是可重复使用多达100次。</span></div><div class="en"><span class="w" data-li="13" data-wi="0">Most</span> <span class="w mk" data-li="13" data-wi="1">components</span> <span class="w mk" data-li="13" data-wi="2">from</span> <span class="w mk" data-li="13" data-wi="3">the</span> <span class="w" data-li="13" data-wi="4">Falcon</span> <span class="w" data-li="13" data-wi="5">9</span> <span class="w mk" data-li="13" data-wi="6">can</span> <span class="w mk" data-li="13" data-wi="7">be</span> <span class="w mk" data-li="13" data-wi="8">reused</span> <span class="w mk" data-li="13" data-wi="9">up</span> <span class="w mk" data-li="13" data-wi="10">to</span> <span class="w" data-li="13" data-wi="11">100</span> <span class="w" data-li="13" data-wi="12">times.</span></div></div><div class="line" data-li="14"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">真正环保的太空旅行仍然是一个难题。还差得很远，但我们已经有很多了限制其影响所需的技术在我们的星球上。</span></div><div class="en"><span class="w" data-li="14" data-wi="0">Truly</span> <span class="w" data-li="14" data-wi="1">environmentally</span> <span class="w" data-li="14" data-wi="2">friendly</span> <span class="w" data-li="14" data-wi="3">space</span> <span class="w mk" data-li="14" data-wi="4">travel</span> <span class="w mk" data-li="14" data-wi="5">is</span> <span class="w" data-li="14" data-wi="6">still</span> <span class="w" data-li="14" data-wi="7">some</span> <span class="w mk" data-li="14" data-wi="8">way</span> <span class="w mk" data-li="14" data-wi="9">off,</span> <span class="w mk" data-li="14" data-wi="10">but</span> <span class="w mk" data-li="14" data-wi="11">we</span> <span class="w mk" data-li="14" data-wi="12">already</span> <span class="w mk" data-li="14" data-wi="13">have</span> <span class="w mk" data-li="14" data-wi="14">many</span> <span class="w mk" data-li="14" data-wi="15">of</span> <span class="w mk" data-li="14" data-wi="16">the</span> <span class="w" data-li="14" data-wi="17">technologies</span> <span class="w mk" data-li="14" data-wi="18">needed</span> <span class="w mk" data-li="14" data-wi="19">to</span> <span class="w" data-li="14" data-wi="20">start</span> <span class="w" data-li="14" data-wi="21">limiting</span> <span class="w" data-li="14" data-wi="22">its</span> <span class="w mk" data-li="14" data-wi="23">impact</span> <span class="w mk" data-li="14" data-wi="24">on</span> <span class="w mk" data-li="14" data-wi="25">our</span> <span class="w" data-li="14" data-wi="26">planet.</span></div></div><div class="line" data-li="15"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">第二段。</span></div><div class="en"><span class="w" data-li="15" data-wi="0">Passage</span> <span class="w" data-li="15" data-wi="1">2.</span></div></div><div class="line" data-li="16"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">帮忙照顾宠物可以促进……儿童情感发展的诸多方面。</span></div><div class="en"><span class="w mk" data-li="16" data-wi="0">Helping</span> <span class="w mk" data-li="16" data-wi="1">to</span> <span class="w" data-li="16" data-wi="2">look</span> <span class="w mk" data-li="16" data-wi="3">after</span> <span class="w mk" data-li="16" data-wi="4">a</span> <span class="w mk" data-li="16" data-wi="5">pet</span> <span class="w mk" data-li="16" data-wi="6">can</span> <span class="w" data-li="16" data-wi="7">facilitate</span> <span class="w" data-li="16" data-wi="8">numerous</span> <span class="w mk" data-li="16" data-wi="9">aspects</span> <span class="w mk" data-li="16" data-wi="10">of</span> <span class="w mk" data-li="16" data-wi="11">a</span> <span class="w" data-li="16" data-wi="12">child's</span> <span class="w" data-li="16" data-wi="13">emotional</span> <span class="w" data-li="16" data-wi="14">development.</span></div></div><div class="line" data-li="17"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">研究表明，阅读对忠诚的人来说是有益的，而且不会评判他人的伴侣，例如狗或猫可以鼓励不爱阅读的孩子大声朗读。这反过来又会增强他们的自信心。</span></div><div class="en"><span class="w" data-li="17" data-wi="0">Research</span> <span class="w mk" data-li="17" data-wi="1">shows</span> <span class="w mk" data-li="17" data-wi="2">that</span> <span class="w mk" data-li="17" data-wi="3">reading</span> <span class="w mk" data-li="17" data-wi="4">to</span> <span class="w" data-li="17" data-wi="5">a</span> <span class="w mk" data-li="17" data-wi="6">loyal</span> <span class="w mk" data-li="17" data-wi="7">and</span> <span class="w" data-li="17" data-wi="8">non-judgmental</span> <span class="w" data-li="17" data-wi="9">companion,</span> <span class="w mk" data-li="17" data-wi="10">such</span> <span class="w mk" data-li="17" data-wi="11">as</span> <span class="w mk" data-li="17" data-wi="12">a</span> <span class="w mk" data-li="17" data-wi="13">dog</span> <span class="w mk" data-li="17" data-wi="14">or</span> <span class="w mk" data-li="17" data-wi="15">cat,</span> <span class="w mk" data-li="17" data-wi="16">can</span> <span class="w" data-li="17" data-wi="17">encourage</span> <span class="w" data-li="17" data-wi="18">reluctant</span> <span class="w mk" data-li="17" data-wi="19">readers</span> <span class="w mk" data-li="17" data-wi="20">to</span> <span class="w" data-li="17" data-wi="21">read</span> <span class="w" data-li="17" data-wi="22">aloud,</span> <span class="w mk" data-li="17" data-wi="23">which</span> <span class="w mk" data-li="17" data-wi="24">will</span> <span class="w mk" data-li="17" data-wi="25">in</span> <span class="w" data-li="17" data-wi="26">turn</span> <span class="w mk" data-li="17" data-wi="27">boost</span> <span class="w mk" data-li="17" data-wi="28">their</span> <span class="w" data-li="17" data-wi="29">self-confidence.</span></div></div><div class="line" data-li="18"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">有个伴侣可以倾诉他们的情感也能帮助孩子感到安全。培养沟通技巧。</span></div><div class="en"><span class="w mk" data-li="18" data-wi="0">Having</span> <span class="w mk" data-li="18" data-wi="1">a</span> <span class="w mk" data-li="18" data-wi="2">companion</span> <span class="w mk" data-li="18" data-wi="3">to</span> <span class="w mk" data-li="18" data-wi="4">talk</span> <span class="w mk" data-li="18" data-wi="5">to</span> <span class="w mk" data-li="18" data-wi="6">about</span> <span class="w mk" data-li="18" data-wi="7">their</span> <span class="w mk" data-li="18" data-wi="8">feelings</span> <span class="w mk" data-li="18" data-wi="9">can</span> <span class="w" data-li="18" data-wi="10">also</span> <span class="w" data-li="18" data-wi="11">help</span> <span class="w" data-li="18" data-wi="12">children</span> <span class="w" data-li="18" data-wi="13">feel</span> <span class="w" data-li="18" data-wi="14">secure</span> <span class="w" data-li="18" data-wi="15">and</span> <span class="w" data-li="18" data-wi="16">develop</span> <span class="w" data-li="18" data-wi="17">communication</span> <span class="w" data-li="18" data-wi="18">skills.</span></div></div><div class="line" data-li="19"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">家养宠物也可以培养孩子的……父母的解释培养了他们的责任感保持宠物快乐的必要步骤健康。</span></div><div class="en"><span class="w" data-li="19" data-wi="0">A</span> <span class="w" data-li="19" data-wi="1">household</span> <span class="w mk" data-li="19" data-wi="2">pet</span> <span class="w mk" data-li="19" data-wi="3">can</span> <span class="w" data-li="19" data-wi="4">also</span> <span class="w" data-li="19" data-wi="5">cultivate</span> <span class="w" data-li="19" data-wi="6">a</span> <span class="w" data-li="19" data-wi="7">child's</span> <span class="w" data-li="19" data-wi="8">sense</span> <span class="w" data-li="19" data-wi="9">of</span> <span class="w mk" data-li="19" data-wi="10">responsibility</span> <span class="w mk" data-li="19" data-wi="11">as</span> <span class="w mk" data-li="19" data-wi="12">their</span> <span class="w" data-li="19" data-wi="13">parent</span> <span class="w mk" data-li="19" data-wi="14">explains</span> <span class="w mk" data-li="19" data-wi="15">the</span> <span class="w" data-li="19" data-wi="16">necessary</span> <span class="w mk" data-li="19" data-wi="17">processes</span> <span class="w mk" data-li="19" data-wi="18">of</span> <span class="w mk" data-li="19" data-wi="19">keeping</span> <span class="w mk" data-li="19" data-wi="20">their</span> <span class="w" data-li="19" data-wi="21">pet</span> <span class="w mk" data-li="19" data-wi="22">happy</span> <span class="w mk" data-li="19" data-wi="23">and</span> <span class="w" data-li="19" data-wi="24">healthy.</span></div></div><div class="line" data-li="20"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">随着孩子长大，他们就可以……承担更多日常职责，提升他们的独立意识。</span></div><div class="en"><span class="w mk" data-li="20" data-wi="0">As</span> <span class="w mk" data-li="20" data-wi="1">a</span> <span class="w" data-li="20" data-wi="2">child</span> <span class="w" data-li="20" data-wi="3">matures,</span> <span class="w mk" data-li="20" data-wi="4">they</span> <span class="w mk" data-li="20" data-wi="5">can</span> <span class="w" data-li="20" data-wi="6">then</span> <span class="w" data-li="20" data-wi="7">take</span> <span class="w" data-li="20" data-wi="8">on</span> <span class="w" data-li="20" data-wi="9">more</span> <span class="w mk" data-li="20" data-wi="10">of</span> <span class="w mk" data-li="20" data-wi="11">the</span> <span class="w" data-li="20" data-wi="12">daily</span> <span class="w" data-li="20" data-wi="13">responsibilities,</span> <span class="w mk" data-li="20" data-wi="14">boosting</span> <span class="w mk" data-li="20" data-wi="15">their</span> <span class="w" data-li="20" data-wi="16">sense</span> <span class="w" data-li="20" data-wi="17">of</span> <span class="w" data-li="20" data-wi="18">independence.</span></div></div><div class="line" data-li="21"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">宠物也是绝佳的研究对象。以及学习。</span></div><div class="en"><span class="w" data-li="21" data-wi="0">Pets</span> <span class="w" data-li="21" data-wi="1">also</span> <span class="w" data-li="21" data-wi="2">provide</span> <span class="w" data-li="21" data-wi="3">a</span> <span class="w" data-li="21" data-wi="4">fantastic</span> <span class="w mk" data-li="21" data-wi="5">subject</span> <span class="w mk" data-li="21" data-wi="6">for</span> <span class="w mk" data-li="21" data-wi="7">research</span> <span class="w mk" data-li="21" data-wi="8">and</span> <span class="w" data-li="21" data-wi="9">learning.</span></div></div><div class="line" data-li="22"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">父母可以鼓励孩子进行研究。在图书馆或期间最喜欢的宠物监督式互联网搜索。</span></div><div class="en"><span class="w mk" data-li="22" data-wi="0">Parents</span> <span class="w mk" data-li="22" data-wi="1">can</span> <span class="w" data-li="22" data-wi="2">encourage</span> <span class="w" data-li="22" data-wi="3">their</span> <span class="w mk" data-li="22" data-wi="4">child</span> <span class="w mk" data-li="22" data-wi="5">to</span> <span class="w mk" data-li="22" data-wi="6">research</span> <span class="w mk" data-li="22" data-wi="7">their</span> <span class="w" data-li="22" data-wi="8">favorite</span> <span class="w mk" data-li="22" data-wi="9">pets</span> <span class="w mk" data-li="22" data-wi="10">at</span> <span class="w mk" data-li="22" data-wi="11">the</span> <span class="w mk" data-li="22" data-wi="12">library</span> <span class="w mk" data-li="22" data-wi="13">or</span> <span class="w mk" data-li="22" data-wi="14">during</span> <span class="w mk" data-li="22" data-wi="15">a</span> <span class="w" data-li="22" data-wi="16">supervised</span> <span class="w" data-li="22" data-wi="17">internet</span> <span class="w" data-li="22" data-wi="18">search.</span></div></div><div class="line" data-li="23"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">带孩子去宠物店购买食物和用品将有助于他们的认知能力。随着他们对学习的热情日益高涨，他们的发展也随之而来。</span></div><div class="en"><span class="w" data-li="23" data-wi="0">Taking</span> <span class="w" data-li="23" data-wi="1">children</span> <span class="w mk" data-li="23" data-wi="2">along</span> <span class="w mk" data-li="23" data-wi="3">to</span> <span class="w" data-li="23" data-wi="4">the</span> <span class="w" data-li="23" data-wi="5">pet</span> <span class="w mk" data-li="23" data-wi="6">shop</span> <span class="w mk" data-li="23" data-wi="7">to</span> <span class="w" data-li="23" data-wi="8">buy</span> <span class="w mk" data-li="23" data-wi="9">food</span> <span class="w mk" data-li="23" data-wi="10">and</span> <span class="w mk" data-li="23" data-wi="11">supplies</span> <span class="w mk" data-li="23" data-wi="12">will</span> <span class="w mk" data-li="23" data-wi="13">support</span> <span class="w mk" data-li="23" data-wi="14">their</span> <span class="w" data-li="23" data-wi="15">cognitive</span> <span class="w mk" data-li="23" data-wi="16">development</span> <span class="w mk" data-li="23" data-wi="17">as</span> <span class="w mk" data-li="23" data-wi="18">their</span> <span class="w mk" data-li="23" data-wi="19">passion</span> <span class="w mk" data-li="23" data-wi="20">for</span> <span class="w" data-li="23" data-wi="21">learning</span> <span class="w" data-li="23" data-wi="22">flourishes.</span></div></div><div class="line" data-li="24"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">儿童的身体发育可以从中受益匪浅带宠物到户外呼吸新鲜空气散步。</span></div><div class="en"><span class="w" data-li="24" data-wi="0">A</span> <span class="w" data-li="24" data-wi="1">child's</span> <span class="w" data-li="24" data-wi="2">physical</span> <span class="w mk" data-li="24" data-wi="3">development</span> <span class="w mk" data-li="24" data-wi="4">can</span> <span class="w" data-li="24" data-wi="5">benefit</span> <span class="w mk" data-li="24" data-wi="6">greatly</span> <span class="w mk" data-li="24" data-wi="7">from</span> <span class="w" data-li="24" data-wi="8">taking</span> <span class="w mk" data-li="24" data-wi="9">pets</span> <span class="w mk" data-li="24" data-wi="10">for</span> <span class="w mk" data-li="24" data-wi="11">walks</span> <span class="w mk" data-li="24" data-wi="12">in</span> <span class="w mk" data-li="24" data-wi="13">the</span> <span class="w" data-li="24" data-wi="14">fresh</span> <span class="w" data-li="24" data-wi="15">air.</span></div></div><div class="line" data-li="25"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">甚至他们的精细动作技能也可以被利用。在照顾心爱的动物方面。</span></div><div class="en"><span class="w mk" data-li="25" data-wi="0">Even</span> <span class="w mk" data-li="25" data-wi="1">their</span> <span class="w" data-li="25" data-wi="2">fine</span> <span class="w" data-li="25" data-wi="3">motor</span> <span class="w mk" data-li="25" data-wi="4">skills</span> <span class="w mk" data-li="25" data-wi="5">can</span> <span class="w mk" data-li="25" data-wi="6">be</span> <span class="w mk" data-li="25" data-wi="7">utilized</span> <span class="w mk" data-li="25" data-wi="8">in</span> <span class="w" data-li="25" data-wi="9">taking</span> <span class="w" data-li="25" data-wi="10">care</span> <span class="w mk" data-li="25" data-wi="11">of</span> <span class="w mk" data-li="25" data-wi="12">a</span> <span class="w" data-li="25" data-wi="13">beloved</span> <span class="w" data-li="25" data-wi="14">animal.</span></div></div><div class="line" data-li="26"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">当职责分配得当且沟通顺畅时，孩子可以从参与抚养孩子的过程中受益匪浅。养育一只快乐健康的宠物。</span></div><div class="en"><span class="w" data-li="26" data-wi="0">When</span> <span class="w mk" data-li="26" data-wi="1">responsibilities</span> <span class="w mk" data-li="26" data-wi="2">are</span> <span class="w" data-li="26" data-wi="3">well</span> <span class="w mk" data-li="26" data-wi="4">paced</span> <span class="w mk" data-li="26" data-wi="5">and</span> <span class="w mk" data-li="26" data-wi="6">communicated,</span> <span class="w mk" data-li="26" data-wi="7">a</span> <span class="w mk" data-li="26" data-wi="8">child</span> <span class="w mk" data-li="26" data-wi="9">can</span> <span class="w" data-li="26" data-wi="10">benefit</span> <span class="w mk" data-li="26" data-wi="11">greatly</span> <span class="w mk" data-li="26" data-wi="12">from</span> <span class="w mk" data-li="26" data-wi="13">involvement</span> <span class="w mk" data-li="26" data-wi="14">in</span> <span class="w mk" data-li="26" data-wi="15">bringing</span> <span class="w mk" data-li="26" data-wi="16">up</span> <span class="w mk" data-li="26" data-wi="17">a</span> <span class="w mk" data-li="26" data-wi="18">happy</span> <span class="w mk" data-li="26" data-wi="19">and</span> <span class="w" data-li="26" data-wi="20">healthy</span> <span class="w" data-li="26" data-wi="21">pet.</span></div></div><div class="line" data-li="27"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">当然，如果一个孩子没有如果家里养了宠物，他们就可以仍然能够从上述所有方面受益去拜访一位有此经历的朋友。</span></div><div class="en"><span class="w mk" data-li="27" data-wi="0">And</span> <span class="w mk" data-li="27" data-wi="1">of</span> <span class="w" data-li="27" data-wi="2">course,</span> <span class="w mk" data-li="27" data-wi="3">if</span> <span class="w mk" data-li="27" data-wi="4">a</span> <span class="w" data-li="27" data-wi="5">child</span> <span class="w mk" data-li="27" data-wi="6">doesn't</span> <span class="w mk" data-li="27" data-wi="7">have</span> <span class="w" data-li="27" data-wi="8">a</span> <span class="w mk" data-li="27" data-wi="9">pet</span> <span class="w mk" data-li="27" data-wi="10">in</span> <span class="w mk" data-li="27" data-wi="11">their</span> <span class="w" data-li="27" data-wi="12">own</span> <span class="w" data-li="27" data-wi="13">household,</span> <span class="w mk" data-li="27" data-wi="14">they</span> <span class="w mk" data-li="27" data-wi="15">can</span> <span class="w" data-li="27" data-wi="16">still</span> <span class="w mk" data-li="27" data-wi="17">benefit</span> <span class="w mk" data-li="27" data-wi="18">from</span> <span class="w mk" data-li="27" data-wi="19">all</span> <span class="w mk" data-li="27" data-wi="20">of</span> <span class="w mk" data-li="27" data-wi="21">the</span> <span class="w" data-li="27" data-wi="22">above</span> <span class="w" data-li="27" data-wi="23">when</span> <span class="w mk" data-li="27" data-wi="24">visiting</span> <span class="w mk" data-li="27" data-wi="25">a</span> <span class="w" data-li="27" data-wi="26">friend</span> <span class="w" data-li="27" data-wi="27">who</span> <span class="w" data-li="27" data-wi="28">does.</span></div></div><div class="line" data-li="28"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">第三段。</span></div><div class="en"><span class="w" data-li="28" data-wi="0">Passage</span> <span class="w" data-li="28" data-wi="1">3.</span></div></div><div class="line" data-li="29"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">俄亥俄州议会的一项新法案将要求州立公立学院和大学发送给准学生们一份资料包。</span></div><div class="en"><span class="w" data-li="29" data-wi="0">A</span> <span class="w" data-li="29" data-wi="1">new</span> <span class="w mk" data-li="29" data-wi="2">bill</span> <span class="w mk" data-li="29" data-wi="3">in</span> <span class="w mk" data-li="29" data-wi="4">the</span> <span class="w" data-li="29" data-wi="5">Ohio</span> <span class="w" data-li="29" data-wi="6">legislature</span> <span class="w" data-li="29" data-wi="7">would</span> <span class="w" data-li="29" data-wi="8">require</span> <span class="w" data-li="29" data-wi="9">state</span> <span class="w" data-li="29" data-wi="10">public</span> <span class="w mk" data-li="29" data-wi="11">colleges</span> <span class="w mk" data-li="29" data-wi="12">and</span> <span class="w mk" data-li="29" data-wi="13">universities</span> <span class="w mk" data-li="29" data-wi="14">to</span> <span class="w" data-li="29" data-wi="15">send</span> <span class="w" data-li="29" data-wi="16">prospective</span> <span class="w mk" data-li="29" data-wi="17">students</span> <span class="w mk" data-li="29" data-wi="18">a</span> <span class="w mk" data-li="29" data-wi="19">packet</span> <span class="w mk" data-li="29" data-wi="20">of</span> <span class="w" data-li="29" data-wi="21">information.</span></div></div><div class="line" data-li="30"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">这包括大学费用、助学金和奖学金。</span></div><div class="en"><span class="w mk" data-li="30" data-wi="0">This</span> <span class="w mk" data-li="30" data-wi="1">would</span> <span class="w" data-li="30" data-wi="2">include</span> <span class="w mk" data-li="30" data-wi="3">costs</span> <span class="w mk" data-li="30" data-wi="4">of</span> <span class="w" data-li="30" data-wi="5">college,</span> <span class="w mk" data-li="30" data-wi="6">grants,</span> <span class="w mk" data-li="30" data-wi="7">and</span> <span class="w" data-li="30" data-wi="8">scholarships.</span></div></div><div class="line" data-li="31"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">它还将包括预计的每月贷款还款额。以及大学毕业后的预计薪资。</span></div><div class="en"><span class="w mk" data-li="31" data-wi="0">It</span> <span class="w mk" data-li="31" data-wi="1">would</span> <span class="w" data-li="31" data-wi="2">also</span> <span class="w" data-li="31" data-wi="3">include</span> <span class="w" data-li="31" data-wi="4">expected</span> <span class="w" data-li="31" data-wi="5">monthly</span> <span class="w" data-li="31" data-wi="6">loan</span> <span class="w mk" data-li="31" data-wi="7">payments</span> <span class="w mk" data-li="31" data-wi="8">and</span> <span class="w" data-li="31" data-wi="9">projected</span> <span class="w" data-li="31" data-wi="10">salary</span> <span class="w" data-li="31" data-wi="11">after</span> <span class="w" data-li="31" data-wi="12">college.</span></div></div><div class="line" data-li="32"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">州众议员亚当·马修斯是其中之一提出该法案的两名立法者。</span></div><div class="en"><span class="w" data-li="32" data-wi="0">State</span> <span class="w" data-li="32" data-wi="1">Representative</span> <span class="w" data-li="32" data-wi="2">Adam</span> <span class="w mk" data-li="32" data-wi="3">Matthews</span> <span class="w mk" data-li="32" data-wi="4">is</span> <span class="w" data-li="32" data-wi="5">one</span> <span class="w mk" data-li="32" data-wi="6">of</span> <span class="w mk" data-li="32" data-wi="7">the</span> <span class="w" data-li="32" data-wi="8">two</span> <span class="w" data-li="32" data-wi="9">legislators</span> <span class="w" data-li="32" data-wi="10">who</span> <span class="w mk" data-li="32" data-wi="11">proposed</span> <span class="w mk" data-li="32" data-wi="12">the</span> <span class="w" data-li="32" data-wi="13">bill.</span></div></div><div class="line" data-li="33"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">他说这将为未来的学生提供更多机会毕业后将面临的情况信息。</span></div><div class="en"><span class="w" data-li="33" data-wi="0">He</span> <span class="w mk" data-li="33" data-wi="1">said</span> <span class="w mk" data-li="33" data-wi="2">it</span> <span class="w mk" data-li="33" data-wi="3">would</span> <span class="w" data-li="33" data-wi="4">give</span> <span class="w" data-li="33" data-wi="5">prospective</span> <span class="w" data-li="33" data-wi="6">students</span> <span class="w" data-li="33" data-wi="7">more</span> <span class="w" data-li="33" data-wi="8">information</span> <span class="w" data-li="33" data-wi="9">about</span> <span class="w mk" data-li="33" data-wi="10">what</span> <span class="w mk" data-li="33" data-wi="11">to</span> <span class="w" data-li="33" data-wi="12">expect</span> <span class="w" data-li="33" data-wi="13">once</span> <span class="w" data-li="33" data-wi="14">they</span> <span class="w" data-li="33" data-wi="15">graduate.</span></div></div><div class="line" data-li="34"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">把这些信息摆在他们面前会给他们最好的机会去匹配他们的技能和他们的梦想与我们学校的理念息息相关马修斯说，可以提供。</span></div><div class="en"><span class="w mk" data-li="34" data-wi="0">Putting</span> <span class="w mk" data-li="34" data-wi="1">that</span> <span class="w mk" data-li="34" data-wi="2">information</span> <span class="w mk" data-li="34" data-wi="3">in</span> <span class="w mk" data-li="34" data-wi="4">front</span> <span class="w mk" data-li="34" data-wi="5">of</span> <span class="w mk" data-li="34" data-wi="6">them</span> <span class="w mk" data-li="34" data-wi="7">will</span> <span class="w" data-li="34" data-wi="8">give</span> <span class="w mk" data-li="34" data-wi="9">them</span> <span class="w mk" data-li="34" data-wi="10">the</span> <span class="w" data-li="34" data-wi="11">best</span> <span class="w mk" data-li="34" data-wi="12">opportunity</span> <span class="w mk" data-li="34" data-wi="13">to</span> <span class="w mk" data-li="34" data-wi="14">match</span> <span class="w mk" data-li="34" data-wi="15">their</span> <span class="w mk" data-li="34" data-wi="16">skills</span> <span class="w mk" data-li="34" data-wi="17">and</span> <span class="w mk" data-li="34" data-wi="18">their</span> <span class="w mk" data-li="34" data-wi="19">dreams</span> <span class="w mk" data-li="34" data-wi="20">to</span> <span class="w mk" data-li="34" data-wi="21">what</span> <span class="w mk" data-li="34" data-wi="22">our</span> <span class="w mk" data-li="34" data-wi="23">schools</span> <span class="w mk" data-li="34" data-wi="24">can</span> <span class="w" data-li="34" data-wi="25">provide,</span> <span class="w" data-li="34" data-wi="26">said</span> <span class="w" data-li="34" data-wi="27">Matthews.</span></div></div><div class="line" data-li="35"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">他指出，国家只能进行监管。公共机构就是这样运作的，但他希望俄亥俄州的私立机构效仿了……向州政府发布类似信息。</span></div><div class="en"><span class="w" data-li="35" data-wi="0">He</span> <span class="w mk" data-li="35" data-wi="1">notes</span> <span class="w mk" data-li="35" data-wi="2">that</span> <span class="w mk" data-li="35" data-wi="3">the</span> <span class="w" data-li="35" data-wi="4">state</span> <span class="w" data-li="35" data-wi="5">can</span> <span class="w" data-li="35" data-wi="6">only</span> <span class="w" data-li="35" data-wi="7">regulate</span> <span class="w" data-li="35" data-wi="8">public</span> <span class="w mk" data-li="35" data-wi="9">institutions</span> <span class="w mk" data-li="35" data-wi="10">in</span> <span class="w" data-li="35" data-wi="11">this</span> <span class="w mk" data-li="35" data-wi="12">way,</span> <span class="w mk" data-li="35" data-wi="13">but</span> <span class="w" data-li="35" data-wi="14">he</span> <span class="w" data-li="35" data-wi="15">hopes</span> <span class="w" data-li="35" data-wi="16">private</span> <span class="w mk" data-li="35" data-wi="17">institutions</span> <span class="w mk" data-li="35" data-wi="18">in</span> <span class="w" data-li="35" data-wi="19">Ohio</span> <span class="w mk" data-li="35" data-wi="20">follow</span> <span class="w mk" data-li="35" data-wi="21">the</span> <span class="w mk" data-li="35" data-wi="22">lead</span> <span class="w mk" data-li="35" data-wi="23">of</span> <span class="w mk" data-li="35" data-wi="24">the</span> <span class="w" data-li="35" data-wi="25">state</span> <span class="w" data-li="35" data-wi="26">and</span> <span class="w" data-li="35" data-wi="27">post</span> <span class="w" data-li="35" data-wi="28">similar</span> <span class="w" data-li="35" data-wi="29">information.</span></div></div><div class="line" data-li="36"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">他认为公布这些信息会有帮助俄亥俄州的学院和大学将更具竞争力。</span></div><div class="en"><span class="w" data-li="36" data-wi="0">He</span> <span class="w" data-li="36" data-wi="1">believes</span> <span class="w mk" data-li="36" data-wi="2">giving</span> <span class="w mk" data-li="36" data-wi="3">out</span> <span class="w" data-li="36" data-wi="4">this</span> <span class="w mk" data-li="36" data-wi="5">information</span> <span class="w mk" data-li="36" data-wi="6">will</span> <span class="w" data-li="36" data-wi="7">help</span> <span class="w" data-li="36" data-wi="8">Ohio's</span> <span class="w mk" data-li="36" data-wi="9">colleges</span> <span class="w mk" data-li="36" data-wi="10">and</span> <span class="w mk" data-li="36" data-wi="11">universities</span> <span class="w mk" data-li="36" data-wi="12">to</span> <span class="w" data-li="36" data-wi="13">be</span> <span class="w" data-li="36" data-wi="14">more</span> <span class="w" data-li="36" data-wi="15">competitive.</span></div></div><div class="line" data-li="37"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">这些信息将突出其巨大的价值。它们价格非常合理。</span></div><div class="en"><span class="w" data-li="37" data-wi="0">The</span> <span class="w mk" data-li="37" data-wi="1">information</span> <span class="w mk" data-li="37" data-wi="2">will</span> <span class="w" data-li="37" data-wi="3">highlight</span> <span class="w mk" data-li="37" data-wi="4">what</span> <span class="w mk" data-li="37" data-wi="5">a</span> <span class="w" data-li="37" data-wi="6">great</span> <span class="w" data-li="37" data-wi="7">value</span> <span class="w mk" data-li="37" data-wi="8">they</span> <span class="w mk" data-li="37" data-wi="9">have</span> <span class="w mk" data-li="37" data-wi="10">for</span> <span class="w mk" data-li="37" data-wi="11">their</span> <span class="w" data-li="37" data-wi="12">very</span> <span class="w" data-li="37" data-wi="13">reasonable</span> <span class="w" data-li="37" data-wi="14">cost.</span></div></div><div class="line" data-li="38"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">俄亥俄州的学校本来就很有竞争力。</span></div><div class="en"><span class="w" data-li="38" data-wi="0">Ohio's</span> <span class="w mk" data-li="38" data-wi="1">schools</span> <span class="w mk" data-li="38" data-wi="2">are</span> <span class="w" data-li="38" data-wi="3">already</span> <span class="w" data-li="38" data-wi="4">competitive.</span></div></div><div class="line" data-li="39"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">该州吸引的本科生人数比其他州多。向外州大学输送人才。</span></div><div class="en"><span class="w" data-li="39" data-wi="0">The</span> <span class="w" data-li="39" data-wi="1">state</span> <span class="w" data-li="39" data-wi="2">attracts</span> <span class="w" data-li="39" data-wi="3">more</span> <span class="w" data-li="39" data-wi="4">undergraduate</span> <span class="w" data-li="39" data-wi="5">students</span> <span class="w mk" data-li="39" data-wi="6">than</span> <span class="w mk" data-li="39" data-wi="7">it</span> <span class="w mk" data-li="39" data-wi="8">sends</span> <span class="w mk" data-li="39" data-wi="9">to</span> <span class="w mk" data-li="39" data-wi="10">colleges</span> <span class="w mk" data-li="39" data-wi="11">out</span> <span class="w mk" data-li="39" data-wi="12">of</span> <span class="w" data-li="39" data-wi="13">state.</span></div></div><div class="line" data-li="40"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">目前许多学院和大学都提供类似的信息。在他们的网站上。</span></div><div class="en"><span class="w" data-li="40" data-wi="0">Many</span> <span class="w mk" data-li="40" data-wi="1">colleges</span> <span class="w mk" data-li="40" data-wi="2">and</span> <span class="w" data-li="40" data-wi="3">universities</span> <span class="w" data-li="40" data-wi="4">currently</span> <span class="w" data-li="40" data-wi="5">provide</span> <span class="w" data-li="40" data-wi="6">similar</span> <span class="w mk" data-li="40" data-wi="7">information</span> <span class="w mk" data-li="40" data-wi="8">on</span> <span class="w mk" data-li="40" data-wi="9">their</span> <span class="w" data-li="40" data-wi="10">websites.</span></div></div><div class="line" data-li="41"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">这包括学费、杂费、毕业率等等。</span></div><div class="en"><span class="w" data-li="41" data-wi="0">This</span> <span class="w" data-li="41" data-wi="1">includes</span> <span class="w" data-li="41" data-wi="2">tuition,</span> <span class="w" data-li="41" data-wi="3">fees,</span> <span class="w" data-li="41" data-wi="4">graduation</span> <span class="w mk" data-li="41" data-wi="5">rates,</span> <span class="w mk" data-li="41" data-wi="6">and</span> <span class="w" data-li="41" data-wi="7">more.</span></div></div><div class="line" data-li="42"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">但学生需要自己去查找信息。</span></div><div class="en"><span class="w" data-li="42" data-wi="0">But</span> <span class="w" data-li="42" data-wi="1">students</span> <span class="w mk" data-li="42" data-wi="2">need</span> <span class="w mk" data-li="42" data-wi="3">to</span> <span class="w mk" data-li="42" data-wi="4">search</span> <span class="w mk" data-li="42" data-wi="5">for</span> <span class="w mk" data-li="42" data-wi="6">the</span> <span class="w" data-li="42" data-wi="7">information.</span></div></div><div class="line" data-li="43"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">这项法案将要求大学和学院直接将资料包寄送给学生。</span></div><div class="en"><span class="w" data-li="43" data-wi="0">This</span> <span class="w mk" data-li="43" data-wi="1">bill</span> <span class="w mk" data-li="43" data-wi="2">would</span> <span class="w" data-li="43" data-wi="3">require</span> <span class="w" data-li="43" data-wi="4">the</span> <span class="w mk" data-li="43" data-wi="5">universities</span> <span class="w mk" data-li="43" data-wi="6">and</span> <span class="w mk" data-li="43" data-wi="7">colleges</span> <span class="w mk" data-li="43" data-wi="8">to</span> <span class="w mk" data-li="43" data-wi="9">send</span> <span class="w mk" data-li="43" data-wi="10">a</span> <span class="w" data-li="43" data-wi="11">packet</span> <span class="w mk" data-li="43" data-wi="12">directly</span> <span class="w mk" data-li="43" data-wi="13">to</span> <span class="w" data-li="43" data-wi="14">students.</span></div></div><div class="line" data-li="44"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">听力理解部分到此结束。</span></div><div class="en"><span class="w mk" data-li="44" data-wi="0">That's</span> <span class="w mk" data-li="44" data-wi="1">the</span> <span class="w mk" data-li="44" data-wi="2">end</span> <span class="w mk" data-li="44" data-wi="3">of</span> <span class="w" data-li="44" data-wi="4">Listening</span> <span class="w" data-li="44" data-wi="5">Comprehension.</span></div></div>
 </div>
 
-<div class="card locked-sec" id="tableCard"><h2><span class="num">8</span>怎么用这份包</h2><p class="hint">真人原声 + 官方文本，这是最贴近考场的一份材料。</p><table><tr><th>步骤</th><th>做法</th></tr><tr><td>① 盲听</td><td>不暂停听一遍，凭印象做题</td></tr><tr><td>② 听写</td><td>进听写区逐句写，自动标出漏听/错听</td></tr><tr><td>③ 点读</td><td>标黄处逐词点开，🔁 循环到听清</td></tr><tr><td>④ 跟读</td><td>0.85× 跟读标黄句，读到能一口气说出来</td></tr></table><div class="tip green"><b>听写比对现在零误判</b>——文本是官方原文，标红就是真没听出来。这是之前识别版做不到的。</div></div>
+<div class="card locked-sec" id="tableCard"><h2><span class="num">8</span>怎么用这份包</h2><p class="hint">真人原声 + 官方文本，这是最贴近考场的一份材料。</p><table><tr><th>步骤</th><th>做法</th></tr><tr><td>① 盲听</td><td>不暂停听一遍，凭印象做题</td></tr><tr><td>② 听写</td><td>开「✍️ 听写模式」逐句写进本子，导出听写照发我批改</td></tr><tr><td>③ 点读</td><td>标黄处逐词点开，🔁 循环到听清</td></tr><tr><td>④ 跟读</td><td>0.85× 跟读标黄句，读到能一口气说出来</td></tr></table><div class="tip green"><b>听写比对现在零误判</b>——文本是官方原文，标红就是真没听出来。这是之前识别版做不到的。</div></div>
 
 <div class="card locked-sec" id="explainCard"><h2><span class="num">9</span>本段题目与答案（10 题）· 可点击作答</h2><p><b>第 16 题　答案 <b>B</b></b>　<i>What do we learn from the passage about the liftoff of spacecraft?</i></p><div class="green">见上方答题区</div><p><b>第 17 题　答案 <b>D</b></b>　<i>What happens traditionally to boosters, fuel tanks and other components in spaceflight?</i></p><div class="green">见上方答题区</div><p><b>第 18 题　答案 <b>C</b></b>　<i>What does the passage say we already have regarding spaceflight?</i></p><div class="green">见上方答题区</div><p><b>第 19 题　答案 <b>B</b></b>　<i>What does research show about reading to a loyal and non-judgmental companion?</i></p><div class="green">见上方答题区</div><p><b>第 20 题　答案 <b>A</b></b>　<i>How can parents make pets a fantastic subject for their children's research and learning?</i></p><div class="green">见上方答题区</div><p><b>第 21 题　答案 <b>D</b></b>　<i>How can children still benefit even when their family doesn't have a pet?</i></p><div class="green">见上方答题区</div><p><b>第 22 题　答案 <b>A</b></b>　<i>What would the new bill in the Ohio legislature require public colleges and universities to do?</i></p><div class="green">见上方答题区</div><p><b>第 23 题　答案 <b>D</b></b>　<i>What can the state only do, according to Adam Matthews?</i></p><div class="green">见上方答题区</div><p><b>第 24 题　答案 <b>B</b></b>　<i>What do we learn about Ohio's schools from the passage?</i></p><div class="green">见上方答题区</div><p><b>第 25 题　答案 <b>C</b></b>　<i>What is the problem with schools providing information on their websites?</i></p><div class="green">见上方答题区</div><p><b>中文翻译怎么看</b>　页面里的中文来自公开学习资源，<b>是机器翻译，只用来快速理解大意</b>，不要拿它学表达。</p><div class="why">真正该精读的是英文原文本身。</div><p><b>答题区</b>　题干与四个选项均已录入，<b>可直接点击作答，提交后自动判分</b>。</p><div class="amber">先盲听做题，再回来对答案——顺序反了就没用了。</div></div>
 
@@ -640,7 +627,6 @@ var QUIZ = [{"id": "q16", "stem": "16. What do we learn from the passage about t
         buildReceipt();
       });
     });
-    document.getElementById('blankNum').addEventListener('input', function(){ window.__rebuild(); });
     document.getElementById('hardest').addEventListener('input', function(){ window.__rebuild(); });
     window.__rebuild();
 
@@ -670,14 +656,9 @@ var QUIZ = [{"id": "q16", "stem": "16. What do we learn from the passage about t
     var ds = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
     var L = ['【四级训练回执】', '日期：' + ds, '训练包：2024-12-2 · Section C 听力篇章'];
     if (typeof quizLines === 'function'){ L = L.concat(quizLines()); }
-    var st = window.__dictStats;
-    if (st){
-      L.push('听写：' + st.acc + '% 正确（听对 ' + st.ok + '/' + st.total + '）· 漏听 ' + st.del + ' · 听错 ' + st.sub + ' · 多写 ' + st.ins);
-      if (st.top) L.push('首要错因：' + st.top);
-    } else {
-      L.push('听写：未做自动比对');
-    }
-    L.push('听写留白：' + (document.getElementById('blankNum').value || '0') + ' 处');
+    var pd = window.__dictPad;
+    if (pd && pd.written) L.push('听写照：随附图 —— 已写 ' + pd.written + ' / ' + pd.total + ' 句');
+    else L.push('听写照：随附图（逐句手写）');
     L.push('最难的一句：' + (document.getElementById('hardest').value || '（未填）'));
     L.push('—— 请据此给我出错因归因和改善方法');
     document.getElementById('receipt').value = L.join('\n');
@@ -702,141 +683,361 @@ var QUIZ = [{"id": "q16", "stem": "16. What do we learn from the passage about t
   document.getElementById('receipt').addEventListener('click', function(){ this.select(); this.setSelectionRange(0,99999); });
   buildReceipt();
 
+  /* ---------- 逐句听写本（分块 canvas · 笔迹数据化） ---------- */
+  var DP = (function(){
+    var card = document.getElementById('dictCard');
+    var wrap = document.getElementById('dpWrap');
+    if (!card || !wrap || !window.DATA) return null;
+    var LINES = DATA.lines || (DATA.rates && DATA.rates[0] && DATA.rates[0].lines) || [];
+    if (!LINES.length) return null;
 
-  /* ---------- 听写自动比对 ---------- */
-  var FUNC = {};
-  'a an the and or but if so than that this these those there here of to in on at for with from by as into onto over under about after before is am are was were be been being do does did done have has had having i you he she it we they me him her us them my your his its our their will would shall should can could may might must not no nor so too very just only also even still yet up down out off away back again more most much many some any all both each every one two three four five six seven eight nine ten when where why how what which who whom whose while because although though during between among through against without within upon'.split(' ').forEach(function(w){ if (w) FUNC[w] = 1; });
+    var DPR = Math.min(2, window.devicePixelRatio || 1);
+    var GAP = 9, ROW_H = 76, PAD_L = 54, PAD_R = 12, BLOCK_ROWS = 10;
+    var CO = '#1b1e23', CW = 2.6;
+    var FONT = '"HarmonyOS Sans","PingFang SC","Microsoft YaHei",-apple-system,BlinkMacSystemFont,sans-serif';
 
-  var REF = [];
-  (DATA.lines || DATA.rates[0].lines).forEach(function(ln, li){
-    var mk = (DATA.marks && DATA.marks[li]) ? DATA.marks[li] : [];
-    ln.tokens.forEach(function(t, wi){
-      REF.push({ w: t.w, mk: mk.indexOf(wi) >= 0, li: li });
-    });
-  });
+    var rows = [], H = 0, W = 0, blocks = [], strokes = [], cur = null, curLi = -1;
+    var API = { written:0, total:0 };
+    (function(){ var y = GAP; for (var i = 0; i < LINES.length; i++){ rows.push({ li:i, y:y, h:ROW_H }); y += ROW_H + GAP; } H = y; })();
+    API.total = rows.length;
 
-  function nw(s){ return String(s).toLowerCase().replace(/[^a-z0-9']/g, ''); }
-  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-  function lcsDiff(a, b){
-    var n = a.length, m = b.length, i, j;
-    var dp = [];
-    for (i = 0; i <= n; i++){ var row = []; for (j = 0; j <= m; j++) row.push(0); dp.push(row); }
-    for (i = 1; i <= n; i++) for (j = 1; j <= m; j++){
-      dp[i][j] = (nw(a[i-1]) === nw(b[j-1])) ? dp[i-1][j-1] + 1 : Math.max(dp[i-1][j], dp[i][j-1]);
+    function liAtY(gy){
+      var i = Math.floor((gy - GAP) / (ROW_H + GAP));
+      if (i < 0) i = 0;
+      if (i > rows.length - 1) i = rows.length - 1;
+      return i;
     }
-    var ops = []; i = n; j = m;
-    while (i > 0 && j > 0){
-      if (nw(a[i-1]) === nw(b[j-1])){ ops.push({t:'ok', a:a[i-1], b:b[j-1]}); i--; j--; }
-      else if (dp[i-1][j] >= dp[i][j-1]){ ops.push({t:'del', a:a[i-1]}); i--; }
-      else { ops.push({t:'ins', b:b[j-1]}); j--; }
-    }
-    while (i > 0){ i--; ops.push({t:'del', a:a[i]}); }
-    while (j > 0){ j--; ops.push({t:'ins', b:b[j]}); }
-    ops.reverse();
-    /* 把每段连续的"非听对"片段整理成 听错(sub) / 漏听(del) / 多写(ins) */
-    var out = [], k = 0;
-    while (k < ops.length){
-      if (ops[k].t === 'ok'){ out.push(ops[k]); k++; continue; }
-      var d = [], e = [];
-      while (k < ops.length && ops[k].t !== 'ok'){
-        if (ops[k].t === 'del') d.push(ops[k].a); else e.push(ops[k].b);
-        k++;
+
+    /* ── 绘制：把逻辑区间 [yTop,yBot) 画进 ctx（调用方已设好 transform） ── */
+    function drawInto(ctx, yTop, yBot, shift){
+      var i, j, r, s, p, q, o, lx, ly, mx, my;
+      ctx.textBaseline = 'top';
+      for (i = 0; i < rows.length; i++){
+        r = rows[i];
+        if (r.y + r.h + GAP < yTop || r.y - GAP > yBot) continue;
+        if (i === curLi){ ctx.fillStyle = '#fffbe6'; ctx.fillRect(0, r.y - 3, W, r.h + 6); }
+        ctx.font = '600 11.5px ' + FONT;
+        ctx.fillStyle = (i === curLi) ? '#a37d12' : '#adb5bd';
+        ctx.fillText('第' + (i + 1) + '句', 9, r.y + (r.h < 40 ? 2 : 4));
+        if (r.h >= 40){
+          ctx.strokeStyle = '#f1f3f6'; ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(PAD_L - 4, r.y + r.h / 2 - 8); ctx.lineTo(W - PAD_R, r.y + r.h / 2 - 8); ctx.stroke();
+          ctx.setLineDash([5, 5]);
+        }
+        ctx.strokeStyle = '#dfe4e9'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(PAD_L, r.y + r.h - 8); ctx.lineTo(W - PAD_R, r.y + r.h - 8); ctx.stroke();
+        ctx.setLineDash([]);
       }
-      var p = Math.min(d.length, e.length), q;
-      for (q = 0; q < p; q++) out.push({t:'sub', a:d[q], b:e[q]});
-      for (q = p; q < d.length; q++) out.push({t:'del', a:d[q]});
-      for (q = p; q < e.length; q++) out.push({t:'ins', b:e[q]});
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      for (i = 0; i < strokes.length; i++){
+        s = strokes[i]; r = rows[s.li];
+        if (!r) continue;
+        if (!shift && (r.y + r.h + GAP < yTop - 80 || r.y - GAP > yBot + 80)) continue;
+        var dy = shift ? shift(s.li) : 0;
+        p = s.pts; var n = p.length;
+        ctx.strokeStyle = CO; ctx.fillStyle = CO;
+        if (n === 1){
+          ctx.beginPath(); ctx.arc(p[0][0], p[0][1] + dy, Math.max(.6, p[0][2] / 2), 0, 6.2832); ctx.fill();
+          continue;
+        }
+        lx = p[0][0]; ly = p[0][1] + dy;
+        for (j = 1; j < n; j++){
+          q = p[j]; o = p[j - 1];
+          mx = (o[0] + q[0]) / 2; my = (o[1] + q[1]) / 2 + dy;
+          ctx.lineWidth = q[2];
+          ctx.beginPath(); ctx.moveTo(lx, ly);
+          ctx.quadraticCurveTo(o[0], o[1] + dy, mx, my);
+          ctx.stroke();
+          lx = mx; ly = my;
+        }
+      }
     }
-    return out;
-  }
 
-  function classify(idx){
-    var r = REF[idx];
-    if (!r) return '其他';
-    if (r.mk) return '连读/失爆区';
-    var w = nw(r.w);
-    if (FUNC[w]) return '虚词弱读';
-    if (w.length >= 5) return '可能生词';
-    return '其他';
-  }
-
-  document.getElementById('dictBtn').addEventListener('click', function(){
-    var raw = document.getElementById('dictIn').value.trim();
-    if (!raw){ toast('听写框还是空的'); return; }
-    var hyp = raw.split(/\s+/);
-    var refWords = REF.map(function(r){ return r.w; });
-    var ops = lcsDiff(refWords, hyp);
-
-    var okCount = 0, delList = [], subList = [], insCount = 0, ri = 0, prevLi = -1;
-    var parts = [];
-    ops.forEach(function(o){
-      if (o.t === 'ok'){ parts.push({h:'<span class="dok">' + esc(o.a) + '</span>', li: REF[ri] ? REF[ri].li : prevLi}); ri++; okCount++; }
-      else if (o.t === 'del'){ delList.push(ri); parts.push({h:'<span class="ddel">' + esc(o.a) + '</span>', li: REF[ri] ? REF[ri].li : prevLi}); ri++; }
-      else if (o.t === 'sub'){ subList.push(ri); parts.push({h:'<span class="dsub" title="你写的是：' + esc(o.b) + '">' + esc(o.a) + '</span>', li: REF[ri] ? REF[ri].li : prevLi}); ri++; }
-      else { insCount++; parts.push({h:'<span class="dins">' + esc(o.b) + '</span>', li: prevLi}); }
-    });
-
-    var buf = '', last = -1;
-    parts.forEach(function(p){
-      if (last >= 0 && p.li !== last) buf += '<span class="dbr"></span>';
-      buf += p.h + ' ';
-      last = p.li;
-    });
-    document.getElementById('dictView').innerHTML = buf;
-
-    var total = refWords.length;
-    var acc = Math.round(okCount / total * 100);
-
-    var cats = {};
-    delList.concat(subList).forEach(function(idx){
-      var c = classify(idx); cats[c] = (cats[c] || 0) + 1;
-    });
-    var arr = Object.keys(cats).map(function(k){ return {k:k, v:cats[k]}; })
-                    .sort(function(x,y){ return y.v - x.v; });
-    var wrongTotal = delList.length + subList.length;
-    var maxV = arr.length ? arr[0].v : 1;
-
-    var colors = {'连读/失爆区':'#c0392b', '虚词弱读':'#6b46c1', '可能生词':'#1f6feb', '其他':'#9a6a05'};
-    document.getElementById('dictAnalysis').innerHTML = arr.length ? (
-      '<div style="font-weight:700;margin:16px 0 6px;">错因分布（共错 ' + wrongTotal + ' 处）</div>' +
-      arr.map(function(x){
-        return '<div class="row"><span class="cat">' + x.k + '</span>'
-          + '<span class="bar2"><i style="width:' + Math.round(x.v / maxV * 100) + '%;background:' + (colors[x.k]||'#888') + '"></i></span>'
-          + '<span class="cnt">' + x.v + ' 处</span></div>';
-      }).join('')
-    ) : '<div class="tip green" style="margin-top:14px;"><b>全对。</b>逐词都对上了，这段音频对你已经没有辨音障碍——换下一个语速档，或者直接进下一篇。</div>';
-
-    var top = arr.length ? (arr[0].k + '（' + arr[0].v + ' 处）') : '无';
-    var advice = '';
-    if (arr.length){
-      if (arr[0].k === '连读/失爆区')
-        advice = '<div class="tip amber" style="margin-top:14px;"><b>这是好消息。</b>你错的词里有最大一块落在<b>连读/失爆标注区</b>——说明不是词汇量问题，是声音被吞掉。回到上方原文点读，把这些词所在句子用 🔁 循环五遍，然后跟读三遍。这是投入产出比最高的动作。</div>';
-      else if (arr[0].k === '可能生词')
-        advice = '<div class="tip blue" style="margin-top:14px;"><b>注意：</b>你漏的主要是较长的实词，这更像<b>词汇问题</b>而不是辨音问题。把上面标红的词抄进单词本，明天先复习这些词再听下一段。</div>';
-      else if (arr[0].k === '虚词弱读')
-        advice = '<div class="tip purple" style="margin-top:14px;"><b>典型症状：</b>漏的主要是 of / to / for / at 这类虚词。四级听力里虚词一律被压扁成 /ə/，<b>不要试图听清每一个词</b>——抓重音、抓实词，虚词自然就顺出来了。</div>';
+    function drawBlock(b){
+      var ctx = b.ctx;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, -b.top * DPR);
+      ctx.clearRect(0, b.top, W, b.h);
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, b.top, W, b.h);
+      drawInto(ctx, b.top, b.bot, null);
     }
-    document.getElementById('dictAnalysis').innerHTML += advice;
+    function drawAll(){ for (var i = 0; i < blocks.length; i++) drawBlock(blocks[i]); }
+    function drawRow(li){
+      if (li < 0) return;
+      for (var i = 0; i < blocks.length; i++){
+        var b = blocks[i];
+        if (li >= b.from && li < b.to){ drawBlock(b); return; }
+      }
+    }
 
-    document.getElementById('dictStat').innerHTML =
-      '听写准确率 <b>' + acc + '%</b>　（听对 ' + okCount + ' / 参考共 ' + total + ' 词）<br>'
-      + '漏听 <b>' + delList.length + '</b> 词　·　听错 <b>' + subList.length + '</b> 词　·　多写 <b>' + insCount + '</b> 词';
+    function layout(){
+      var cw = wrap.clientWidth;
+      if (!cw) return false;
+      if (cw === W && blocks.length) return false;
+      W = cw;
+      wrap.innerHTML = '';
+      blocks = [];
+      for (var i = 0; i < rows.length; i += BLOCK_ROWS){
+        var to = Math.min(i + BLOCK_ROWS, rows.length);
+        var top = (i === 0) ? 0 : rows[i].y - GAP;
+        var bot = (to >= rows.length) ? H : rows[to].y - GAP;
+        var bh = bot - top;
+        var cv = document.createElement('canvas');
+        cv.width = Math.round(W * DPR);
+        cv.height = Math.round(bh * DPR);
+        cv.style.width = W + 'px';
+        cv.style.height = bh + 'px';
+        var b = { from:i, to:to, top:top, bot:bot, h:bh, cv:cv, ctx:cv.getContext('2d') };
+        cv.__blk = b;
+        wrap.appendChild(cv);
+        blocks.push(b);
+        drawBlock(b);
+      }
+      return true;
+    }
 
-    window.__dictStats = { acc: acc, ok: okCount, total: total,
-                           del: delList.length, sub: subList.length, ins: insCount, top: top };
-    if (typeof window.__rebuild === 'function') window.__rebuild();
+    /* ── 书写（只有笔能写；手指留给滚动） ── */
+    function widthOf(e){
+      var p = (e.pointerType === 'pen' && typeof e.pressure === 'number' && e.pressure > 0) ? e.pressure : 0.5;
+      return Math.max(1.1, CW * (0.45 + p));
+    }
+    function locX(e, cv){ return e.clientX - cv.getBoundingClientRect().left; }
+    function locY(e, cv){ return e.clientY - cv.getBoundingClientRect().top + cv.__blk.top; }
+    function live(){
+      if (!cur || !cur.b) return;
+      var b = cur.b, ctx = b.ctx, p = cur.pts;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, -b.top * DPR);
+      ctx.strokeStyle = CO; ctx.fillStyle = CO;
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      if (p.length === 1){
+        ctx.beginPath(); ctx.arc(p[0][0], p[0][1], Math.max(.6, p[0][2] / 2), 0, 6.2832); ctx.fill();
+        cur.mid = [p[0][0], p[0][1]];
+      } else {
+        for (var i = cur.n; i < p.length; i++){
+          var q = p[i], o = p[i - 1];
+          var mx = (o[0] + q[0]) / 2, my = (o[1] + q[1]) / 2;
+          ctx.lineWidth = q[2];
+          ctx.beginPath(); ctx.moveTo(cur.mid[0], cur.mid[1]);
+          ctx.quadraticCurveTo(o[0], o[1], mx, my);
+          ctx.stroke();
+          cur.mid = [mx, my];
+        }
+      }
+      cur.n = p.length;
+    }
 
-    document.getElementById('dictOut').style.display = 'block';
-    toast('比对完成：准确率 ' + acc + '%');
-  });
+    wrap.addEventListener('pointerdown', function(e){
+      if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
+      var cv = e.target;
+      if (!cv || !cv.__blk) return;
+      var x = locX(e, cv), y = locY(e, cv);
+      cur = { li:liAtY(y), pts:[[x, y, widthOf(e)]], n:1, mid:null, b:cv.__blk };
+      strokes.push(cur);
+      live();
+      e.preventDefault();
+    }, {passive:false});
 
-  document.getElementById('dictClear').addEventListener('click', function(){
-    document.getElementById('dictIn').value = '';
-    document.getElementById('dictOut').style.display = 'none';
-    window.__dictStats = null;
-    if (typeof window.__rebuild === 'function') window.__rebuild();
-  });
+    wrap.addEventListener('pointermove', function(e){
+      if (!cur) return;
+      if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
+      var cv = cur.b.cv;
+      var evs = (typeof e.getCoalescedEvents === 'function') ? e.getCoalescedEvents() : null;
+      if (evs && evs.length){
+        for (var i = 0; i < evs.length; i++) cur.pts.push([locX(evs[i], cv), locY(evs[i], cv), widthOf(evs[i])]);
+      } else cur.pts.push([locX(e, cv), locY(e, cv), widthOf(e)]);
+      live();
+      e.preventDefault();
+    }, {passive:false});
+
+    ['pointerup', 'pointercancel'].forEach(function(ev){
+      wrap.addEventListener(ev, function(e){
+        if (!cur) return;
+        if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
+        var b = cur.b, r0 = rows[cur.li];
+        cur = null;
+        /* 收笔时按行高裁掉写飞出去的部分，避免串行 */
+        if (r0){
+          for (var i = strokes.length - 1; i >= 0; i--){
+            var s = strokes[i];
+            if (s.li !== r0.li) continue;
+            var lo = r0.y - 8, hi = r0.y + r0.h + 10;
+            for (var j = 0; j < s.pts.length; j++){
+              if (s.pts[j][1] < lo) s.pts[j][1] = lo;
+              if (s.pts[j][1] > hi) s.pts[j][1] = hi;
+            }
+            break;
+          }
+        }
+        if (b) drawBlock(b);
+        refreshCount();
+      });
+    });
+
+    /* ── 手指滚动（canvas 已 touch-action:none，需自己接管，含惯性） ── */
+    var TF = null;
+    wrap.addEventListener('pointerdown', function(e){
+      if (e.pointerType !== 'touch' || TF) return;
+      TF = { id:e.pointerId, y:e.clientY, base:(window.pageYOffset || 0), locked:false, hist:[[e.clientY, performance.now()]] };
+    }, {capture:true, passive:true});
+    wrap.addEventListener('pointermove', function(e){
+      if (!TF || e.pointerId !== TF.id) return;
+      var dy = TF.y - e.clientY;
+      if (!TF.locked){ if (Math.abs(dy) < 6) return; TF.locked = true; }
+      e.preventDefault();
+      window.scrollTo(window.pageXOffset || 0, TF.base + dy);
+      TF.hist.push([e.clientY, performance.now()]);
+      if (TF.hist.length > 5) TF.hist.shift();
+    }, {capture:true, passive:false});
+    ['pointerup', 'pointercancel'].forEach(function(ev){
+      wrap.addEventListener(ev, function(e){
+        if (!TF || e.pointerId !== TF.id) return;
+        var h = TF.hist, locked = TF.locked;
+        TF = null;
+        if (!locked || h.length < 2) return;
+        var a = h[0], b = h[h.length - 1], dt = b[1] - a[1];
+        if (dt < 8) return;
+        var vel = (a[0] - b[0]) / dt;
+        if (Math.abs(vel) < 0.1) return;
+        var last = performance.now();
+        (function step(){
+          var now = performance.now(), d = now - last; last = now;
+          if (d > 64) return;
+          vel *= Math.pow(0.9955, d);
+          if (Math.abs(vel) < 0.03) return;
+          window.scrollBy(0, vel * d);
+          requestAnimationFrame(step);
+        })();
+      }, {capture:true, passive:true});
+    });
+
+    /* ── 统计 / 按钮 ── */
+    var cnt = document.getElementById('dpCnt');
+    function writtenLi(){
+      var m = {}, i, j;
+      for (i = 0; i < strokes.length; i++){
+        var s = strokes[i], p = s.pts, x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+        for (j = 0; j < p.length; j++){
+          if (p[j][0] < x0) x0 = p[j][0];
+          if (p[j][0] > x1) x1 = p[j][0];
+          if (p[j][1] < y0) y0 = p[j][1];
+          if (p[j][1] > y1) y1 = p[j][1];
+        }
+        if (p.length < 3 && (x1 - x0) < 12 && (y1 - y0) < 12) continue;   /* 误触点不算 */
+        m[s.li] = 1;
+      }
+      return m;
+    }
+    function refreshCount(){
+      var m = writtenLi(), n = 0;
+      for (var k in m) if (m.hasOwnProperty(k)) n++;
+      API.written = n;
+      if (cnt) cnt.textContent = n ? ('已写 ' + n + ' / ' + rows.length + ' 句') : '';
+    }
+
+    var undo = document.getElementById('dpUndo');
+    if (undo) undo.addEventListener('click', function(){
+      if (!strokes.length){ toast('还没有笔迹'); return; }
+      var s = strokes.pop();
+      drawRow(s.li);
+      refreshCount();
+    });
+    var clr = document.getElementById('dpClear');
+    if (clr) clr.addEventListener('click', function(){
+      if (!strokes.length) return;
+      strokes = []; cur = null;
+      drawAll(); refreshCount();
+      var o = document.getElementById('dpOut');
+      if (o) o.style.display = 'none';
+      toast('听写本已清空');
+    });
+
+    /* 导出：没写的行压扁，保证宽度够清晰、总高可控 */
+    function exportPNG(){
+      var seen = writtenLi(), ex = [], i;
+      var HEAD = 42;
+      var y = HEAD + GAP;
+      for (i = 0; i < rows.length; i++){
+        var h = seen[i] ? ROW_H : 34;
+        ex.push({ li:i, y:y, h:h });
+        y += h + GAP;
+      }
+      var exH = y, sc = Math.min(2.6, Math.max(1, 660 / W));
+      if (exH * sc > 7000) sc = 7000 / exH;
+      sc = Math.max(0.9, sc);
+
+      var c = document.createElement('canvas');
+      c.width = Math.round(W * sc); c.height = Math.round(exH * sc);
+      var cx = c.getContext('2d');
+      cx.setTransform(sc, 0, 0, sc, 0, 0);
+      cx.fillStyle = '#fff'; cx.fillRect(0, 0, W, exH);
+
+      var h1 = document.querySelector('header h1');
+      cx.font = '700 15px ' + FONT;
+      cx.fillStyle = '#1b1e23';
+      cx.textBaseline = 'top';
+      cx.fillText('听写照 · ' + (h1 ? h1.textContent.trim() : ''), 10, 8);
+      cx.font = '400 11.5px ' + FONT;
+      cx.fillStyle = '#9aa3ad';
+      cx.fillText('已写 ' + (function(){ var n = 0; for (var k in seen) if (seen.hasOwnProperty(k)) n++; return n; })()
+                  + ' / ' + rows.length + ' 句　·　空白行＝没听出来', 10, 27);
+      cx.strokeStyle = '#e8ebef'; cx.lineWidth = 1;
+      cx.beginPath(); cx.moveTo(0, HEAD - 0.5); cx.lineTo(W, HEAD - 0.5); cx.stroke();
+
+      var sh = [], keepRows = rows, keepH = H, keepLi = curLi;
+      for (i = 0; i < rows.length; i++) sh.push(ex[i].y - rows[i].y);
+      rows = ex; H = exH; curLi = -1;
+      drawInto(cx, 0, exH, function(li){ return sh[li] || 0; });
+      rows = keepRows; H = keepH; curLi = keepLi;
+      return c.toDataURL('image/png');
+    }
+
+    var save = document.getElementById('dpSave');
+    if (save) save.addEventListener('click', function(){
+      if (!strokes.length){ toast('还是空本子，先听写吧'); return; }
+      var out = document.getElementById('dpOut');
+      var img = document.getElementById('dpImg');
+      var dl = document.getElementById('dpDl');
+      toast('正在生成听写照…');
+      setTimeout(function(){
+        try{
+          var url = exportPNG();
+          img.src = url;
+          if (dl) dl.href = url;
+          out.style.display = 'block';
+          out.scrollIntoView({behavior:'smooth', block:'nearest'});
+          toast('已生成，长按图片保存或截图发我');
+        }catch(err){ toast('生成失败，直接截图吧'); }
+      }, 30);
+    });
+
+    var rzT = 0;
+    window.addEventListener('resize', function(){
+      clearTimeout(rzT);
+      rzT = setTimeout(function(){ layout(); }, 220);
+    }, {passive:true});
+
+    function show(){
+      card.classList.remove('hide');
+      layout();
+    }
+    function hide(){ card.classList.add('hide'); }
+    function focusLine(li){
+      if (card.classList.contains('hide')) return;
+      layout();
+      if (li !== curLi){ var old = curLi; curLi = li; drawRow(old); drawRow(li); }
+      if (cur) return;                                  /* 正在写，别抢滚动 */
+      var r = rows[li];
+      if (!r) return;
+      var top = wrap.getBoundingClientRect().top + (window.pageYOffset || 0) + r.y;
+      var vp = window.pageYOffset || 0;
+      if (top < vp + 90 || top > vp + window.innerHeight - 220)
+        window.scrollTo({ top: Math.max(0, top - 120), behavior:'smooth' });
+    }
+
+    API.show = show; API.hide = hide; API.focusLine = focusLine; API.layout = layout;
+    window.__dictPad = API;
+    return API;
+  })();
 
 
   var t;
@@ -1290,6 +1491,7 @@ for (var qid in AL){
   var penTapRec = null;
   function penTapDown(e){
     if (e.pointerType !== 'pen') return;
+    if (skipPen(e.target)){ penTapRec = null; return; }
     diag(e, 'down', true);           /* 诊断：未开涂写时也能看到事件 */
     penTapRec = { t: performance.now(), x: e.pageX, y: e.pageY, moved: false };
   }
@@ -1321,6 +1523,8 @@ for (var qid in AL){
   document.addEventListener('pointercancel', function(e){ if (e.pointerType === 'pen') penTapRec = null; }, {capture:true});
 
   var EXCLUDE = 'input,textarea,select,#markBar';
+  var PEN_SKIP = '.dpwrap';        /* 听写本自带笔迹，全局画笔让位 */
+  function skipPen(t){ return !!(t && t.closest && t.closest(PEN_SKIP)); }
   function hitUI(t, x, y){
     if (t && t.closest && t.closest(EXCLUDE)) return true;
     var bar = document.getElementById('markBar');
@@ -1343,7 +1547,7 @@ for (var qid in AL){
     if (mode === 'off' || e.pointerType !== 'touch' || TF.id !== null) return;
     diag(e, 'down', true);
     if (e.isPrimary === false) return;
-    if (hitUI(e.target, e.clientX, e.clientY)) return;
+    if (hitUI(e.target, e.clientX, e.clientY) || skipPen(e.target)) return;
     if (e.target && e.target.closest && e.target.closest('input,textarea,select')) return;
     TF.id = e.pointerId; TF.y = e.clientY; TF.locked = false;
     TF.host = scrollHost(e.target);
@@ -1402,7 +1606,7 @@ for (var qid in AL){
   document.addEventListener('pointerdown', function(e){
     if (mode === 'off') return;
     if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
-    if (hitUI(e.target, e.clientX, e.clientY)) return;
+    if (hitUI(e.target, e.clientX, e.clientY) || skipPen(e.target)) return;
     diag(e, 'down', true);
     TF.id = null; TF.host = null;          /* 笔落下：立即终止手指滚动接管 */
     drawing = true;
@@ -1564,20 +1768,7 @@ for (var qid in AL){
 </script>
 
 <script>
-/* 手写听写：拍照交批改 */
-(function(){
-  var b = document.getElementById('dictPhoto');
-  if (!b) return;
-  b.addEventListener('click', function(){
-    var t = document.getElementById('dictPhotoTip');
-    if (t) t.style.display = (t.style.display === 'none') ? 'block' : 'none';
-    b.textContent = (t && t.style.display === 'block') ? '📷 收起说明' : '📷 手写听写 · 拍照交批改';
-  });
-})();
-</script>
-
-<script>
-/* 听写模式：逐句播放 → 播完自动暂停 → 写好后点「下一句」 */
+/* 听写模式：逐句播放 → 播完自动暂停 → 听写本自动跳到那一行 */
 (function(){
   var audio = document.getElementById('audio');
   var bar = document.getElementById('dictBar');
@@ -1587,6 +1778,9 @@ for (var qid in AL){
   var bNext = document.getElementById('dbNext');
   var bAgain = document.getElementById('dbAgain');
   var on = false, curLi = -1, B = null, guard = 0;
+  var DP = window.__dictPad || null;
+  var tpFollow = document.getElementById('tpFollow');
+  var followBack = false;          /* 进去前若开着自动滚动，退出时还给他 */
 
   function bounds(){
     if (B) return B;
@@ -1609,6 +1803,8 @@ for (var qid in AL){
     curLi = li;
     guard = performance.now() + 500;          /* 刚切句，先忽略句末判断 */
     bar.classList.remove('on');
+    DP = window.__dictPad || DP;
+    if (DP) DP.focusLine(li);                 /* 本子跳到这一行 */
     audio.currentTime = b[li][0];
     var pr = audio.play();
     if (pr && pr.catch) pr.catch(function(){});
@@ -1617,10 +1813,10 @@ for (var qid in AL){
   function showWait(li){
     var b = bounds(), last = (li + 1 >= b.length);
     if (last){
-      txt.innerHTML = '🎉 <b>' + b.length + ' 句全部播完</b> —— 去听写区比对，看漏了哪些';
+      txt.innerHTML = '🎉 <b>' + b.length + ' 句全部播完</b> —— 点「📷 导出听写照」，把本子发我批改';
       bNext.textContent = '✓ 完成';
     } else {
-      txt.innerHTML = '✍️ <b>第 ' + (li + 1) + ' / ' + b.length + ' 句</b>播完了 —— 写好后继续';
+      txt.innerHTML = '✍️ <b>第 ' + (li + 1) + ' / ' + b.length + ' 句</b>播完了 —— 写完点「下一句」';
       bNext.textContent = '▶ 下一句';
     }
     bar.classList.add('on');
@@ -1629,6 +1825,8 @@ for (var qid in AL){
     on = false; curLi = -1;
     btn.classList.remove('act'); btn.textContent = '✍️ 听写模式';
     bar.classList.remove('on');
+    if (window.__dictPad) window.__dictPad.hide();
+    if (followBack && tpFollow){ tpFollow.click(); followBack = false; }
   }
 
   audio.addEventListener('timeupdate', function(){
@@ -1647,11 +1845,14 @@ for (var qid in AL){
     if (on){ exitMode(); return; }
     on = true;
     btn.classList.add('act'); btn.textContent = '✍️ 听写模式 开';
-    var li = liAt(audio.currentTime);
-    txt.innerHTML = '✍️ 听写模式：<b>每句播完会自动暂停</b>，你写完点「下一句」';
+    /* 听写时由听写本主导滚动，先把播放器的「自动滚动」让出去，否则两边抢滚动 */
+    if (tpFollow && tpFollow.classList.contains('act')){ followBack = true; tpFollow.click(); }
+    DP = window.__dictPad || DP;
+    if (DP) DP.show();
+    txt.innerHTML = '✍️ 听写模式：<b>每句播完会自动暂停</b>，写到本子上，写完点「下一句」';
     bNext.textContent = '▶ 下一句';
+    playLine(liAt(audio.currentTime) < 0 ? 0 : liAt(audio.currentTime));
     bar.classList.add('on');
-    playLine(li < 0 ? 0 : li);
   });
   bNext.addEventListener('click', function(){
     if (!on){ bar.classList.remove('on'); return; }

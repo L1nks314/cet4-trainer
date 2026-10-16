@@ -146,25 +146,6 @@
   .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:#16181d;
     color:#fff;padding:11px 22px;border-radius:24px;font-size:14px;opacity:0;transition:.3s;pointer-events:none;z-index:99;}
   .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
-  /* ---------- 听写自动比对 ---------- */
-  textarea#dictIn{min-height:150px;font-family:inherit;font-size:15px;line-height:1.95;}
-  .dstat{background:var(--blue-soft);border-radius:10px;padding:12px 15px;font-size:14.5px;margin-top:14px;line-height:1.95;}
-  .dstat b{font-size:19px;color:var(--blue-ink);}
-  .dview{font-size:15.5px;line-height:2.4;margin-top:14px;padding:14px;background:var(--soft);
-    border:1px solid var(--line);border-radius:10px;}
-  .dview .dok{background:#e9f7f0;border-radius:3px;padding:1px 3px;}
-  .dview .ddel{background:#fde2e0;color:#a0281a;text-decoration:line-through;border-radius:3px;padding:1px 3px;}
-  .dview .dsub{background:#fff0cc;color:#8a5a00;border-bottom:2px solid #e0a800;border-radius:3px;padding:1px 3px;}
-  .dview .dins{background:#eee;color:#8a8a8a;text-decoration:line-through;border-radius:3px;padding:1px 3px;font-size:13px;}
-  .dview .dbr{display:block;height:0;margin:11px 0;border-top:1px dashed var(--line);}
-  .dlegend{font-size:12.5px;color:var(--sub);margin-top:9px;line-height:2;}
-  .dan{margin-top:14px;font-size:14px;}
-  .dan .row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line);}
-  .dan .row:last-child{border-bottom:none;}
-  .dan .bar2{flex:1;height:8px;background:#eceff3;border-radius:4px;overflow:hidden;}
-  .dan .bar2 i{display:block;height:100%;border-radius:4px;}
-  .dan .cat{flex:0 0 116px;font-size:13.5px;}
-  .dan .cnt{flex:0 0 62px;text-align:right;font-size:13.5px;color:var(--sub);}
   footer{text-align:center;color:var(--sub);font-size:12.5px;margin-top:26px;line-height:1.9;}
 /* 亮底反色补偿：深色模式下高亮词保持深字，保证对比度 */
 
@@ -246,7 +227,6 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
  border-radius:22px;z-index:8990;opacity:0;pointer-events:none;
  transition:opacity .18s ease,transform .18s ease}
 #penToast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-.dstip{margin-top:11px;background:var(--blue-soft);color:var(--blue);border-radius:11px;padding:11px 14px;font-size:13.2px;line-height:1.75}
 
 /* ═══ 听写模式 ═══ */
 #dictBar{display:none;margin-top:11px;background:var(--amber-soft);border:1.5px solid var(--amber);
@@ -256,6 +236,19 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 #dictBar button{border:1.5px solid var(--line);background:#fff;border-radius:9px;padding:7px 13px;
  font-size:13px;font-weight:700;font-family:inherit;color:inherit;cursor:pointer}
 #dictBar button.pri{background:var(--blue);border-color:var(--blue);color:#fff}
+
+/* ═══ 逐句听写本 ═══ */
+#dictCard.hide{display:none}
+.dpwrap{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;line-height:0}
+.dpwrap canvas{display:block;touch-action:none}
+.dpbtns{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.dpbtns .btn{width:auto;flex:0 0 auto;padding:11px 17px;font-size:14px;margin:0;line-height:1.2}
+.dpcnt{margin-left:auto;font-size:12.5px;color:var(--sub)}
+.dpout{margin-top:14px}
+.dphint{font-size:13px;color:var(--sub);margin-bottom:9px;line-height:1.7}
+.dpout img{width:100%;border:1px solid var(--line);border-radius:10px;background:#fff}
+.dpout .btn{margin-top:10px;width:auto}
+@media (max-width:560px){ .dpcnt{flex:1 0 100%;text-align:right;margin-top:2px} }
 </style>
 <noscript><style>
   .locked-sec{filter:none !important;opacity:1 !important;pointer-events:auto !important;user-select:auto !important;}
@@ -322,33 +315,27 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 
 
 
-<div class="card" id="dictCard">
-  <h2><span class="num">5</span>听写区 · 自动比对</h2>
-  <p class="hint">用「慢速」逐句听写，把写下来的内容贴进框里（大小写和标点都不用管）。点比对，它会<b>逐词</b>告诉你哪几个词漏了、哪几个听错了，并自动判断是「连读漏听」还是「生词不认识」。</p>
-  <textarea id="dictIn" placeholder="把你听写的内容贴在这里……"></textarea>
-  <button class="btn btn-primary" id="dictBtn">比对 · 自动标错</button>
-  <button class="btn btn-ghost" id="dictPhoto">📷 手写听写 · 拍照交批改</button>
-  <div class="dstip" id="dictPhotoTip" style="display:none">把这篇的<b>手写听写照片</b>直接发到主对话即可 —— 我会逐词识别，标出<b>漏听</b>与<b>听错</b>，并归因（连读漏听 / 生词 / 拼写）。</div>
-  <button class="btn btn-ghost" id="dictClear">清空重来</button>
-  <div id="dictOut" style="display:none">
-    <div class="dstat" id="dictStat"></div>
-    <div class="dview" id="dictView"></div>
-    <div class="dlegend">颜色说明：<span style="background:#e9f7f0;padding:1px 5px;border-radius:3px;">绿=听对</span>
-      <span style="background:#fde2e0;color:#a0281a;text-decoration:line-through;padding:1px 5px;border-radius:3px;">红=漏听</span>
-      <span style="background:#fff0cc;color:#8a5a00;border-bottom:2px solid #e0a800;padding:1px 5px;border-radius:3px;">黄=听错</span>
-      <span style="background:#eee;color:#8a8a8a;text-decoration:line-through;padding:1px 5px;border-radius:3px;font-size:12px;">灰=多写</span></div>
-    <div class="dan" id="dictAnalysis"></div>
+<div class="card hide" id="dictCard">
+  <h2><span class="num">5</span>逐句听写本</h2>
+  <p class="hint">点播放器里的 <b>✍️ 听写模式</b>：每句播完会自动暂停，本子会<b>自动跳到那一行</b>。用笔直接写在行上，卡住就空着点「下一句」——空着的地方就是你没听出来的。写完整本点「📷 导出听写照」，把图发我批改。</p>
+  <div class="dpwrap" id="dpWrap"></div>
+  <div class="dpbtns">
+    <button class="btn btn-ghost" id="dpUndo">↩︎ 撤销一笔</button>
+    <button class="btn btn-ghost" id="dpClear">🗑 清空重写</button>
+    <button class="btn btn-primary" id="dpSave">📷 导出听写照</button>
+    <span class="dpcnt" id="dpCnt"></span>
+  </div>
+  <div class="dpout" id="dpOut" style="display:none">
+    <div class="dphint">长按下面这张图存到相册（或直接截图），发到主对话，我<b>逐词</b>给你标出漏听、听错，并归因（连读漏听 / 生词 / 拼写）。</div>
+    <img id="dpImg" alt="听写照">
+    <a class="btn btn-ghost" id="dpDl" download="听写照.png">⬇︎ 下载到本地</a>
   </div>
 </div>
 
 
-
 <div class="card" id="receiptCard">
   <h2><span class="num">6</span>交卷回执</h2>
-  <p class="hint">把下面这段发给我（截图或直接复制都行），我立刻给你出错因归因和改善方法。听写区的比对结果会自动并进来。</p>
-  <div class="fld"><label>听写留白处数</label>
-    <input type="number" id="blankNum" min="0" value="0" placeholder="0">
-    <span class="hint" style="margin:0;">听写时有多少处完全没听出来？</span></div>
+  <p class="hint">把下面这段发给我（截图或直接复制都行），<b>连同上面的听写照</b>，我立刻给出错因归因和改善方法。</p>
   <div class="fld"><label>最难的一句</label>
     <input type="text" id="hardest" placeholder="选填，贴你听不出来的一句"></div>
   <textarea id="receipt" readonly></textarea>
@@ -362,7 +349,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
   <div class="line" data-li="0"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">新闻报道1.</span></div><div class="en"><span class="w" data-li="0" data-wi="0">News</span> <span class="w" data-li="0" data-wi="1">Report</span> <span class="w" data-li="0" data-wi="2">1.</span></div></div><div class="line" data-li="1"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">六个人不得不离开他们的火灾发生后迁往他处星期六在主街的一栋建筑里，官员表示。</span></div><div class="en"><span class="w" data-li="1" data-wi="0">Six</span> <span class="w" data-li="1" data-wi="1">people</span> <span class="w mk" data-li="1" data-wi="2">had</span> <span class="w mk" data-li="1" data-wi="3">to</span> <span class="w" data-li="1" data-wi="4">move</span> <span class="w mk" data-li="1" data-wi="5">away</span> <span class="w mk" data-li="1" data-wi="6">from</span> <span class="w mk" data-li="1" data-wi="7">their</span> <span class="w" data-li="1" data-wi="8">home</span> <span class="w" data-li="1" data-wi="9">to</span> <span class="w" data-li="1" data-wi="10">another</span> <span class="w" data-li="1" data-wi="11">place</span> <span class="w mk" data-li="1" data-wi="12">after</span> <span class="w mk" data-li="1" data-wi="13">a</span> <span class="w" data-li="1" data-wi="14">fire</span> <span class="w" data-li="1" data-wi="15">broke</span> <span class="w mk" data-li="1" data-wi="16">out</span> <span class="w mk" data-li="1" data-wi="17">in</span> <span class="w mk" data-li="1" data-wi="18">a</span> <span class="w mk" data-li="1" data-wi="19">building</span> <span class="w mk" data-li="1" data-wi="20">on</span> <span class="w" data-li="1" data-wi="21">Main</span> <span class="w" data-li="1" data-wi="22">Street</span> <span class="w" data-li="1" data-wi="23">Saturday,</span> <span class="w" data-li="1" data-wi="24">officials</span> <span class="w" data-li="1" data-wi="25">said.</span></div></div><div class="line" data-li="2"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">消防队员很快就赶到了这栋三层建筑下午 1 点之后报告结构诺沃克消防局副局长亚当表示，马科维茨。</span></div><div class="en"><span class="w" data-li="2" data-wi="0">Firefighters</span> <span class="w mk" data-li="2" data-wi="1">responded</span> <span class="w mk" data-li="2" data-wi="2">to</span> <span class="w" data-li="2" data-wi="3">the</span> <span class="w" data-li="2" data-wi="4">three-storey</span> <span class="w" data-li="2" data-wi="5">building</span> <span class="w" data-li="2" data-wi="6">shortly</span> <span class="w" data-li="2" data-wi="7">after</span> <span class="w" data-li="2" data-wi="8">1</span> <span class="w mk" data-li="2" data-wi="9">p.m.</span> <span class="w mk" data-li="2" data-wi="10">for</span> <span class="w mk" data-li="2" data-wi="11">a</span> <span class="w" data-li="2" data-wi="12">reported</span> <span class="w" data-li="2" data-wi="13">structure</span> <span class="w" data-li="2" data-wi="14">fire,</span> <span class="w mk" data-li="2" data-wi="15">according</span> <span class="w mk" data-li="2" data-wi="16">to</span> <span class="w" data-li="2" data-wi="17">Norwalk</span> <span class="w" data-li="2" data-wi="18">Deputy</span> <span class="w" data-li="2" data-wi="19">Fire</span> <span class="w" data-li="2" data-wi="20">Chief</span> <span class="w" data-li="2" data-wi="21">Adam</span> <span class="w" data-li="2" data-wi="22">Markowitz.</span></div></div><div class="line" data-li="3"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">马科维茨说，工作人员遇到了来自到达二楼。</span></div><div class="en"><span class="w" data-li="3" data-wi="0">Markowitz</span> <span class="w" data-li="3" data-wi="1">said</span> <span class="w" data-li="3" data-wi="2">crews</span> <span class="w" data-li="3" data-wi="3">encountered</span> <span class="w" data-li="3" data-wi="4">heavy</span> <span class="w" data-li="3" data-wi="5">smoke</span> <span class="w mk" data-li="3" data-wi="6">coming</span> <span class="w mk" data-li="3" data-wi="7">from</span> <span class="w mk" data-li="3" data-wi="8">the</span> <span class="w" data-li="3" data-wi="9">second</span> <span class="w" data-li="3" data-wi="10">floor</span> <span class="w" data-li="3" data-wi="11">when</span> <span class="w" data-li="3" data-wi="12">they</span> <span class="w" data-li="3" data-wi="13">arrived.</span></div></div><div class="line" data-li="4"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">一支由约 25 名消防员组成的队伍约25分钟后火焰被扑灭。</span></div><div class="en"><span class="w" data-li="4" data-wi="0">A</span> <span class="w mk" data-li="4" data-wi="1">team</span> <span class="w mk" data-li="4" data-wi="2">of</span> <span class="w" data-li="4" data-wi="3">about</span> <span class="w" data-li="4" data-wi="4">25</span> <span class="w" data-li="4" data-wi="5">firefighters</span> <span class="w" data-li="4" data-wi="6">then</span> <span class="w" data-li="4" data-wi="7">spent</span> <span class="w" data-li="4" data-wi="8">about</span> <span class="w" data-li="4" data-wi="9">25</span> <span class="w" data-li="4" data-wi="10">minutes</span> <span class="w mk" data-li="4" data-wi="11">extinguishing</span> <span class="w mk" data-li="4" data-wi="12">the</span> <span class="w" data-li="4" data-wi="13">flames.</span></div></div><div class="line" data-li="5"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">官员们将该建筑描述为混合用途一楼为商业建筑楼上，二、三层为住宅地板。</span></div><div class="en"><span class="w" data-li="5" data-wi="0">Officials</span> <span class="w mk" data-li="5" data-wi="1">described</span> <span class="w mk" data-li="5" data-wi="2">the</span> <span class="w" data-li="5" data-wi="3">structure</span> <span class="w mk" data-li="5" data-wi="4">as</span> <span class="w mk" data-li="5" data-wi="5">a</span> <span class="w" data-li="5" data-wi="6">mixed-use</span> <span class="w mk" data-li="5" data-wi="7">building</span> <span class="w mk" data-li="5" data-wi="8">that</span> <span class="w" data-li="5" data-wi="9">features</span> <span class="w" data-li="5" data-wi="10">commercial</span> <span class="w mk" data-li="5" data-wi="11">businesses</span> <span class="w mk" data-li="5" data-wi="12">on</span> <span class="w mk" data-li="5" data-wi="13">the</span> <span class="w" data-li="5" data-wi="14">first</span> <span class="w mk" data-li="5" data-wi="15">floor</span> <span class="w mk" data-li="5" data-wi="16">and</span> <span class="w mk" data-li="5" data-wi="17">residential</span> <span class="w mk" data-li="5" data-wi="18">on</span> <span class="w mk" data-li="5" data-wi="19">the</span> <span class="w mk" data-li="5" data-wi="20">second</span> <span class="w mk" data-li="5" data-wi="21">and</span> <span class="w" data-li="5" data-wi="22">third</span> <span class="w" data-li="5" data-wi="23">floors.</span></div></div><div class="line" data-li="6"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">镇记录列出了该建筑中的四套公寓。</span></div><div class="en"><span class="w" data-li="6" data-wi="0">Town</span> <span class="w" data-li="6" data-wi="1">records</span> <span class="w" data-li="6" data-wi="2">list</span> <span class="w" data-li="6" data-wi="3">four</span> <span class="w mk" data-li="6" data-wi="4">apartments</span> <span class="w mk" data-li="6" data-wi="5">in</span> <span class="w mk" data-li="6" data-wi="6">the</span> <span class="w" data-li="6" data-wi="7">building.</span></div></div><div class="line" data-li="7"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">由于烟雾和高温损坏，四个公寓被宣布不适合居住，六名居民官员们表示，必须搬迁至其他地方。</span></div><div class="en"><span class="w" data-li="7" data-wi="0">Due</span> <span class="w" data-li="7" data-wi="1">to</span> <span class="w" data-li="7" data-wi="2">smoke</span> <span class="w" data-li="7" data-wi="3">and</span> <span class="w" data-li="7" data-wi="4">heat</span> <span class="w" data-li="7" data-wi="5">damage,</span> <span class="w" data-li="7" data-wi="6">the</span> <span class="w" data-li="7" data-wi="7">four</span> <span class="w mk" data-li="7" data-wi="8">apartments</span> <span class="w mk" data-li="7" data-wi="9">were</span> <span class="w" data-li="7" data-wi="10">declared</span> <span class="w" data-li="7" data-wi="11">uninhabitable</span> <span class="w mk" data-li="7" data-wi="12">and</span> <span class="w mk" data-li="7" data-wi="13">the</span> <span class="w" data-li="7" data-wi="14">six</span> <span class="w mk" data-li="7" data-wi="15">residents</span> <span class="w mk" data-li="7" data-wi="16">had</span> <span class="w mk" data-li="7" data-wi="17">to</span> <span class="w" data-li="7" data-wi="18">move</span> <span class="w" data-li="7" data-wi="19">to</span> <span class="w" data-li="7" data-wi="20">another</span> <span class="w" data-li="7" data-wi="21">place,</span> <span class="w" data-li="7" data-wi="22">officials</span> <span class="w" data-li="7" data-wi="23">said.</span></div></div><div class="line" data-li="8"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">据报道，没有人员伤亡。火。</span></div><div class="en"><span class="w" data-li="8" data-wi="0">No</span> <span class="w mk" data-li="8" data-wi="1">injuries</span> <span class="w mk" data-li="8" data-wi="2">were</span> <span class="w mk" data-li="8" data-wi="3">reported</span> <span class="w mk" data-li="8" data-wi="4">in</span> <span class="w mk" data-li="8" data-wi="5">connection</span> <span class="w mk" data-li="8" data-wi="6">with</span> <span class="w mk" data-li="8" data-wi="7">the</span> <span class="w" data-li="8" data-wi="8">fire.</span></div></div><div class="line" data-li="9"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">诺沃克消防局正在调查事故原因以及火灾的起因。</span></div><div class="en"><span class="w" data-li="9" data-wi="0">The</span> <span class="w" data-li="9" data-wi="1">Norwalk</span> <span class="w" data-li="9" data-wi="2">Fire</span> <span class="w mk" data-li="9" data-wi="3">Marshal</span> <span class="w mk" data-li="9" data-wi="4">is</span> <span class="w mk" data-li="9" data-wi="5">investigating</span> <span class="w mk" data-li="9" data-wi="6">the</span> <span class="w" data-li="9" data-wi="7">cause</span> <span class="w" data-li="9" data-wi="8">and</span> <span class="w mk" data-li="9" data-wi="9">origin</span> <span class="w mk" data-li="9" data-wi="10">of</span> <span class="w mk" data-li="9" data-wi="11">the</span> <span class="w" data-li="9" data-wi="12">fire.</span></div></div><div class="line" data-li="10"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">新闻报道2.</span></div><div class="en"><span class="w" data-li="10" data-wi="0">News</span> <span class="w" data-li="10" data-wi="1">Report</span> <span class="w" data-li="10" data-wi="2">2.</span></div></div><div class="line" data-li="11"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">一项新研究对历史研究表明，季节或月份某人的出生与风险增加有关某些心理健康状况。</span></div><div class="en"><span class="w" data-li="11" data-wi="0">A</span> <span class="w" data-li="11" data-wi="1">new</span> <span class="w mk" data-li="11" data-wi="2">study</span> <span class="w mk" data-li="11" data-wi="3">has</span> <span class="w" data-li="11" data-wi="4">cast</span> <span class="w mk" data-li="11" data-wi="5">doubt</span> <span class="w mk" data-li="11" data-wi="6">on</span> <span class="w" data-li="11" data-wi="7">historic</span> <span class="w" data-li="11" data-wi="8">research</span> <span class="w mk" data-li="11" data-wi="9">suggesting</span> <span class="w mk" data-li="11" data-wi="10">that</span> <span class="w mk" data-li="11" data-wi="11">the</span> <span class="w mk" data-li="11" data-wi="12">season</span> <span class="w mk" data-li="11" data-wi="13">or</span> <span class="w mk" data-li="11" data-wi="14">month</span> <span class="w mk" data-li="11" data-wi="15">of</span> <span class="w" data-li="11" data-wi="16">someone's</span> <span class="w mk" data-li="11" data-wi="17">birth</span> <span class="w mk" data-li="11" data-wi="18">is</span> <span class="w mk" data-li="11" data-wi="19">associated</span> <span class="w mk" data-li="11" data-wi="20">with</span> <span class="w mk" data-li="11" data-wi="21">an</span> <span class="w" data-li="11" data-wi="22">increased</span> <span class="w mk" data-li="11" data-wi="23">risk</span> <span class="w mk" data-li="11" data-wi="24">of</span> <span class="w" data-li="11" data-wi="25">certain</span> <span class="w" data-li="11" data-wi="26">mental</span> <span class="w" data-li="11" data-wi="27">health</span> <span class="w" data-li="11" data-wi="28">conditions.</span></div></div><div class="line" data-li="12"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">该研究关注的是焦虑症状和超过 7 万老年人患有抑郁症在欧洲。</span></div><div class="en"><span class="w" data-li="12" data-wi="0">The</span> <span class="w" data-li="12" data-wi="1">study</span> <span class="w mk" data-li="12" data-wi="2">looks</span> <span class="w mk" data-li="12" data-wi="3">at</span> <span class="w mk" data-li="12" data-wi="4">symptoms</span> <span class="w mk" data-li="12" data-wi="5">of</span> <span class="w mk" data-li="12" data-wi="6">anxiety</span> <span class="w mk" data-li="12" data-wi="7">and</span> <span class="w" data-li="12" data-wi="8">depression</span> <span class="w" data-li="12" data-wi="9">among</span> <span class="w" data-li="12" data-wi="10">more</span> <span class="w" data-li="12" data-wi="11">than</span> <span class="w" data-li="12" data-wi="12">70,000</span> <span class="w" data-li="12" data-wi="13">older</span> <span class="w mk" data-li="12" data-wi="14">adults</span> <span class="w mk" data-li="12" data-wi="15">in</span> <span class="w" data-li="12" data-wi="16">Europe.</span></div></div><div class="line" data-li="13"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">过去的一些研究发现出生季节与心理健康之间的联系诊断。</span></div><div class="en"><span class="w" data-li="13" data-wi="0">A</span> <span class="w mk" data-li="13" data-wi="1">number</span> <span class="w mk" data-li="13" data-wi="2">of</span> <span class="w" data-li="13" data-wi="3">past</span> <span class="w mk" data-li="13" data-wi="4">studies</span> <span class="w mk" data-li="13" data-wi="5">have</span> <span class="w mk" data-li="13" data-wi="6">found</span> <span class="w mk" data-li="13" data-wi="7">the</span> <span class="w" data-li="13" data-wi="8">link</span> <span class="w" data-li="13" data-wi="9">between</span> <span class="w mk" data-li="13" data-wi="10">season</span> <span class="w mk" data-li="13" data-wi="11">of</span> <span class="w mk" data-li="13" data-wi="12">birth</span> <span class="w mk" data-li="13" data-wi="13">and</span> <span class="w" data-li="13" data-wi="14">mental</span> <span class="w" data-li="13" data-wi="15">health</span> <span class="w" data-li="13" data-wi="16">diagnoses.</span></div></div><div class="line" data-li="14"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">研究人员表示，这种联系可能会出现来自各种各样的事物。</span></div><div class="en"><span class="w mk" data-li="14" data-wi="0">Researchers</span> <span class="w mk" data-li="14" data-wi="1">have</span> <span class="w mk" data-li="14" data-wi="2">suggested</span> <span class="w mk" data-li="14" data-wi="3">that</span> <span class="w" data-li="14" data-wi="4">such</span> <span class="w mk" data-li="14" data-wi="5">links</span> <span class="w mk" data-li="14" data-wi="6">could</span> <span class="w" data-li="14" data-wi="7">arise</span> <span class="w" data-li="14" data-wi="8">from</span> <span class="w" data-li="14" data-wi="9">various</span> <span class="w" data-li="14" data-wi="10">things.</span></div></div><div class="line" data-li="15"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">这些包括营养摄入、日照、气候和疾病暴露在整个过程中变化年。</span></div><div class="en"><span class="w" data-li="15" data-wi="0">These</span> <span class="w" data-li="15" data-wi="1">include</span> <span class="w" data-li="15" data-wi="2">nutrient</span> <span class="w" data-li="15" data-wi="3">intake,</span> <span class="w" data-li="15" data-wi="4">sun</span> <span class="w" data-li="15" data-wi="5">exposure,</span> <span class="w" data-li="15" data-wi="6">climate</span> <span class="w" data-li="15" data-wi="7">and</span> <span class="w" data-li="15" data-wi="8">disease</span> <span class="w" data-li="15" data-wi="9">exposure</span> <span class="w" data-li="15" data-wi="10">varying</span> <span class="w mk" data-li="15" data-wi="11">across</span> <span class="w mk" data-li="15" data-wi="12">the</span> <span class="w" data-li="15" data-wi="13">course</span> <span class="w mk" data-li="15" data-wi="14">of</span> <span class="w mk" data-li="15" data-wi="15">the</span> <span class="w" data-li="15" data-wi="16">year.</span></div></div><div class="line" data-li="16"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">然而，证据并不一致。</span></div><div class="en"><span class="w" data-li="16" data-wi="0">However,</span> <span class="w" data-li="16" data-wi="1">evidence</span> <span class="w mk" data-li="16" data-wi="2">has</span> <span class="w mk" data-li="16" data-wi="3">been</span> <span class="w" data-li="16" data-wi="4">mixed.</span></div></div><div class="line" data-li="17"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">最近的研究表明，诸如社会阶层或经济背景与这些诊断有关，而不是一个月出生。</span></div><div class="en"><span class="w" data-li="17" data-wi="0">More</span> <span class="w" data-li="17" data-wi="1">recent</span> <span class="w mk" data-li="17" data-wi="2">studies</span> <span class="w mk" data-li="17" data-wi="3">have</span> <span class="w mk" data-li="17" data-wi="4">suggested</span> <span class="w mk" data-li="17" data-wi="5">that</span> <span class="w" data-li="17" data-wi="6">factors</span> <span class="w mk" data-li="17" data-wi="7">such</span> <span class="w mk" data-li="17" data-wi="8">as</span> <span class="w" data-li="17" data-wi="9">social</span> <span class="w mk" data-li="17" data-wi="10">class</span> <span class="w mk" data-li="17" data-wi="11">or</span> <span class="w" data-li="17" data-wi="12">economic</span> <span class="w mk" data-li="17" data-wi="13">background</span> <span class="w mk" data-li="17" data-wi="14">have</span> <span class="w" data-li="17" data-wi="15">more</span> <span class="w" data-li="17" data-wi="16">to</span> <span class="w" data-li="17" data-wi="17">do</span> <span class="w" data-li="17" data-wi="18">with</span> <span class="w" data-li="17" data-wi="19">these</span> <span class="w" data-li="17" data-wi="20">diagnoses</span> <span class="w" data-li="17" data-wi="21">than</span> <span class="w mk" data-li="17" data-wi="22">month</span> <span class="w mk" data-li="17" data-wi="23">of</span> <span class="w" data-li="17" data-wi="24">birth.</span></div></div><div class="line" data-li="18"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">总体而言，新研究发现没有显著的关系参与者的出生月份和症状之间抑郁或焦虑。</span></div><div class="en"><span class="w mk" data-li="18" data-wi="0">Overall,</span> <span class="w mk" data-li="18" data-wi="1">the</span> <span class="w" data-li="18" data-wi="2">new</span> <span class="w" data-li="18" data-wi="3">study</span> <span class="w" data-li="18" data-wi="4">found</span> <span class="w" data-li="18" data-wi="5">no</span> <span class="w" data-li="18" data-wi="6">significant</span> <span class="w" data-li="18" data-wi="7">relationship</span> <span class="w" data-li="18" data-wi="8">between</span> <span class="w" data-li="18" data-wi="9">participants'</span> <span class="w mk" data-li="18" data-wi="10">month</span> <span class="w mk" data-li="18" data-wi="11">of</span> <span class="w mk" data-li="18" data-wi="12">birth</span> <span class="w mk" data-li="18" data-wi="13">and</span> <span class="w mk" data-li="18" data-wi="14">symptoms</span> <span class="w mk" data-li="18" data-wi="15">of</span> <span class="w mk" data-li="18" data-wi="16">depression</span> <span class="w mk" data-li="18" data-wi="17">or</span> <span class="w" data-li="18" data-wi="18">anxiety.</span></div></div><div class="line" data-li="19"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">一些国家存在一些差异。</span></div><div class="en"><span class="w" data-li="19" data-wi="0">There</span> <span class="w" data-li="19" data-wi="1">was</span> <span class="w" data-li="19" data-wi="2">some</span> <span class="w mk" data-li="19" data-wi="3">variability</span> <span class="w mk" data-li="19" data-wi="4">in</span> <span class="w" data-li="19" data-wi="5">some</span> <span class="w" data-li="19" data-wi="6">countries.</span></div></div><div class="line" data-li="20"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">在波兰，抑郁症状略有波动，具体取决于出生月份。</span></div><div class="en"><span class="w" data-li="20" data-wi="0">In</span> <span class="w" data-li="20" data-wi="1">Poland,</span> <span class="w" data-li="20" data-wi="2">depressive</span> <span class="w" data-li="20" data-wi="3">symptoms</span> <span class="w mk" data-li="20" data-wi="4">fluctuated</span> <span class="w mk" data-li="20" data-wi="5">a</span> <span class="w" data-li="20" data-wi="6">little</span> <span class="w mk" data-li="20" data-wi="7">depending</span> <span class="w mk" data-li="20" data-wi="8">on</span> <span class="w" data-li="20" data-wi="9">birth</span> <span class="w" data-li="20" data-wi="10">month.</span></div></div><div class="line" data-li="21"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">在捷克共和国，情况也是如此焦虑症状。</span></div><div class="en"><span class="w mk" data-li="21" data-wi="0">In</span> <span class="w mk" data-li="21" data-wi="1">the</span> <span class="w" data-li="21" data-wi="2">Czech</span> <span class="w mk" data-li="21" data-wi="3">Republic,</span> <span class="w mk" data-li="21" data-wi="4">the</span> <span class="w" data-li="21" data-wi="5">same</span> <span class="w" data-li="21" data-wi="6">was</span> <span class="w" data-li="21" data-wi="7">true</span> <span class="w" data-li="21" data-wi="8">of</span> <span class="w" data-li="21" data-wi="9">anxiety</span> <span class="w" data-li="21" data-wi="10">symptoms.</span></div></div><div class="line" data-li="22"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">但总体而言，没有系统性的图案。</span></div><div class="en"><span class="w mk" data-li="22" data-wi="0">But</span> <span class="w mk" data-li="22" data-wi="1">on</span> <span class="w mk" data-li="22" data-wi="2">the</span> <span class="w" data-li="22" data-wi="3">whole,</span> <span class="w" data-li="22" data-wi="4">there</span> <span class="w" data-li="22" data-wi="5">was</span> <span class="w" data-li="22" data-wi="6">no</span> <span class="w" data-li="22" data-wi="7">systematic</span> <span class="w" data-li="22" data-wi="8">pattern.</span></div></div><div class="line" data-li="23"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">新闻报道3.</span></div><div class="en"><span class="w" data-li="23" data-wi="0">News</span> <span class="w" data-li="23" data-wi="1">report</span> <span class="w" data-li="23" data-wi="2">3.</span></div></div><div class="line" data-li="24"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">中国基因研究人员成功克隆出是一只明星警犬。</span></div><div class="en"><span class="w" data-li="24" data-wi="0">Genetic</span> <span class="w mk" data-li="24" data-wi="1">researchers</span> <span class="w mk" data-li="24" data-wi="2">in</span> <span class="w" data-li="24" data-wi="3">China</span> <span class="w" data-li="24" data-wi="4">have</span> <span class="w" data-li="24" data-wi="5">made</span> <span class="w" data-li="24" data-wi="6">a</span> <span class="w" data-li="24" data-wi="7">clone</span> <span class="w mk" data-li="24" data-wi="8">of</span> <span class="w mk" data-li="24" data-wi="9">a</span> <span class="w" data-li="24" data-wi="10">star</span> <span class="w" data-li="24" data-wi="11">police</span> <span class="w" data-li="24" data-wi="12">dog.</span></div></div><div class="line" data-li="25"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">这个克隆体诞生于十二月的北京。</span></div><div class="en"><span class="w" data-li="25" data-wi="0">The</span> <span class="w" data-li="25" data-wi="1">clone</span> <span class="w" data-li="25" data-wi="2">was</span> <span class="w mk" data-li="25" data-wi="3">born</span> <span class="w mk" data-li="25" data-wi="4">in</span> <span class="w mk" data-li="25" data-wi="5">a</span> <span class="w mk" data-li="25" data-wi="6">laboratory</span> <span class="w mk" data-li="25" data-wi="7">in</span> <span class="w mk" data-li="25" data-wi="8">Beijing</span> <span class="w mk" data-li="25" data-wi="9">in</span> <span class="w" data-li="25" data-wi="10">December.</span></div></div><div class="line" data-li="26"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">测试表明克隆人和她的母亲从基因上来说几乎完全相同。</span></div><div class="en"><span class="w" data-li="26" data-wi="0">Tests</span> <span class="w mk" data-li="26" data-wi="1">show</span> <span class="w mk" data-li="26" data-wi="2">that</span> <span class="w mk" data-li="26" data-wi="3">the</span> <span class="w" data-li="26" data-wi="4">clone</span> <span class="w mk" data-li="26" data-wi="5">and</span> <span class="w mk" data-li="26" data-wi="6">her</span> <span class="w mk" data-li="26" data-wi="7">mother</span> <span class="w mk" data-li="26" data-wi="8">are</span> <span class="w" data-li="26" data-wi="9">almost</span> <span class="w" data-li="26" data-wi="10">identical</span> <span class="w" data-li="26" data-wi="11">genetically.</span></div></div><div class="line" data-li="27"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">这只母狗帮助破获了多起谋杀案，许多其他罪行。</span></div><div class="en"><span class="w" data-li="27" data-wi="0">The</span> <span class="w" data-li="27" data-wi="1">mother</span> <span class="w" data-li="27" data-wi="2">dog</span> <span class="w" data-li="27" data-wi="3">helped</span> <span class="w" data-li="27" data-wi="4">solve</span> <span class="w" data-li="27" data-wi="5">multiple</span> <span class="w mk" data-li="27" data-wi="6">murders</span> <span class="w mk" data-li="27" data-wi="7">and</span> <span class="w" data-li="27" data-wi="8">many</span> <span class="w" data-li="27" data-wi="9">other</span> <span class="w" data-li="27" data-wi="10">crimes.</span></div></div><div class="line" data-li="28"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">克隆产品的表现已经优于传统产品对饲养的狗进行了多次测试。</span></div><div class="en"><span class="w" data-li="28" data-wi="0">The</span> <span class="w" data-li="28" data-wi="1">clone</span> <span class="w" data-li="28" data-wi="2">has</span> <span class="w" data-li="28" data-wi="3">already</span> <span class="w" data-li="28" data-wi="4">performed</span> <span class="w" data-li="28" data-wi="5">better</span> <span class="w" data-li="28" data-wi="6">than</span> <span class="w" data-li="28" data-wi="7">traditionally</span> <span class="w" data-li="28" data-wi="8">bred</span> <span class="w mk" data-li="28" data-wi="9">dogs</span> <span class="w mk" data-li="28" data-wi="10">on</span> <span class="w" data-li="28" data-wi="11">several</span> <span class="w" data-li="28" data-wi="12">tests.</span></div></div><div class="line" data-li="29"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">如果克隆体继续表现良好正如预期的那样，这可能意味着大幅减少在警犬的训练时间里，通常需要五年左右的时间。</span></div><div class="en"><span class="w mk" data-li="29" data-wi="0">If</span> <span class="w mk" data-li="29" data-wi="1">the</span> <span class="w" data-li="29" data-wi="2">clone</span> <span class="w mk" data-li="29" data-wi="3">continues</span> <span class="w mk" data-li="29" data-wi="4">to</span> <span class="w mk" data-li="29" data-wi="5">perform</span> <span class="w mk" data-li="29" data-wi="6">as</span> <span class="w mk" data-li="29" data-wi="7">well</span> <span class="w mk" data-li="29" data-wi="8">as</span> <span class="w mk" data-li="29" data-wi="9">expected,</span> <span class="w mk" data-li="29" data-wi="10">it</span> <span class="w mk" data-li="29" data-wi="11">could</span> <span class="w mk" data-li="29" data-wi="12">mean</span> <span class="w mk" data-li="29" data-wi="13">a</span> <span class="w" data-li="29" data-wi="14">huge</span> <span class="w mk" data-li="29" data-wi="15">reduction</span> <span class="w mk" data-li="29" data-wi="16">in</span> <span class="w mk" data-li="29" data-wi="17">the</span> <span class="w" data-li="29" data-wi="18">training</span> <span class="w" data-li="29" data-wi="19">time</span> <span class="w" data-li="29" data-wi="20">for</span> <span class="w" data-li="29" data-wi="21">police</span> <span class="w" data-li="29" data-wi="22">dogs,</span> <span class="w" data-li="29" data-wi="23">which</span> <span class="w" data-li="29" data-wi="24">usually</span> <span class="w" data-li="29" data-wi="25">takes</span> <span class="w" data-li="29" data-wi="26">about</span> <span class="w" data-li="29" data-wi="27">five</span> <span class="w" data-li="29" data-wi="28">years.</span></div></div><div class="line" data-li="30"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">科学家的最终目标是生产克隆出来的优秀警犬可以训练只需几个月而不是几年。</span></div><div class="en"><span class="w" data-li="30" data-wi="0">The</span> <span class="w" data-li="30" data-wi="1">ultimate</span> <span class="w mk" data-li="30" data-wi="2">goal</span> <span class="w mk" data-li="30" data-wi="3">of</span> <span class="w mk" data-li="30" data-wi="4">scientists</span> <span class="w mk" data-li="30" data-wi="5">is</span> <span class="w mk" data-li="30" data-wi="6">to</span> <span class="w" data-li="30" data-wi="7">produce</span> <span class="w mk" data-li="30" data-wi="8">clones</span> <span class="w mk" data-li="30" data-wi="9">of</span> <span class="w" data-li="30" data-wi="10">talented</span> <span class="w" data-li="30" data-wi="11">police</span> <span class="w mk" data-li="30" data-wi="12">dogs</span> <span class="w mk" data-li="30" data-wi="13">that</span> <span class="w mk" data-li="30" data-wi="14">can</span> <span class="w mk" data-li="30" data-wi="15">be</span> <span class="w mk" data-li="30" data-wi="16">trained</span> <span class="w mk" data-li="30" data-wi="17">in</span> <span class="w" data-li="30" data-wi="18">months</span> <span class="w mk" data-li="30" data-wi="19">instead</span> <span class="w mk" data-li="30" data-wi="20">of</span> <span class="w" data-li="30" data-wi="21">years.</span></div></div><div class="line" data-li="31"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">然而，这一目标目前还无法实现，因为目前的技术成本。</span></div><div class="en"><span class="w" data-li="31" data-wi="0">However,</span> <span class="w" data-li="31" data-wi="1">this</span> <span class="w mk" data-li="31" data-wi="2">goal</span> <span class="w mk" data-li="31" data-wi="3">is</span> <span class="w mk" data-li="31" data-wi="4">not</span> <span class="w" data-li="31" data-wi="5">yet</span> <span class="w" data-li="31" data-wi="6">possible</span> <span class="w" data-li="31" data-wi="7">due</span> <span class="w" data-li="31" data-wi="8">to</span> <span class="w" data-li="31" data-wi="9">the</span> <span class="w" data-li="31" data-wi="10">current</span> <span class="w mk" data-li="31" data-wi="11">costs</span> <span class="w mk" data-li="31" data-wi="12">of</span> <span class="w mk" data-li="31" data-wi="13">the</span> <span class="w" data-li="31" data-wi="14">technology.</span></div></div><div class="line" data-li="32"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">这不是第一次克隆已成为明星警犬。</span></div><div class="en"><span class="w mk" data-li="32" data-wi="0">This</span> <span class="w mk" data-li="32" data-wi="1">is</span> <span class="w mk" data-li="32" data-wi="2">not</span> <span class="w mk" data-li="32" data-wi="3">the</span> <span class="w" data-li="32" data-wi="4">first</span> <span class="w" data-li="32" data-wi="5">time</span> <span class="w" data-li="32" data-wi="6">a</span> <span class="w" data-li="32" data-wi="7">clone</span> <span class="w mk" data-li="32" data-wi="8">has</span> <span class="w mk" data-li="32" data-wi="9">been</span> <span class="w" data-li="32" data-wi="10">made</span> <span class="w mk" data-li="32" data-wi="11">of</span> <span class="w mk" data-li="32" data-wi="12">a</span> <span class="w" data-li="32" data-wi="13">star</span> <span class="w" data-li="32" data-wi="14">police</span> <span class="w" data-li="32" data-wi="15">dog.</span></div></div><div class="line" data-li="33"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">在韩国，六个克隆人开始与2008 年的警察。</span></div><div class="en"><span class="w" data-li="33" data-wi="0">In</span> <span class="w" data-li="33" data-wi="1">South</span> <span class="w" data-li="33" data-wi="2">Korea,</span> <span class="w" data-li="33" data-wi="3">six</span> <span class="w" data-li="33" data-wi="4">clones</span> <span class="w" data-li="33" data-wi="5">began</span> <span class="w mk" data-li="33" data-wi="6">working</span> <span class="w mk" data-li="33" data-wi="7">with</span> <span class="w mk" data-li="33" data-wi="8">the</span> <span class="w" data-li="33" data-wi="9">police</span> <span class="w" data-li="33" data-wi="10">in</span> <span class="w" data-li="33" data-wi="11">2008.</span></div></div>
 </div>
 
-<div class="card locked-sec" id="tableCard"><h2><span class="num">8</span>怎么用这份包</h2><p class="hint">真人原声 + 官方文本，这是最贴近考场的一份材料。</p><table><tr><th>步骤</th><th>做法</th></tr><tr><td>① 盲听</td><td>不暂停听一遍，凭印象做题</td></tr><tr><td>② 听写</td><td>进听写区逐句写，自动标出漏听/错听</td></tr><tr><td>③ 点读</td><td>标黄处逐词点开，🔁 循环到听清</td></tr><tr><td>④ 跟读</td><td>0.85× 跟读标黄句，读到能一口气说出来</td></tr></table><div class="tip green"><b>听写比对现在零误判</b>——文本是官方原文，标红就是真没听出来。这是之前识别版做不到的。</div></div>
+<div class="card locked-sec" id="tableCard"><h2><span class="num">8</span>怎么用这份包</h2><p class="hint">真人原声 + 官方文本，这是最贴近考场的一份材料。</p><table><tr><th>步骤</th><th>做法</th></tr><tr><td>① 盲听</td><td>不暂停听一遍，凭印象做题</td></tr><tr><td>② 听写</td><td>开「✍️ 听写模式」逐句写进本子，导出听写照发我批改</td></tr><tr><td>③ 点读</td><td>标黄处逐词点开，🔁 循环到听清</td></tr><tr><td>④ 跟读</td><td>0.85× 跟读标黄句，读到能一口气说出来</td></tr></table><div class="tip green"><b>听写比对现在零误判</b>——文本是官方原文，标红就是真没听出来。这是之前识别版做不到的。</div></div>
 
 <div class="card locked-sec" id="explainCard"><h2><span class="num">9</span>本段题目与答案（7 题）· 可点击作答</h2><p><b>第 1 题　答案 <b>B</b></b>　<i>Why did the six residents have to find another place to stay?</i></p><div class="green">见上方答题区</div><p><b>第 2 题　答案 <b>A</b></b>　<i>What does the news report say the Norwalk Fire Marshal is doing?</i></p><div class="green">见上方答题区</div><p><b>第 3 题　答案 <b>C</b></b>　<i>What have a number of past studies found about season of birth?</i></p><div class="green">见上方答题区</div><p><b>第 4 题　答案 <b>D</b></b>　<i>What did the new study find about the relationship between participants' month of birth and symptoms of depression?</i></p><div class="green">见上方答题区</div><p><b>第 5 题　答案 <b>D</b></b>　<i>What do the researchers' tests show about the cloned dog?</i></p><div class="green">见上方答题区</div><p><b>第 6 题　答案 <b>D</b></b>　<i>What is the scientists' purpose in cloning police dogs?</i></p><div class="green">见上方答题区</div><p><b>第 7 题　答案 <b>D</b></b>　<i>Why does the news report say the scientists' goal is not yet possible?</i></p><div class="green">见上方答题区</div><p><b>中文翻译怎么看</b>　页面里的中文来自公开学习资源，<b>是机器翻译，只用来快速理解大意</b>，不要拿它学表达。</p><div class="why">真正该精读的是英文原文本身。</div><p><b>答题区</b>　题干与四个选项均已录入，<b>可直接点击作答，提交后自动判分</b>。</p><div class="amber">先盲听做题，再回来对答案——顺序反了就没用了。</div></div>
 
@@ -649,7 +636,6 @@ var QUIZ = [{"id": "q1", "stem": "1. Why did the six residents have to find anot
         buildReceipt();
       });
     });
-    document.getElementById('blankNum').addEventListener('input', function(){ window.__rebuild(); });
     document.getElementById('hardest').addEventListener('input', function(){ window.__rebuild(); });
     window.__rebuild();
 
@@ -679,14 +665,9 @@ var QUIZ = [{"id": "q1", "stem": "1. Why did the six residents have to find anot
     var ds = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
     var L = ['【四级训练回执】', '日期：' + ds, '训练包：2024-06-1 · Section A 短篇新闻'];
     if (typeof quizLines === 'function'){ L = L.concat(quizLines()); }
-    var st = window.__dictStats;
-    if (st){
-      L.push('听写：' + st.acc + '% 正确（听对 ' + st.ok + '/' + st.total + '）· 漏听 ' + st.del + ' · 听错 ' + st.sub + ' · 多写 ' + st.ins);
-      if (st.top) L.push('首要错因：' + st.top);
-    } else {
-      L.push('听写：未做自动比对');
-    }
-    L.push('听写留白：' + (document.getElementById('blankNum').value || '0') + ' 处');
+    var pd = window.__dictPad;
+    if (pd && pd.written) L.push('听写照：随附图 —— 已写 ' + pd.written + ' / ' + pd.total + ' 句');
+    else L.push('听写照：随附图（逐句手写）');
     L.push('最难的一句：' + (document.getElementById('hardest').value || '（未填）'));
     L.push('—— 请据此给我出错因归因和改善方法');
     document.getElementById('receipt').value = L.join('\n');
@@ -711,141 +692,361 @@ var QUIZ = [{"id": "q1", "stem": "1. Why did the six residents have to find anot
   document.getElementById('receipt').addEventListener('click', function(){ this.select(); this.setSelectionRange(0,99999); });
   buildReceipt();
 
+  /* ---------- 逐句听写本（分块 canvas · 笔迹数据化） ---------- */
+  var DP = (function(){
+    var card = document.getElementById('dictCard');
+    var wrap = document.getElementById('dpWrap');
+    if (!card || !wrap || !window.DATA) return null;
+    var LINES = DATA.lines || (DATA.rates && DATA.rates[0] && DATA.rates[0].lines) || [];
+    if (!LINES.length) return null;
 
-  /* ---------- 听写自动比对 ---------- */
-  var FUNC = {};
-  'a an the and or but if so than that this these those there here of to in on at for with from by as into onto over under about after before is am are was were be been being do does did done have has had having i you he she it we they me him her us them my your his its our their will would shall should can could may might must not no nor so too very just only also even still yet up down out off away back again more most much many some any all both each every one two three four five six seven eight nine ten when where why how what which who whom whose while because although though during between among through against without within upon'.split(' ').forEach(function(w){ if (w) FUNC[w] = 1; });
+    var DPR = Math.min(2, window.devicePixelRatio || 1);
+    var GAP = 9, ROW_H = 76, PAD_L = 54, PAD_R = 12, BLOCK_ROWS = 10;
+    var CO = '#1b1e23', CW = 2.6;
+    var FONT = '"HarmonyOS Sans","PingFang SC","Microsoft YaHei",-apple-system,BlinkMacSystemFont,sans-serif';
 
-  var REF = [];
-  (DATA.lines || DATA.rates[0].lines).forEach(function(ln, li){
-    var mk = (DATA.marks && DATA.marks[li]) ? DATA.marks[li] : [];
-    ln.tokens.forEach(function(t, wi){
-      REF.push({ w: t.w, mk: mk.indexOf(wi) >= 0, li: li });
-    });
-  });
+    var rows = [], H = 0, W = 0, blocks = [], strokes = [], cur = null, curLi = -1;
+    var API = { written:0, total:0 };
+    (function(){ var y = GAP; for (var i = 0; i < LINES.length; i++){ rows.push({ li:i, y:y, h:ROW_H }); y += ROW_H + GAP; } H = y; })();
+    API.total = rows.length;
 
-  function nw(s){ return String(s).toLowerCase().replace(/[^a-z0-9']/g, ''); }
-  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-  function lcsDiff(a, b){
-    var n = a.length, m = b.length, i, j;
-    var dp = [];
-    for (i = 0; i <= n; i++){ var row = []; for (j = 0; j <= m; j++) row.push(0); dp.push(row); }
-    for (i = 1; i <= n; i++) for (j = 1; j <= m; j++){
-      dp[i][j] = (nw(a[i-1]) === nw(b[j-1])) ? dp[i-1][j-1] + 1 : Math.max(dp[i-1][j], dp[i][j-1]);
+    function liAtY(gy){
+      var i = Math.floor((gy - GAP) / (ROW_H + GAP));
+      if (i < 0) i = 0;
+      if (i > rows.length - 1) i = rows.length - 1;
+      return i;
     }
-    var ops = []; i = n; j = m;
-    while (i > 0 && j > 0){
-      if (nw(a[i-1]) === nw(b[j-1])){ ops.push({t:'ok', a:a[i-1], b:b[j-1]}); i--; j--; }
-      else if (dp[i-1][j] >= dp[i][j-1]){ ops.push({t:'del', a:a[i-1]}); i--; }
-      else { ops.push({t:'ins', b:b[j-1]}); j--; }
-    }
-    while (i > 0){ i--; ops.push({t:'del', a:a[i]}); }
-    while (j > 0){ j--; ops.push({t:'ins', b:b[j]}); }
-    ops.reverse();
-    /* 把每段连续的"非听对"片段整理成 听错(sub) / 漏听(del) / 多写(ins) */
-    var out = [], k = 0;
-    while (k < ops.length){
-      if (ops[k].t === 'ok'){ out.push(ops[k]); k++; continue; }
-      var d = [], e = [];
-      while (k < ops.length && ops[k].t !== 'ok'){
-        if (ops[k].t === 'del') d.push(ops[k].a); else e.push(ops[k].b);
-        k++;
+
+    /* ── 绘制：把逻辑区间 [yTop,yBot) 画进 ctx（调用方已设好 transform） ── */
+    function drawInto(ctx, yTop, yBot, shift){
+      var i, j, r, s, p, q, o, lx, ly, mx, my;
+      ctx.textBaseline = 'top';
+      for (i = 0; i < rows.length; i++){
+        r = rows[i];
+        if (r.y + r.h + GAP < yTop || r.y - GAP > yBot) continue;
+        if (i === curLi){ ctx.fillStyle = '#fffbe6'; ctx.fillRect(0, r.y - 3, W, r.h + 6); }
+        ctx.font = '600 11.5px ' + FONT;
+        ctx.fillStyle = (i === curLi) ? '#a37d12' : '#adb5bd';
+        ctx.fillText('第' + (i + 1) + '句', 9, r.y + (r.h < 40 ? 2 : 4));
+        if (r.h >= 40){
+          ctx.strokeStyle = '#f1f3f6'; ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(PAD_L - 4, r.y + r.h / 2 - 8); ctx.lineTo(W - PAD_R, r.y + r.h / 2 - 8); ctx.stroke();
+          ctx.setLineDash([5, 5]);
+        }
+        ctx.strokeStyle = '#dfe4e9'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(PAD_L, r.y + r.h - 8); ctx.lineTo(W - PAD_R, r.y + r.h - 8); ctx.stroke();
+        ctx.setLineDash([]);
       }
-      var p = Math.min(d.length, e.length), q;
-      for (q = 0; q < p; q++) out.push({t:'sub', a:d[q], b:e[q]});
-      for (q = p; q < d.length; q++) out.push({t:'del', a:d[q]});
-      for (q = p; q < e.length; q++) out.push({t:'ins', b:e[q]});
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      for (i = 0; i < strokes.length; i++){
+        s = strokes[i]; r = rows[s.li];
+        if (!r) continue;
+        if (!shift && (r.y + r.h + GAP < yTop - 80 || r.y - GAP > yBot + 80)) continue;
+        var dy = shift ? shift(s.li) : 0;
+        p = s.pts; var n = p.length;
+        ctx.strokeStyle = CO; ctx.fillStyle = CO;
+        if (n === 1){
+          ctx.beginPath(); ctx.arc(p[0][0], p[0][1] + dy, Math.max(.6, p[0][2] / 2), 0, 6.2832); ctx.fill();
+          continue;
+        }
+        lx = p[0][0]; ly = p[0][1] + dy;
+        for (j = 1; j < n; j++){
+          q = p[j]; o = p[j - 1];
+          mx = (o[0] + q[0]) / 2; my = (o[1] + q[1]) / 2 + dy;
+          ctx.lineWidth = q[2];
+          ctx.beginPath(); ctx.moveTo(lx, ly);
+          ctx.quadraticCurveTo(o[0], o[1] + dy, mx, my);
+          ctx.stroke();
+          lx = mx; ly = my;
+        }
+      }
     }
-    return out;
-  }
 
-  function classify(idx){
-    var r = REF[idx];
-    if (!r) return '其他';
-    if (r.mk) return '连读/失爆区';
-    var w = nw(r.w);
-    if (FUNC[w]) return '虚词弱读';
-    if (w.length >= 5) return '可能生词';
-    return '其他';
-  }
-
-  document.getElementById('dictBtn').addEventListener('click', function(){
-    var raw = document.getElementById('dictIn').value.trim();
-    if (!raw){ toast('听写框还是空的'); return; }
-    var hyp = raw.split(/\s+/);
-    var refWords = REF.map(function(r){ return r.w; });
-    var ops = lcsDiff(refWords, hyp);
-
-    var okCount = 0, delList = [], subList = [], insCount = 0, ri = 0, prevLi = -1;
-    var parts = [];
-    ops.forEach(function(o){
-      if (o.t === 'ok'){ parts.push({h:'<span class="dok">' + esc(o.a) + '</span>', li: REF[ri] ? REF[ri].li : prevLi}); ri++; okCount++; }
-      else if (o.t === 'del'){ delList.push(ri); parts.push({h:'<span class="ddel">' + esc(o.a) + '</span>', li: REF[ri] ? REF[ri].li : prevLi}); ri++; }
-      else if (o.t === 'sub'){ subList.push(ri); parts.push({h:'<span class="dsub" title="你写的是：' + esc(o.b) + '">' + esc(o.a) + '</span>', li: REF[ri] ? REF[ri].li : prevLi}); ri++; }
-      else { insCount++; parts.push({h:'<span class="dins">' + esc(o.b) + '</span>', li: prevLi}); }
-    });
-
-    var buf = '', last = -1;
-    parts.forEach(function(p){
-      if (last >= 0 && p.li !== last) buf += '<span class="dbr"></span>';
-      buf += p.h + ' ';
-      last = p.li;
-    });
-    document.getElementById('dictView').innerHTML = buf;
-
-    var total = refWords.length;
-    var acc = Math.round(okCount / total * 100);
-
-    var cats = {};
-    delList.concat(subList).forEach(function(idx){
-      var c = classify(idx); cats[c] = (cats[c] || 0) + 1;
-    });
-    var arr = Object.keys(cats).map(function(k){ return {k:k, v:cats[k]}; })
-                    .sort(function(x,y){ return y.v - x.v; });
-    var wrongTotal = delList.length + subList.length;
-    var maxV = arr.length ? arr[0].v : 1;
-
-    var colors = {'连读/失爆区':'#c0392b', '虚词弱读':'#6b46c1', '可能生词':'#1f6feb', '其他':'#9a6a05'};
-    document.getElementById('dictAnalysis').innerHTML = arr.length ? (
-      '<div style="font-weight:700;margin:16px 0 6px;">错因分布（共错 ' + wrongTotal + ' 处）</div>' +
-      arr.map(function(x){
-        return '<div class="row"><span class="cat">' + x.k + '</span>'
-          + '<span class="bar2"><i style="width:' + Math.round(x.v / maxV * 100) + '%;background:' + (colors[x.k]||'#888') + '"></i></span>'
-          + '<span class="cnt">' + x.v + ' 处</span></div>';
-      }).join('')
-    ) : '<div class="tip green" style="margin-top:14px;"><b>全对。</b>逐词都对上了，这段音频对你已经没有辨音障碍——换下一个语速档，或者直接进下一篇。</div>';
-
-    var top = arr.length ? (arr[0].k + '（' + arr[0].v + ' 处）') : '无';
-    var advice = '';
-    if (arr.length){
-      if (arr[0].k === '连读/失爆区')
-        advice = '<div class="tip amber" style="margin-top:14px;"><b>这是好消息。</b>你错的词里有最大一块落在<b>连读/失爆标注区</b>——说明不是词汇量问题，是声音被吞掉。回到上方原文点读，把这些词所在句子用 🔁 循环五遍，然后跟读三遍。这是投入产出比最高的动作。</div>';
-      else if (arr[0].k === '可能生词')
-        advice = '<div class="tip blue" style="margin-top:14px;"><b>注意：</b>你漏的主要是较长的实词，这更像<b>词汇问题</b>而不是辨音问题。把上面标红的词抄进单词本，明天先复习这些词再听下一段。</div>';
-      else if (arr[0].k === '虚词弱读')
-        advice = '<div class="tip purple" style="margin-top:14px;"><b>典型症状：</b>漏的主要是 of / to / for / at 这类虚词。四级听力里虚词一律被压扁成 /ə/，<b>不要试图听清每一个词</b>——抓重音、抓实词，虚词自然就顺出来了。</div>';
+    function drawBlock(b){
+      var ctx = b.ctx;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, -b.top * DPR);
+      ctx.clearRect(0, b.top, W, b.h);
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, b.top, W, b.h);
+      drawInto(ctx, b.top, b.bot, null);
     }
-    document.getElementById('dictAnalysis').innerHTML += advice;
+    function drawAll(){ for (var i = 0; i < blocks.length; i++) drawBlock(blocks[i]); }
+    function drawRow(li){
+      if (li < 0) return;
+      for (var i = 0; i < blocks.length; i++){
+        var b = blocks[i];
+        if (li >= b.from && li < b.to){ drawBlock(b); return; }
+      }
+    }
 
-    document.getElementById('dictStat').innerHTML =
-      '听写准确率 <b>' + acc + '%</b>　（听对 ' + okCount + ' / 参考共 ' + total + ' 词）<br>'
-      + '漏听 <b>' + delList.length + '</b> 词　·　听错 <b>' + subList.length + '</b> 词　·　多写 <b>' + insCount + '</b> 词';
+    function layout(){
+      var cw = wrap.clientWidth;
+      if (!cw) return false;
+      if (cw === W && blocks.length) return false;
+      W = cw;
+      wrap.innerHTML = '';
+      blocks = [];
+      for (var i = 0; i < rows.length; i += BLOCK_ROWS){
+        var to = Math.min(i + BLOCK_ROWS, rows.length);
+        var top = (i === 0) ? 0 : rows[i].y - GAP;
+        var bot = (to >= rows.length) ? H : rows[to].y - GAP;
+        var bh = bot - top;
+        var cv = document.createElement('canvas');
+        cv.width = Math.round(W * DPR);
+        cv.height = Math.round(bh * DPR);
+        cv.style.width = W + 'px';
+        cv.style.height = bh + 'px';
+        var b = { from:i, to:to, top:top, bot:bot, h:bh, cv:cv, ctx:cv.getContext('2d') };
+        cv.__blk = b;
+        wrap.appendChild(cv);
+        blocks.push(b);
+        drawBlock(b);
+      }
+      return true;
+    }
 
-    window.__dictStats = { acc: acc, ok: okCount, total: total,
-                           del: delList.length, sub: subList.length, ins: insCount, top: top };
-    if (typeof window.__rebuild === 'function') window.__rebuild();
+    /* ── 书写（只有笔能写；手指留给滚动） ── */
+    function widthOf(e){
+      var p = (e.pointerType === 'pen' && typeof e.pressure === 'number' && e.pressure > 0) ? e.pressure : 0.5;
+      return Math.max(1.1, CW * (0.45 + p));
+    }
+    function locX(e, cv){ return e.clientX - cv.getBoundingClientRect().left; }
+    function locY(e, cv){ return e.clientY - cv.getBoundingClientRect().top + cv.__blk.top; }
+    function live(){
+      if (!cur || !cur.b) return;
+      var b = cur.b, ctx = b.ctx, p = cur.pts;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, -b.top * DPR);
+      ctx.strokeStyle = CO; ctx.fillStyle = CO;
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      if (p.length === 1){
+        ctx.beginPath(); ctx.arc(p[0][0], p[0][1], Math.max(.6, p[0][2] / 2), 0, 6.2832); ctx.fill();
+        cur.mid = [p[0][0], p[0][1]];
+      } else {
+        for (var i = cur.n; i < p.length; i++){
+          var q = p[i], o = p[i - 1];
+          var mx = (o[0] + q[0]) / 2, my = (o[1] + q[1]) / 2;
+          ctx.lineWidth = q[2];
+          ctx.beginPath(); ctx.moveTo(cur.mid[0], cur.mid[1]);
+          ctx.quadraticCurveTo(o[0], o[1], mx, my);
+          ctx.stroke();
+          cur.mid = [mx, my];
+        }
+      }
+      cur.n = p.length;
+    }
 
-    document.getElementById('dictOut').style.display = 'block';
-    toast('比对完成：准确率 ' + acc + '%');
-  });
+    wrap.addEventListener('pointerdown', function(e){
+      if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
+      var cv = e.target;
+      if (!cv || !cv.__blk) return;
+      var x = locX(e, cv), y = locY(e, cv);
+      cur = { li:liAtY(y), pts:[[x, y, widthOf(e)]], n:1, mid:null, b:cv.__blk };
+      strokes.push(cur);
+      live();
+      e.preventDefault();
+    }, {passive:false});
 
-  document.getElementById('dictClear').addEventListener('click', function(){
-    document.getElementById('dictIn').value = '';
-    document.getElementById('dictOut').style.display = 'none';
-    window.__dictStats = null;
-    if (typeof window.__rebuild === 'function') window.__rebuild();
-  });
+    wrap.addEventListener('pointermove', function(e){
+      if (!cur) return;
+      if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
+      var cv = cur.b.cv;
+      var evs = (typeof e.getCoalescedEvents === 'function') ? e.getCoalescedEvents() : null;
+      if (evs && evs.length){
+        for (var i = 0; i < evs.length; i++) cur.pts.push([locX(evs[i], cv), locY(evs[i], cv), widthOf(evs[i])]);
+      } else cur.pts.push([locX(e, cv), locY(e, cv), widthOf(e)]);
+      live();
+      e.preventDefault();
+    }, {passive:false});
+
+    ['pointerup', 'pointercancel'].forEach(function(ev){
+      wrap.addEventListener(ev, function(e){
+        if (!cur) return;
+        if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
+        var b = cur.b, r0 = rows[cur.li];
+        cur = null;
+        /* 收笔时按行高裁掉写飞出去的部分，避免串行 */
+        if (r0){
+          for (var i = strokes.length - 1; i >= 0; i--){
+            var s = strokes[i];
+            if (s.li !== r0.li) continue;
+            var lo = r0.y - 8, hi = r0.y + r0.h + 10;
+            for (var j = 0; j < s.pts.length; j++){
+              if (s.pts[j][1] < lo) s.pts[j][1] = lo;
+              if (s.pts[j][1] > hi) s.pts[j][1] = hi;
+            }
+            break;
+          }
+        }
+        if (b) drawBlock(b);
+        refreshCount();
+      });
+    });
+
+    /* ── 手指滚动（canvas 已 touch-action:none，需自己接管，含惯性） ── */
+    var TF = null;
+    wrap.addEventListener('pointerdown', function(e){
+      if (e.pointerType !== 'touch' || TF) return;
+      TF = { id:e.pointerId, y:e.clientY, base:(window.pageYOffset || 0), locked:false, hist:[[e.clientY, performance.now()]] };
+    }, {capture:true, passive:true});
+    wrap.addEventListener('pointermove', function(e){
+      if (!TF || e.pointerId !== TF.id) return;
+      var dy = TF.y - e.clientY;
+      if (!TF.locked){ if (Math.abs(dy) < 6) return; TF.locked = true; }
+      e.preventDefault();
+      window.scrollTo(window.pageXOffset || 0, TF.base + dy);
+      TF.hist.push([e.clientY, performance.now()]);
+      if (TF.hist.length > 5) TF.hist.shift();
+    }, {capture:true, passive:false});
+    ['pointerup', 'pointercancel'].forEach(function(ev){
+      wrap.addEventListener(ev, function(e){
+        if (!TF || e.pointerId !== TF.id) return;
+        var h = TF.hist, locked = TF.locked;
+        TF = null;
+        if (!locked || h.length < 2) return;
+        var a = h[0], b = h[h.length - 1], dt = b[1] - a[1];
+        if (dt < 8) return;
+        var vel = (a[0] - b[0]) / dt;
+        if (Math.abs(vel) < 0.1) return;
+        var last = performance.now();
+        (function step(){
+          var now = performance.now(), d = now - last; last = now;
+          if (d > 64) return;
+          vel *= Math.pow(0.9955, d);
+          if (Math.abs(vel) < 0.03) return;
+          window.scrollBy(0, vel * d);
+          requestAnimationFrame(step);
+        })();
+      }, {capture:true, passive:true});
+    });
+
+    /* ── 统计 / 按钮 ── */
+    var cnt = document.getElementById('dpCnt');
+    function writtenLi(){
+      var m = {}, i, j;
+      for (i = 0; i < strokes.length; i++){
+        var s = strokes[i], p = s.pts, x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+        for (j = 0; j < p.length; j++){
+          if (p[j][0] < x0) x0 = p[j][0];
+          if (p[j][0] > x1) x1 = p[j][0];
+          if (p[j][1] < y0) y0 = p[j][1];
+          if (p[j][1] > y1) y1 = p[j][1];
+        }
+        if (p.length < 3 && (x1 - x0) < 12 && (y1 - y0) < 12) continue;   /* 误触点不算 */
+        m[s.li] = 1;
+      }
+      return m;
+    }
+    function refreshCount(){
+      var m = writtenLi(), n = 0;
+      for (var k in m) if (m.hasOwnProperty(k)) n++;
+      API.written = n;
+      if (cnt) cnt.textContent = n ? ('已写 ' + n + ' / ' + rows.length + ' 句') : '';
+    }
+
+    var undo = document.getElementById('dpUndo');
+    if (undo) undo.addEventListener('click', function(){
+      if (!strokes.length){ toast('还没有笔迹'); return; }
+      var s = strokes.pop();
+      drawRow(s.li);
+      refreshCount();
+    });
+    var clr = document.getElementById('dpClear');
+    if (clr) clr.addEventListener('click', function(){
+      if (!strokes.length) return;
+      strokes = []; cur = null;
+      drawAll(); refreshCount();
+      var o = document.getElementById('dpOut');
+      if (o) o.style.display = 'none';
+      toast('听写本已清空');
+    });
+
+    /* 导出：没写的行压扁，保证宽度够清晰、总高可控 */
+    function exportPNG(){
+      var seen = writtenLi(), ex = [], i;
+      var HEAD = 42;
+      var y = HEAD + GAP;
+      for (i = 0; i < rows.length; i++){
+        var h = seen[i] ? ROW_H : 34;
+        ex.push({ li:i, y:y, h:h });
+        y += h + GAP;
+      }
+      var exH = y, sc = Math.min(2.6, Math.max(1, 660 / W));
+      if (exH * sc > 7000) sc = 7000 / exH;
+      sc = Math.max(0.9, sc);
+
+      var c = document.createElement('canvas');
+      c.width = Math.round(W * sc); c.height = Math.round(exH * sc);
+      var cx = c.getContext('2d');
+      cx.setTransform(sc, 0, 0, sc, 0, 0);
+      cx.fillStyle = '#fff'; cx.fillRect(0, 0, W, exH);
+
+      var h1 = document.querySelector('header h1');
+      cx.font = '700 15px ' + FONT;
+      cx.fillStyle = '#1b1e23';
+      cx.textBaseline = 'top';
+      cx.fillText('听写照 · ' + (h1 ? h1.textContent.trim() : ''), 10, 8);
+      cx.font = '400 11.5px ' + FONT;
+      cx.fillStyle = '#9aa3ad';
+      cx.fillText('已写 ' + (function(){ var n = 0; for (var k in seen) if (seen.hasOwnProperty(k)) n++; return n; })()
+                  + ' / ' + rows.length + ' 句　·　空白行＝没听出来', 10, 27);
+      cx.strokeStyle = '#e8ebef'; cx.lineWidth = 1;
+      cx.beginPath(); cx.moveTo(0, HEAD - 0.5); cx.lineTo(W, HEAD - 0.5); cx.stroke();
+
+      var sh = [], keepRows = rows, keepH = H, keepLi = curLi;
+      for (i = 0; i < rows.length; i++) sh.push(ex[i].y - rows[i].y);
+      rows = ex; H = exH; curLi = -1;
+      drawInto(cx, 0, exH, function(li){ return sh[li] || 0; });
+      rows = keepRows; H = keepH; curLi = keepLi;
+      return c.toDataURL('image/png');
+    }
+
+    var save = document.getElementById('dpSave');
+    if (save) save.addEventListener('click', function(){
+      if (!strokes.length){ toast('还是空本子，先听写吧'); return; }
+      var out = document.getElementById('dpOut');
+      var img = document.getElementById('dpImg');
+      var dl = document.getElementById('dpDl');
+      toast('正在生成听写照…');
+      setTimeout(function(){
+        try{
+          var url = exportPNG();
+          img.src = url;
+          if (dl) dl.href = url;
+          out.style.display = 'block';
+          out.scrollIntoView({behavior:'smooth', block:'nearest'});
+          toast('已生成，长按图片保存或截图发我');
+        }catch(err){ toast('生成失败，直接截图吧'); }
+      }, 30);
+    });
+
+    var rzT = 0;
+    window.addEventListener('resize', function(){
+      clearTimeout(rzT);
+      rzT = setTimeout(function(){ layout(); }, 220);
+    }, {passive:true});
+
+    function show(){
+      card.classList.remove('hide');
+      layout();
+    }
+    function hide(){ card.classList.add('hide'); }
+    function focusLine(li){
+      if (card.classList.contains('hide')) return;
+      layout();
+      if (li !== curLi){ var old = curLi; curLi = li; drawRow(old); drawRow(li); }
+      if (cur) return;                                  /* 正在写，别抢滚动 */
+      var r = rows[li];
+      if (!r) return;
+      var top = wrap.getBoundingClientRect().top + (window.pageYOffset || 0) + r.y;
+      var vp = window.pageYOffset || 0;
+      if (top < vp + 90 || top > vp + window.innerHeight - 220)
+        window.scrollTo({ top: Math.max(0, top - 120), behavior:'smooth' });
+    }
+
+    API.show = show; API.hide = hide; API.focusLine = focusLine; API.layout = layout;
+    window.__dictPad = API;
+    return API;
+  })();
 
 
   var t;
@@ -1299,6 +1500,7 @@ for (var qid in AL){
   var penTapRec = null;
   function penTapDown(e){
     if (e.pointerType !== 'pen') return;
+    if (skipPen(e.target)){ penTapRec = null; return; }
     diag(e, 'down', true);           /* 诊断：未开涂写时也能看到事件 */
     penTapRec = { t: performance.now(), x: e.pageX, y: e.pageY, moved: false };
   }
@@ -1330,6 +1532,8 @@ for (var qid in AL){
   document.addEventListener('pointercancel', function(e){ if (e.pointerType === 'pen') penTapRec = null; }, {capture:true});
 
   var EXCLUDE = 'input,textarea,select,#markBar';
+  var PEN_SKIP = '.dpwrap';        /* 听写本自带笔迹，全局画笔让位 */
+  function skipPen(t){ return !!(t && t.closest && t.closest(PEN_SKIP)); }
   function hitUI(t, x, y){
     if (t && t.closest && t.closest(EXCLUDE)) return true;
     var bar = document.getElementById('markBar');
@@ -1352,7 +1556,7 @@ for (var qid in AL){
     if (mode === 'off' || e.pointerType !== 'touch' || TF.id !== null) return;
     diag(e, 'down', true);
     if (e.isPrimary === false) return;
-    if (hitUI(e.target, e.clientX, e.clientY)) return;
+    if (hitUI(e.target, e.clientX, e.clientY) || skipPen(e.target)) return;
     if (e.target && e.target.closest && e.target.closest('input,textarea,select')) return;
     TF.id = e.pointerId; TF.y = e.clientY; TF.locked = false;
     TF.host = scrollHost(e.target);
@@ -1411,7 +1615,7 @@ for (var qid in AL){
   document.addEventListener('pointerdown', function(e){
     if (mode === 'off') return;
     if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
-    if (hitUI(e.target, e.clientX, e.clientY)) return;
+    if (hitUI(e.target, e.clientX, e.clientY) || skipPen(e.target)) return;
     diag(e, 'down', true);
     TF.id = null; TF.host = null;          /* 笔落下：立即终止手指滚动接管 */
     drawing = true;
@@ -1573,20 +1777,7 @@ for (var qid in AL){
 </script>
 
 <script>
-/* 手写听写：拍照交批改 */
-(function(){
-  var b = document.getElementById('dictPhoto');
-  if (!b) return;
-  b.addEventListener('click', function(){
-    var t = document.getElementById('dictPhotoTip');
-    if (t) t.style.display = (t.style.display === 'none') ? 'block' : 'none';
-    b.textContent = (t && t.style.display === 'block') ? '📷 收起说明' : '📷 手写听写 · 拍照交批改';
-  });
-})();
-</script>
-
-<script>
-/* 听写模式：逐句播放 → 播完自动暂停 → 写好后点「下一句」 */
+/* 听写模式：逐句播放 → 播完自动暂停 → 听写本自动跳到那一行 */
 (function(){
   var audio = document.getElementById('audio');
   var bar = document.getElementById('dictBar');
@@ -1596,6 +1787,9 @@ for (var qid in AL){
   var bNext = document.getElementById('dbNext');
   var bAgain = document.getElementById('dbAgain');
   var on = false, curLi = -1, B = null, guard = 0;
+  var DP = window.__dictPad || null;
+  var tpFollow = document.getElementById('tpFollow');
+  var followBack = false;          /* 进去前若开着自动滚动，退出时还给他 */
 
   function bounds(){
     if (B) return B;
@@ -1618,6 +1812,8 @@ for (var qid in AL){
     curLi = li;
     guard = performance.now() + 500;          /* 刚切句，先忽略句末判断 */
     bar.classList.remove('on');
+    DP = window.__dictPad || DP;
+    if (DP) DP.focusLine(li);                 /* 本子跳到这一行 */
     audio.currentTime = b[li][0];
     var pr = audio.play();
     if (pr && pr.catch) pr.catch(function(){});
@@ -1626,10 +1822,10 @@ for (var qid in AL){
   function showWait(li){
     var b = bounds(), last = (li + 1 >= b.length);
     if (last){
-      txt.innerHTML = '🎉 <b>' + b.length + ' 句全部播完</b> —— 去听写区比对，看漏了哪些';
+      txt.innerHTML = '🎉 <b>' + b.length + ' 句全部播完</b> —— 点「📷 导出听写照」，把本子发我批改';
       bNext.textContent = '✓ 完成';
     } else {
-      txt.innerHTML = '✍️ <b>第 ' + (li + 1) + ' / ' + b.length + ' 句</b>播完了 —— 写好后继续';
+      txt.innerHTML = '✍️ <b>第 ' + (li + 1) + ' / ' + b.length + ' 句</b>播完了 —— 写完点「下一句」';
       bNext.textContent = '▶ 下一句';
     }
     bar.classList.add('on');
@@ -1638,6 +1834,8 @@ for (var qid in AL){
     on = false; curLi = -1;
     btn.classList.remove('act'); btn.textContent = '✍️ 听写模式';
     bar.classList.remove('on');
+    if (window.__dictPad) window.__dictPad.hide();
+    if (followBack && tpFollow){ tpFollow.click(); followBack = false; }
   }
 
   audio.addEventListener('timeupdate', function(){
@@ -1656,11 +1854,14 @@ for (var qid in AL){
     if (on){ exitMode(); return; }
     on = true;
     btn.classList.add('act'); btn.textContent = '✍️ 听写模式 开';
-    var li = liAt(audio.currentTime);
-    txt.innerHTML = '✍️ 听写模式：<b>每句播完会自动暂停</b>，你写完点「下一句」';
+    /* 听写时由听写本主导滚动，先把播放器的「自动滚动」让出去，否则两边抢滚动 */
+    if (tpFollow && tpFollow.classList.contains('act')){ followBack = true; tpFollow.click(); }
+    DP = window.__dictPad || DP;
+    if (DP) DP.show();
+    txt.innerHTML = '✍️ 听写模式：<b>每句播完会自动暂停</b>，写到本子上，写完点「下一句」';
     bNext.textContent = '▶ 下一句';
+    playLine(liAt(audio.currentTime) < 0 ? 0 : liAt(audio.currentTime));
     bar.classList.add('on');
-    playLine(li < 0 ? 0 : li);
   });
   bNext.addEventListener('click', function(){
     if (!on){ bar.classList.remove('on'); return; }
