@@ -185,6 +185,11 @@ html.penon,body.penon{touch-action:none !important;-webkit-user-select:none;user
 html.penon body,body.penon *,:host{touch-action:none !important}
 body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;touch-action:auto !important}
 #markCanvas.act{cursor:crosshair}
+#penDiag{position:fixed;left:9px;top:9px;z-index:9000;max-width:52vw;display:none;
+ background:rgba(10,12,16,.93);color:#cfe0ff;padding:9px 12px;border-radius:10px;
+ font:11.5px/1.55 ui-monospace,Menlo,Consolas,monospace;white-space:pre;
+ pointer-events:none;box-shadow:0 6px 22px rgba(0,0,0,.28)}
+#penDiag.on{display:block}
 #penToast{position:fixed;left:50%;bottom:112px;transform:translateX(-50%) translateY(10px);
  background:rgba(20,22,26,.92);color:#fff;font-size:13px;font-weight:600;padding:9px 17px;
  border-radius:22px;z-index:8990;opacity:0;pointer-events:none;
@@ -326,7 +331,7 @@ var _sb=document.getElementById('sy-m1'); if(_sb)_sb.addEventListener('click',fu
 
 <script>
 (function(){
-  /* penv7 */
+  /* penv8 */
   var cv = document.getElementById('markCanvas');
   if (!cv) return;
   var ctx = cv.getContext('2d');
@@ -536,10 +541,50 @@ var _sb=document.getElementById('sy-m1'); if(_sb)_sb.addEventListener('click',fu
   if (wdM) wdM.classList.add('on');
   if (swK) swK.classList.add('on');
 
+  /* 诊断开关按钮 */
+  (function(){
+    var row = document.querySelector('#markBar .row');
+    if (!row || document.getElementById('mkDiag')) return;
+    var b = document.createElement('button');
+    b.id = 'mkDiag'; b.type = 'button'; b.title = '诊断笔事件（点几下笔看左上角记录）';
+    b.textContent = '🔍';
+    row.appendChild(b);
+    b.addEventListener('click', function(){
+      diagOn = !diagOn;
+      b.classList.toggle('on', diagOn);
+      var el = document.getElementById('penDiag');
+      if (!diagOn){ if (el) el.classList.remove('on'); diagLines = []; }
+      else { diagBox().classList.add('on'); toast('诊断已开启：用笔点两下 / 双击笔身，看左上角'); }
+    });
+  })();
+
   function pressure(e){ return (e.pointerType === 'pen' && typeof e.pressure === 'number' && e.pressure > 0) ? e.pressure : 0.5; }
   function widthOf(e, era){
     if (era || mode === 'erase') return Math.max(14, baseW * 5);
     return Math.max(1.1, baseW * (0.4 + pressure(e)));   /* 下限提高，避免过快显得断断续续 */
+  }
+
+  /* ── 笔事件诊断（默认关闭）：确认设备实际发出的事件 ── */
+  var diagOn = false, diagLines = [], diagLast = 0;
+  function diagBox(){
+    var el = document.getElementById('penDiag');
+    if (!el){ el = document.createElement('div'); el.id = 'penDiag'; document.body.appendChild(el); }
+    return el;
+  }
+  function diag(e, phase, force){
+    if (!diagOn) return;
+    if (!force && phase === 'move' && performance.now() - diagLast < 140) return;
+    diagLast = performance.now();
+    var line = phase + ' ' + (e.pointerType || '?') +
+               ' b=' + (e.button === undefined ? '-' : e.button) +
+               ' bt=' + (e.buttons === undefined ? '-' : (e.buttons | 0)) +
+               ' p=' + (typeof e.pressure === 'number' ? e.pressure.toFixed(2) : '-') +
+               (e.isPrimary === false ? ' 2nd' : '');
+    var el = diagBox();
+    el.classList.add('on');
+    diagLines.push(line);
+    if (diagLines.length > 9) diagLines.shift();
+    el.textContent = diagLines.join('\n');
   }
 
   /* ── 双击笔尖 → 切换橡皮 / 画笔 ── */
@@ -566,19 +611,25 @@ var _sb=document.getElementById('sy-m1'); if(_sb)_sb.addEventListener('click',fu
   }
   function checkPenTap(st){
     if (!st) return;
-    var now = performance.now(), p0 = st.pts[0], pn = st.pts[st.pts.length - 1];
-    var tap = st.pts.length <= 2 &&
-              Math.abs(pn[0] - p0[0]) < 12 && Math.abs(pn[1] - p0[1]) < 12;
-    var near = Math.abs(p0[0] - lastPenTap.x) < 28 && Math.abs(p0[1] - lastPenTap.y) < 28;
-    var fast = (now - lastPenTap.t) < 420;
-    if (tap && lastPenTap.t && near && fast){
+    var now = performance.now(), p = st.pts, n = p.length;
+    var x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (var i = 0; i < n; i++){
+      if (p[i][0] < x0) x0 = p[i][0];
+      if (p[i][0] > x1) x1 = p[i][0];
+      if (p[i][1] < y0) y0 = p[i][1];
+      if (p[i][1] > y1) y1 = p[i][1];
+    }
+    var tap = (x1 - x0) < 14 && (y1 - y0) < 14;        /* 位移极小即视为「点」 */
+    var near = Math.abs(x0 - lastPenTap.x) < 44 && Math.abs(y0 - lastPenTap.y) < 44;
+    var fast = lastPenTap.t && (now - lastPenTap.t) < 620;
+    if (tap && fast && near){
       lastPenTap.t = 0;
       dropTapDots(2);
       if (mode === 'draw'){ setMode('erase'); toast('✍️ 双击笔尖 → 已切到橡皮'); }
       else if (mode === 'erase'){ setMode('draw'); toast('🖊 双击笔尖 → 已切回画笔'); }
       schedule(true);
     } else {
-      lastPenTap = { t: now, x: p0[0], y: p0[1] };
+      lastPenTap = { t: now, x: x0, y: y0 };
     }
   }
 
@@ -603,6 +654,7 @@ var _sb=document.getElementById('sy-m1'); if(_sb)_sb.addEventListener('click',fu
   var TF = { id:null, y:0, host:null, base:0, hist:[], locked:false };
   function tfBegin(e){
     if (mode === 'off' || e.pointerType !== 'touch' || TF.id !== null) return;
+    diag(e, 'down', true);
     if (e.isPrimary === false) return;
     if (hitUI(e.target, e.clientX, e.clientY)) return;
     if (e.target && e.target.closest && e.target.closest('input,textarea,select')) return;
@@ -664,6 +716,7 @@ var _sb=document.getElementById('sy-m1'); if(_sb)_sb.addEventListener('click',fu
     if (mode === 'off') return;
     if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
     if (hitUI(e.target, e.clientX, e.clientY)) return;
+    diag(e, 'down', true);
     TF.id = null; TF.host = null;          /* 笔落下：立即终止手指滚动接管 */
     drawing = true;
     /* 笔上的橡皮按钮（规范：button=5 / buttons=32）→ 本次直接用橡皮，不改变当前工具 */
@@ -691,6 +744,7 @@ var _sb=document.getElementById('sy-m1'); if(_sb)_sb.addEventListener('click',fu
   document.addEventListener('pointermove', function(e){
     if (!drawing || !cur) return;
     if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
+    diag(e, 'move', false);
     var evs = (typeof e.getCoalescedEvents === 'function') ? e.getCoalescedEvents() : null;
     if (evs && evs.length){ for (var i = 0; i < evs.length; i++){ var p = evs[i]; cur.pts.push([p.pageX, p.pageY, widthOf(p, cur.era)]); } }
     else cur.pts.push([e.pageX, e.pageY, widthOf(e, cur.era)]);
@@ -702,6 +756,7 @@ var _sb=document.getElementById('sy-m1'); if(_sb)_sb.addEventListener('click',fu
     document.addEventListener(ev, function(e){
       if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
       if (!drawing){ return; }
+      diag(e, 'up', true);
       if (rafId && (needLive || needFull)){ cancelAnimationFrame(rafId); rafId = 0; }
       if (needLive) live();
       needLive = false; needFull = false;
