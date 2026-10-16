@@ -223,11 +223,6 @@ html.penon,body.penon{touch-action:none !important;-webkit-user-select:none;user
 html.penon body,body.penon *,:host{touch-action:none !important}
 body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;touch-action:auto !important}
 #markCanvas.act{cursor:crosshair}
-#penDiag{position:fixed;left:9px;top:9px;z-index:9000;max-width:52vw;display:none;
- background:rgba(10,12,16,.93);color:#cfe0ff;padding:9px 12px;border-radius:10px;
- font:11.5px/1.55 ui-monospace,Menlo,Consolas,monospace;white-space:pre;
- pointer-events:none;box-shadow:0 6px 22px rgba(0,0,0,.28)}
-#penDiag.on{display:block}
 #penToast{position:fixed;left:50%;bottom:112px;transform:translateX(-50%) translateY(10px);
  background:rgba(20,22,26,.92);color:#fff;font-size:13px;font-weight:600;padding:9px 17px;
  border-radius:22px;z-index:8990;opacity:0;pointer-events:none;
@@ -1031,22 +1026,6 @@ var QUIZ = [];
   if (wdM) wdM.classList.add('on');
   if (swK) swK.classList.add('on');
 
-  /* 诊断开关按钮 */
-  (function(){
-    var row = document.querySelector('#markBar .row');
-    if (!row || document.getElementById('mkDiag')) return;
-    var b = document.createElement('button');
-    b.id = 'mkDiag'; b.type = 'button'; b.title = '诊断笔事件（点几下笔看左上角记录）';
-    b.textContent = '🔍';
-    row.appendChild(b);
-    b.addEventListener('click', function(){
-      diagOn = !diagOn;
-      b.classList.toggle('on', diagOn);
-      var el = document.getElementById('penDiag');
-      if (!diagOn){ if (el) el.classList.remove('on'); diagLines = []; }
-      else { diagBox().classList.add('on'); toast('诊断已开启：用笔点两下 / 双击笔身，看左上角'); }
-    });
-  })();
 
   function pressure(e){ return (e.pointerType === 'pen' && typeof e.pressure === 'number' && e.pressure > 0) ? e.pressure : 0.5; }
   function widthOf(e, era){

@@ -75,6 +75,9 @@
   .q{padding:14px 0;border-bottom:1px dashed var(--line);}
   .q:last-of-type{border-bottom:none;}
   .q .stem{font-weight:600;margin-bottom:9px;font-size:15px;}
+.qno{display:inline-flex;align-items:center;justify-content:center;min-width:25px;height:25px;
+ padding:0 8px;border-radius:8px;background:var(--blue-soft);color:var(--blue-ink,var(--blue));
+ font-size:13px;font-weight:800;margin:0 0 9px;letter-spacing:.2px}
   .zh{color:var(--sub);font-size:13px;font-weight:400;display:block;margin-top:3px;}
   .opt{display:flex;align-items:flex-start;gap:9px;width:100%;text-align:left;cursor:pointer;
     padding:9px 13px;border:1.5px solid var(--line);border-radius:9px;margin-bottom:7px;
@@ -229,11 +232,6 @@ html.penon,body.penon{touch-action:none !important;-webkit-user-select:none;user
 html.penon body,body.penon *,:host{touch-action:none !important}
 body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;touch-action:auto !important}
 #markCanvas.act{cursor:crosshair}
-#penDiag{position:fixed;left:9px;top:9px;z-index:9000;max-width:52vw;display:none;
- background:rgba(10,12,16,.93);color:#cfe0ff;padding:9px 12px;border-radius:10px;
- font:11.5px/1.55 ui-monospace,Menlo,Consolas,monospace;white-space:pre;
- pointer-events:none;box-shadow:0 6px 22px rgba(0,0,0,.28)}
-#penDiag.on{display:block}
 #penToast{position:fixed;left:50%;bottom:112px;transform:translateX(-50%) translateY(10px);
  background:rgba(20,22,26,.92);color:#fff;font-size:13px;font-weight:600;padding:9px 17px;
  border-radius:22px;z-index:8990;opacity:0;pointer-events:none;
@@ -281,7 +279,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 <div class="card" id="quizCard">
   <h2><span class="num">2</span>做题区</h2>
   <p class="hint">先听「原速」做完题，再点提交。提交后原文和解析才会解锁。</p>
-  <div class="q" data-q="q16"><div class="stem">16. What do children seem to have a natural desire to do?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>Play outdoors and enjoy themselves.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>Beat challenges and take risks.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>Take care of their well-being.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>Grow up strong and healthy.</span></button></div><div class="q" data-q="q19"><div class="stem">19. when are job seekers willing to explore jobs with lower salaries, according to a new study?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>When companies share their information online.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>When their job search criteria are met fully.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>When companies embrace greater diversity</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>When they find job postings visually attractive.</span></button></div><div class="q" data-q="q22"><div class="stem">22. What does the passage say about the findings of a new study from Oregon State University?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>Positive.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>Original.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>Important.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>Surprising.</span></button></div>
+  <div class="q" data-q="q16"><span class="qno">16</span><div class="stem">What do children seem to have a natural desire to do?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>Play outdoors and enjoy themselves.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>Beat challenges and take risks.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>Take care of their well-being.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>Grow up strong and healthy.</span></button></div><div class="q" data-q="q19"><span class="qno">19</span><div class="stem">when are job seekers willing to explore jobs with lower salaries, according to a new study?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>When companies share their information online.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>When their job search criteria are met fully.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>When companies embrace greater diversity</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>When they find job postings visually attractive.</span></button></div><div class="q" data-q="q22"><span class="qno">22</span><div class="stem">What does the passage say about the findings of a new study from Oregon State University?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>Positive.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>Original.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>Important.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>Surprising.</span></button></div>
   <button class="btn btn-primary" id="submitBtn" disabled>请先完成 3 道题</button>
   <div class="progress" id="progress">已作答 0 / 3</div>
   <button class="btn btn-ghost" id="skipBtn">我不想做题，直接进入原文点读</button>
@@ -1186,22 +1184,6 @@ for (var qid in AL){
   if (wdM) wdM.classList.add('on');
   if (swK) swK.classList.add('on');
 
-  /* 诊断开关按钮 */
-  (function(){
-    var row = document.querySelector('#markBar .row');
-    if (!row || document.getElementById('mkDiag')) return;
-    var b = document.createElement('button');
-    b.id = 'mkDiag'; b.type = 'button'; b.title = '诊断笔事件（点几下笔看左上角记录）';
-    b.textContent = '🔍';
-    row.appendChild(b);
-    b.addEventListener('click', function(){
-      diagOn = !diagOn;
-      b.classList.toggle('on', diagOn);
-      var el = document.getElementById('penDiag');
-      if (!diagOn){ if (el) el.classList.remove('on'); diagLines = []; }
-      else { diagBox().classList.add('on'); toast('诊断已开启：用笔点两下 / 双击笔身，看左上角'); }
-    });
-  })();
 
   function pressure(e){ return (e.pointerType === 'pen' && typeof e.pressure === 'number' && e.pressure > 0) ? e.pressure : 0.5; }
   function widthOf(e, era){

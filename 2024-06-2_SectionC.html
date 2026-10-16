@@ -75,6 +75,9 @@
   .q{padding:14px 0;border-bottom:1px dashed var(--line);}
   .q:last-of-type{border-bottom:none;}
   .q .stem{font-weight:600;margin-bottom:9px;font-size:15px;}
+.qno{display:inline-flex;align-items:center;justify-content:center;min-width:25px;height:25px;
+ padding:0 8px;border-radius:8px;background:var(--blue-soft);color:var(--blue-ink,var(--blue));
+ font-size:13px;font-weight:800;margin:0 0 9px;letter-spacing:.2px}
   .zh{color:var(--sub);font-size:13px;font-weight:400;display:block;margin-top:3px;}
   .opt{display:flex;align-items:flex-start;gap:9px;width:100%;text-align:left;cursor:pointer;
     padding:9px 13px;border:1.5px solid var(--line);border-radius:9px;margin-bottom:7px;
@@ -229,11 +232,6 @@ html.penon,body.penon{touch-action:none !important;-webkit-user-select:none;user
 html.penon body,body.penon *,:host{touch-action:none !important}
 body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;touch-action:auto !important}
 #markCanvas.act{cursor:crosshair}
-#penDiag{position:fixed;left:9px;top:9px;z-index:9000;max-width:52vw;display:none;
- background:rgba(10,12,16,.93);color:#cfe0ff;padding:9px 12px;border-radius:10px;
- font:11.5px/1.55 ui-monospace,Menlo,Consolas,monospace;white-space:pre;
- pointer-events:none;box-shadow:0 6px 22px rgba(0,0,0,.28)}
-#penDiag.on{display:block}
 #penToast{position:fixed;left:50%;bottom:112px;transform:translateX(-50%) translateY(10px);
  background:rgba(20,22,26,.92);color:#fff;font-size:13px;font-weight:600;padding:9px 17px;
  border-radius:22px;z-index:8990;opacity:0;pointer-events:none;
@@ -281,7 +279,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 <div class="card" id="quizCard">
   <h2><span class="num">2</span>做题区</h2>
   <p class="hint">先听「原速」做完题，再点提交。提交后原文和解析才会解锁。</p>
-  <div class="q" data-q="q16"><div class="stem">16. Why is the speaker launching a campaign?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>To show his sympathy towards people always being busy.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>To prevent people from complaining about being "busy".</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>To call on busy people to take care of themselves.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>To help busy people to sort out their priorities.</span></button></div><div class="q" data-q="q17"><div class="stem">17. What does the speaker advise us to do next time someone asks us how we are?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>Avoid saying we are busy.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>Reflect on their true purpose.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>Describe our schedule in detail.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>Respond as most busy people do.</span></button></div><div class="q" data-q="q18"><div class="stem">18. Why do many people make the I'm busy response according to the speaker?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>To show their achievements resulted from great efforts.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>To prove they stand out as accomplished professionals.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>To cover up their failure to achieve some purpose.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>To tell others a complete lie about their inability.</span></button></div><div class="q" data-q="q19"><div class="stem">19. What may sound strange to say about extreme sports?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>They will help one reduce fear</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>They should become so popular.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>They will be less challenging after a time.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>They should cover so many different types.</span></button></div><div class="q" data-q="q20"><div class="stem">20. Why should one be highly focused when doing extreme sports?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>To break one's ultimate limits.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>To stop being extremely afraid.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>To avoid dangerous mistakes.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>To enjoy the sports to the full.</span></button></div><div class="q" data-q="q21"><div class="stem">21. How can extreme sports benefit us more than standard exercise routines and sports?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>By allowing our motivation to be at an all-time high.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>By stopping us hurting the same muscles repeatedly.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>By burning as many as 300 calories per hour.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>By enabling us to get an all-over workout.</span></button></div>
+  <div class="q" data-q="q16"><span class="qno">16</span><div class="stem">Why is the speaker launching a campaign?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>To show his sympathy towards people always being busy.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>To prevent people from complaining about being "busy".</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>To call on busy people to take care of themselves.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>To help busy people to sort out their priorities.</span></button></div><div class="q" data-q="q17"><span class="qno">17</span><div class="stem">What does the speaker advise us to do next time someone asks us how we are?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>Avoid saying we are busy.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>Reflect on their true purpose.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>Describe our schedule in detail.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>Respond as most busy people do.</span></button></div><div class="q" data-q="q18"><span class="qno">18</span><div class="stem">Why do many people make the I'm busy response according to the speaker?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>To show their achievements resulted from great efforts.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>To prove they stand out as accomplished professionals.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>To cover up their failure to achieve some purpose.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>To tell others a complete lie about their inability.</span></button></div><div class="q" data-q="q19"><span class="qno">19</span><div class="stem">What may sound strange to say about extreme sports?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>They will help one reduce fear</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>They should become so popular.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>They will be less challenging after a time.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>They should cover so many different types.</span></button></div><div class="q" data-q="q20"><span class="qno">20</span><div class="stem">Why should one be highly focused when doing extreme sports?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>To break one's ultimate limits.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>To stop being extremely afraid.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>To avoid dangerous mistakes.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>To enjoy the sports to the full.</span></button></div><div class="q" data-q="q21"><span class="qno">21</span><div class="stem">How can extreme sports benefit us more than standard exercise routines and sports?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>By allowing our motivation to be at an all-time high.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>By stopping us hurting the same muscles repeatedly.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>By burning as many as 300 calories per hour.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>By enabling us to get an all-over workout.</span></button></div>
   <button class="btn btn-primary" id="submitBtn" disabled>请先完成 6 道题</button>
   <div class="progress" id="progress">已作答 0 / 6</div>
   <button class="btn btn-ghost" id="skipBtn">我不想做题，直接进入原文点读</button>
@@ -1186,22 +1184,6 @@ for (var qid in AL){
   if (wdM) wdM.classList.add('on');
   if (swK) swK.classList.add('on');
 
-  /* 诊断开关按钮 */
-  (function(){
-    var row = document.querySelector('#markBar .row');
-    if (!row || document.getElementById('mkDiag')) return;
-    var b = document.createElement('button');
-    b.id = 'mkDiag'; b.type = 'button'; b.title = '诊断笔事件（点几下笔看左上角记录）';
-    b.textContent = '🔍';
-    row.appendChild(b);
-    b.addEventListener('click', function(){
-      diagOn = !diagOn;
-      b.classList.toggle('on', diagOn);
-      var el = document.getElementById('penDiag');
-      if (!diagOn){ if (el) el.classList.remove('on'); diagLines = []; }
-      else { diagBox().classList.add('on'); toast('诊断已开启：用笔点两下 / 双击笔身，看左上角'); }
-    });
-  })();
 
   function pressure(e){ return (e.pointerType === 'pen' && typeof e.pressure === 'number' && e.pressure > 0) ? e.pressure : 0.5; }
   function widthOf(e, era){
