@@ -708,10 +708,19 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
   function dropTapDots(n){
     for (var k = 0; k < n; k++){
       var s = strokes[strokes.length - 1];
-      if (s && s.pts.length <= 1) strokes.pop(); else break;
+      if (!s) break;
+      var p = s.pts, x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+      for (var i = 0; i < p.length; i++){
+        if (p[i][0] < x0) x0 = p[i][0];
+        if (p[i][0] > x1) x1 = p[i][0];
+        if (p[i][1] < y0) y0 = p[i][1];
+        if (p[i][1] > y1) y1 = p[i][1];
+      }
+      /* 位移极小 = 双击留下的无效字迹（正常书写绝不会这么短） */
+      if ((x1 - x0) < 26 && (y1 - y0) < 26) strokes.pop(); else break;
     }
     hasEra = false;
-    for (var i = 0; i < strokes.length; i++) if (strokes[i].era){ hasEra = true; break; }
+    for (var j = 0; j < strokes.length; j++) if (strokes[j].era){ hasEra = true; break; }
   }
   /* 双击检测走独立手势（见文件末尾的 penTapDown/Move/Up），这里保持空实现 */
   function checkPenTap(){}
