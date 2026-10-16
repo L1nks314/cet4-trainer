@@ -183,7 +183,9 @@ details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14
 #markBar .sw{width:21px;height:21px;border-radius:50%;border:2px solid var(--line,#e5e8ec);
  padding:0;cursor:pointer;flex:0 0 auto}
 #markBar .sw.on{border-color:var(--blue,#2563eb);box-shadow:0 0 0 2px rgba(37,99,235,.22)}
-#markCanvas{position:absolute;top:0;left:0;z-index:8980;pointer-events:none}
+#markCanvas{position:fixed;top:0;left:0;z-index:8980;pointer-events:none}
+body.penon{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text}
 #markCanvas.act{cursor:crosshair}
 </style>
 </head>
@@ -420,41 +422,68 @@ details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14
 
 <script>
 (function(){
+  /* penv4 */
   var cv = document.getElementById('markCanvas');
   if (!cv) return;
   var ctx = cv.getContext('2d');
-  var strokes = [], cur = null;
-  var SC = [];
+  var strokes = [], cur = null, SC = [];
+  var VW = 0, VH = 0, DPR = 1, OX = 0, OY = 0, rzT = 0;
+  var rafId = 0, needFull = false, needLive = false, hasEra = false;
 
-  function rz(){
-    var w = document.documentElement.scrollWidth || window.innerWidth;
-    var h = document.documentElement.scrollHeight || window.innerHeight;
-    if (w !== cv.width || h !== cv.height){ cv.width = w; cv.height = h; drawAll(); }
+  /* ── 画布只覆盖视口：平板不会因超大画布丧失硬件加速 ── */
+  function setSize(){
+    var w = window.innerWidth, h = window.innerHeight;
+    var d = Math.min(2, window.devicePixelRatio || 1);
+    if (w === VW && h === VH && d === DPR) return false;
+    VW = w; VH = h; DPR = d;
+    cv.width = Math.round(w * d); cv.height = Math.round(h * d);
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    return true;
   }
+  function syncScroll(){ OX = window.pageXOffset || 0; OY = window.pageYOffset || 0; }
+  function offOf(s){ return s.c ? (s.c0 - s.c.scrollTop) : 0; }
+  function clipC(c){
+    if (!c) return;
+    var r = c.getBoundingClientRect();
+    if (r.width > 0 && r.height > 0){ ctx.beginPath(); ctx.rect(r.left, r.top, r.width, r.height); ctx.clip(); }
+  }
+  function bboxOf(s){
+    var p = s.pts, n = p.length, x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (var i = 0; i < n; i++){
+      var x = p[i][0], y = p[i][1], w = p[i][2];
+      if (x - w < x0) x0 = x - w;
+      if (x + w > x1) x1 = x + w;
+      if (y - w < y0) y0 = y - w;
+      if (y + w > y1) y1 = y + w;
+    }
+    s.bb = [x0, y0, x1, y1];
+    return s.bb;
+  }
+
+  /* 扫描可滚动容器（用于把笔迹限制在所属栏内） */
   function scanSC(){
     SC = [];
     var all = document.querySelectorAll('div,section,article,aside');
-    for (var i=0;i<all.length;i++){
+    for (var i = 0; i < all.length; i++){
       var el = all[i];
       if (el.offsetHeight < 90) continue;
       var st = getComputedStyle(el);
       if ((st.overflowY === 'auto' || st.overflowY === 'scroll') && el.scrollHeight > el.clientHeight + 4){
         SC.push(el);
         if (!el.__mkh){ el.__mkh = 1;
-          el.addEventListener('scroll', function(){ drawAll(); }, {passive:true}); }
+          el.addEventListener('scroll', function(){ schedule(true); }, {passive:true}); }
       }
     }
   }
-  function rectOf(c){
-    var r = c.getBoundingClientRect();
-    return {l:r.left + window.pageXOffset, t:r.top + window.pageYOffset, w:r.width, h:r.height};
-  }
   function ownerOf(x, y){
     var best = null, bestA = Infinity;
-    for (var i=0;i<SC.length;i++){
-      var c = SC[i], b = rectOf(c);
-      if (x >= b.l && x <= b.l + b.w && y >= b.t && y <= b.t + b.h){
-        var a = b.w * b.h;
+    for (var i = 0; i < SC.length; i++){
+      var c = SC[i], r = c.getBoundingClientRect();
+      var l = r.left + (window.pageXOffset || 0), t = r.top + (window.pageYOffset || 0);
+      if (x >= l && x <= l + r.width && y >= t && y <= t + r.height){
+        var a = r.width * r.height;
         if (a < bestA){ bestA = a; best = c; }
       }
     }
@@ -462,52 +491,106 @@ details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14
   }
   function inCur(x, y){
     if (!cur || !cur.c) return true;
-    var b = rectOf(cur.c);
-    return x >= b.l && x <= b.l + b.w && y >= b.t && y <= b.t + b.h;
-  }
-  function clipTo(c){
-    var b = rectOf(c);
-    ctx.beginPath(); ctx.rect(b.l, b.t, b.w, b.h); ctx.clip();
-  }
-  function pathOf(s, dy){
-    var pts = s.pts; if (!pts.length) return;
-    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-    ctx.globalCompositeOperation = s.era ? 'destination-out' : 'source-over';
-    if (!s.era) ctx.strokeStyle = s.color;
-    if (pts.length === 1){
-      ctx.fillStyle = s.era ? 'rgba(0,0,0,1)' : s.color;
-      ctx.beginPath(); ctx.arc(pts[0][0], pts[0][1]+dy, Math.max(.5, pts[0][2]/2), 0, 6.2832);
-      ctx.fill(); ctx.globalCompositeOperation = 'source-over'; return;
-    }
-    var lm = [pts[0][0], pts[0][1]];
-    for (var i=1;i<pts.length;i++){
-      var p = pts[i], q = pts[i-1];
-      var mx = (q[0]+p[0])/2, my = (q[1]+p[1])/2;
-      ctx.lineWidth = p[2];
-      ctx.beginPath();
-      ctx.moveTo(lm[0], lm[1]+dy);
-      ctx.quadraticCurveTo(q[0], q[1]+dy, mx, my+dy);
-      ctx.stroke();
-      lm = [mx, my];
-    }
-    ctx.globalCompositeOperation = 'source-over';
-  }
-  function drawOne(s){
-    var dy = s.c ? (s.c0 - s.c.scrollTop) : 0;
-    ctx.save();
-    if (s.c) clipTo(s.c);                 /* 限制在所属栏内 —— 笔迹不会飞出分栏 */
-    pathOf(s, dy);
-    ctx.restore();
-  }
-  function drawAll(){
-    ctx.clearRect(0, 0, cv.width, cv.height);
-    for (var i=0;i<strokes.length;i++) drawOne(strokes[i]);
+    var r = cur.c.getBoundingClientRect();
+    var l = r.left + (window.pageXOffset || 0), t = r.top + (window.pageYOffset || 0);
+    return x >= l && x <= l + r.width && y >= t && y <= t + r.height;
   }
 
-  rz();
-  window.addEventListener('resize', function(){ rz(); });
-  setTimeout(scanSC, 500);
-  window.addEventListener('load', scanSC);
+  /* 画一笔（滚动重绘时抽稀，降低绘制次数） */
+  function drawStroke(s, sparse){
+    var pts = s.pts, n = pts.length;
+    if (!n) return;
+    var off = offOf(s), bx = -OX, by = off - OY;
+    ctx.save();
+    clipC(s.c);
+    ctx.globalCompositeOperation = s.era ? 'destination-out' : 'source-over';
+    if (!s.era) ctx.strokeStyle = s.color;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    if (n === 1){
+      ctx.fillStyle = s.era ? '#000' : s.color;
+      ctx.beginPath(); ctx.arc(pts[0][0]+bx, pts[0][1]+by, Math.max(.5, pts[0][2]/2), 0, 6.2832); ctx.fill();
+      ctx.restore(); return;
+    }
+    if (sparse && n > 240){
+      var st = n > 900 ? 3 : 2, q = [];
+      for (var i = 0; i < n; i += st) q.push(pts[i]);
+      if (q[q.length-1] !== pts[n-1]) q.push(pts[n-1]);
+      pts = q; n = pts.length;
+    }
+    var lx = pts[0][0]+bx, ly = pts[0][1]+by;
+    for (var j = 1; j < n; j++){
+      var p = pts[j], q2 = pts[j-1];
+      var mx = (q2[0]+p[0])/2 + bx, my = (q2[1]+p[1])/2 + by;
+      ctx.lineWidth = p[2];
+      ctx.beginPath(); ctx.moveTo(lx, ly);
+      ctx.quadraticCurveTo(q2[0]+bx, q2[1]+by, mx, my);
+      ctx.stroke();
+      lx = mx; ly = my;
+    }
+    ctx.restore();
+  }
+
+  function redraw(){
+    if (!VW) setSize();
+    syncScroll();
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.clearRect(0, 0, VW, VH);
+    var vx0 = OX, vy0 = OY, vx1 = OX + VW, vy1 = OY + VH;
+    for (var i = 0; i < strokes.length; i++){
+      var s = strokes[i];
+      if (!hasEra && !s.era){
+        var bb = s.bb || bboxOf(s), off = offOf(s);
+        if (bb[3] + off < vy0 - 80 || bb[1] + off > vy1 + 80 ||
+            bb[2] < vx0 - 80 || bb[0] > vx1 + 80) continue;
+      }
+      drawStroke(s, true);
+    }
+    if (cur){
+      cur.n = cur.pts.length;
+      var lp = cur.pts[cur.pts.length-1];
+      cur.mid = [lp[0] - OX, lp[1] + offOf(cur) - OY];
+    }
+  }
+
+  function live(){
+    if (!cur) return;
+    var pts = cur.pts, n = pts.length;
+    var off = offOf(cur), bx = -OX, by = off - OY;
+    ctx.save();
+    clipC(cur.c);
+    ctx.globalCompositeOperation = cur.era ? 'destination-out' : 'source-over';
+    if (!cur.era) ctx.strokeStyle = cur.color;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    for (var i = cur.n; i < n; i++){
+      var p = pts[i], q = pts[i-1];
+      var mx = (q[0]+p[0])/2 + bx, my = (q[1]+p[1])/2 + by;
+      ctx.lineWidth = p[2];
+      ctx.beginPath(); ctx.moveTo(cur.mid[0], cur.mid[1]);
+      ctx.quadraticCurveTo(q[0]+bx, q[1]+by, mx, my);
+      ctx.stroke();
+      cur.mid = [mx, my];
+    }
+    cur.n = n;
+    ctx.restore();
+  }
+
+  function schedule(full){
+    if (full){ needFull = true; needLive = false; } else needLive = true;
+    if (!rafId) rafId = requestAnimationFrame(function(){
+      rafId = 0;
+      if (needFull){ needFull = false; needLive = false; redraw(); return; }
+      if (needLive){ needLive = false; live(); }
+    });
+  }
+
+  setSize(); syncScroll();
+  window.addEventListener('scroll', function(){ schedule(true); }, {passive:true});
+  window.addEventListener('resize', function(){
+    clearTimeout(rzT);
+    rzT = setTimeout(function(){ if (setSize()) schedule(true); }, 180);
+  }, {passive:true});
+  setTimeout(function(){ scanSC(); schedule(true); }, 500);
+  window.addEventListener('load', function(){ scanSC(); schedule(true); });
 
   var pen = document.getElementById('mkPen'), era = document.getElementById('mkErase'),
       clr = document.getElementById('mkClear');
@@ -516,14 +599,19 @@ details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14
   function setMode(m){
     mode = m;
     cv.classList.toggle('act', m !== 'off');
+    document.body.classList.toggle('penon', m !== 'off');
     if (pen) pen.classList.toggle('on', m === 'draw');
     if (era) era.classList.toggle('on', m === 'erase');
-    if (m !== 'off') scanSC();
+    if (m !== 'off'){ scanSC(); syncScroll(); }
+    schedule(true);
   }
   if (pen) pen.addEventListener('click', function(){ setMode(mode === 'draw' ? 'off' : 'draw'); });
   if (era) era.addEventListener('click', function(){ setMode(mode === 'erase' ? 'off' : 'erase'); });
   if (clr) clr.addEventListener('click', function(){
-    strokes = []; ctx.clearRect(0, 0, cv.width, cv.height); });
+    strokes = []; hasEra = false; cur = null; drawing = false;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.clearRect(0, 0, VW, VH);
+  });
 
   var wds = document.querySelectorAll('#markBar .wd');
   Array.prototype.forEach.call(wds, function(b){
@@ -555,24 +643,8 @@ details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14
     if (mode === 'erase') return Math.max(12, baseW * 5);
     return Math.max(0.7, baseW * (0.35 + pressure(e)));
   }
-  function paintSeg(x, y, w){
-    var pts = cur.pts, q = pts[pts.length - 1];
-    var dy = cur.c ? (cur.c0 - cur.c.scrollTop) : 0;
-    var mx = (q[0]+x)/2, my = (q[1]+y)/2;
-    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-    ctx.globalCompositeOperation = cur.era ? 'destination-out' : 'source-over';
-    if (!cur.era) ctx.strokeStyle = cur.color;
-    ctx.lineWidth = w;
-    ctx.beginPath();
-    ctx.moveTo(cur.mid[0], cur.mid[1] + dy);
-    ctx.quadraticCurveTo(q[0], q[1] + dy, mx, my + dy);
-    ctx.stroke();
-    ctx.globalCompositeOperation = 'source-over';
-    cur.mid = [mx, my];
-    pts.push([x, y, w]);
-  }
 
-  var EXCLUDE = 'input,textarea,select,#markBar';   /* 选项/按钮上也要能圈画 */
+  var EXCLUDE = 'input,textarea,select,#markBar';
   function hitUI(t, x, y){
     if (t && t.closest && t.closest(EXCLUDE)) return true;
     var bar = document.getElementById('markBar');
@@ -581,37 +653,26 @@ details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14
     return false;
   }
 
-  /* 每帧统一绘制本帧全部采样点：既跟手又不丢笔迹 */
-  var buf = [], rafId = 0;
-  function flush(){
-    rafId = 0;
-    if (!cur || !buf.length) return;
-    ctx.save();
-    if (cur.c) clipTo(cur.c);
-    for (var i=0;i<buf.length;i++){
-      if (inCur(buf[i][0], buf[i][1])) paintSeg(buf[i][0], buf[i][1], buf[i][2]);
-    }
-    ctx.restore();
-    buf = [];
-  }
-
   document.addEventListener('pointerdown', function(e){
     if (mode === 'off') return;
     if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
     if (hitUI(e.target, e.clientX, e.clientY)) return;
-    drawing = true; buf = [];
-    var o = ownerOf(e.pageX, e.pageY);
-    cur = {pts:[[e.pageX, e.pageY, widthOf(e)]], color:color, era:(mode === 'erase'),
-           c:o.c, c0:o.c0, mid:[e.pageX, e.pageY]};
+    drawing = true;
+    var x = e.pageX, y = e.pageY, w = widthOf(e);
+    var o = ownerOf(x, y);
+    cur = {pts:[[x, y, w]], color:color, era:(mode === 'erase'),
+           c:o.c, c0:o.c0, n:1, mid:[0, 0], bb:null};
+    if (cur.era) hasEra = true;
     strokes.push(cur);
+    var bx = -OX, by = offOf(cur) - OY;
     ctx.save();
-    if (cur.c) clipTo(cur.c);
-    if (mode !== 'erase'){
-      var w = widthOf(e);
+    clipC(cur.c);
+    if (!cur.era){
       ctx.fillStyle = color;
-      ctx.beginPath(); ctx.arc(e.pageX, e.pageY, w/2, 0, 6.2832); ctx.fill();
+      ctx.beginPath(); ctx.arc(x+bx, y+by, Math.max(.5, w/2), 0, 6.2832); ctx.fill();
     }
     ctx.restore();
+    cur.mid = [x+bx, y+by];
     e.preventDefault();
   }, {capture:true, passive:false});
 
@@ -619,16 +680,24 @@ details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14
     if (!drawing || !cur) return;
     if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
     var evs = (typeof e.getCoalescedEvents === 'function') ? e.getCoalescedEvents() : null;
-    if (evs && evs.length){ for (var i=0;i<evs.length;i++) buf.push([evs[i].pageX, evs[i].pageY, widthOf(evs[i])]); }
-    else buf.push([e.pageX, e.pageY, widthOf(e)]);
-    if (!rafId) rafId = requestAnimationFrame(flush);
+    if (evs && evs.length){ for (var i = 0; i < evs.length; i++){ var p = evs[i]; cur.pts.push([p.pageX, p.pageY, widthOf(p)]); } }
+    else cur.pts.push([e.pageX, e.pageY, widthOf(e)]);
+    schedule(false);
     e.preventDefault();
   }, {capture:true, passive:false});
 
   ['pointerup','pointercancel'].forEach(function(ev){
     document.addEventListener(ev, function(e){
       if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
-      if (rafId){ cancelAnimationFrame(rafId); rafId = 0; flush(); }
+      if (rafId && (needLive || needFull)){ cancelAnimationFrame(rafId); rafId = 0; }
+      if (needLive) live();
+      needLive = false; needFull = false;
+      if (cur) cur.bb = bboxOf(cur);
+      drawing = false; cur = null;
+    }, {capture:true});
+  });
+})();
+</script>     if (rafId){ cancelAnimationFrame(rafId); rafId = 0; flush(); }
       drawing = false; cur = null; buf = [];
     }, {capture:true});
   });
