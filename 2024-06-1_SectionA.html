@@ -240,10 +240,14 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
  cursor:pointer;-webkit-tap-highlight-color:transparent}
 #dictBar button.pri{background:var(--blue);border-color:var(--blue);color:#fff;min-width:116px}
 #dictBar #dbExit{padding:12px 15px;color:var(--sub);font-weight:600}
+#dictBar #dbRep{background:#fff;border-color:var(--amber);color:#8a6318;min-width:74px}
 @media (max-width:560px){
-  #dictBar .db-txt{flex:1 0 100%;min-width:0}
-  #dictBar button{padding:12px 14px;font-size:14.5px}
-  #dictBar button.pri{flex:1}
+  #dictBar{padding:9px 10px;gap:7px}
+  #dictBar .db-txt{flex:1 0 100%;min-width:0;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #dictBar button{padding:11px 12px;font-size:14px}
+  #dictBar button.pri{flex:1;min-width:0}
+  #dictBar #dbAgain .lbl{display:none}
+  #dictBar #dbRep{min-width:66px}
 }
 
 /* ═══ 逐句听写本 ═══ */
@@ -321,10 +325,11 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 
 <div class="card hide" id="dictCard">
   <h2><span class="num">5</span>逐句听写本</h2>
-  <p class="hint">点播放器里的 <b>✍️ 听写模式</b>：每句播完会自动暂停，本子会<b>自动跳到那一行</b>。用笔直接写在行上，卡住就空着点「下一句」——空着的地方就是你没听出来的。写完整本点「📷 导出听写照」，把图发我批改。</p>
+  <p class="hint"><b>只写你没听出来的那几句 —— 全篇抄写既费时又没用。</b><br>点播放器里的 <b>✍️ 听写模式</b>：每句会自动重读几遍再停，本子会<b>自动跳到那一行</b>。听清的直接点「下一句」跳过；卡住的地方才是你的问题所在，把它写下来，点「📷 导出听写照」发我批改。</p>
   <div id="dictBar">
     <span class="db-txt"></span>
-    <button id="dbAgain">🔁 重听这句</button>
+    <button id="dbRep" title="每句重复几遍（点一下切换）">🔂 3遍</button>
+    <button id="dbAgain" title="把这句再读一遍">🔁<span class="lbl"> 重听这句</span></button>
     <button id="dbNext" class="pri">▶ 下一句</button>
     <button id="dbExit" title="退出听写模式">✕</button>
   </div>
@@ -703,7 +708,7 @@ var QUIZ = [{"id": "q1", "stem": "1. Why did the six residents have to find anot
   document.getElementById('receipt').addEventListener('click', function(){ this.select(); this.setSelectionRange(0,99999); });
   buildReceipt();
 
-  /* ---------- 逐句听写本（分块 canvas · 笔迹数据化） ---------- */
+      /* ---------- 逐句听写本（分块 canvas · 笔迹数据化） ---------- */
   var DP = (function(){
     var card = document.getElementById('dictCard');
     var wrap = document.getElementById('dpWrap');
@@ -712,20 +717,30 @@ var QUIZ = [{"id": "q1", "stem": "1. Why did the six residents have to find anot
     if (!LINES.length) return null;
 
     var DPR = Math.min(2, window.devicePixelRatio || 1);
-    var GAP = 9, ROW_H = 76, PAD_L = 54, PAD_R = 12, BLOCK_ROWS = 10;
+    var GAP = 9, PAD_L = 54, PAD_R = 12, BLOCK_ROWS = 8;
     var CO = '#1b1e23', CW = 2.6;
     var FONT = '"HarmonyOS Sans","PingFang SC","Microsoft YaHei",-apple-system,BlinkMacSystemFont,sans-serif';
 
     var rows = [], H = 0, W = 0, blocks = [], strokes = [], cur = null, curLi = -1;
     var API = { written:0, total:0 };
-    (function(){ var y = GAP; for (var i = 0; i < LINES.length; i++){ rows.push({ li:i, y:y, h:ROW_H }); y += ROW_H + GAP; } H = y; })();
+    /* 行高按句长自适应：长句给两行以上的书写空间，短句不浪费 */
+    (function(){
+      var y = GAP;
+      for (var i = 0; i < LINES.length; i++){
+        var n = (LINES[i].tokens && LINES[i].tokens.length) || 8;
+        var h = n <= 12 ? 100 : 142;
+        rows.push({ li:i, y:y, h:h });
+        y += h + GAP;
+      }
+      H = y;
+    })();
     API.total = rows.length;
 
     function liAtY(gy){
-      var i = Math.floor((gy - GAP) / (ROW_H + GAP));
-      if (i < 0) i = 0;
-      if (i > rows.length - 1) i = rows.length - 1;
-      return i;
+      for (var i = 0; i < rows.length; i++){
+        if (gy < rows[i].y + rows[i].h + GAP / 2) return i;
+      }
+      return rows.length - 1;
     }
 
     /* ── 绘制：把逻辑区间 [yTop,yBot) 画进 ctx（调用方已设好 transform） ── */
@@ -977,7 +992,7 @@ var QUIZ = [{"id": "q1", "stem": "1. Why did the six residents have to find anot
       var HEAD = 42;
       var y = HEAD + GAP;
       for (i = 0; i < rows.length; i++){
-        var h = seen[i] ? ROW_H : 34;
+        var h = seen[i] ? rows[i].h : 34;
         ex.push({ li:i, y:y, h:h });
         y += h + GAP;
       }
@@ -1788,7 +1803,7 @@ for (var qid in AL){
 </script>
 
 <script>
-/* 听写模式：逐句播放 → 播完自动暂停 → 听写本自动跳到那一行 */
+/* 听写模式：逐句播放（可自动重读 N 遍）→ 播完自动暂停 → 听写本自动跳到那一行 */
 (function(){
   var audio = document.getElementById('audio');
   var bar = document.getElementById('dictBar');
@@ -1798,8 +1813,14 @@ for (var qid in AL){
   var bNext = document.getElementById('dbNext');
   var bAgain = document.getElementById('dbAgain');
   var bExit = document.getElementById('dbExit');
+  var bRep = document.getElementById('dbRep');
   var tpFollow = document.getElementById('tpFollow');
-  var on = false, curLi = -1, B = null, tick = 0, followBack = false;
+  var on = false, curLi = -1, B = null, tick = 0, followBack = false, lastSelf = 0;
+
+  var REP_KEY = 'cet4_rep_v1';
+  var rep = 3, left = 0, gapTimer = 0, GAP_MS = 1800;   /* 遍与遍之间停 1.8 秒 */
+  try { var rv = parseInt(localStorage.getItem(REP_KEY) || '', 10); if (rv >= 1 && rv <= 4) rep = rv; } catch(e){}
+  function repLabel(){ if (bRep) bRep.textContent = '🔂 ' + rep + '遍'; }
 
   function bounds(){
     if (B) return B;
@@ -1818,11 +1839,21 @@ for (var qid in AL){
   }
   function pad(){ return window.__dictPad || null; }
 
-  /* ── 句末判定：不靠 timeupdate 踩点，自己轮询，越过末尾就停 ── */
-  function stopTick(){ if (tick){ clearInterval(tick); tick = 0; } }
+  /* ── 句末判定：不靠 timeupdate 踩点，自己轮询，越过末尾就停 / 重读 ── */
+  function clearGap(){ if (gapTimer){ clearTimeout(gapTimer); gapTimer = 0; } }
+  function stopTick(){ if (tick){ clearInterval(tick); tick = 0; } clearGap(); }
   function startTick(){ if (!tick) tick = setInterval(check, 70); }
+  function playNow(){
+    var b = bounds();
+    lastSelf = performance.now();
+    audio.currentTime = b[curLi][0];
+    var pr = audio.play();
+    if (pr && pr.catch) pr.catch(function(){});
+    startTick();
+  }
   function check(){
-    if (!on || audio.paused || curLi < 0) return;
+    if (!on || curLi < 0 || gapTimer) return;
+    if (audio.paused) return;
     var b = bounds(), end = b[curLi] ? b[curLi][1] : -1;
     if (end < 0) return;
     var t = audio.currentTime;
@@ -1833,6 +1864,11 @@ for (var qid in AL){
       return;
     }
     audio.pause();
+    if (left > 1){                      /* 本句还要再读 → 停顿几秒后重放 */
+      left--;
+      gapTimer = setTimeout(function(){ gapTimer = 0; playNow(); }, GAP_MS);
+      return;
+    }
     showWait(curLi);
     stopTick();
   }
@@ -1840,14 +1876,13 @@ for (var qid in AL){
   function playLine(li){
     var b = bounds();
     if (li < 0 || li >= b.length) return false;
+    clearGap();
     curLi = li;
+    left = rep;
     bar.classList.remove('on');
     var D = pad();
     if (D) D.focusLine(li);             /* 本子跳到这一行 */
-    audio.currentTime = b[li][0];
-    var pr = audio.play();
-    if (pr && pr.catch) pr.catch(function(){});
-    startTick();
+    playNow();
     return true;
   }
   function showWait(li){
@@ -1856,7 +1891,7 @@ for (var qid in AL){
       txt.innerHTML = '🎉 <b>全部播完</b> · 导出听写照发我';
       bNext.textContent = '✓ 完成';
     } else {
-      txt.innerHTML = '第 <b>' + (li + 1) + '</b> / ' + b.length + ' 句';
+      txt.innerHTML = '第 <b>' + (li + 1) + '</b> / ' + b.length + ' 句 · 没听清的写下来';
       bNext.textContent = '▶ 下一句';
     }
     bar.classList.add('on');
@@ -1870,12 +1905,25 @@ for (var qid in AL){
     if (followBack && tpFollow){ tpFollow.click(); followBack = false; }
   }
 
-  /* 用户自己点播放（或点单词跳播）时，把轮询接回来 */
-  audio.addEventListener('play', function(){ if (on) startTick(); });
+  /* 用户自己点播放（或点单词跳播）时，把轮询接回来，并且这句不再自动重读 */
+  audio.addEventListener('play', function(){
+    if (!on) return;
+    if (performance.now() - lastSelf < 300) return;   /* 是「下一句」等自家触发的，别动遍数 */
+    left = 1;
+    startTick();
+  });
   audio.addEventListener('ended', function(){
     if (!on) return;
     audio.pause(); stopTick();
     showWait(bounds().length - 1);
+  });
+
+  repLabel();
+  if (bRep) bRep.addEventListener('click', function(){
+    rep = rep >= 4 ? 1 : rep + 1;
+    repLabel();
+    try { localStorage.setItem(REP_KEY, rep); } catch(e){}
+    if (on && curLi >= 0 && !gapTimer){ left = rep; }   /* 当前句立即按新遍数来 */
   });
 
   btn.addEventListener('click', function(){
