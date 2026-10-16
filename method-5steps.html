@@ -203,9 +203,18 @@ body.qshow .stem{display:block}
 
 
 /* ═══ 涂写标记（触控笔专属） ═══ */
-#markBar{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:8990;
- display:flex;flex-direction:column;gap:5px;background:var(--card,#fff);border:1px solid var(--line,#e5e8ec);
- border-radius:16px;padding:8px 10px;box-shadow:0 4px 18px rgba(0,0,0,.16);max-width:94vw}
+#markBar{position:fixed;z-index:8990;display:flex;flex-direction:column;gap:0;
+ background:var(--card,#fff);border:1px solid var(--line,#e5e8ec);border-radius:14px;
+ box-shadow:0 6px 22px rgba(0,0,0,.18);max-width:94vw;overflow:hidden;touch-action:none}
+#markBar .hd{display:flex;align-items:center;gap:8px;padding:7px 11px;background:var(--soft);
+ border-bottom:1px solid var(--line2,#eceff3);touch-action:none;cursor:grab}
+#markBar .hd .grip{font-size:12.5px;font-weight:700;color:var(--sub,#6b7280);user-select:none;
+ letter-spacing:.5px}
+#markBar .hd .mini{margin-left:auto;border:0;background:transparent;font-size:12.5px;font-weight:700;
+ color:var(--sub,#6b7280);cursor:pointer;padding:3px 9px;border-radius:8px;font-family:inherit}
+#markBar .hd .mini:hover{background:var(--line2,#eceff3)}
+#markBar .bd{padding:8px 10px 9px;display:flex;flex-direction:column;gap:5px}
+#markBar.collapsed .bd{display:none}
 #markBar .row{display:flex;gap:4px;align-items:center;justify-content:center;flex-wrap:wrap}
 #markBar button{border:0;background:transparent;padding:7px 11px;border-radius:14px;font-size:13px;
  cursor:pointer;color:var(--txt,#333);font-family:inherit;white-space:nowrap;line-height:1.3}
@@ -796,6 +805,8 @@ var QUIZ = [];
 
 
 <div id="markBar">
+  <div class="hd"><span class="grip">☰ 画笔 · 拖动可移动</span><button class="mini" id="mkMini">收起</button></div>
+  <div class="bd">
   <div class="row">
     <button id="mkPen">🖊 涂写</button>
     <button id="mkErase">🧽 橡皮</button>
@@ -810,6 +821,7 @@ var QUIZ = [];
     <button class="sw" data-c="#2563eb" title="蓝" style="background:#2563eb"></button>
     <button class="sw" data-c="#0d8a52" title="绿" style="background:#0d8a52"></button>
   </div>
+</div>
 </div>
 <canvas id="markCanvas"></canvas>
 <script>
@@ -914,5 +926,53 @@ var QUIZ = [];
     cv.addEventListener(ev, function(){ drawing = false; });
   });
 })();
-</script></body>
+</script>
+<script>
+(function(){
+  var bar=document.getElementById('markBar');
+  if(!bar || bar.dataset.drag) return;
+  bar.dataset.drag='1';
+  var KEY='cet4pen:'+(location.pathname.split('/').pop()||'x');
+  var hd=bar.querySelector('.hd'), mini=document.getElementById('mkMini');
+  function place(l,t){ bar.style.left=l+'px'; bar.style.top=t+'px';
+    bar.style.right='auto'; bar.style.bottom='auto'; bar.style.transform='none'; }
+  function clamp(l,t){ var w=bar.offsetWidth,h=bar.offsetHeight;
+    l=Math.max(6,Math.min(l,innerWidth-w-6)); t=Math.max(6,Math.min(t,innerHeight-h-6));
+    place(l,t); }
+  function save(){ var r=bar.getBoundingClientRect();
+    try{ localStorage.setItem(KEY,JSON.stringify({l:Math.round(r.left),t:Math.round(r.top),
+      c:bar.classList.contains('collapsed')})); }catch(e){} }
+  function sync(){ if(mini) mini.textContent=bar.classList.contains('collapsed')?'展开':'收起'; }
+  var st=null;
+  try{ st=JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){}
+  if(st && st.c) bar.classList.add('collapsed');
+  sync();
+  if(st && st.l!=null){ place(st.l,st.t); clamp(st.l,st.t); }
+  else { var r=bar.getBoundingClientRect();
+    place(Math.max(6,innerWidth-r.width-14), Math.max(6,innerHeight-r.height-14)); }
+  if(mini) mini.addEventListener('click', function(e){
+    e.stopPropagation();
+    bar.classList.toggle('collapsed'); sync();
+    var r2=bar.getBoundingClientRect(); clamp(r2.left,r2.top); save();
+  });
+  var dragging=false, ox=0, oy=0, moved=false;
+  hd.addEventListener('pointerdown', function(e){
+    if (e.target && e.target.closest && e.target.closest('.mini')) return;
+    dragging=true; moved=false;
+    var r=bar.getBoundingClientRect(); ox=e.clientX-r.left; oy=e.clientY-r.top;
+    try{ hd.setPointerCapture(e.pointerId); }catch(err){}
+    e.preventDefault(); e.stopPropagation();
+  });
+  hd.addEventListener('pointermove', function(e){
+    if(!dragging) return; moved=true; clamp(e.clientX-ox, e.clientY-oy);
+    e.preventDefault(); e.stopPropagation();
+  });
+  function end(e){ if(dragging){ dragging=false; if(moved) save(); } }
+  hd.addEventListener('pointerup', end);
+  hd.addEventListener('pointercancel', end);
+  window.addEventListener('resize', function(){
+    var r=bar.getBoundingClientRect(); clamp(r.left,r.top); });
+})();
+</script>
+</body>
 </html>

@@ -335,13 +335,12 @@ function renderTasks(){
    +'<div class="td">'+lessonTxt+'</div>'
    +'<a class="btn" href="'+encodeURI(LESSONS[idx].f)+'">开始今天的训练 →</a></div></div>';
   var obtn=(function(){
-    var sty='margin-top:9px;display:inline-block;padding:8px 16px;border-radius:9px;background:rgba(37,99,235,.12);color:#2563eb;font-size:13.5px;font-weight:700;text-decoration:none';
     var arr=null, lbl='', n=0;
     if(wd===1||wd===3){ arr=TL; lbl='翻译'; n=seq(today,[1,3])-1; }
     else if(wd===2||wd===4){ arr=RL; lbl='阅读'; n=seq(today,[2,4])-1; }
     else if(wd===5){ arr=WL; lbl='写作'; n=seq(today,[5])-1; }
     if(!arr || !arr[n]) return '';
-    return '<a class="btn ghost" style="'+sty+'" href="'+encodeURI(arr[n].f)+'">开始今天的'+lbl+' →</a>';
+    return '<a class="btn" href="'+encodeURI(arr[n].f)+'">开始今天的'+lbl+' →</a>';
   })();
   tHtml+='<div class="task'+(done.o?" on":"")+'" data-k="o"><div class="box'+(done.o?" on":"")+'"></div>'
    +'<div class="tk"><div class="tt">'+OTHER+'</div>'
