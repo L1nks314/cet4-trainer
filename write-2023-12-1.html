@@ -188,6 +188,11 @@ html.penon,body.penon{touch-action:none !important;-webkit-user-select:none;user
 html.penon body,body.penon *,:host{touch-action:none !important}
 body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;touch-action:auto !important}
 #markCanvas.act{cursor:crosshair}
+#penToast{position:fixed;left:50%;bottom:112px;transform:translateX(-50%) translateY(10px);
+ background:rgba(20,22,26,.92);color:#fff;font-size:13px;font-weight:600;padding:9px 17px;
+ border-radius:22px;z-index:8990;opacity:0;pointer-events:none;
+ transition:opacity .18s ease,transform .18s ease}
+#penToast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
@@ -419,13 +424,14 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 
 <script>
 (function(){
-  /* penv6 */
+  /* penv7 */
   var cv = document.getElementById('markCanvas');
   if (!cv) return;
   var ctx = cv.getContext('2d');
   var strokes = [], cur = null, SC = [];
   var VW = 0, VH = 0, DPR = 1, OX = 0, OY = 0, rzT = 0;
   var rafId = 0, needFull = false, needLive = false, hasEra = false, pendFull = false;
+  var lastPenTap = { t:0, x:0, y:0 };
 
   /* ── 画布只覆盖视口：平板不会因超大画布丧失硬件加速 ── */
   function setSize(){
@@ -629,9 +635,49 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
   if (swK) swK.classList.add('on');
 
   function pressure(e){ return (e.pointerType === 'pen' && typeof e.pressure === 'number' && e.pressure > 0) ? e.pressure : 0.5; }
-  function widthOf(e){
-    if (mode === 'erase') return Math.max(14, baseW * 5);
+  function widthOf(e, era){
+    if (era || mode === 'erase') return Math.max(14, baseW * 5);
     return Math.max(1.1, baseW * (0.4 + pressure(e)));   /* 下限提高，避免过快显得断断续续 */
+  }
+
+  /* ── 双击笔尖 → 切换橡皮 / 画笔 ── */
+  function toast(msg){
+    var el = document.getElementById('penToast');
+    if (!el){ el = document.createElement('div'); el.id = 'penToast'; document.body.appendChild(el); }
+    el.textContent = msg; el.classList.add('on');
+    clearTimeout(el._t);
+    el._t = setTimeout(function(){ el.classList.remove('on'); }, 1100);
+  }
+  function flashEra(){
+    var b = document.getElementById('mkErase'); if (!b) return;
+    b.classList.add('on');
+    clearTimeout(b._t);
+    b._t = setTimeout(function(){ if (mode !== 'erase') b.classList.remove('on'); }, 180);
+  }
+  function dropTapDots(n){
+    for (var k = 0; k < n; k++){
+      var s = strokes[strokes.length - 1];
+      if (s && s.pts.length <= 1) strokes.pop(); else break;
+    }
+    hasEra = false;
+    for (var i = 0; i < strokes.length; i++) if (strokes[i].era){ hasEra = true; break; }
+  }
+  function checkPenTap(st){
+    if (!st) return;
+    var now = performance.now(), p0 = st.pts[0], pn = st.pts[st.pts.length - 1];
+    var tap = st.pts.length <= 2 &&
+              Math.abs(pn[0] - p0[0]) < 12 && Math.abs(pn[1] - p0[1]) < 12;
+    var near = Math.abs(p0[0] - lastPenTap.x) < 28 && Math.abs(p0[1] - lastPenTap.y) < 28;
+    var fast = (now - lastPenTap.t) < 420;
+    if (tap && lastPenTap.t && near && fast){
+      lastPenTap.t = 0;
+      dropTapDots(2);
+      if (mode === 'draw'){ setMode('erase'); toast('✍️ 双击笔尖 → 已切到橡皮'); }
+      else if (mode === 'erase'){ setMode('draw'); toast('🖊 双击笔尖 → 已切回画笔'); }
+      schedule(true);
+    } else {
+      lastPenTap = { t: now, x: p0[0], y: p0[1] };
+    }
   }
 
   var EXCLUDE = 'input,textarea,select,#markBar';
@@ -718,9 +764,13 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
     if (hitUI(e.target, e.clientX, e.clientY)) return;
     TF.id = null; TF.host = null;          /* 笔落下：立即终止手指滚动接管 */
     drawing = true;
-    var x = e.pageX, y = e.pageY, w = widthOf(e);
+    /* 笔上的橡皮按钮（规范：button=5 / buttons=32）→ 本次直接用橡皮，不改变当前工具 */
+    var eraBtn = (e.button === 5) || ((e.buttons & 32) === 32);
+    var useEra = (mode === 'erase') || eraBtn;
+    if (eraBtn && mode !== 'erase') flashEra();
+    var x = e.pageX, y = e.pageY, w = widthOf(e, useEra);
     var o = ownerOf(x, y);
-    cur = { pts:[[x, y, w]], color:color, era:(mode === 'erase'),
+    cur = { pts:[[x, y, w]], color:color, era:useEra,
             c:o.c, c0:o.c0, n:1, mid:[0, 0], bb:null };
     if (cur.era) hasEra = true;
     strokes.push(cur);
@@ -740,8 +790,8 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
     if (!drawing || !cur) return;
     if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
     var evs = (typeof e.getCoalescedEvents === 'function') ? e.getCoalescedEvents() : null;
-    if (evs && evs.length){ for (var i = 0; i < evs.length; i++){ var p = evs[i]; cur.pts.push([p.pageX, p.pageY, widthOf(p)]); } }
-    else cur.pts.push([e.pageX, e.pageY, widthOf(e)]);
+    if (evs && evs.length){ for (var i = 0; i < evs.length; i++){ var p = evs[i]; cur.pts.push([p.pageX, p.pageY, widthOf(p, cur.era)]); } }
+    else cur.pts.push([e.pageX, e.pageY, widthOf(e, cur.era)]);
     schedule(false);
     e.preventDefault();
   }, {capture:true, passive:false});
@@ -753,9 +803,11 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
       if (rafId && (needLive || needFull)){ cancelAnimationFrame(rafId); rafId = 0; }
       if (needLive) live();
       needLive = false; needFull = false;
-      if (cur) cur.bb = bboxOf(cur);
+      var done = cur;
+      if (done) done.bb = bboxOf(done);
       drawing = false; cur = null;
       pendFull = false;
+      checkPenTap(done);                /* 双击笔尖 → 切换橡皮 */
       schedule(true);                    /* 收笔后统一重绘一次，保证最终形态完整 */
     }, {capture:true});
   });
