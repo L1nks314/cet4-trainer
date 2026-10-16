@@ -188,6 +188,7 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     <div class="wrow">
       <button class="wbtn primary" id="wpSubmit">📷 提交并解锁参考</button>
       <button class="wbtn" id="wpSync" style="display:none">☁ 把文字发给我批改</button>
+      <button class="wbtn" id="wpReset" style="display:none">🔄 重新练习</button>
     </div>
     <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
   </div>
@@ -301,7 +302,27 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
 
   ta.addEventListener('input', function(){ updCnt(); save(); });
 
-  document.getElementById('wpSubmit').addEventListener('click', function(){
+  var armed = false;
+  var btnSub = document.getElementById('wpSubmit');
+  function disarm(){
+    armed = false;
+    btnSub.textContent = '📷 提交并解锁参考';
+    btnSub.classList.add('primary');
+  }
+  btnSub.addEventListener('click', function(){
+    if (!armed){
+      armed = true;
+      btnSub.textContent = '⚠️ 再点一次，确认提交';
+      btnSub.classList.remove('primary');
+      st.style.color = 'var(--amber)';
+      st.innerHTML = '确认提交？提交后参考会解锁。想重来可以点「🔄 重新练习」。';
+      setTimeout(function(){
+        if (armed){ disarm(); st.style.color = 'var(--sub)';
+          st.textContent = '还没提交，可以继续写。'; }
+      }, 6000);
+      return;
+    }
+    disarm();
     var n = words(ta.value);
     if (running){ clearInterval(tid); running = false; }
     var m = Math.floor(state.used/60), s = state.used % 60;
@@ -309,7 +330,13 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     st.innerHTML = '✅ 已解锁 · 用时 ' + m + ' 分 ' + s + ' 秒' + (n ? ' · ' + n + ' 词' : '')
       + '。把<b>手写照片发到主对话</b>，我来识别并逐句批改。';
     if (n > 0) btnS.style.display = 'inline-block';
+    document.getElementById('wpReset').style.display = 'inline-block';
     unlock(true);
+  });
+
+  document.getElementById('wpReset').addEventListener('click', function(){
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    location.reload();
   });
 
   btnS.addEventListener('click', function(){
@@ -335,7 +362,8 @@ details.dig .dbody{padding:13px 15px;border-top:1px solid var(--line)}
     left = TOTAL - state.used; tmv.textContent = fmt(left);
     unlock(false);
     btnS.style.display = 'inline-block';
-    st.innerHTML = '（本篇已提交过，参考已解锁）';
+    document.getElementById('wpReset').style.display = 'inline-block';
+    st.innerHTML = '（本篇已提交过，参考已解锁 · 想重练点「🔄 重新练习」）';
   }
 })();
 </script>
