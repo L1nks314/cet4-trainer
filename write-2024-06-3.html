@@ -567,7 +567,7 @@ details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14
     pts.push([x, y, w]);
   }
 
-  var EXCLUDE = 'button,a,input,textarea,select,label,#markBar';
+  var EXCLUDE = 'input,textarea,select,#markBar';   /* 选项/按钮上也要能圈画 */
   function hitUI(t, x, y){
     if (t && t.closest && t.closest(EXCLUDE)) return true;
     var bar = document.getElementById('markBar');
