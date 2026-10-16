@@ -122,7 +122,7 @@ details.fold .inner{padding:0 12px 10px;max-height:60vh;overflow:auto}
 </div>
 
 <script>
-var START = new Date(2026,9,16);      // 集训起点（10/15 起，周二/周四各一篇）
+var START = new Date(2026,9,17);      // 集训起点（10/17 起，周二/周四各一篇）
 var LESSONS = [
   {f:"read-2025-12-1.html",d:"2025年12月 第1套 · 第 1 篇",n:"46\u201350"},
   {f:"read-2025-12-1.html",d:"2025年12月 第1套 · 第 2 篇",n:"51\u201355"},
@@ -151,12 +151,15 @@ var today=d0(new Date());
 var idx=seqOf(today)-1;
 var fin = idx>=LESSONS.length;
 var tb=document.getElementById('todayBox');
-if(fin){
+var ds0=(today.getMonth()+1)+'月'+today.getDate()+'日';
+if(idx<0){
+  tb.innerHTML='<div class="k">'+ds0+'</div><div class="n">集训 10/17 开始</div>'
+   +'<div class="m">今天先歇着，明天从这里起步</div>';
+}else if(fin){
   tb.innerHTML='<div class="k">全部 '+LESSONS.length+' 篇已排完</div>'
    +'<div class="n">接下来回炉重做旧篇目</div>'
    +'<div class="m">重做比做新题更值 —— 没记牢的替换对才是你的漏洞。</div>';
 }else{
-  idx=Math.max(idx,0);
   var L=LESSONS[idx];
   var ds=(today.getMonth()+1)+'月'+today.getDate()+'日';
   tb.innerHTML='<div class="k">'+ds+' · 第 '+(idx+1)+' 篇 / 共 '+LESSONS.length+' 篇</div>'

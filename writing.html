@@ -182,7 +182,7 @@ a.it.now .no{color:var(--green)}
 </div>
 
 <script>
-var START=new Date(2026,9,16);
+var START=new Date(2026,9,17);
 var WL=[  {f:"write-2025-12-1.html",d:"2025年12月 第1套"},
   {f:"write-2025-06-2.html",d:"2025年6月 第2套"},
   {f:"write-2025-06-1.html",d:"2025年6月 第1套"},
@@ -230,7 +230,10 @@ var isT = (wd===1||wd===3), isW = (wd===5);
 var ti = seq(today,[1,3])-1, wi = seq(today,[5])-1;
 var tb=document.getElementById('todayBox');
 var ds=(today.getMonth()+1)+'月'+today.getDate()+'日';
-if(isT && ti<TL.length){
+if(ti<0||wi<0){
+  tb.innerHTML='<div class="k">'+ds+'</div><div class="n">集训 10/17 开始</div>'
+   +'<div class="m">今天先歇着，明天从这里起步</div>';
+} else if(isT && ti<TL.length){
   tb.innerHTML='<div class="k">'+ds+' · 今天练翻译</div>'
    +'<div class="n">'+TL[ti].d+' · 汉译英</div>'
    +'<div class="m">第 '+(ti+1)+' 篇 / 共 '+TL.length+' 篇 · 自己翻 15 分钟 + 对照 5 分钟</div>'
