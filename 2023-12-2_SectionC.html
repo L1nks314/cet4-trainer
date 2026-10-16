@@ -226,6 +226,7 @@ body.qshow .stem{display:block}
 #markBar .sw.on{border-color:var(--blue,#2563eb);box-shadow:0 0 0 2px rgba(37,99,235,.22)}
 #markCanvas{position:absolute;top:0;left:0;z-index:8980;pointer-events:none}
 #markCanvas.act{cursor:crosshair}
+.dstip{margin-top:11px;background:var(--blue-soft);color:var(--blue);border-radius:11px;padding:11px 14px;font-size:13.2px;line-height:1.75}
 </style>
 <noscript><style>
   .locked-sec{filter:none !important;opacity:1 !important;pointer-events:auto !important;user-select:auto !important;}
@@ -291,6 +292,8 @@ body.qshow .stem{display:block}
   <p class="hint">用「慢速」逐句听写，把写下来的内容贴进框里（大小写和标点都不用管）。点比对，它会<b>逐词</b>告诉你哪几个词漏了、哪几个听错了，并自动判断是「连读漏听」还是「生词不认识」。</p>
   <textarea id="dictIn" placeholder="把你听写的内容贴在这里……"></textarea>
   <button class="btn btn-primary" id="dictBtn">比对 · 自动标错</button>
+  <button class="btn btn-ghost" id="dictPhoto">📷 手写听写 · 拍照交批改</button>
+  <div class="dstip" id="dictPhotoTip" style="display:none">把这篇的<b>手写听写照片</b>直接发到主对话即可 —— 我会逐词识别，标出<b>漏听</b>与<b>听错</b>，并归因（连读漏听 / 生词 / 拼写）。</div>
   <button class="btn btn-ghost" id="dictClear">清空重来</button>
   <div id="dictOut" style="display:none">
     <div class="dstat" id="dictStat"></div>
@@ -1269,6 +1272,19 @@ for (var qid in AL){
     }catch(e){}
     return p;
   };
+})();
+</script>
+
+<script>
+/* 手写听写：拍照交批改 */
+(function(){
+  var b = document.getElementById('dictPhoto');
+  if (!b) return;
+  b.addEventListener('click', function(){
+    var t = document.getElementById('dictPhotoTip');
+    if (t) t.style.display = (t.style.display === 'none') ? 'block' : 'none';
+    b.textContent = (t && t.style.display === 'block') ? '📷 收起说明' : '📷 手写听写 · 拍照交批改';
+  });
 })();
 </script>
 </body>
