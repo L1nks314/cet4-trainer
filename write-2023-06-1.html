@@ -445,13 +445,18 @@ details.card[open]>summary{border-bottom:1px solid var(--line2);margin-bottom:14
     }
   }
   function ownerOf(x, y){
+    /* 用「可见区域」判断归属，并取最小面积的容器（最内层优先）——
+       横屏并排、竖屏上下排列都能正确分辨笔迹属于哪一栏 */
+    var best = null, bestA = Infinity;
     for (var i=0;i<SC.length;i++){
       var c = SC[i], r = c.getBoundingClientRect();
       var l = r.left + window.pageXOffset, t = r.top + window.pageYOffset;
-      if (x >= l && x <= l + r.width && y >= t && y <= t + c.scrollHeight)
-        return {c:c, c0:c.scrollTop};
+      if (x >= l && x <= l + r.width && y >= t && y <= t + r.height){
+        var a = r.width * r.height;
+        if (a < bestA){ bestA = a; best = c; }
+      }
     }
-    return {c:null, c0:0};
+    return best ? {c:best, c0:best.scrollTop} : {c:null, c0:0};
   }
   function drawOne(s){
     var pts = s.pts; if (!pts.length) return;
