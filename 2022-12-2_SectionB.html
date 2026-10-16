@@ -433,7 +433,8 @@ var QUIZ = [{"id": "q8", "stem": "8. how does the man often feel on his birthday
     document.getElementById('plLabel').textContent = R.label + ' · ' + R.wpm + ' 词/分';
     if (sameAudio){
       audio.playbackRate = R.pb || 1;        /* 变速不变调，时间轴不变 */
-      buildIndex();
+    
+  buildIndex();
     } else {
       audio.playbackRate = 1;
       buildIndex();
@@ -1916,6 +1917,21 @@ var QUIZ = [{"id": "q8", "stem": "8. how does the man often feel on his birthday
     if (curLi >= 0) playLine(curLi);
   });
   if (bExit) bExit.addEventListener('click', function(){ if (on) exitMode(); });
+})();
+</script>
+<script>
+(function(){
+var AL = {"q8": 1, "q9": 3, "q10": 1, "q11": 5, "q12": 16, "q13": 17, "q14": 18, "q15": 20};
+for (var qid in AL){
+  var line = document.querySelector(".line[data-li=\"" + AL[qid] + "\"]");
+  if (!line) continue;
+  line.classList.add("ansline");
+  var t = document.createElement("span");
+  t.className = "anstag";
+  t.textContent = "📌 答案句 Q" + qid.slice(1);
+  var lh = line.querySelector(".lh");
+  if (lh) lh.appendChild(t);
+}
 })();
 </script>
 </body>
