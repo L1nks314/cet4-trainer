@@ -232,6 +232,9 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 #dictBar button.pri{background:var(--blue);border-color:var(--blue);color:#fff;min-width:116px}
 #dictBar #dbExit{padding:12px 15px;color:var(--sub);font-weight:600}
 #dictBar #dbRep{background:#fff;border-color:var(--amber);color:#8a6318;min-width:74px}
+#dictBar #dbSpeed{background:#fff;border-color:var(--line);color:var(--sub);min-width:84px}
+#dictBar #dbSkip{background:#fff;border-color:var(--line);color:var(--sub);min-width:96px}
+#dictBar #dbSkip.on{background:#f3f4f6;border-color:#d7dce1;color:#9aa3ad;text-decoration:line-through}
 @media (max-width:560px){
   #dictBar{padding:9px 10px;gap:7px}
   #dictBar .db-txt{flex:1 0 100%;min-width:0;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -239,6 +242,8 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
   #dictBar button.pri{flex:1;min-width:0}
   #dictBar #dbAgain .lbl{display:none}
   #dictBar #dbRep{min-width:66px}
+  #dictBar #dbSpeed{min-width:74px}
+  #dictBar #dbSkip{min-width:86px}
 }
 
 /* ═══ 逐句听写本 ═══ */
@@ -316,10 +321,12 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 
 <div class="card hide" id="dictCard">
   <h2><span class="num">5</span>逐句听写本</h2>
-  <p class="hint"><b>只写你没听出来的那几句 —— 全篇抄写既费时又没用。</b><br>点播放器里的 <b>✍️ 听写模式</b>：每句会自动重读几遍再停，本子会<b>自动跳到那一行</b>。听清的直接点「下一句」跳过；卡住的地方才是你的问题所在，把它写下来，点「📷 导出听写照」发我批改。</p>
+  <p class="hint"><b>只写你没听出来的那几句 —— 全篇抄写既费时又没用。</b><br>点播放器里的 <b>✍️ 听写模式</b>：每句会自动重读几遍再停。听清的句点 <b>⏭ 不写这句</b> 跳过（会自动压扁），卡住的句子写下来；倍速用 <b>🐢</b> 按钮调。写完点「📷 导出听写照」发我批改。</p>
   <div id="dictBar">
     <span class="db-txt"></span>
+    <button id="dbSpeed" title="播放速度（点一下切换）">🐢 1.0×</button>
     <button id="dbRep" title="每句重复几遍（点一下切换）">🔂 3遍</button>
+    <button id="dbSkip" title="这句听清了就跳过，不写">⏭ 不写这句</button>
     <button id="dbAgain" title="把这句再读一遍">🔁<span class="lbl"> 重听这句</span></button>
     <button id="dbNext" class="pri">▶ 下一句</button>
     <button id="dbExit" title="退出听写模式">✕</button>
@@ -695,7 +702,7 @@ var QUIZ = [{"id": "q16", "stem": "16. What do children seem to have a natural d
   document.getElementById('receipt').addEventListener('click', function(){ this.select(); this.setSelectionRange(0,99999); });
   buildReceipt();
 
-      /* ---------- 逐句听写本（分块 canvas · 笔迹数据化） ---------- */
+        /* ---------- 逐句听写本（分块 canvas · 笔迹数据化） ---------- */
   var DP = (function(){
     var card = document.getElementById('dictCard');
     var wrap = document.getElementById('dpWrap');
@@ -710,18 +717,43 @@ var QUIZ = [{"id": "q16", "stem": "16. What do children seem to have a natural d
 
     var rows = [], H = 0, W = 0, blocks = [], strokes = [], cur = null, curLi = -1;
     var API = { written:0, total:0 };
-    /* 行高按句长自适应：长句给两行以上的书写空间，短句不浪费 */
+    var SKIP_H = 34;
+    var skips = {};
+    var SKIP_KEY = 'cet4_dict_skip_v1';
+    try { skips = JSON.parse(localStorage.getItem(SKIP_KEY) || '{}') || {}; } catch(e){ skips = {}; }
+    function naturalH(i){
+      var n = (LINES[i].tokens && LINES[i].tokens.length) || 8;
+      return n <= 12 ? 100 : 142;
+    }
+    function saveSkips(){ try { localStorage.setItem(SKIP_KEY, JSON.stringify(skips)); } catch(e){} }
+    /* 行高按句长自适应：长句给两行以上的书写空间，短句不浪费；标记「不写」的句子压扁 */
     (function(){
       var y = GAP;
       for (var i = 0; i < LINES.length; i++){
-        var n = (LINES[i].tokens && LINES[i].tokens.length) || 8;
-        var h = n <= 12 ? 100 : 142;
-        rows.push({ li:i, y:y, h:h });
+        var h = naturalH(i);
+        rows.push({ li:i, y:y, h:h, nh:h });
         y += h + GAP;
       }
       H = y;
     })();
     API.total = rows.length;
+    function relayout(){
+      var oldY = {}, i, s, p, dy;
+      for (i = 0; i < rows.length; i++) oldY[i] = rows[i].y;
+      var y = GAP;
+      for (i = 0; i < rows.length; i++){
+        rows[i].h = skips[i] ? SKIP_H : rows[i].nh;
+        rows[i].y = y;
+        y += rows[i].h + GAP;
+      }
+      H = y;
+      /* 行高变化后，把已写笔迹按所在行的位移整体平移，避免字「浮」在错位 */
+      for (s = 0; s < strokes.length; s++){
+        dy = rows[strokes[s].li].y - oldY[strokes[s].li];
+        if (!dy) continue;
+        for (p = 0; p < strokes[s].pts.length; p++) strokes[s].pts[p][1] += dy;
+      }
+    }
 
     function liAtY(gy){
       for (var i = 0; i < rows.length; i++){
@@ -737,6 +769,14 @@ var QUIZ = [{"id": "q16", "stem": "16. What do children seem to have a natural d
       for (i = 0; i < rows.length; i++){
         r = rows[i];
         if (r.y + r.h + GAP < yTop || r.y - GAP > yBot) continue;
+        if (skips[i]){
+          ctx.fillStyle = '#f4f5f7';
+          ctx.fillRect(0, r.y - 2, W, r.h + 4);
+          ctx.font = '600 11.5px ' + FONT;
+          ctx.fillStyle = '#b4bac1';
+          ctx.fillText('第' + (i + 1) + '句 · ⏭ 已跳过', 9, r.y + 8);
+          continue;
+        }
         if (i === curLi){ ctx.fillStyle = '#fffbe6'; ctx.fillRect(0, r.y - 3, W, r.h + 6); }
         ctx.font = '600 11.5px ' + FONT;
         ctx.fillStyle = (i === curLi) ? '#a37d12' : '#adb5bd';
@@ -792,10 +832,10 @@ var QUIZ = [{"id": "q16", "stem": "16. What do children seem to have a natural d
       }
     }
 
-    function layout(){
+    function layout(force){
       var cw = wrap.clientWidth;
       if (!cw) return false;
-      if (cw === W && blocks.length) return false;
+      if (!force && cw === W && blocks.length) return false;
       W = cw;
       wrap.innerHTML = '';
       blocks = [];
@@ -979,7 +1019,7 @@ var QUIZ = [{"id": "q16", "stem": "16. What do children seem to have a natural d
       var HEAD = 42;
       var y = HEAD + GAP;
       for (i = 0; i < rows.length; i++){
-        var h = seen[i] ? rows[i].h : 34;
+        var h = (skips[i] || !seen[i]) ? 34 : rows[i].nh;
         ex.push({ li:i, y:y, h:h });
         y += h + GAP;
       }
@@ -1000,8 +1040,10 @@ var QUIZ = [{"id": "q16", "stem": "16. What do children seem to have a natural d
       cx.fillText('听写照 · ' + (h1 ? h1.textContent.trim() : ''), 10, 8);
       cx.font = '400 11.5px ' + FONT;
       cx.fillStyle = '#9aa3ad';
-      cx.fillText('已写 ' + (function(){ var n = 0; for (var k in seen) if (seen.hasOwnProperty(k)) n++; return n; })()
-                  + ' / ' + rows.length + ' 句　·　空白行＝没听出来', 10, 27);
+      var wc = 0, sc2 = 0, k2;
+      for (k2 in seen) if (seen.hasOwnProperty(k2)) wc++;
+      for (k2 in skips) if (skips.hasOwnProperty(k2) && skips[k2]) sc2++;
+      cx.fillText('已写 ' + wc + ' · 跳过 ' + sc2 + ' / 共 ' + rows.length + ' 句　·　空白行＝没听出来', 10, 27);
       cx.strokeStyle = '#e8ebef'; cx.lineWidth = 1;
       cx.beginPath(); cx.moveTo(0, HEAD - 0.5); cx.lineTo(W, HEAD - 0.5); cx.stroke();
 
@@ -1056,7 +1098,21 @@ var QUIZ = [{"id": "q16", "stem": "16. What do children seem to have a natural d
         window.scrollTo({ top: Math.max(0, top - 120), behavior:'smooth' });
     }
 
+    function setSkip(li, bool){
+      skips[li] = bool ? 1 : 0;
+      if (bool){
+        /* 标记「不写」时清掉该行已写的笔迹，避免导出时挤成一团 */
+        strokes = strokes.filter(function(s){ return s.li !== li; });
+      }
+      saveSkips();
+      relayout();
+      layout(true);
+      refreshCount();
+    }
+    function isSkip(li){ return !!skips[li]; }
+
     API.show = show; API.hide = hide; API.focusLine = focusLine; API.layout = layout;
+    API.setSkip = setSkip; API.isSkip = isSkip;
     window.__dictPad = API;
     return API;
   })();
@@ -1790,7 +1846,8 @@ for (var qid in AL){
 </script>
 
 <script>
-/* 听写模式：逐句播放（可自动重读 N 遍）→ 播完自动暂停 → 听写本自动跳到那一行 */
+/* 听写模式：逐句播放（可自动重读 N 遍）→ 播完自动暂停 → 听写本自动跳到那一行
+   新增：① 每句可标记「不写」（跳过，听写本压扁）② 倍速切换（0.85/1.0/1.15） */
 (function(){
   var audio = document.getElementById('audio');
   var bar = document.getElementById('dictBar');
@@ -1801,6 +1858,8 @@ for (var qid in AL){
   var bAgain = document.getElementById('dbAgain');
   var bExit = document.getElementById('dbExit');
   var bRep = document.getElementById('dbRep');
+  var bSpeed = document.getElementById('dbSpeed');
+  var bSkip = document.getElementById('dbSkip');
   var tpFollow = document.getElementById('tpFollow');
   var on = false, curLi = -1, B = null, tick = 0, followBack = false, lastSelf = 0;
 
@@ -1808,6 +1867,38 @@ for (var qid in AL){
   var rep = 3, left = 0, gapTimer = 0, GAP_MS = 1800;   /* 遍与遍之间停 1.8 秒 */
   try { var rv = parseInt(localStorage.getItem(REP_KEY) || '', 10); if (rv >= 1 && rv <= 4) rep = rv; } catch(e){}
   function repLabel(){ if (bRep) bRep.textContent = '🔂 ' + rep + '遍'; }
+
+  /* ── 倍速：循环 0.85 / 1.0 / 1.15，直接切播放器的档位 ── */
+  var SPD = [ {r:1, t:'🐢 0.85×'}, {r:0, t:'▶ 1.0×'}, {r:2, t:'⚡ 1.15×'} ];
+  var SPD_KEY = 'cet4_dict_speed_v1';
+  var spdI = 1;
+  try {
+    var sv = localStorage.getItem(SPD_KEY);
+    if (sv === null || sv === ''){
+      var cr = (typeof rate !== 'undefined') ? rate : 0;   /* 主脚本的当前档位 */
+      for (var k = 0; k < SPD.length; k++) if (SPD[k].r === cr) spdI = k;
+    } else {
+      var v = parseInt(sv, 10); if (v >= 0 && v <= 2) spdI = v;
+    }
+  } catch(e){}
+  function speedLabel(){ if (bSpeed) bSpeed.textContent = SPD[spdI].t; }
+  function applySpeed(){
+    try {
+      if (typeof switchRate === 'function') switchRate(SPD[spdI].r);
+      else if (audio) audio.playbackRate = [0.85, 1, 1.15][spdI];
+    } catch(e){}
+    speedLabel();
+    try { localStorage.setItem(SPD_KEY, String(spdI)); } catch(e){}
+  }
+
+  /* ── 逐句「写 / 不写」：状态交给听写本（pad）维护 ── */
+  function padSkip(li){ var D = window.__dictPad || null; return (D && D.isSkip) ? D.isSkip(li) : false; }
+  function skipLabel(){
+    if (!bSkip) return;
+    var s = curLi >= 0 && padSkip(curLi);
+    bSkip.textContent = s ? '✍️ 要写这句' : '⏭ 不写这句';
+    bSkip.classList.toggle('on', !!s);
+  }
 
   function bounds(){
     if (B) return B;
@@ -1869,6 +1960,7 @@ for (var qid in AL){
     bar.classList.remove('on');
     var D = pad();
     if (D) D.focusLine(li);             /* 本子跳到这一行 */
+    skipLabel();
     playNow();
     return true;
   }
@@ -1881,6 +1973,7 @@ for (var qid in AL){
       txt.innerHTML = '第 <b>' + (li + 1) + '</b> / ' + b.length + ' 句 · 没听清的写下来';
       bNext.textContent = '▶ 下一句';
     }
+    skipLabel();
     bar.classList.add('on');
   }
   function exitMode(){
@@ -1906,11 +1999,22 @@ for (var qid in AL){
   });
 
   repLabel();
+  speedLabel();
   if (bRep) bRep.addEventListener('click', function(){
     rep = rep >= 4 ? 1 : rep + 1;
     repLabel();
     try { localStorage.setItem(REP_KEY, rep); } catch(e){}
     if (on && curLi >= 0 && !gapTimer){ left = rep; }   /* 当前句立即按新遍数来 */
+  });
+  if (bSpeed) bSpeed.addEventListener('click', function(){
+    spdI = (spdI + 1) % SPD.length;
+    applySpeed();
+  });
+  if (bSkip) bSkip.addEventListener('click', function(){
+    if (!on || curLi < 0) return;
+    var D = pad();
+    if (D && D.setSkip) D.setSkip(curLi, !padSkip(curLi));
+    skipLabel();
   });
 
   btn.addEventListener('click', function(){
@@ -1919,6 +2023,7 @@ for (var qid in AL){
     btn.classList.add('act'); btn.textContent = '✍️ 听写模式 开';
     /* 听写时由听写本主导滚动，先把播放器的「自动滚动」让出去，否则两边抢滚动 */
     if (tpFollow && tpFollow.classList.contains('act')){ followBack = true; tpFollow.click(); }
+    applySpeed();
     var D = pad();
     if (D) D.show();
     txt.innerHTML = '✍️ 每句播完自动暂停';
