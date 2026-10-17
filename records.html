@@ -76,26 +76,57 @@ var KIND = {listening:'听力', reading:'阅读', writing:'写作', translation:
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
-fetch('https://ntfy.sh/' + TOPIC + '/json?poll=1&since=all')
-  .then(function(r){ return r.text(); })
-  .then(function(txt){
-    var recs = [], coaches = [], wbs = [], photos = [];
-    txt.trim().split('\n').forEach(function(line){
-      if (!line.trim()) return;
-      var m; try{ m = JSON.parse(line); }catch(e){ return; }
-      var payload; try{ payload = JSON.parse(m.message); }catch(e){ return; }
-      if (!payload || !payload.t) return;
-      if (payload.t === 'rep') recs.push(payload);
-      else if (payload.t === 'coach') coaches.push(payload);
-      else if (payload.t === 'wrongbook') wbs.push(payload);
-      else if (payload.t === 'photo') photos.push(payload);
-    });
-    render(recs, coaches, photos);
-    renderWrongbook(wbs);
-  })
-  .catch(function(){
-    document.getElementById('list').innerHTML = '<div class="empty">拉取失败 —— 检查网络后刷新本页。</div>';
+/* 历史档案（records.json，永久）+ ntfy 实时，合并去重 */
+Promise.all([
+  fetch('records.json?_=' + Date.now(), {cache:'no-store'})
+    .then(function(r){ return r.json(); }).catch(function(){ return {}; }),
+  fetch('https://ntfy.sh/' + TOPIC + '/json?poll=1&since=all')
+    .then(function(r){ return r.text(); }).catch(function(){ return ''; })
+]).then(function(res){
+  var arch = res[0] || {};
+  var recs = (arch.reps || []).slice();
+  var coaches = (arch.coaches || []).slice();
+  var photos = (arch.photos || []).slice();
+  var wbs = [];
+
+  function repScore(p){
+    var s = p.score;
+    if (!s){
+      var m = String(p.text || '').match(/结果：(\d+\/\d+)/);
+      s = m ? m[1] : '';
+    }
+    return s;
+  }
+  var repKeys = {}, coachKeys = {}, photoKeys = {};
+  recs.forEach(function(r){ repKeys[(r.date||'')+'|'+(r.kind||'')+'|'+(r.page||'')+'|'+(r.score||'')] = 1; });
+  coaches.forEach(function(c){ coachKeys[(c.date||'')+'|'+(c.kind||'')+'|'+(c.text||'')] = 1; });
+  photos.forEach(function(p){ photoKeys[p.name||''] = 1; });
+
+  String(res[1] || '').trim().split('\n').forEach(function(line){
+    if (!line.trim()) return;
+    var m; try{ m = JSON.parse(line); }catch(e){ return; }
+    var p; try{ p = JSON.parse(m.message); }catch(e){ return; }
+    if (!p || !p.t) return;
+    if (p.t === 'rep'){
+      var k = (p.date||'')+'|'+(p.kind||'')+'|'+(p.page||'')+'|'+repScore(p);
+      if (!repKeys[k]) { recs.push(p); repKeys[k] = 1; }
+    } else if (p.t === 'coach'){
+      var k2 = (p.date||'')+'|'+(p.kind||'')+'|'+(p.text||'');
+      if (!coachKeys[k2]) { coaches.push(p); coachKeys[k2] = 1; }
+    } else if (p.t === 'photo'){
+      var att = m.attachment || {};
+      var name = att.name || '';
+      if (name && !photoKeys[name]) { photos.push(p); photoKeys[name] = 1; }
+    } else if (p.t === 'wrongbook'){
+      wbs.push(p);
+    }
   });
+
+  render(recs, coaches, photos);
+  renderWrongbook(wbs);
+}).catch(function(){
+  document.getElementById('list').innerHTML = '<div class="empty">拉取失败 —— 检查网络后刷新本页。</div>';
+});
 
 function render(recs, coaches, photos){
   var items = [];
