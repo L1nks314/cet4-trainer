@@ -194,6 +194,21 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
  transition:opacity .18s ease,transform .18s ease}
 #penToast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 #wpText,#wpCount{display:none!important}
+/* 云状态条：右下角固定 · 照片上传 + 教练已读 */
+#cloudBar{position:fixed;right:14px;bottom:14px;z-index:70;display:flex;flex-direction:column;align-items:flex-end;gap:8px;font-family:inherit}
+#cloudBar button{border:0;border-radius:12px;padding:11px 15px;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(15,23,42,.14);font-family:inherit}
+#cloudBar button:active{transform:scale(.97)}
+#cloudPhoto{background:var(--blue);color:#fff}
+#cloudPhoto:disabled{background:#c9d4e4;cursor:default}
+#cloudSt{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:12.5px;color:var(--sub);box-shadow:0 4px 14px rgba(15,23,42,.10);max-width:220px;line-height:1.45}
+#cloudSt.read{color:var(--green);border-color:#b8e6c8;background:#f2fbf5}
+#cloudSt.err{color:var(--red);border-color:#f3c6c6;background:#fff5f5}
+#cloudBar.hide-photo #cloudPhoto{display:none}
+@media (max-width:640px){
+  #cloudBar{right:8px;bottom:8px;gap:6px}
+  #cloudBar button{padding:10px 12px;font-size:12.5px}
+  #cloudSt{max-width:180px;padding:7px 10px;font-size:11.5px}
+}
 </style>
 </head>
 <body>
@@ -997,6 +1012,137 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
     }catch(e){}
     return p;
   };
+})();
+</script>
+<div id="cloudBar">
+  <button id="cloudPhoto" title="把手写照片传上来，教练自动收到并批改">📷 上传手写照</button>
+  <div id="cloudSt">⏳ 已上云 · 待批改</div>
+  <input type="file" id="cloudFile" accept="image/*" style="display:none">
+</div>
+<script>
+/* 云状态条：照片上云 + 教练已读（回执已读：ntfy 实时 + GitHub 持久兜底） */
+(function(){
+  if (window.__cloudDone) return;
+  window.__cloudDone = true;
+  var TOPIC = "cet4-67f4d286a543c3aca5af06b1910625b0749ce20d4052";        /* 学生 → 教练 */
+  var COACH = "cet4-coach-8e3a1f6c9b2d4e7a0f5c8b1d3e6a9f2c4b7d0e1a3f5c8"; /* 教练 → 学生 */
+  var PAGE = location.pathname.split('/').pop() || document.title;
+  var KIND = /^write/.test(PAGE) ? 'writing'
+           : /^trans/.test(PAGE) ? 'translation'
+           : /^read/.test(PAGE)  ? 'reading'
+           : /matching/.test(PAGE) ? 'matching'
+           : 'listening';
+  var PHOTO_KINDS = { writing:1, translation:1, listening:1 };
+
+  var bar = document.getElementById('cloudBar');
+  var st = document.getElementById('cloudSt');
+  var photoBtn = document.getElementById('cloudPhoto');
+  var fileInp = document.getElementById('cloudFile');
+
+  if (bar && !PHOTO_KINDS[KIND]) bar.classList.add('hide-photo');
+
+  function hhmm(at){
+    if (!at) return '';
+    var m = String(at).match(/\d{2}:\d{2}/);
+    return m ? m[0] : '';
+  }
+  function showRead(at){
+    if (!st) return;
+    st.textContent = hhmm(at) ? ('✅ 教练已读 · ' + hhmm(at)) : '✅ 教练已读';
+    st.classList.add('read');
+    st.classList.remove('err');
+  }
+  function setMsg(txt, cls){
+    if (!st) return;
+    st.textContent = txt;
+    st.classList.remove('read','err');
+    if (cls) st.classList.add(cls);
+  }
+
+  /* ── 已读：GitHub read_log.json 兜底 ── */
+  try{
+    fetch('./read_log.json?_=' + Date.now(), { cache:'no-store' })
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        var e = d && d.reads && d.reads[PAGE];
+        if (e) showRead(e.at);
+      })
+      .catch(function(){});
+  }catch(e){}
+
+  /* ── 已读：轮询教练 topic（实时，60 分钟超时） ── */
+  var lastId = 0;
+  function pollRead(){
+    fetch('https://ntfy.sh/' + COACH + '/json?since=' + lastId, { cache:'no-store' })
+      .then(function(r){ return r.json(); })
+      .then(function(list){
+        (list || []).forEach(function(m){
+          if (m.id) lastId = Math.max(lastId, m.id);
+          var p = null;
+          try { p = JSON.parse(m.message || '{}'); } catch(e){}
+          if (p && p.t === 'read' && p.page === PAGE) showRead(p.at || m.time);
+        });
+      })
+      .catch(function(){});
+  }
+  pollRead();
+  var pollTimer = setInterval(pollRead, 20000);
+  setTimeout(function(){ clearInterval(pollTimer); }, 3600000);
+
+  /* ── 照片压缩 ── */
+  function compressImage(file, cb){
+    var img = new Image();
+    var url = URL.createObjectURL(file);
+    img.onload = function(){
+      var max = 1280, w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
+      if (w > max){ h = Math.round(h * max / w); w = max; }
+      if (h > max){ w = Math.round(w * max / h); h = max; }
+      var c = document.createElement('canvas'); c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(url);
+      c.toBlob(function(b){ cb(b || file); }, 'image/jpeg', 0.72);
+    };
+    img.onerror = function(){ URL.revokeObjectURL(url); cb(file); };
+    img.src = url;
+  }
+
+  /* ── 照片上云（ntfy 附件） ── */
+  var uploading = false;
+  function sendPhoto(file){
+    if (uploading) return;
+    uploading = true;
+    if (photoBtn) photoBtn.disabled = true;
+    setMsg('压缩上传中…');
+    compressImage(file, function(blob){
+      var d = new Date();
+      function p2(n){ return String(n).padStart(2,'0'); }
+      var stamp = d.getFullYear()+p2(d.getMonth()+1)+p2(d.getDate())+'-'+p2(d.getHours())+p2(d.getMinutes())+p2(d.getSeconds());
+      var fname = PAGE.replace(/\.html$/,'') + '_' + KIND + '_' + stamp + '.jpg';
+      var title = document.querySelector('header h1') ? document.querySelector('header h1').textContent.trim() : PAGE;
+      var meta = { t:'photo', kind:KIND, page:PAGE, date:d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()), title:title };
+      var q = '?f=' + encodeURIComponent(fname) + '&m=' + encodeURIComponent(JSON.stringify(meta));
+      fetch('https://ntfy.sh/' + TOPIC + q, { method:'PUT', body: blob })
+        .then(function(x){
+          uploading = false;
+          if (photoBtn) photoBtn.disabled = false;
+          if (x.ok) setMsg('📤 照片已上云，教练批改后这里会变已读');
+          else setMsg('上传失败，请截图发对话', 'err');
+        })
+        .catch(function(){
+          uploading = false;
+          if (photoBtn) photoBtn.disabled = false;
+          setMsg('离线，请截图发对话', 'err');
+        });
+    });
+  }
+
+  if (photoBtn && fileInp){
+    photoBtn.addEventListener('click', function(){ fileInp.click(); });
+    fileInp.addEventListener('change', function(){
+      if (fileInp.files && fileInp.files[0]) sendPhoto(fileInp.files[0]);
+      fileInp.value = '';
+    });
+  }
 })();
 </script>
 </body>
