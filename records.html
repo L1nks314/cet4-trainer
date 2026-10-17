@@ -79,7 +79,7 @@ function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
 fetch('https://ntfy.sh/' + TOPIC + '/json?poll=1&since=all')
   .then(function(r){ return r.text(); })
   .then(function(txt){
-    var recs = [], coaches = [];
+    var recs = [], coaches = [], wbs = [];
     txt.trim().split('\n').forEach(function(line){
       if (!line.trim()) return;
       var m; try{ m = JSON.parse(line); }catch(e){ return; }
@@ -87,8 +87,10 @@ fetch('https://ntfy.sh/' + TOPIC + '/json?poll=1&since=all')
       if (!payload || !payload.t) return;
       if (payload.t === 'rep') recs.push(payload);
       else if (payload.t === 'coach') coaches.push(payload);
+      else if (payload.t === 'wrongbook') wbs.push(payload);
     });
     render(recs, coaches);
+    renderWrongbook(wbs);
   })
   .catch(function(){
     document.getElementById('list').innerHTML = '<div class="empty">拉取失败 —— 检查网络后刷新本页。</div>';
@@ -136,12 +138,17 @@ function coachFor(date, kind, coaches){
   }).join('');
 }
 
-/* 错题本：从 localStorage 渲染 */
-(function(){
+/* 错题本：本地 + 云端合并渲染 */
+function renderWrongbook(cloudWb){
   function wbEsc(x){ return String(x==null?'':x).replace(/[&<>"]/g, function(c){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   try{
     var arr = JSON.parse(localStorage.getItem('cet4_wrongbook') || '[]') || [];
+    (cloudWb || []).forEach(function(c){
+      var idx = -1;
+      arr.forEach(function(a, k){ if (a.type === c.type && a.page === c.page) idx = k; });
+      if (idx >= 0) arr[idx] = c; else arr.push(c);
+    });
     var cnt = document.getElementById('wcnt'), box = document.getElementById('wrongList');
     if (!cnt || !box) return;
     if (!arr.length){ cnt.textContent = '0 题'; return; }
@@ -174,7 +181,7 @@ function coachFor(date, kind, coaches){
     cnt.textContent = total + ' 题';
     box.innerHTML = html;
   }catch(e){}
-})();
+}
 
 </script>
 </body>

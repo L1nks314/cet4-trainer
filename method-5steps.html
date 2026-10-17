@@ -144,7 +144,7 @@
     color:#fff;padding:11px 22px;border-radius:24px;font-size:14px;opacity:0;transition:.3s;pointer-events:none;z-index:99;}
   .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
   /* ---------- 听写自动比对 ---------- */
-  textarea#dictIn{min-height:150px;font-family:inherit;font-size:15px;line-height:1.95;}
+  
   .dstat{background:var(--blue-soft);border-radius:10px;padding:12px 15px;font-size:14.5px;margin-top:14px;line-height:1.95;}
   .dstat b{font-size:19px;color:var(--blue-ink);}
   .dview{font-size:15.5px;line-height:2.4;margin-top:14px;padding:14px;background:var(--soft);
@@ -237,6 +237,52 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
  border-radius:22px;z-index:8990;opacity:0;pointer-events:none;
  transition:opacity .18s ease,transform .18s ease}
 #penToast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ═══ 听写模式（底部悬浮条 + 逐句清单） ═══ */
+#dictBar{display:none;position:fixed;left:50%;bottom:14px;transform:translateX(-50%);
+ z-index:9000;margin:0;max-width:calc(100vw - 16px);
+ background:var(--card,#fff);border:1.5px solid var(--line);border-radius:16px;
+ padding:8px 10px;align-items:center;gap:7px;flex-wrap:nowrap;
+ box-shadow:0 8px 28px rgba(15,20,30,.22)}
+#dictBar.on{display:flex}
+#dictBar .db-txt{font-size:12.5px;font-weight:700;color:var(--sub);white-space:nowrap;padding:0 2px}
+#dictBar button{border:1.5px solid var(--line);background:#fff;border-radius:10px;
+ padding:11px 12px;font-size:14.5px;font-weight:700;font-family:inherit;color:inherit;
+ cursor:pointer;-webkit-tap-highlight-color:transparent;white-space:nowrap}
+#dictBar button.pri{background:var(--blue);border-color:var(--blue);color:#fff}
+#dictBar button.pri[disabled]{background:#c9d4e4;border-color:#c9d4e4;color:#fff;cursor:default}
+#dictBar #dbExit{padding:11px 11px;color:var(--sub);font-weight:600}
+#dictBar #dbRep{background:#fff;border-color:var(--amber);color:#8a6318}
+#dictBar #dbSpeed{background:#fff;border-color:var(--line);color:var(--sub)}
+#dictBar #dbSkip{background:#fff;border-color:var(--line);color:var(--sub)}
+#dictBar #dbSkip.on{background:#f3f4f6;border-color:#d7dce1;color:#9aa3ad;text-decoration:line-through}
+@media (max-width:560px){
+  #dictBar{padding:7px 8px;gap:5px;border-radius:14px;bottom:10px}
+  #dictBar button{padding:11px 9px;font-size:13px}
+  #dictBar .db-txt{max-width:52px;overflow:hidden;text-overflow:ellipsis}
+  #dictBar #dbAgain .lbl{display:none}
+}
+
+/* ═══ 逐句听写清单 ═══ */
+#dictCard.hide{display:none}
+.dplist{display:flex;flex-direction:column;gap:6px}
+.dprow{display:flex;align-items:center;gap:8px;padding:9px 11px;border:1px solid var(--line);
+ border-radius:10px;background:var(--bg,#fff);transition:background .15s}
+.dprow.cur{background:#fffbe6;border-color:#e9d48a}
+.dprow.skip{opacity:.6;background:#f4f5f7}
+.dprow .dpi{font-weight:700;font-size:12px;color:#adb5bd;min-width:44px;flex:0 0 auto}
+.dprow.cur .dpi{color:#a37d12}
+.dprow .dpeye{flex:0 0 auto;font-size:12.5px;font-weight:700;border:1.5px solid var(--line);
+ border-radius:8px;padding:6px 9px;background:#fff;color:var(--sub);cursor:pointer;
+ -webkit-tap-highlight-color:transparent;white-space:nowrap;min-width:40px}
+.dprow .dpw{display:none;font-size:13px;color:var(--sub);line-height:1.55;flex:1;min-width:0}
+.dprow.open .dpw{display:block;flex-basis:100%}
+.dprow .dpw .wen{color:var(--txt);font-size:13.5px}
+.dprow.skip .dpw{text-decoration:line-through;color:#9aa3ad}
+.dprow .dpx{flex:0 0 auto;font-size:12.5px;font-weight:700;border:1.5px solid var(--line);
+ border-radius:8px;padding:6px 9px;background:#fff;color:var(--sub);cursor:pointer;
+ -webkit-tap-highlight-color:transparent;white-space:nowrap}
+.dprow .dpx.on{background:#f3f4f6;color:#9aa3ad;text-decoration:line-through}
 </style>
 <noscript><style>
   .locked-sec{filter:none !important;opacity:1 !important;pointer-events:auto !important;user-select:auto !important;}
@@ -265,6 +311,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
     <button class="tbtn" id="tpBack">⏮ 回退 3 秒</button>
     <button class="tbtn act" id="tpFollow">🧲 自动滚动 开</button>
     <button class="tbtn" id="tpMark">🏷 连读点</button>
+    <button class="tbtn" id="tpDict">✍️ 听写模式</button>
   </div>
   <audio id="audio" controls preload="auto" src=""></audio>
   <div class="plinfo">
@@ -277,31 +324,17 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 
 
 
-<div class="card" id="dictCard">
-  <h2><span class="num">2</span>听写区 · 自动比对</h2>
-  <p class="hint">用「慢速」逐句听写，把写下来的内容贴进框里（大小写和标点都不用管）。点比对，它会<b>逐词</b>告诉你哪几个词漏了、哪几个听错了，并自动判断是「连读漏听」还是「生词不认识」。</p>
-  <textarea id="dictIn" placeholder="把你听写的内容贴在这里……"></textarea>
-  <button class="btn btn-primary" id="dictBtn">比对 · 自动标错</button>
-  <button class="btn btn-ghost" id="dictClear">清空重来</button>
-  <div id="dictOut" style="display:none">
-    <div class="dstat" id="dictStat"></div>
-    <div class="dview" id="dictView"></div>
-    <div class="dlegend">颜色说明：<span style="background:#e9f7f0;padding:1px 5px;border-radius:3px;">绿=听对</span>
-      <span style="background:#fde2e0;color:#a0281a;text-decoration:line-through;padding:1px 5px;border-radius:3px;">红=漏听</span>
-      <span style="background:#fff0cc;color:#8a5a00;border-bottom:2px solid #e0a800;padding:1px 5px;border-radius:3px;">黄=听错</span>
-      <span style="background:#eee;color:#8a8a8a;text-decoration:line-through;padding:1px 5px;border-radius:3px;font-size:12px;">灰=多写</span></div>
-    <div class="dan" id="dictAnalysis"></div>
-  </div>
-</div>
+<div class="card hide" id="dictCard">
+  <h2><span class="num">2</span>逐句听写清单</h2>
+  <p class="hint"><b>分屏：一边网页当播放器，一边华为笔记写字。</b><br>点播放器里的 <b>✍️ 听写模式</b>，每句会自动重读几遍再停。听清的句在<b>底部悬浮条</b>点「⏭ 跳过」，没听清的写进华为笔记——这些句子会<b>自动进错题本</b>，周末复盘用。写完把华为笔记<b>截图发到对话</b>，我给你逐词批改。</p>
+  <div class="dplist" id="dpList"></div>
+</div>>
 
 
 
 <div class="card" id="receiptCard">
   <h2><span class="num">3</span>交卷回执</h2>
   <p class="hint">把下面这段发给我（截图或直接复制都行），我立刻给你出错因归因和改善方法。听写区的比对结果会自动并进来。</p>
-  <div class="fld"><label>听写留白处数</label>
-    <input type="number" id="blankNum" min="0" value="0" placeholder="0">
-    <span class="hint" style="margin:0;">听写时有多少处完全没听出来？</span></div>
   <div class="fld"><label>最难的一句</label>
     <input type="text" id="hardest" placeholder="选填，贴你听不出来的一句"></div>
   <textarea id="receipt" readonly></textarea>
@@ -517,14 +550,7 @@ var QUIZ = [];
     var ds = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
     var L = ['【四级训练回执】', '日期：' + ds, '训练包：精听五步法专项包 · 点读版'];
     if (typeof quizLines === 'function'){ L = L.concat(quizLines()); }
-    var st = window.__dictStats;
-    if (st){
-      L.push('听写：' + st.acc + '% 正确（听对 ' + st.ok + '/' + st.total + '）· 漏听 ' + st.del + ' · 听错 ' + st.sub + ' · 多写 ' + st.ins);
-      if (st.top) L.push('首要错因：' + st.top);
-    } else {
-      L.push('听写：未做自动比对');
-    }
-    L.push('听写留白：' + (document.getElementById('blankNum').value || '0') + ' 处');
+    L.push('听写：逐句清单（没听清的句已进错题本，截图发我批改）');
     L.push('最难的一句：' + (document.getElementById('hardest').value || '（未填）'));
     L.push('—— 请据此给我出错因归因和改善方法');
     document.getElementById('receipt').value = L.join('\n');
@@ -549,202 +575,6 @@ var QUIZ = [];
   document.getElementById('receipt').addEventListener('click', function(){ this.select(); this.setSelectionRange(0,99999); });
   buildReceipt();
 
-
-  /* ---------- 听写自动比对 ---------- */
-  var FUNC = {};
-  'a an the and or but if so than that this these those there here of to in on at for with from by as into onto over under about after before is am are was were be been being do does did done have has had having i you he she it we they me him her us them my your his its our their will would shall should can could may might must not no nor so too very just only also even still yet up down out off away back again more most much many some any all both each every one two three four five six seven eight nine ten when where why how what which who whom whose while because although though during between among through against without within upon'.split(' ').forEach(function(w){ if (w) FUNC[w] = 1; });
-
-  var REF = [];
-  (DATA.lines || DATA.rates[0].lines).forEach(function(ln, li){
-    var mk = (DATA.marks && DATA.marks[li]) ? DATA.marks[li] : [];
-    ln.tokens.forEach(function(t, wi){
-      REF.push({ w: t.w, mk: mk.indexOf(wi) >= 0, li: li });
-    });
-  });
-
-  function nw(s){ return String(s).toLowerCase().replace(/[^a-z0-9']/g, ''); }
-  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-  function lcsDiff(a, b){
-    var n = a.length, m = b.length, i, j;
-    var dp = [];
-    for (i = 0; i <= n; i++){ var row = []; for (j = 0; j <= m; j++) row.push(0); dp.push(row); }
-    for (i = 1; i <= n; i++) for (j = 1; j <= m; j++){
-      dp[i][j] = (nw(a[i-1]) === nw(b[j-1])) ? dp[i-1][j-1] + 1 : Math.max(dp[i-1][j], dp[i][j-1]);
-    }
-    var ops = []; i = n; j = m;
-    while (i > 0 && j > 0){
-      if (nw(a[i-1]) === nw(b[j-1])){ ops.push({t:'ok', a:a[i-1], b:b[j-1]}); i--; j--; }
-      else if (dp[i-1][j] >= dp[i][j-1]){ ops.push({t:'del', a:a[i-1]}); i--; }
-      else { ops.push({t:'ins', b:b[j-1]}); j--; }
-    }
-    while (i > 0){ i--; ops.push({t:'del', a:a[i]}); }
-    while (j > 0){ j--; ops.push({t:'ins', b:b[j]}); }
-    ops.reverse();
-    /* 把每段连续的"非听对"片段整理成 听错(sub) / 漏听(del) / 多写(ins) */
-    var out = [], k = 0;
-    while (k < ops.length){
-      if (ops[k].t === 'ok'){ out.push(ops[k]); k++; continue; }
-      var d = [], e = [];
-      while (k < ops.length && ops[k].t !== 'ok'){
-        if (ops[k].t === 'del') d.push(ops[k].a); else e.push(ops[k].b);
-        k++;
-      }
-      var p = Math.min(d.length, e.length), q;
-      for (q = 0; q < p; q++) out.push({t:'sub', a:d[q], b:e[q]});
-      for (q = p; q < d.length; q++) out.push({t:'del', a:d[q]});
-      for (q = p; q < e.length; q++) out.push({t:'ins', b:e[q]});
-    }
-    return out;
-  }
-
-  function classify(idx){
-    var r = REF[idx];
-    if (!r) return '其他';
-    if (r.mk) return '连读/失爆区';
-    var w = nw(r.w);
-    if (FUNC[w]) return '虚词弱读';
-    if (w.length >= 5) return '可能生词';
-    return '其他';
-  }
-
-  document.getElementById('dictBtn').addEventListener('click', function(){
-    var raw = document.getElementById('dictIn').value.trim();
-    if (!raw){ toast('听写框还是空的'); return; }
-    var hyp = raw.split(/\s+/);
-    var refWords = REF.map(function(r){ return r.w; });
-    var ops = lcsDiff(refWords, hyp);
-
-    var okCount = 0, delList = [], subList = [], insCount = 0, ri = 0, prevLi = -1;
-    var parts = [];
-    ops.forEach(function(o){
-      if (o.t === 'ok'){ parts.push({h:'<span class="dok">' + esc(o.a) + '</span>', li: REF[ri] ? REF[ri].li : prevLi}); ri++; okCount++; }
-      else if (o.t === 'del'){ delList.push(ri); parts.push({h:'<span class="ddel">' + esc(o.a) + '</span>', li: REF[ri] ? REF[ri].li : prevLi}); ri++; }
-      else if (o.t === 'sub'){ subList.push(ri); parts.push({h:'<span class="dsub" title="你写的是：' + esc(o.b) + '">' + esc(o.a) + '</span>', li: REF[ri] ? REF[ri].li : prevLi}); ri++; }
-      else { insCount++; parts.push({h:'<span class="dins">' + esc(o.b) + '</span>', li: prevLi}); }
-    });
-
-    var buf = '', last = -1;
-    parts.forEach(function(p){
-      if (last >= 0 && p.li !== last) buf += '<span class="dbr"></span>';
-      buf += p.h + ' ';
-      last = p.li;
-    });
-    document.getElementById('dictView').innerHTML = buf;
-
-    var total = refWords.length;
-    var acc = Math.round(okCount / total * 100);
-
-    var cats = {};
-    delList.concat(subList).forEach(function(idx){
-      var c = classify(idx); cats[c] = (cats[c] || 0) + 1;
-    });
-    var arr = Object.keys(cats).map(function(k){ return {k:k, v:cats[k]}; })
-                    .sort(function(x,y){ return y.v - x.v; });
-    var wrongTotal = delList.length + subList.length;
-    var maxV = arr.length ? arr[0].v : 1;
-
-    var colors = {'连读/失爆区':'#c0392b', '虚词弱读':'#6b46c1', '可能生词':'#1f6feb', '其他':'#9a6a05'};
-    document.getElementById('dictAnalysis').innerHTML = arr.length ? (
-      '<div style="font-weight:700;margin:16px 0 6px;">错因分布（共错 ' + wrongTotal + ' 处）</div>' +
-      arr.map(function(x){
-        return '<div class="row"><span class="cat">' + x.k + '</span>'
-          + '<span class="bar2"><i style="width:' + Math.round(x.v / maxV * 100) + '%;background:' + (colors[x.k]||'#888') + '"></i></span>'
-          + '<span class="cnt">' + x.v + ' 处</span></div>';
-      }).join('')
-    ) : '<div class="tip green" style="margin-top:14px;"><b>全对。</b>逐词都对上了，这段音频对你已经没有辨音障碍——换下一个语速档，或者直接进下一篇。</div>';
-
-    var top = arr.length ? (arr[0].k + '（' + arr[0].v + ' 处）') : '无';
-    var advice = '';
-    if (arr.length){
-      if (arr[0].k === '连读/失爆区')
-        advice = '<div class="tip amber" style="margin-top:14px;"><b>这是好消息。</b>你错的词里有最大一块落在<b>连读/失爆标注区</b>——说明不是词汇量问题，是声音被吞掉。回到上方原文点读，把这些词所在句子用 🔁 循环五遍，然后跟读三遍。这是投入产出比最高的动作。</div>';
-      else if (arr[0].k === '可能生词')
-        advice = '<div class="tip blue" style="margin-top:14px;"><b>注意：</b>你漏的主要是较长的实词，这更像<b>词汇问题</b>而不是辨音问题。把上面标红的词抄进单词本，明天先复习这些词再听下一段。</div>';
-      else if (arr[0].k === '虚词弱读')
-        advice = '<div class="tip purple" style="margin-top:14px;"><b>典型症状：</b>漏的主要是 of / to / for / at 这类虚词。四级听力里虚词一律被压扁成 /ə/，<b>不要试图听清每一个词</b>——抓重音、抓实词，虚词自然就顺出来了。</div>';
-    }
-    document.getElementById('dictAnalysis').innerHTML += advice;
-
-    document.getElementById('dictStat').innerHTML =
-      '听写准确率 <b>' + acc + '%</b>　（听对 ' + okCount + ' / 参考共 ' + total + ' 词）<br>'
-      + '漏听 <b>' + delList.length + '</b> 词　·　听错 <b>' + subList.length + '</b> 词　·　多写 <b>' + insCount + '</b> 词';
-
-    window.__dictStats = { acc: acc, ok: okCount, total: total,
-                           del: delList.length, sub: subList.length, ins: insCount, top: top };
-    if (typeof window.__rebuild === 'function') window.__rebuild();
-
-    document.getElementById('dictOut').style.display = 'block';
-    toast('比对完成：准确率 ' + acc + '%');
-  });
-
-  document.getElementById('dictClear').addEventListener('click', function(){
-    document.getElementById('dictIn').value = '';
-    document.getElementById('dictOut').style.display = 'none';
-    window.__dictStats = null;
-    if (typeof window.__rebuild === 'function') window.__rebuild();
-  });
-
-
-  var t;
-  function toast(m){
-    var el = document.getElementById('toast');
-    el.textContent = m; el.classList.add('on');
-    clearTimeout(t); t = setTimeout(function(){ el.classList.remove('on'); }, 2000);
-  }
-
-  buildIndex();
-  load(false);
-  document.querySelectorAll('.locked-sec').forEach(function(e){e.classList.remove('locked-sec');});
-})();
-</script>
-
-<div style="margin-top:12px">
-  <button class="syncbtn" id="syncBtn">☁ 重新同步</button>
-  <span class="syncst" id="syncSt"></span>
-</div>
-<script>
-(function(){
-  var TOPIC = "cet4-67f4d286a543c3aca5af06b1910625b0749ce20d4052";
-  var btn = document.getElementById('syncBtn'), st = document.getElementById('syncSt');
-  var last = '';
-  function doSync(manual){
-    var r = document.getElementById('receipt');
-    if (!r) return;
-    if (!r.value.trim()){ if (manual){ st.style.color='var(--amber)'; st.textContent='先做完题、生成回执后再同步'; } return; }
-    if (r.value === last) return;
-    last = r.value;
-    if (btn) btn.disabled = true;
-    if (st) st.textContent = '同步中…';
-    var d = new Date();
-    var ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-    fetch('https://ntfy.sh/' + TOPIC, {
-      method:'POST',
-      body: JSON.stringify({t:'rep', kind:'listening', date:ds, page:document.title, text:r.value})
-    }).then(function(x){
-      if (st){ if (x.ok){ st.style.color='var(--green)'; st.textContent='✓ 已自动同步到云端'; }
-               else { st.style.color='var(--red)'; st.textContent='同步失败 —— 截图发对话'; } }
-      if (btn) btn.disabled = false;
-    }).catch(function(){
-      if (st){ st.style.color='var(--red)'; st.textContent='离线 —— 截图发对话'; }
-      if (btn) btn.disabled = false;
-    });
-  }
-  window.__autoSync = doSync;
-  if (btn) btn.addEventListener('click', function(){ doSync(true); });
-})();
-</script>
-
-<div id="prepOverlay">
-  <div class="pt">🎧 请先读题，倒计时结束自动播放</div>
-  <div id="prepCount">__PREP__</div>
-  <div class="ps">真实考试没有这个提示 —— 这里帮你留出读选项的时间</div>
-  <button id="prepSkip">跳过，立即播放</button>
-</div>
-<script>
-(function(){
-  var PREP = 15;
-  var prepDone = false;
 
   /* 1) 题干默认隐藏，提交后显示 */
   var stemBtn = document.createElement('button');
@@ -1290,11 +1120,6 @@ var QUIZ = [];
     }, {capture:true});
   });
 })();
-</script>     if (rafId){ cancelAnimationFrame(rafId); rafId = 0; flush(); }
-      drawing = false; cur = null; buf = [];
-    }, {capture:true});
-  });
-})();
 </script>
 
 <script>
@@ -1393,6 +1218,347 @@ var QUIZ = [];
     }catch(e){}
     return p;
   };
+})();
+</script>
+<div id="dictBar">
+  <span class="db-txt"></span>
+  <button id="dbSpeed" title="播放速度（点一下切换）">🐢 1.0×</button>
+  <button id="dbRep" title="每句重复几遍（点一下切换）">🔂 3遍</button>
+  <button id="dbSkip" title="这句听清了就跳过，不写（进错题本的是没跳过的句）">⏭ 跳过</button>
+  <button id="dbAgain" title="把这句再读一遍">🔁<span class="lbl"> 重听</span></button>
+  <button id="dbNext" class="pri">▶ 下一句</button>
+  <button id="dbExit" title="退出听写模式">✕</button>
+</div>
+<script>
+  /* ---------- 逐句听写清单（纯列表 · 分屏手写 + 截图提交） ---------- */
+  var DP = (function(){
+    var card = document.getElementById('dictCard');
+    var list = document.getElementById('dpList');
+    if (!card || !list || !window.DATA) return null;
+    var LINES = DATA.lines || (DATA.rates && DATA.rates[0] && DATA.rates[0].lines) || [];
+    if (!LINES.length) return null;
+
+    var API = { written:0, total:LINES.length };
+    var skips = {};
+    var SKIP_KEY = 'cet4_dict_skip_v1';
+    var curLi = -1;
+    try { skips = JSON.parse(localStorage.getItem(SKIP_KEY) || '{}') || {}; } catch(e){ skips = {}; }
+    function saveSkips(){ try { localStorage.setItem(SKIP_KEY, JSON.stringify(skips)); } catch(e){} }
+
+    function esc(t){ return (t || '').replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+    function buildList(){
+      var h = '';
+      for (var i = 0; i < LINES.length; i++){
+        var en = LINES[i].en || '', zh = LINES[i].zh || '';
+        h += '<div class="dprow" data-li="' + i + '">'
+           +   '<span class="dpi">第' + (i + 1) + '句</span>'
+           +   '<button class="dpeye" title="展开/收起原文">👁</button>'
+           +   '<div class="dpw"><span class="wen">' + esc(en) + '</span>'
+           +     (zh ? '<br><span>' + esc(zh) + '</span>' : '')
+           +   '</div>'
+           +   '<button class="dpx">⏭ 跳过</button>'
+           + '</div>';
+      }
+      list.innerHTML = h;
+      list.addEventListener('click', function(e){
+        var eye = e.target.closest('.dpeye');
+        if (eye){
+          var er = eye.closest('.dprow');
+          var open = er.classList.toggle('open');
+          eye.textContent = open ? '🙈' : '👁';
+          return;
+        }
+        var btn = e.target.closest('.dpx');
+        if (!btn) return;
+        var row = btn.closest('.dprow');
+        var li = parseInt(row.getAttribute('data-li'), 10);
+        setSkip(li, !skips[li]);
+      });
+    }
+
+    function paintRow(li){
+      var row = list.querySelector('.dprow[data-li="' + li + '"]');
+      if (!row) return;
+      var on = !!skips[li];
+      row.classList.toggle('skip', on);
+      var btn = row.querySelector('.dpx');
+      if (btn){
+        btn.textContent = on ? '✓ 已跳过' : '⏭ 跳过';
+        btn.classList.toggle('on', on);
+      }
+    }
+
+    function setSkip(li, bool){
+      skips[li] = bool ? 1 : 0;
+      saveSkips();
+      paintRow(li);
+      refreshCount();
+    }
+    function isSkip(li){ return !!skips[li]; }
+
+    /* 没跳过的句 = 没听清、需要写的句（进错题本） */
+    function getUnskipped(){
+      var out = [], i;
+      for (i = 0; i < LINES.length; i++){
+        if (!skips[i]) out.push({ li:i, en:LINES[i].en || '', zh:LINES[i].zh || '' });
+      }
+      return out;
+    }
+
+    function refreshCount(){
+      var n = 0, i;
+      for (i = 0; i < LINES.length; i++) if (!skips[i]) n++;
+      API.written = n;
+    }
+
+    function show(){
+      card.classList.remove('hide');
+      if (!list.childNodes.length) buildList();
+    }
+    function hide(){ card.classList.add('hide'); }
+    function focusLine(li){
+      if (card.classList.contains('hide')) return;
+      if (li === curLi) return;
+      var old = curLi; curLi = li;
+      if (old >= 0){
+        var r0 = list.querySelector('.dprow[data-li="' + old + '"]');
+        if (r0) r0.classList.remove('cur');
+      }
+      var row = list.querySelector('.dprow[data-li="' + li + '"]');
+      if (!row) return;
+      row.classList.add('cur');
+      var top = row.getBoundingClientRect().top + (window.pageYOffset || 0);
+      var vp = window.pageYOffset || 0;
+      if (top < vp + 90 || top > vp + window.innerHeight - 220)
+        row.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+
+    API.show = show; API.hide = hide; API.focusLine = focusLine;
+    API.setSkip = setSkip; API.isSkip = isSkip; API.getUnskipped = getUnskipped;
+    window.__dictPad = API;
+    return API;
+  })();
+</script>
+<script>
+/* 听写模式：逐句播放（可自动重读 N 遍）→ 播完自动暂停 → 底部悬浮条控制
+   悬浮条进入模式即显示、始终可见；「下一句」播放中置灰、暂停时亮起；
+   退出时把「没跳过的句」写入错题本（localStorage） */
+(function(){
+  var audio = document.getElementById('audio');
+  var bar = document.getElementById('dictBar');
+  var btn = document.getElementById('tpDict');
+  if (!audio || !bar || !btn || !window.DATA) return;
+  var LINES = DATA.lines || (DATA.rates && DATA.rates[0] && DATA.rates[0].lines) || [];
+  if (!LINES.length) return;
+  var txt = bar.querySelector('.db-txt');
+  var bNext = document.getElementById('dbNext');
+  var bAgain = document.getElementById('dbAgain');
+  var bExit = document.getElementById('dbExit');
+  var bRep = document.getElementById('dbRep');
+  var bSpeed = document.getElementById('dbSpeed');
+  var bSkip = document.getElementById('dbSkip');
+  var tpFollow = document.getElementById('tpFollow');
+  var on = false, curLi = -1, maxLi = -1, B = null, tick = 0, followBack = false, lastSelf = 0;
+
+  var REP_KEY = 'cet4_rep_v1';
+  var rep = 3, left = 0, gapTimer = 0, GAP_MS = 1800;   /* 遍与遍之间停 1.8 秒 */
+  try { var rv = parseInt(localStorage.getItem(REP_KEY) || '', 10); if (rv >= 1 && rv <= 4) rep = rv; } catch(e){}
+  function repLabel(){ if (bRep) bRep.textContent = '🔂 ' + rep + '遍'; }
+
+  /* ── 倍速：循环 0.85 / 1.0 / 1.15，直接切播放器的档位 ── */
+  var SPD = [ {r:1, t:'🐢 0.85×'}, {r:0, t:'▶ 1.0×'}, {r:2, t:'⚡ 1.15×'} ];
+  var SPD_KEY = 'cet4_dict_speed_v1';
+  var spdI = 1;
+  try {
+    var sv = localStorage.getItem(SPD_KEY);
+    if (sv === null || sv === ''){
+      var cr = (typeof rate !== 'undefined') ? rate : 0;
+      for (var k = 0; k < SPD.length; k++) if (SPD[k].r === cr) spdI = k;
+    } else {
+      var v = parseInt(sv, 10); if (v >= 0 && v <= 2) spdI = v;
+    }
+  } catch(e){}
+  function speedLabel(){ if (bSpeed) bSpeed.textContent = SPD[spdI].t; }
+  function applySpeed(){
+    try {
+      if (typeof switchRate === 'function') switchRate(SPD[spdI].r);
+      else if (audio) audio.playbackRate = [0.85, 1, 1.15][spdI];
+    } catch(e){}
+    speedLabel();
+    try { localStorage.setItem(SPD_KEY, String(spdI)); } catch(e){}
+  }
+
+  /* ── 逐句「跳过 / 写」：状态交给清单（pad）维护 ── */
+  function pad(){ return window.__dictPad || null; }
+  function padSkip(li){ var D = pad(); return (D && D.isSkip) ? D.isSkip(li) : false; }
+  function skipLabel(){
+    if (!bSkip) return;
+    var s = curLi >= 0 && padSkip(curLi);
+    bSkip.textContent = s ? '✓ 要写' : '⏭ 跳过';
+    bSkip.classList.toggle('on', !!s);
+  }
+
+  function bounds(){
+    if (B) return B;
+    var L = LINES, out = [];
+    for (var i = 0; i < L.length; i++){
+      var s = L[i].tokens[0].s;
+      var e = (i + 1 < L.length) ? L[i + 1].tokens[0].s : (DATA.dur || 1e9);
+      out.push([Math.max(0, s - 0.10), e]);
+    }
+    B = out; return B;
+  }
+  function liAt(t){
+    var b = bounds();
+    for (var i = 0; i < b.length; i++) if (t >= b[i][0] - 0.35 && t < b[i][1]) return i;
+    return -1;
+  }
+
+  /* ── 句末判定：轮询，越过末尾就停 / 重读 ── */
+  function clearGap(){ if (gapTimer){ clearTimeout(gapTimer); gapTimer = 0; } }
+  function stopTick(){ if (tick){ clearInterval(tick); tick = 0; } clearGap(); }
+  function startTick(){ if (!tick) tick = setInterval(check, 70); }
+  function playNow(){
+    var b = bounds();
+    lastSelf = performance.now();
+    audio.currentTime = b[curLi][0];
+    var pr = audio.play();
+    if (pr && pr.catch) pr.catch(function(){});
+    startTick();
+  }
+  function check(){
+    if (!on || curLi < 0 || gapTimer) return;
+    if (audio.paused) return;
+    var b = bounds(), end = b[curLi] ? b[curLi][1] : -1;
+    if (end < 0) return;
+    var t = audio.currentTime;
+    if (t < end - 0.05) return;
+    if (t > end + 0.8){                 /* 进度被手动拖走了：跟随它，别硬停 */
+      var li = liAt(t);
+      if (li >= 0 && li !== curLi) curLi = li;
+      return;
+    }
+    audio.pause();
+    if (left > 1){                      /* 本句还要再读 → 停顿几秒后重放 */
+      left--;
+      gapTimer = setTimeout(function(){ gapTimer = 0; playNow(); }, GAP_MS);
+      return;
+    }
+    showWait(curLi);
+    stopTick();
+  }
+
+  function playLine(li){
+    var b = bounds();
+    if (li < 0 || li >= b.length) return false;
+    clearGap();
+    curLi = li;
+    if (li > maxLi) maxLi = li;
+    left = rep;
+    if (bNext) bNext.disabled = true;      /* 播放中：下一句置灰 */
+    txt.textContent = (li + 1) + '/' + b.length + ' ▶';
+    var D = pad();
+    if (D) D.focusLine(li);                /* 清单跳到这一行 */
+    skipLabel();
+    playNow();
+    return true;
+  }
+  function showWait(li){
+    var b = bounds(), last = (li + 1 >= b.length);
+    txt.textContent = (li + 1) + '/' + b.length + ' · 写或跳过';
+    if (bNext){
+      bNext.disabled = false;
+      bNext.textContent = last ? '✓ 完成' : '▶ 下一句';
+    }
+    skipLabel();
+  }
+  function exitMode(){
+    on = false;
+    stopTick();
+    saveWrongbook();
+    btn.classList.remove('act'); btn.textContent = '✍️ 听写模式';
+    bar.classList.remove('on');
+    if (bNext) bNext.disabled = false;
+    if (window.__dictPad) window.__dictPad.hide();
+    if (followBack && tpFollow){ tpFollow.click(); followBack = false; }
+  }
+
+  /* 把「没听清的句子」（没跳过的，且已播到过）写进错题本（localStorage + 上云） */
+  function saveWrongbook(){
+    var D = pad();
+    if (!D || !D.getUnskipped) return;
+    var all = D.getUnskipped();
+    var items = all.filter(function(x){ return x.li <= maxLi; });
+    if (!items.length) return;
+    try {
+      var K = 'cet4_wrongbook', arr = JSON.parse(localStorage.getItem(K) || '[]') || [];
+      var page = location.pathname.split('/').pop() || '';
+      var title = (document.querySelector('header h1') ? document.querySelector('header h1').textContent.trim() : page);
+      var lines = items.map(function(x){ return { li:x.li, en:x.en, zh:x.zh }; });
+      arr = arr.filter(function(x){ return !(x.type === 'listen-dict' && x.page === page); });
+      arr.push({ type: 'listen-dict', date: new Date().toISOString().slice(0, 10), page: page, title: title, lines: lines });
+      localStorage.setItem(K, JSON.stringify(arr));
+      try{
+        fetch('https://ntfy.sh/' + 'cet4-67f4d286a543c3aca5af06b1910625b0749ce20d4052',
+          { method: 'POST', body: JSON.stringify({ t: 'wrongbook', type: 'listen-dict', date: new Date().toISOString().slice(0, 10), page: page, title: title, lines: lines }) })
+          .catch(function(){});
+      }catch(e){}
+    } catch(e){}
+  }
+
+  /* 用户自己点播放（或点单词跳播）时，把轮询接回来，并且这句不再自动重读 */
+  audio.addEventListener('play', function(){
+    if (!on) return;
+    if (performance.now() - lastSelf < 300) return;
+    left = 1;
+    startTick();
+  });
+  audio.addEventListener('ended', function(){
+    if (!on) return;
+    audio.pause(); stopTick();
+    showWait(bounds().length - 1);
+  });
+
+  repLabel();
+  speedLabel();
+  if (bRep) bRep.addEventListener('click', function(){
+    rep = rep >= 4 ? 1 : rep + 1;
+    repLabel();
+    try { localStorage.setItem(REP_KEY, rep); } catch(e){}
+    if (on && curLi >= 0 && !gapTimer){ left = rep; }
+  });
+  if (bSpeed) bSpeed.addEventListener('click', function(){
+    spdI = (spdI + 1) % SPD.length;
+    applySpeed();
+  });
+  if (bSkip) bSkip.addEventListener('click', function(){
+    if (!on || curLi < 0) return;
+    var D = pad();
+    if (D && D.setSkip) D.setSkip(curLi, !padSkip(curLi));
+    skipLabel();
+  });
+
+  btn.addEventListener('click', function(){
+    if (on){ exitMode(); return; }
+    on = true;
+    btn.classList.add('act'); btn.textContent = '✍️ 听写模式 开';
+    if (tpFollow && tpFollow.classList.contains('act')){ followBack = true; tpFollow.click(); }
+    applySpeed();
+    var D = pad();
+    if (D) D.show();
+    bar.classList.add('on');                /* 悬浮条立即显示，不再等到暂停 */
+    var li0 = liAt(audio.currentTime);
+    playLine(li0 < 0 ? 0 : li0);
+  });
+  bNext.addEventListener('click', function(){
+    if (!on){ bar.classList.remove('on'); return; }
+    if (!playLine(curLi + 1)) exitMode();
+  });
+  bAgain.addEventListener('click', function(){
+    if (curLi >= 0) playLine(curLi);
+  });
+  if (bExit) bExit.addEventListener('click', function(){ if (on) exitMode(); });
 })();
 </script>
 </body>

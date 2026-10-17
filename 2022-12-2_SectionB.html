@@ -244,7 +244,11 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 .dprow.skip{opacity:.6;background:#f4f5f7}
 .dprow .dpi{font-weight:700;font-size:12px;color:#adb5bd;min-width:44px;flex:0 0 auto}
 .dprow.cur .dpi{color:#a37d12}
-.dprow .dpw{font-size:13px;color:var(--sub);line-height:1.55;flex:1;min-width:0}
+.dprow .dpeye{flex:0 0 auto;font-size:12.5px;font-weight:700;border:1.5px solid var(--line);
+ border-radius:8px;padding:6px 9px;background:#fff;color:var(--sub);cursor:pointer;
+ -webkit-tap-highlight-color:transparent;white-space:nowrap;min-width:40px}
+.dprow .dpw{display:none;font-size:13px;color:var(--sub);line-height:1.55;flex:1;min-width:0}
+.dprow.open .dpw{display:block;flex-basis:100%}
 .dprow .dpw .wen{color:var(--txt);font-size:13.5px}
 .dprow.skip .dpw{text-decoration:line-through;color:#9aa3ad}
 .dprow .dpx{flex:0 0 auto;font-size:12.5px;font-weight:700;border:1.5px solid var(--line);
@@ -320,7 +324,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
   <h2><span class="num">__ND__</span>逐句听写清单</h2>
   <p class="hint"><b>分屏：一边网页当播放器，一边华为笔记写字。</b><br>点播放器里的 <b>✍️ 听写模式</b>，每句会自动重读几遍再停。听清的句在<b>底部悬浮条</b>点「⏭ 跳过」，没听清的写进华为笔记——这些句子会<b>自动进错题本</b>，周末复盘用。写完把华为笔记<b>截图发到对话</b>，我给你逐词批改。</p>
   <div class="dplist" id="dpList"></div>
-</div>>
+</div>>>>
 
 
 <div class="card" id="receiptCard">
@@ -677,7 +681,7 @@ var QUIZ = [{"id": "q8", "stem": "8. How does the man often feel on his birthday
   document.getElementById('receipt').addEventListener('click', function(){ this.select(); this.setSelectionRange(0,99999); });
   buildReceipt();
 
-          /* ---------- 逐句听写清单（纯列表 · 分屏手写 + 截图提交） ---------- */
+              /* ---------- 逐句听写清单（纯列表 · 分屏手写 + 截图提交） ---------- */
   var DP = (function(){
     var card = document.getElementById('dictCard');
     var list = document.getElementById('dpList');
@@ -700,6 +704,7 @@ var QUIZ = [{"id": "q8", "stem": "8. How does the man often feel on his birthday
         var en = LINES[i].en || '', zh = LINES[i].zh || '';
         h += '<div class="dprow" data-li="' + i + '">'
            +   '<span class="dpi">第' + (i + 1) + '句</span>'
+           +   '<button class="dpeye" title="展开/收起原文">👁</button>'
            +   '<div class="dpw"><span class="wen">' + esc(en) + '</span>'
            +     (zh ? '<br><span>' + esc(zh) + '</span>' : '')
            +   '</div>'
@@ -708,6 +713,13 @@ var QUIZ = [{"id": "q8", "stem": "8. How does the man often feel on his birthday
       }
       list.innerHTML = h;
       list.addEventListener('click', function(e){
+        var eye = e.target.closest('.dpeye');
+        if (eye){
+          var er = eye.closest('.dprow');
+          var open = er.classList.toggle('open');
+          eye.textContent = open ? '🙈' : '👁';
+          return;
+        }
         var btn = e.target.closest('.dpx');
         if (!btn) return;
         var row = btn.closest('.dprow');
@@ -1386,11 +1398,6 @@ var QUIZ = [{"id": "q8", "stem": "8. How does the man often feel on his birthday
     }, {capture:true});
   });
 })();
-</script>     if (rafId){ cancelAnimationFrame(rafId); rafId = 0; flush(); }
-      drawing = false; cur = null; buf = [];
-    }, {capture:true});
-  });
-})();
 </script>
 
 <script>
@@ -1509,7 +1516,9 @@ var QUIZ = [{"id": "q8", "stem": "8. How does the man often feel on his birthday
   var audio = document.getElementById('audio');
   var bar = document.getElementById('dictBar');
   var btn = document.getElementById('tpDict');
-  if (!audio || !bar || !btn || !window.DATA || !DATA.lines) return;
+  if (!audio || !bar || !btn || !window.DATA) return;
+  var LINES = DATA.lines || (DATA.rates && DATA.rates[0] && DATA.rates[0].lines) || [];
+  if (!LINES.length) return;
   var txt = bar.querySelector('.db-txt');
   var bNext = document.getElementById('dbNext');
   var bAgain = document.getElementById('dbAgain');
@@ -1560,7 +1569,7 @@ var QUIZ = [{"id": "q8", "stem": "8. How does the man often feel on his birthday
 
   function bounds(){
     if (B) return B;
-    var L = DATA.lines, out = [];
+    var L = LINES, out = [];
     for (var i = 0; i < L.length; i++){
       var s = L[i].tokens[0].s;
       var e = (i + 1 < L.length) ? L[i + 1].tokens[0].s : (DATA.dur || 1e9);
@@ -1643,7 +1652,7 @@ var QUIZ = [{"id": "q8", "stem": "8. How does the man often feel on his birthday
     if (followBack && tpFollow){ tpFollow.click(); followBack = false; }
   }
 
-  /* 把「没听清的句子」（没跳过的，且已播到过）写进错题本 */
+  /* 把「没听清的句子」（没跳过的，且已播到过）写进错题本（localStorage + 上云） */
   function saveWrongbook(){
     var D = pad();
     if (!D || !D.getUnskipped) return;
@@ -1653,13 +1662,16 @@ var QUIZ = [{"id": "q8", "stem": "8. How does the man often feel on his birthday
     try {
       var K = 'cet4_wrongbook', arr = JSON.parse(localStorage.getItem(K) || '[]') || [];
       var page = location.pathname.split('/').pop() || '';
+      var title = (document.querySelector('header h1') ? document.querySelector('header h1').textContent.trim() : page);
+      var lines = items.map(function(x){ return { li:x.li, en:x.en, zh:x.zh }; });
       arr = arr.filter(function(x){ return !(x.type === 'listen-dict' && x.page === page); });
-      arr.push({
-        type: 'listen-dict', date: new Date().toISOString().slice(0, 10), page: page,
-        title: (document.querySelector('header h1') ? document.querySelector('header h1').textContent.trim() : page),
-        lines: items.map(function(x){ return { li:x.li, en:x.en, zh:x.zh }; })
-      });
+      arr.push({ type: 'listen-dict', date: new Date().toISOString().slice(0, 10), page: page, title: title, lines: lines });
       localStorage.setItem(K, JSON.stringify(arr));
+      try{
+        fetch('https://ntfy.sh/' + 'cet4-67f4d286a543c3aca5af06b1910625b0749ce20d4052',
+          { method: 'POST', body: JSON.stringify({ t: 'wrongbook', type: 'listen-dict', date: new Date().toISOString().slice(0, 10), page: page, title: title, lines: lines }) })
+          .catch(function(){});
+      }catch(e){}
     } catch(e){}
   }
 

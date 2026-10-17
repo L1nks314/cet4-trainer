@@ -193,6 +193,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
  border-radius:22px;z-index:8990;opacity:0;pointer-events:none;
  transition:opacity .18s ease,transform .18s ease}
 #penToast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+#wpText,#wpCount{display:none!important}
 </style>
 </head>
 <body>
@@ -211,7 +212,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 <div class="card" id="wpad">
   <h2>写作台</h2>
   <div id="wpIdle">
-    <p class="hint">建议 30 分钟内写满 120–180 词，写完后点提交 —— 范文与逐段解析才会解锁。</p>
+    <p class="hint">分屏手写：左边看题、右边华为笔记写满 120–180 词，写完点提交解锁范文，再截图发对话批改。</p>
     <div class="wrow"><button class="wbtn primary" id="wpStart">✍️ 开始写作</button></div>
   </div>
   <div id="wpEdit" style="display:none">
@@ -226,7 +227,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
       <button class="wbtn" id="wpSync" style="display:none">☁ 把文字发给我批改</button>
       <button class="wbtn" id="wpReset" style="display:none">🔄 重新练习</button>
     </div>
-    <div class="wst" id="wpSt">手写完成后直接点「提交并解锁参考」；也可以直接在下面打字。<br>提交后把<b>手写照片发到主对话</b>，我来识别并逐句批改。</div>
+    <div class="wst" id="wpSt">在华为笔记分屏写完，直接点「提交并解锁参考」解锁范文；然后把<b>手写截图发到主对话</b>，我来识别并逐句批改。</div>
   </div>
 </div>
 
@@ -891,11 +892,6 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
       pendFull = false;
       checkPenTap(done);                /* 双击笔尖 → 切换橡皮 */
       schedule(true);                    /* 收笔后统一重绘一次，保证最终形态完整 */
-    }, {capture:true});
-  });
-})();
-</script>     if (rafId){ cancelAnimationFrame(rafId); rafId = 0; flush(); }
-      drawing = false; cur = null; buf = [];
     }, {capture:true});
   });
 })();
