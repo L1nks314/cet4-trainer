@@ -1070,24 +1070,19 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
       .catch(function(){});
   }catch(e){}
 
-  /* ── 已读：轮询教练 topic（实时，60 分钟超时） ── */
-  var lastId = 0;
-  function pollRead(){
-    fetch('https://ntfy.sh/' + COACH + '/json?since=' + lastId, { cache:'no-store' })
-      .then(function(r){ return r.json(); })
-      .then(function(list){
-        (list || []).forEach(function(m){
-          if (m.id) lastId = Math.max(lastId, m.id);
-          var p = null;
-          try { p = JSON.parse(m.message || '{}'); } catch(e){}
-          if (p && p.t === 'read' && p.page === PAGE) showRead(p.at || m.time);
-        });
-      })
-      .catch(function(){});
+  /* ── 已读：SSE 实时监听教练 topic（60 分钟超时；历史已读由 read_log.json 兜底） ── */
+  function watchRead(){
+    try{
+      var es = new EventSource('https://ntfy.sh/' + COACH + '/sse');
+      es.onmessage = function(e){
+        var p = null;
+        try { p = JSON.parse(e.data || '{}'); } catch(err){}
+        if (p && p.t === 'read' && p.page === PAGE) showRead(p.at);
+      };
+      setTimeout(function(){ try{ es.close(); }catch(e){} }, 3600000);
+    }catch(e){}
   }
-  pollRead();
-  var pollTimer = setInterval(pollRead, 20000);
-  setTimeout(function(){ clearInterval(pollTimer); }, 3600000);
+  watchRead();
 
   /* ── 照片压缩 ── */
   function compressImage(file, cb){
