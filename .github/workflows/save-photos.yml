@@ -1,0 +1,31 @@
+name: 转存手写照片
+on:
+  schedule:
+    - cron: '*/20 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: save-photos
+  cancel-in-progress: false
+jobs:
+  save:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: 拉取并转存照片
+        run: python3 scripts/save_photos.py
+      - name: 提交
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add photos/
+          if git diff --cached --quiet; then
+            echo "无新照片"
+          else
+            git commit -m "转存手写照片"
+            git push
+          fi
