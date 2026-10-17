@@ -246,6 +246,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 #dictBar #dbSpeed{background:#fff;border-color:var(--line);color:var(--sub)}
 #dictBar #dbSkip{background:#fff;border-color:var(--line);color:var(--sub)}
 #dictBar #dbSkip.on{background:#f3f4f6;border-color:#d7dce1;color:#9aa3ad;text-decoration:line-through}
+#dictBar #dbPause{background:#fff;border-color:var(--amber);color:#8a6318;min-width:76px}
 @media (max-width:560px){
   #dictBar{padding:7px 8px;gap:5px;border-radius:14px;bottom:10px}
   #dictBar button{padding:11px 9px;font-size:13px}
@@ -257,10 +258,13 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 #dictCard.hide{display:none}
 .dplist{display:flex;flex-direction:column;gap:6px}
 .dprow{display:flex;align-items:center;gap:8px;padding:9px 11px;border:1px solid var(--line);
- border-radius:10px;background:var(--bg,#fff);transition:background .15s}
+ border-radius:10px;background:var(--bg,#fff);transition:background .15s;cursor:pointer}
+.dprow:hover{background:#faf7ef}
+.dprow:active{background:#fff3d9}
 .dprow.cur{background:#fffbe6;border-color:#e9d48a}
 .dprow.skip{opacity:.6;background:#f4f5f7}
-.dprow .dpi{font-weight:700;font-size:12px;color:#adb5bd;min-width:44px;flex:0 0 auto}
+.dprow .dpi{font-weight:700;font-size:12px;color:#adb5bd;min-width:52px;flex:0 0 auto}
+.dprow .dpi::before{content:'▶ ';font-size:10px;opacity:.5}
 .dprow.cur .dpi{color:#a37d12}
 .dprow .dpeye{flex:0 0 auto;font-size:12.5px;font-weight:700;border:1.5px solid var(--line);
  border-radius:8px;padding:6px 9px;background:#fff;color:var(--sub);cursor:pointer;
@@ -353,7 +357,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
   <h2><span class="num">__ND__</span>逐句听写清单</h2>
   <p class="hint"><b>分屏：一边网页当播放器，一边华为笔记写字。</b><br>点播放器里的 <b>✍️ 听写模式</b>，每句会自动重读几遍再停。听清的句在<b>底部悬浮条</b>点「⏭ 跳过」，没听清的写进华为笔记——这些句子会<b>自动进错题本</b>，周末复盘用。写完把华为笔记<b>截图发到对话</b>，我给你逐词批改。</p>
   <div class="dplist" id="dpList"></div>
-</div>>>>
+</div>>>>>
 
 
 <div class="card" id="receiptCard">
@@ -715,7 +719,7 @@ var QUIZ = [{"id": "q16", "stem": "16. What did the researchers of the new study
   document.getElementById('receipt').addEventListener('click', function(){ this.select(); this.setSelectionRange(0,99999); });
   buildReceipt();
 
-              /* ---------- 逐句听写清单（纯列表 · 分屏手写 + 截图提交） ---------- */
+                /* ---------- 逐句听写清单（纯列表 · 分屏手写 + 截图提交） ---------- */
   var DP = (function(){
     var card = document.getElementById('dictCard');
     var list = document.getElementById('dpList');
@@ -755,10 +759,17 @@ var QUIZ = [{"id": "q16", "stem": "16. What did the researchers of the new study
           return;
         }
         var btn = e.target.closest('.dpx');
-        if (!btn) return;
-        var row = btn.closest('.dprow');
-        var li = parseInt(row.getAttribute('data-li'), 10);
-        setSkip(li, !skips[li]);
+        if (btn){
+          var row = btn.closest('.dprow');
+          var li = parseInt(row.getAttribute('data-li'), 10);
+          setSkip(li, !skips[li]);
+          return;
+        }
+        /* 点句子整行（👁/⏭ 之外）→ 播放该句 */
+        var pr = e.target.closest('.dprow');
+        if (!pr) return;
+        var pLi = parseInt(pr.getAttribute('data-li'), 10);
+        if (window.__dictMode && window.__dictMode.playLine) window.__dictMode.playLine(pLi);
       });
     }
 
@@ -1553,6 +1564,7 @@ for (var qid in AL){
   <button id="dbSpeed" title="播放速度（点一下切换）">🐢 1.0×</button>
   <button id="dbRep" title="每句重复几遍（点一下切换）">🔂 3遍</button>
   <button id="dbSkip" title="这句听清了就跳过，不写（进错题本的是没跳过的句）">⏭ 跳过</button>
+  <button id="dbPause" title="暂停 / 继续播放">⏸ 暂停</button>
   <button id="dbAgain" title="把这句再读一遍">🔁<span class="lbl"> 重听</span></button>
   <button id="dbNext" class="pri">▶ 下一句</button>
   <button id="dbExit" title="退出听写模式">✕</button>
@@ -1575,6 +1587,7 @@ for (var qid in AL){
   var bRep = document.getElementById('dbRep');
   var bSpeed = document.getElementById('dbSpeed');
   var bSkip = document.getElementById('dbSkip');
+  var bPause = document.getElementById('dbPause');
   var tpFollow = document.getElementById('tpFollow');
   var on = false, curLi = -1, maxLi = -1, B = null, tick = 0, followBack = false, lastSelf = 0;
 
@@ -1643,6 +1656,7 @@ for (var qid in AL){
     var pr = audio.play();
     if (pr && pr.catch) pr.catch(function(){});
     startTick();
+    syncPause();
   }
   function check(){
     if (!on || curLi < 0 || gapTimer) return;
@@ -1689,6 +1703,26 @@ for (var qid in AL){
       bNext.textContent = last ? '✓ 完成' : '▶ 下一句';
     }
     skipLabel();
+    syncPause();
+  }
+
+  /* ── 暂停 / 继续 ── */
+  function syncPause(){
+    if (!bPause) return;
+    bPause.textContent = audio.paused ? '▶ 继续' : '⏸ 暂停';
+  }
+  function doPause(){
+    if (!on || curLi < 0) return;
+    if (audio.paused){
+      lastSelf = performance.now();          /* 自家触发，避免 play 监听器把 left 重置为 1 */
+      var pr = audio.play(); if (pr && pr.catch) pr.catch(function(){});
+      startTick();
+    } else {
+      audio.pause();
+      stopTick();
+      if (bNext){ bNext.disabled = false; bNext.textContent = '▶ 下一句'; }
+    }
+    syncPause();
   }
   function exitMode(){
     on = false;
@@ -1775,7 +1809,11 @@ for (var qid in AL){
   bAgain.addEventListener('click', function(){
     if (curLi >= 0) playLine(curLi);
   });
+  if (bPause) bPause.addEventListener('click', doPause);
   if (bExit) bExit.addEventListener('click', function(){ if (on) exitMode(); });
+
+  /* 暴露给清单：点哪句播哪句 */
+  window.__dictMode = { playLine: playLine, togglePause: doPause };
 })();
 </script>
 <script>
