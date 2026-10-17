@@ -79,7 +79,7 @@ function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
 fetch('https://ntfy.sh/' + TOPIC + '/json?poll=1&since=all')
   .then(function(r){ return r.text(); })
   .then(function(txt){
-    var recs = [], coaches = [], wbs = [];
+    var recs = [], coaches = [], wbs = [], photos = [];
     txt.trim().split('\n').forEach(function(line){
       if (!line.trim()) return;
       var m; try{ m = JSON.parse(line); }catch(e){ return; }
@@ -88,43 +88,77 @@ fetch('https://ntfy.sh/' + TOPIC + '/json?poll=1&since=all')
       if (payload.t === 'rep') recs.push(payload);
       else if (payload.t === 'coach') coaches.push(payload);
       else if (payload.t === 'wrongbook') wbs.push(payload);
+      else if (payload.t === 'photo') photos.push(payload);
     });
-    render(recs, coaches);
+    render(recs, coaches, photos);
     renderWrongbook(wbs);
   })
   .catch(function(){
     document.getElementById('list').innerHTML = '<div class="empty">拉取失败 —— 检查网络后刷新本页。</div>';
   });
 
-function render(recs, coaches){
-  if (!recs.length){
+function render(recs, coaches, photos){
+  var items = [];
+  /* 同一 date+kind+page 的重复回执只保留最后一条（防多次点击重复上云） */
+  var rmap = {}, hasRep = {};
+  recs.forEach(function(r){
+    var key = (r.date || '') + '|' + (r.kind || 'listening') + '|' + (r.page || '');
+    rmap[key] = r;
+  });
+  Object.keys(rmap).forEach(function(key){
+    var r = rmap[key];
+    hasRep[(r.date || '') + '|' + (r.kind || 'listening')] = true;
+    items.push({ type:'rep', date:r.date, kind:(r.kind || 'listening'), page:r.page, rep:r });
+  });
+  /* 手写照片也单独成条（写作/翻译常常只传照片、没有文本回执） */
+  var pmap = {};
+  (photos || []).forEach(function(p){
+    var key = (p.date || '') + '|' + (p.kind || '') + '|' + (p.page || '');
+    if (!pmap[key]) pmap[key] = { type:'photo', date:p.date, kind:(p.kind || 'listening'), page:p.page, n:0 };
+    pmap[key].n++;
+  });
+  Object.keys(pmap).forEach(function(k){ items.push(pmap[k]); });
+
+  if (!items.length){
     document.getElementById('cnt').textContent = '0 条';
     document.getElementById('list').innerHTML =
-      '<div class="empty">还没有回执。做完一套听力或阅读，判分后会自动出现在这里。</div>';
+      '<div class="empty">还没有回执或照片。做完一套听力/阅读，或上传手写照后会自动出现在这里。</div>';
     return;
   }
-  recs.sort(function(a,b){ return (b.date||'') < (a.date||'') ? -1 : 1; });
+  items.sort(function(a,b){ return (b.date||'') < (a.date||'') ? -1 : 1; });
   var byDay = {};
-  recs.forEach(function(r){ (byDay[r.date] = byDay[r.date] || []).push(r); });
+  items.forEach(function(it){ (byDay[it.date] = byDay[it.date] || []).push(it); });
   var days = Object.keys(byDay).sort().reverse();
   var html = '';
   days.forEach(function(d){
     html += '<div class="day">' + esc(d) + '</div>';
-    byDay[d].forEach(function(r){
-      var k = r.kind || 'listening';
+    byDay[d].forEach(function(it){
+      var k = it.kind || 'listening';
       var pillCls = (k === 'writing' || k === 'translation') ? 'a' : 'g';
-      var meta = esc(r.page || '');
-      if (r.score) meta += ' · ' + esc(r.score);
-      if (r.pct != null) meta += ' · ' + r.pct + '%';
-      html += '<div class="it">'
-        + '<div class="hd"><span class="pill ' + pillCls + '">' + (KIND[k] || '回执') + '</span>'
-        + '<span class="tt">' + meta + '</span></div>'
-        + '<div class="bd">' + esc(r.text || '') + '</div>'
-        + coachFor(d, k, coaches)
-        + '</div>';
+      if (it.type === 'rep'){
+        var r = it.rep;
+        var meta = esc(r.page || '');
+        if (r.score) meta += ' · ' + esc(r.score);
+        if (r.pct != null) meta += ' · ' + r.pct + '%';
+        html += '<div class="it">'
+          + '<div class="hd"><span class="pill ' + pillCls + '">' + (KIND[k] || '回执') + '</span>'
+          + '<span class="tt">' + meta + '</span></div>'
+          + '<div class="bd">' + esc(r.text || '') + '</div>'
+          + coachFor(d, k, coaches)
+          + '</div>';
+      } else {
+        /* 有文本回执时，批改已挂在回执下，照片条不再重复挂 */
+        var dup = hasRep[(d || '') + '|' + k];
+        html += '<div class="it">'
+          + '<div class="hd"><span class="pill a">' + (KIND[k] || '手写') + '照</span>'
+          + '<span class="tt">' + esc(it.page || '') + ' · ' + it.n + ' 张</span></div>'
+          + '<div class="bd">手写照片已上云。</div>'
+          + (dup ? '' : coachFor(d, k, coaches))
+          + '</div>';
+      }
     });
   });
-  document.getElementById('cnt').textContent = recs.length + ' 条';
+  document.getElementById('cnt').textContent = items.length + ' 条';
   document.getElementById('list').innerHTML = html;
 }
 
