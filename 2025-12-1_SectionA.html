@@ -244,8 +244,8 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 #dictBar #dbExit{padding:11px 11px;color:var(--sub);font-weight:600}
 #dictBar #dbRep{background:#fff;border-color:var(--amber);color:#8a6318}
 #dictBar #dbSpeed{background:#fff;border-color:var(--line);color:var(--sub)}
-#dictBar #dbSkip{background:#fff;border-color:var(--line);color:var(--sub)}
-#dictBar #dbSkip.on{background:#f3f4f6;border-color:#d7dce1;color:#9aa3ad;text-decoration:line-through}
+#dictBar #dbSkip{background:#fff;border-color:var(--red);color:var(--red)}
+#dictBar #dbSkip.on{background:#fdecec;border-color:var(--red);color:#c0392b}
 #dictBar #dbPause{background:#fff;border-color:var(--amber);color:#8a6318;min-width:76px}
 @media (max-width:560px){
   #dictBar{padding:7px 8px;gap:5px;border-radius:14px;bottom:10px}
@@ -262,6 +262,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 .dprow:hover{background:#faf7ef}
 .dprow:active{background:#fff3d9}
 .dprow.cur{background:#fffbe6;border-color:#e9d48a}
+.dprow.unclear{background:#fff3f3;border-color:#f0c4c4}
 .dprow.skip{opacity:.6;background:#f4f5f7}
 .dprow .dpi{font-weight:700;font-size:12px;color:#adb5bd;min-width:52px;flex:0 0 auto}
 .dprow .dpi::before{content:'▶ ';font-size:10px;opacity:.5}
@@ -273,10 +274,11 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 .dprow.open .dpw{display:block;flex-basis:100%}
 .dprow .dpw .wen{color:var(--txt);font-size:13.5px}
 .dprow.skip .dpw{text-decoration:line-through;color:#9aa3ad}
+.dprow.unclear .dpw{text-decoration:line-through;color:#b08585}
 .dprow .dpx{flex:0 0 auto;font-size:12.5px;font-weight:700;border:1.5px solid var(--line);
  border-radius:8px;padding:6px 9px;background:#fff;color:var(--sub);cursor:pointer;
  -webkit-tap-highlight-color:transparent;white-space:nowrap}
-.dprow .dpx.on{background:#f3f4f6;color:#9aa3ad;text-decoration:line-through}
+.dprow .dpx.on{background:#fdecec;color:#c0392b;border-color:#f0c4c4}
 /* 云状态条：右下角固定 · 照片上传 + 教练已读 */
 #cloudBar{position:fixed;right:14px;bottom:14px;z-index:70;display:flex;flex-direction:column;align-items:flex-end;gap:8px;font-family:inherit}
 #cloudBar button{border:0;border-radius:12px;padding:11px 15px;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(15,23,42,.14);font-family:inherit}
@@ -355,9 +357,9 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 
 <div class="card hide" id="dictCard">
   <h2><span class="num">__ND__</span>逐句听写清单</h2>
-  <p class="hint"><b>分屏：一边网页当播放器，一边华为笔记写字。</b><br>点播放器里的 <b>✍️ 听写模式</b>，每句会自动重读几遍再停。听清的句在<b>底部悬浮条</b>点「⏭ 跳过」，没听清的写进华为笔记——这些句子会<b>自动进错题本</b>，周末复盘用。写完把华为笔记<b>截图发到对话</b>，我给你逐词批改。</p>
+  <p class="hint"><b>分屏：一边网页当播放器，一边华为笔记写字。</b><br>点播放器里的 <b>✍️ 听写模式</b>，每句会自动重读几遍再停。没听清的句点「✗ 听不清」标记（<b>自动进错题本</b>），写进华为笔记。写完点右下角<b>「📷 上传手写照」</b>把照片传上来，我给你逐词批改。</p>
   <div class="dplist" id="dpList"></div>
-</div>>>>>
+</div>>>>>>
 
 
 <div class="card" id="receiptCard">
@@ -689,8 +691,8 @@ var QUIZ = [{"id": "q1", "stem": "1. Where was the black cat found?", "zh": "", 
     var L = ['【四级训练回执】', '日期：' + ds, '训练包：2025-12-1 · Section A 短篇新闻'];
     if (typeof quizLines === 'function'){ L = L.concat(quizLines()); }
     var pd = window.__dictPad;
-    if (pd && pd.written) L.push('听写照：随附图 —— 已写 ' + pd.written + ' / ' + pd.total + ' 句');
-    else L.push('听写照：随附图（逐句手写）');
+    if (pd && pd.written) L.push('听不清：' + pd.written + ' 句（随附照片）');
+    else L.push('听不清：无（随附照片）');
     L.push('最难的一句：' + (document.getElementById('hardest').value || '（未填）'));
     L.push('—— 请据此给我出错因归因和改善方法');
     document.getElementById('receipt').value = L.join('\n');
@@ -715,7 +717,7 @@ var QUIZ = [{"id": "q1", "stem": "1. Where was the black cat found?", "zh": "", 
   document.getElementById('receipt').addEventListener('click', function(){ this.select(); this.setSelectionRange(0,99999); });
   buildReceipt();
 
-                /* ---------- 逐句听写清单（纯列表 · 分屏手写 + 截图提交） ---------- */
+                  /* ---------- 逐句听写清单（纯列表 · 分屏手写 + 照片提交） ---------- */
   var DP = (function(){
     var card = document.getElementById('dictCard');
     var list = document.getElementById('dpList');
@@ -724,11 +726,11 @@ var QUIZ = [{"id": "q1", "stem": "1. Where was the black cat found?", "zh": "", 
     if (!LINES.length) return null;
 
     var API = { written:0, total:LINES.length };
-    var skips = {};
-    var SKIP_KEY = 'cet4_dict_skip_v1';
+    var unclear = {};
+    var UNCLEAR_KEY = 'cet4_dict_unclear_v1';
     var curLi = -1;
-    try { skips = JSON.parse(localStorage.getItem(SKIP_KEY) || '{}') || {}; } catch(e){ skips = {}; }
-    function saveSkips(){ try { localStorage.setItem(SKIP_KEY, JSON.stringify(skips)); } catch(e){} }
+    try { unclear = JSON.parse(localStorage.getItem(UNCLEAR_KEY) || '{}') || {}; } catch(e){ unclear = {}; }
+    function saveUnclear(){ try { localStorage.setItem(UNCLEAR_KEY, JSON.stringify(unclear)); } catch(e){} }
 
     function esc(t){ return (t || '').replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
@@ -742,7 +744,7 @@ var QUIZ = [{"id": "q1", "stem": "1. Where was the black cat found?", "zh": "", 
            +   '<div class="dpw"><span class="wen">' + esc(en) + '</span>'
            +     (zh ? '<br><span>' + esc(zh) + '</span>' : '')
            +   '</div>'
-           +   '<button class="dpx">⏭ 跳过</button>'
+           +   '<button class="dpx" title="这句没听清，标记后进错题本">✗ 听不清</button>'
            + '</div>';
       }
       list.innerHTML = h;
@@ -758,10 +760,10 @@ var QUIZ = [{"id": "q1", "stem": "1. Where was the black cat found?", "zh": "", 
         if (btn){
           var row = btn.closest('.dprow');
           var li = parseInt(row.getAttribute('data-li'), 10);
-          setSkip(li, !skips[li]);
+          setUnclear(li, !unclear[li]);
           return;
         }
-        /* 点句子整行（👁/⏭ 之外）→ 播放该句 */
+        /* 点句子整行（👁 / ✗听不清 之外）→ 播放该句 */
         var pr = e.target.closest('.dprow');
         if (!pr) return;
         var pLi = parseInt(pr.getAttribute('data-li'), 10);
@@ -772,35 +774,35 @@ var QUIZ = [{"id": "q1", "stem": "1. Where was the black cat found?", "zh": "", 
     function paintRow(li){
       var row = list.querySelector('.dprow[data-li="' + li + '"]');
       if (!row) return;
-      var on = !!skips[li];
-      row.classList.toggle('skip', on);
+      var on = !!unclear[li];
+      row.classList.toggle('unclear', on);
       var btn = row.querySelector('.dpx');
       if (btn){
-        btn.textContent = on ? '✓ 已跳过' : '⏭ 跳过';
+        btn.textContent = on ? '✓ 听不清' : '✗ 听不清';
         btn.classList.toggle('on', on);
       }
     }
 
-    function setSkip(li, bool){
-      skips[li] = bool ? 1 : 0;
-      saveSkips();
+    function setUnclear(li, bool){
+      unclear[li] = bool ? 1 : 0;
+      saveUnclear();
       paintRow(li);
       refreshCount();
     }
-    function isSkip(li){ return !!skips[li]; }
+    function isUnclear(li){ return !!unclear[li]; }
 
-    /* 没跳过的句 = 没听清、需要写的句（进错题本） */
-    function getUnskipped(){
+    /* 标记「听不清」的句 = 需要写、进错题本的句 */
+    function getUnclear(){
       var out = [], i;
       for (i = 0; i < LINES.length; i++){
-        if (!skips[i]) out.push({ li:i, en:LINES[i].en || '', zh:LINES[i].zh || '' });
+        if (unclear[i]) out.push({ li:i, en:LINES[i].en || '', zh:LINES[i].zh || '' });
       }
       return out;
     }
 
     function refreshCount(){
       var n = 0, i;
-      for (i = 0; i < LINES.length; i++) if (!skips[i]) n++;
+      for (i = 0; i < LINES.length; i++) if (unclear[i]) n++;
       API.written = n;
     }
 
@@ -827,7 +829,7 @@ var QUIZ = [{"id": "q1", "stem": "1. Where was the black cat found?", "zh": "", 
     }
 
     API.show = show; API.hide = hide; API.focusLine = focusLine;
-    API.setSkip = setSkip; API.isSkip = isSkip; API.getUnskipped = getUnskipped;
+    API.setUnclear = setUnclear; API.isUnclear = isUnclear; API.getUnclear = getUnclear;
     window.__dictPad = API;
     return API;
   })();
@@ -1559,7 +1561,7 @@ for (var qid in AL){
   <span class="db-txt"></span>
   <button id="dbSpeed" title="播放速度（点一下切换）">🐢 1.0×</button>
   <button id="dbRep" title="每句重复几遍（点一下切换）">🔂 3遍</button>
-  <button id="dbSkip" title="这句听清了就跳过，不写（进错题本的是没跳过的句）">⏭ 跳过</button>
+  <button id="dbSkip" title="这句没听清，标记后进错题本">✗ 听不清</button>
   <button id="dbPause" title="暂停 / 继续播放">⏸ 暂停</button>
   <button id="dbAgain" title="把这句再读一遍">🔁<span class="lbl"> 重听</span></button>
   <button id="dbNext" class="pri">▶ 下一句</button>
@@ -1568,7 +1570,7 @@ for (var qid in AL){
 <script>
 /* 听写模式：逐句播放（可自动重读 N 遍）→ 播完自动暂停 → 底部悬浮条控制
    悬浮条进入模式即显示、始终可见；「下一句」播放中置灰、暂停时亮起；
-   退出时把「没跳过的句」写入错题本（localStorage） */
+   退出时把「标记听不清的句」写入错题本（localStorage） */
 (function(){
   var audio = document.getElementById('audio');
   var bar = document.getElementById('dictBar');
@@ -1615,13 +1617,13 @@ for (var qid in AL){
     try { localStorage.setItem(SPD_KEY, String(spdI)); } catch(e){}
   }
 
-  /* ── 逐句「跳过 / 写」：状态交给清单（pad）维护 ── */
+  /* ── 逐句「听不清」标记：状态交给清单（pad）维护 ── */
   function pad(){ return window.__dictPad || null; }
-  function padSkip(li){ var D = pad(); return (D && D.isSkip) ? D.isSkip(li) : false; }
-  function skipLabel(){
+  function padUnclear(li){ var D = pad(); return (D && D.isUnclear) ? D.isUnclear(li) : false; }
+  function unclearLabel(){
     if (!bSkip) return;
-    var s = curLi >= 0 && padSkip(curLi);
-    bSkip.textContent = s ? '✓ 要写' : '⏭ 跳过';
+    var s = curLi >= 0 && padUnclear(curLi);
+    bSkip.textContent = s ? '✓ 听不清' : '✗ 听不清';
     bSkip.classList.toggle('on', !!s);
   }
 
@@ -1687,18 +1689,18 @@ for (var qid in AL){
     txt.textContent = (li + 1) + '/' + b.length + ' ▶';
     var D = pad();
     if (D) D.focusLine(li);                /* 清单跳到这一行 */
-    skipLabel();
+    unclearLabel();
     playNow();
     return true;
   }
   function showWait(li){
     var b = bounds(), last = (li + 1 >= b.length);
-    txt.textContent = (li + 1) + '/' + b.length + ' · 写或跳过';
+    txt.textContent = (li + 1) + '/' + b.length + ' · 写或标记';
     if (bNext){
       bNext.disabled = false;
       bNext.textContent = last ? '✓ 完成' : '▶ 下一句';
     }
-    skipLabel();
+    unclearLabel();
     syncPause();
   }
 
@@ -1731,11 +1733,11 @@ for (var qid in AL){
     if (followBack && tpFollow){ tpFollow.click(); followBack = false; }
   }
 
-  /* 把「没听清的句子」（没跳过的，且已播到过）写进错题本（localStorage + 上云） */
+  /* 把「标记听不清的句子」（且已播到过）写进错题本（localStorage + 上云） */
   function saveWrongbook(){
     var D = pad();
-    if (!D || !D.getUnskipped) return;
-    var all = D.getUnskipped();
+    if (!D || !D.getUnclear) return;
+    var all = D.getUnclear();
     var items = all.filter(function(x){ return x.li <= maxLi; });
     if (!items.length) return;
     try {
@@ -1782,8 +1784,8 @@ for (var qid in AL){
   if (bSkip) bSkip.addEventListener('click', function(){
     if (!on || curLi < 0) return;
     var D = pad();
-    if (D && D.setSkip) D.setSkip(curLi, !padSkip(curLi));
-    skipLabel();
+    if (D && D.setUnclear) D.setUnclear(curLi, !padUnclear(curLi));
+    unclearLabel();
   });
 
   btn.addEventListener('click', function(){
@@ -1866,7 +1868,7 @@ for (var qid in AL){
 <div id="cloudBar">
   <button id="cloudPhoto" title="把手写照片传上来，教练自动收到并批改">📷 上传手写照</button>
   <div id="cloudSt">⏳ 已上云 · 待批改</div>
-  <input type="file" id="cloudFile" accept="image/*" style="display:none">
+  <input type="file" id="cloudFile" accept="image/*" multiple style="display:none">
 </div>
 <script>
 /* 云状态条：照片上云 + 教练已读（回执已读：ntfy 实时 + GitHub 持久兜底） */
@@ -1950,41 +1952,53 @@ for (var qid in AL){
     img.src = url;
   }
 
-  /* ── 照片上云（ntfy 附件） ── */
+  /* ── 照片上云（ntfy 附件 · 支持多张） ── */
   var uploading = false;
-  function sendPhoto(file){
-    if (uploading) return;
+  function uploadOne(blob, seq, total, done){
+    var d = new Date();
+    function p2(n){ return String(n).padStart(2,'0'); }
+    var stamp = d.getFullYear()+p2(d.getMonth()+1)+p2(d.getDate())+'-'+p2(d.getHours())+p2(d.getMinutes())+p2(d.getSeconds());
+    var fname = PAGE.replace(/\.html$/,'') + '_' + KIND + '_' + stamp + (total > 1 ? '_' + (seq+1) : '') + '.jpg';
+    var title = document.querySelector('header h1') ? document.querySelector('header h1').textContent.trim() : PAGE;
+    var meta = { t:'photo', kind:KIND, page:PAGE, date:d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()), title:title, seq:(seq+1), total:total };
+    var q = '?f=' + encodeURIComponent(fname) + '&m=' + encodeURIComponent(JSON.stringify(meta));
+    fetch('https://ntfy.sh/' + TOPIC + q, { method:'PUT', body: blob })
+      .then(function(x){ done(!x.ok); })
+      .catch(function(){ done(true); });
+  }
+  function sendPhotos(files){
+    if (uploading || !files.length) return;
     uploading = true;
     if (photoBtn) photoBtn.disabled = true;
-    setMsg('压缩上传中…');
-    compressImage(file, function(blob){
-      var d = new Date();
-      function p2(n){ return String(n).padStart(2,'0'); }
-      var stamp = d.getFullYear()+p2(d.getMonth()+1)+p2(d.getDate())+'-'+p2(d.getHours())+p2(d.getMinutes())+p2(d.getSeconds());
-      var fname = PAGE.replace(/\.html$/,'') + '_' + KIND + '_' + stamp + '.jpg';
-      var title = document.querySelector('header h1') ? document.querySelector('header h1').textContent.trim() : PAGE;
-      var meta = { t:'photo', kind:KIND, page:PAGE, date:d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()), title:title };
-      var q = '?f=' + encodeURIComponent(fname) + '&m=' + encodeURIComponent(JSON.stringify(meta));
-      fetch('https://ntfy.sh/' + TOPIC + q, { method:'PUT', body: blob })
-        .then(function(x){
-          uploading = false;
-          if (photoBtn) photoBtn.disabled = false;
-          if (x.ok) setMsg('📤 照片已上云，教练批改后这里会变已读');
-          else setMsg('上传失败，请截图发对话', 'err');
-        })
-        .catch(function(){
-          uploading = false;
-          if (photoBtn) photoBtn.disabled = false;
-          setMsg('离线，请截图发对话', 'err');
+    var total = files.length, idx = 0, fails = 0;
+    function next(){
+      if (idx >= total){
+        uploading = false;
+        if (photoBtn) photoBtn.disabled = false;
+        if (fails) setMsg('📤 已传 ' + (total-fails) + '/' + total + ' 张，失败 ' + fails + ' 张请截图发对话', 'err');
+        else setMsg('📤 已上传 ' + total + ' 张照片，教练批改后这里会变已读');
+        return;
+      }
+      setMsg('上传中 ' + (idx+1) + '/' + total + '…');
+      (function(i){
+        compressImage(files[i], function(blob){
+          uploadOne(blob, i, total, function(fail){
+            if (fail) fails++;
+            idx++;
+            next();
+          });
         });
-    });
+      })(idx);
+    }
+    next();
   }
 
   if (photoBtn && fileInp){
     photoBtn.addEventListener('click', function(){ fileInp.click(); });
     fileInp.addEventListener('change', function(){
-      if (fileInp.files && fileInp.files[0]) sendPhoto(fileInp.files[0]);
+      var files = Array.prototype.slice.call(fileInp.files || []);
       fileInp.value = '';
+      if (files.length) sendPhotos(files);
     });
   }
 })();

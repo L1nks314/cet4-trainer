@@ -1075,7 +1075,7 @@ document.querySelectorAll('.jump').forEach(function(b){
 <div id="cloudBar">
   <button id="cloudPhoto" title="把手写照片传上来，教练自动收到并批改">📷 上传手写照</button>
   <div id="cloudSt">⏳ 已上云 · 待批改</div>
-  <input type="file" id="cloudFile" accept="image/*" style="display:none">
+  <input type="file" id="cloudFile" accept="image/*" multiple style="display:none">
 </div>
 <script>
 /* 云状态条：照片上云 + 教练已读（回执已读：ntfy 实时 + GitHub 持久兜底） */
@@ -1159,41 +1159,53 @@ document.querySelectorAll('.jump').forEach(function(b){
     img.src = url;
   }
 
-  /* ── 照片上云（ntfy 附件） ── */
+  /* ── 照片上云（ntfy 附件 · 支持多张） ── */
   var uploading = false;
-  function sendPhoto(file){
-    if (uploading) return;
+  function uploadOne(blob, seq, total, done){
+    var d = new Date();
+    function p2(n){ return String(n).padStart(2,'0'); }
+    var stamp = d.getFullYear()+p2(d.getMonth()+1)+p2(d.getDate())+'-'+p2(d.getHours())+p2(d.getMinutes())+p2(d.getSeconds());
+    var fname = PAGE.replace(/\.html$/,'') + '_' + KIND + '_' + stamp + (total > 1 ? '_' + (seq+1) : '') + '.jpg';
+    var title = document.querySelector('header h1') ? document.querySelector('header h1').textContent.trim() : PAGE;
+    var meta = { t:'photo', kind:KIND, page:PAGE, date:d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()), title:title, seq:(seq+1), total:total };
+    var q = '?f=' + encodeURIComponent(fname) + '&m=' + encodeURIComponent(JSON.stringify(meta));
+    fetch('https://ntfy.sh/' + TOPIC + q, { method:'PUT', body: blob })
+      .then(function(x){ done(!x.ok); })
+      .catch(function(){ done(true); });
+  }
+  function sendPhotos(files){
+    if (uploading || !files.length) return;
     uploading = true;
     if (photoBtn) photoBtn.disabled = true;
-    setMsg('压缩上传中…');
-    compressImage(file, function(blob){
-      var d = new Date();
-      function p2(n){ return String(n).padStart(2,'0'); }
-      var stamp = d.getFullYear()+p2(d.getMonth()+1)+p2(d.getDate())+'-'+p2(d.getHours())+p2(d.getMinutes())+p2(d.getSeconds());
-      var fname = PAGE.replace(/\.html$/,'') + '_' + KIND + '_' + stamp + '.jpg';
-      var title = document.querySelector('header h1') ? document.querySelector('header h1').textContent.trim() : PAGE;
-      var meta = { t:'photo', kind:KIND, page:PAGE, date:d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()), title:title };
-      var q = '?f=' + encodeURIComponent(fname) + '&m=' + encodeURIComponent(JSON.stringify(meta));
-      fetch('https://ntfy.sh/' + TOPIC + q, { method:'PUT', body: blob })
-        .then(function(x){
-          uploading = false;
-          if (photoBtn) photoBtn.disabled = false;
-          if (x.ok) setMsg('📤 照片已上云，教练批改后这里会变已读');
-          else setMsg('上传失败，请截图发对话', 'err');
-        })
-        .catch(function(){
-          uploading = false;
-          if (photoBtn) photoBtn.disabled = false;
-          setMsg('离线，请截图发对话', 'err');
+    var total = files.length, idx = 0, fails = 0;
+    function next(){
+      if (idx >= total){
+        uploading = false;
+        if (photoBtn) photoBtn.disabled = false;
+        if (fails) setMsg('📤 已传 ' + (total-fails) + '/' + total + ' 张，失败 ' + fails + ' 张请截图发对话', 'err');
+        else setMsg('📤 已上传 ' + total + ' 张照片，教练批改后这里会变已读');
+        return;
+      }
+      setMsg('上传中 ' + (idx+1) + '/' + total + '…');
+      (function(i){
+        compressImage(files[i], function(blob){
+          uploadOne(blob, i, total, function(fail){
+            if (fail) fails++;
+            idx++;
+            next();
+          });
         });
-    });
+      })(idx);
+    }
+    next();
   }
 
   if (photoBtn && fileInp){
     photoBtn.addEventListener('click', function(){ fileInp.click(); });
     fileInp.addEventListener('change', function(){
-      if (fileInp.files && fileInp.files[0]) sendPhoto(fileInp.files[0]);
+      var files = Array.prototype.slice.call(fileInp.files || []);
       fileInp.value = '';
+      if (files.length) sendPhotos(files);
     });
   }
 })();
