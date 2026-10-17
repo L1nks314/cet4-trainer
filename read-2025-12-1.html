@@ -1011,5 +1011,56 @@ document.querySelectorAll('.jump').forEach(function(b){
   };
 })();
 </script>
+<script>
+/* 错题本：判分完成后自动记录错题（从 DOM 读判分结果）到 localStorage */
+(function(){
+  var K = 'cet4_wrongbook', done = false, timer = 0;
+  function save(items, type){
+    try{
+      var arr = JSON.parse(localStorage.getItem(K) || '[]') || [];
+      var page = location.pathname.split('/').pop() || '';
+      arr = arr.filter(function(x){ return !(x.type === type && x.page === page); });
+      arr.push({ type: type, date: new Date().toISOString().slice(0, 10), page: page,
+                 title: (document.querySelector('header h1') ? document.querySelector('header h1').textContent.trim() : page),
+                 items: items });
+      localStorage.setItem(K, JSON.stringify(arr));
+    }catch(e){}
+  }
+  function collectWrong(){
+    var wrong = [];
+    document.querySelectorAll('.q[data-q]').forEach(function(qel){
+      var wrongEl = qel.querySelector('.opt.wrong');
+      if (!wrongEl) return;                     /* 做对了或没判分 */
+      var rightEl = qel.querySelector('.opt.right');
+      var stemEl = qel.querySelector('.stem, .qse');
+      var zhEl = qel.querySelector('.qsz');
+      var opts = [];
+      qel.querySelectorAll('.opt').forEach(function(o){ opts.push(o.textContent.trim()); });
+      wrong.push({
+        qid: qel.getAttribute('data-q'),
+        stem: stemEl ? stemEl.textContent.trim() : '',
+        zh: zhEl ? zhEl.textContent.trim() : '',
+        user: wrongEl.getAttribute('data-k'),
+        right: rightEl ? rightEl.getAttribute('data-k') : '',
+        opts: opts
+      });
+    });
+    return wrong;
+  }
+  function tryRecord(){
+    if (done) return;
+    if (!document.querySelector('.opt.wrong')) return;
+    done = true;
+    var wrong = collectWrong();
+    if (!wrong.length) return;
+    var isRead = /read-/.test(location.pathname);
+    save(wrong, isRead ? 'read-quiz' : 'listen-quiz');
+  }
+  timer = setInterval(tryRecord, 800);
+  setTimeout(function(){ clearInterval(timer); }, 600000);
+})();
+</script>
+
+
 </body>
 </html>

@@ -210,45 +210,47 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
  transition:opacity .18s ease,transform .18s ease}
 #penToast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* ═══ 听写模式（控制条吸顶在听写本顶部） ═══ */
-#dictBar{display:none;position:sticky;top:10px;z-index:55;margin:0 0 12px;
- background:var(--amber-soft);border:1.5px solid var(--amber);border-radius:12px;
- padding:10px 12px;align-items:center;gap:9px;flex-wrap:wrap;
- box-shadow:0 6px 18px rgba(15,20,30,.13)}
+/* ═══ 听写模式（底部悬浮条 + 逐句清单） ═══ */
+#dictBar{display:none;position:fixed;left:50%;bottom:14px;transform:translateX(-50%);
+ z-index:9000;margin:0;max-width:calc(100vw - 16px);
+ background:var(--card,#fff);border:1.5px solid var(--line);border-radius:16px;
+ padding:8px 10px;align-items:center;gap:7px;flex-wrap:nowrap;
+ box-shadow:0 8px 28px rgba(15,20,30,.22)}
 #dictBar.on{display:flex}
-#dictBar .db-txt{flex:1;min-width:112px;font-size:14.5px;font-weight:700;color:var(--txt);line-height:1.5}
+#dictBar .db-txt{font-size:12.5px;font-weight:700;color:var(--sub);white-space:nowrap;padding:0 2px}
 #dictBar button{border:1.5px solid var(--line);background:#fff;border-radius:10px;
- padding:12px 17px;font-size:15px;font-weight:700;font-family:inherit;color:inherit;
- cursor:pointer;-webkit-tap-highlight-color:transparent}
-#dictBar button.pri{background:var(--blue);border-color:var(--blue);color:#fff;min-width:116px}
-#dictBar #dbExit{padding:12px 15px;color:var(--sub);font-weight:600}
-#dictBar #dbRep{background:#fff;border-color:var(--amber);color:#8a6318;min-width:74px}
-#dictBar #dbSpeed{background:#fff;border-color:var(--line);color:var(--sub);min-width:84px}
-#dictBar #dbSkip{background:#fff;border-color:var(--line);color:var(--sub);min-width:96px}
+ padding:11px 12px;font-size:14.5px;font-weight:700;font-family:inherit;color:inherit;
+ cursor:pointer;-webkit-tap-highlight-color:transparent;white-space:nowrap}
+#dictBar button.pri{background:var(--blue);border-color:var(--blue);color:#fff}
+#dictBar button.pri[disabled]{background:#c9d4e4;border-color:#c9d4e4;color:#fff;cursor:default}
+#dictBar #dbExit{padding:11px 11px;color:var(--sub);font-weight:600}
+#dictBar #dbRep{background:#fff;border-color:var(--amber);color:#8a6318}
+#dictBar #dbSpeed{background:#fff;border-color:var(--line);color:var(--sub)}
+#dictBar #dbSkip{background:#fff;border-color:var(--line);color:var(--sub)}
 #dictBar #dbSkip.on{background:#f3f4f6;border-color:#d7dce1;color:#9aa3ad;text-decoration:line-through}
 @media (max-width:560px){
-  #dictBar{padding:9px 10px;gap:7px}
-  #dictBar .db-txt{flex:1 0 100%;min-width:0;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  #dictBar button{padding:11px 12px;font-size:14px}
-  #dictBar button.pri{flex:1;min-width:0}
+  #dictBar{padding:7px 8px;gap:5px;border-radius:14px;bottom:10px}
+  #dictBar button{padding:11px 9px;font-size:13px}
+  #dictBar .db-txt{max-width:52px;overflow:hidden;text-overflow:ellipsis}
   #dictBar #dbAgain .lbl{display:none}
-  #dictBar #dbRep{min-width:66px}
-  #dictBar #dbSpeed{min-width:74px}
-  #dictBar #dbSkip{min-width:86px}
 }
 
-/* ═══ 逐句听写本 ═══ */
+/* ═══ 逐句听写清单 ═══ */
 #dictCard.hide{display:none}
-.dpwrap{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;line-height:0}
-.dpwrap canvas{display:block;touch-action:none}
-.dpbtns{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:12px}
-.dpbtns .btn{width:auto;flex:0 0 auto;padding:11px 17px;font-size:14px;margin:0;line-height:1.2}
-.dpcnt{margin-left:auto;font-size:12.5px;color:var(--sub)}
-.dpout{margin-top:14px}
-.dphint{font-size:13px;color:var(--sub);margin-bottom:9px;line-height:1.7}
-.dpout img{width:100%;border:1px solid var(--line);border-radius:10px;background:#fff}
-.dpout .btn{margin-top:10px;width:auto}
-@media (max-width:560px){ .dpcnt{flex:1 0 100%;text-align:right;margin-top:2px} }
+.dplist{display:flex;flex-direction:column;gap:6px}
+.dprow{display:flex;align-items:center;gap:8px;padding:9px 11px;border:1px solid var(--line);
+ border-radius:10px;background:var(--bg,#fff);transition:background .15s}
+.dprow.cur{background:#fffbe6;border-color:#e9d48a}
+.dprow.skip{opacity:.6;background:#f4f5f7}
+.dprow .dpi{font-weight:700;font-size:12px;color:#adb5bd;min-width:44px;flex:0 0 auto}
+.dprow.cur .dpi{color:#a37d12}
+.dprow .dpw{font-size:13px;color:var(--sub);line-height:1.55;flex:1;min-width:0}
+.dprow .dpw .wen{color:var(--txt);font-size:13.5px}
+.dprow.skip .dpw{text-decoration:line-through;color:#9aa3ad}
+.dprow .dpx{flex:0 0 auto;font-size:12.5px;font-weight:700;border:1.5px solid var(--line);
+ border-radius:8px;padding:6px 9px;background:#fff;color:var(--sub);cursor:pointer;
+ -webkit-tap-highlight-color:transparent;white-space:nowrap}
+.dprow .dpx.on{background:#f3f4f6;color:#9aa3ad;text-decoration:line-through}
 </style>
 <noscript><style>
   .locked-sec{filter:none !important;opacity:1 !important;pointer-events:auto !important;user-select:auto !important;}
@@ -315,31 +317,10 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 
 
 <div class="card hide" id="dictCard">
-  <h2><span class="num">4</span>逐句听写本</h2>
-  <p class="hint"><b>只写你没听出来的那几句 —— 全篇抄写既费时又没用。</b><br>点播放器里的 <b>✍️ 听写模式</b>：每句会自动重读几遍再停。听清的句点 <b>⏭ 不写这句</b> 跳过（会自动压扁），卡住的句子写下来；倍速用 <b>🐢</b> 按钮调。写完点「📷 导出听写照」发我批改。</p>
-  <div id="dictBar">
-    <span class="db-txt"></span>
-    <button id="dbSpeed" title="播放速度（点一下切换）">🐢 1.0×</button>
-    <button id="dbRep" title="每句重复几遍（点一下切换）">🔂 3遍</button>
-    <button id="dbSkip" title="这句听清了就跳过，不写">⏭ 不写这句</button>
-    <button id="dbAgain" title="把这句再读一遍">🔁<span class="lbl"> 重听这句</span></button>
-    <button id="dbNext" class="pri">▶ 下一句</button>
-    <button id="dbExit" title="退出听写模式">✕</button>
-  </div>
-
-  <div class="dpwrap" id="dpWrap"></div>
-  <div class="dpbtns">
-    <button class="btn btn-ghost" id="dpUndo">↩︎ 撤销一笔</button>
-    <button class="btn btn-ghost" id="dpClear">🗑 清空重写</button>
-    <button class="btn btn-primary" id="dpSave">📷 导出听写照</button>
-    <span class="dpcnt" id="dpCnt"></span>
-  </div>
-  <div class="dpout" id="dpOut" style="display:none">
-    <div class="dphint">长按下面这张图存到相册（或直接截图），发到主对话，我<b>逐词</b>给你标出漏听、听错，并归因（连读漏听 / 生词 / 拼写）。</div>
-    <img id="dpImg" alt="听写照">
-    <a class="btn btn-ghost" id="dpDl" download="听写照.png">⬇︎ 下载到本地</a>
-  </div>
-</div>
+  <h2><span class="num">__ND__</span>逐句听写清单</h2>
+  <p class="hint"><b>分屏：一边网页当播放器，一边华为笔记写字。</b><br>点播放器里的 <b>✍️ 听写模式</b>，每句会自动重读几遍再停。听清的句在<b>底部悬浮条</b>点「⏭ 跳过」，没听清的写进华为笔记——这些句子会<b>自动进错题本</b>，周末复盘用。写完把华为笔记<b>截图发到对话</b>，我给你逐词批改。</p>
+  <div class="dplist" id="dpList"></div>
+</div>>
 
 
 <div class="card" id="receiptCard">
@@ -699,417 +680,104 @@ var QUIZ = [{"id": "q8", "stem": "8. What does the woman say she was actually wo
   document.getElementById('receipt').addEventListener('click', function(){ this.select(); this.setSelectionRange(0,99999); });
   buildReceipt();
 
-        /* ---------- 逐句听写本（分块 canvas · 笔迹数据化） ---------- */
+          /* ---------- 逐句听写清单（纯列表 · 分屏手写 + 截图提交） ---------- */
   var DP = (function(){
     var card = document.getElementById('dictCard');
-    var wrap = document.getElementById('dpWrap');
-    if (!card || !wrap || !window.DATA) return null;
+    var list = document.getElementById('dpList');
+    if (!card || !list || !window.DATA) return null;
     var LINES = DATA.lines || (DATA.rates && DATA.rates[0] && DATA.rates[0].lines) || [];
     if (!LINES.length) return null;
 
-    var DPR = Math.min(2, window.devicePixelRatio || 1);
-    var GAP = 9, PAD_L = 54, PAD_R = 12, BLOCK_ROWS = 8;
-    var CO = '#1b1e23', CW = 2.6;
-    var FONT = '"HarmonyOS Sans","PingFang SC","Microsoft YaHei",-apple-system,BlinkMacSystemFont,sans-serif';
-
-    var rows = [], H = 0, W = 0, blocks = [], strokes = [], cur = null, curLi = -1;
-    var API = { written:0, total:0 };
-    var SKIP_H = 34;
+    var API = { written:0, total:LINES.length };
     var skips = {};
     var SKIP_KEY = 'cet4_dict_skip_v1';
+    var curLi = -1;
     try { skips = JSON.parse(localStorage.getItem(SKIP_KEY) || '{}') || {}; } catch(e){ skips = {}; }
-    function naturalH(i){
-      var n = (LINES[i].tokens && LINES[i].tokens.length) || 8;
-      return n <= 12 ? 100 : 142;
-    }
     function saveSkips(){ try { localStorage.setItem(SKIP_KEY, JSON.stringify(skips)); } catch(e){} }
-    /* 行高按句长自适应：长句给两行以上的书写空间，短句不浪费；标记「不写」的句子压扁 */
-    (function(){
-      var y = GAP;
+
+    function esc(t){ return (t || '').replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+    function buildList(){
+      var h = '';
       for (var i = 0; i < LINES.length; i++){
-        var h = naturalH(i);
-        rows.push({ li:i, y:y, h:h, nh:h });
-        y += h + GAP;
+        var en = LINES[i].en || '', zh = LINES[i].zh || '';
+        h += '<div class="dprow" data-li="' + i + '">'
+           +   '<span class="dpi">第' + (i + 1) + '句</span>'
+           +   '<div class="dpw"><span class="wen">' + esc(en) + '</span>'
+           +     (zh ? '<br><span>' + esc(zh) + '</span>' : '')
+           +   '</div>'
+           +   '<button class="dpx">⏭ 跳过</button>'
+           + '</div>';
       }
-      H = y;
-    })();
-    API.total = rows.length;
-    function relayout(){
-      var oldY = {}, i, s, p, dy;
-      for (i = 0; i < rows.length; i++) oldY[i] = rows[i].y;
-      var y = GAP;
-      for (i = 0; i < rows.length; i++){
-        rows[i].h = skips[i] ? SKIP_H : rows[i].nh;
-        rows[i].y = y;
-        y += rows[i].h + GAP;
-      }
-      H = y;
-      /* 行高变化后，把已写笔迹按所在行的位移整体平移，避免字「浮」在错位 */
-      for (s = 0; s < strokes.length; s++){
-        dy = rows[strokes[s].li].y - oldY[strokes[s].li];
-        if (!dy) continue;
-        for (p = 0; p < strokes[s].pts.length; p++) strokes[s].pts[p][1] += dy;
-      }
-    }
-
-    function liAtY(gy){
-      for (var i = 0; i < rows.length; i++){
-        if (gy < rows[i].y + rows[i].h + GAP / 2) return i;
-      }
-      return rows.length - 1;
-    }
-
-    /* ── 绘制：把逻辑区间 [yTop,yBot) 画进 ctx（调用方已设好 transform） ── */
-    function drawInto(ctx, yTop, yBot, shift){
-      var i, j, r, s, p, q, o, lx, ly, mx, my;
-      ctx.textBaseline = 'top';
-      for (i = 0; i < rows.length; i++){
-        r = rows[i];
-        if (r.y + r.h + GAP < yTop || r.y - GAP > yBot) continue;
-        if (skips[i]){
-          ctx.fillStyle = '#f4f5f7';
-          ctx.fillRect(0, r.y - 2, W, r.h + 4);
-          ctx.font = '600 11.5px ' + FONT;
-          ctx.fillStyle = '#b4bac1';
-          ctx.fillText('第' + (i + 1) + '句 · ⏭ 已跳过', 9, r.y + 8);
-          continue;
-        }
-        if (i === curLi){ ctx.fillStyle = '#fffbe6'; ctx.fillRect(0, r.y - 3, W, r.h + 6); }
-        ctx.font = '600 11.5px ' + FONT;
-        ctx.fillStyle = (i === curLi) ? '#a37d12' : '#adb5bd';
-        ctx.fillText('第' + (i + 1) + '句', 9, r.y + (r.h < 40 ? 2 : 4));
-        if (r.h >= 40){
-          ctx.strokeStyle = '#f1f3f6'; ctx.lineWidth = 1;
-          ctx.beginPath(); ctx.moveTo(PAD_L - 4, r.y + r.h / 2 - 8); ctx.lineTo(W - PAD_R, r.y + r.h / 2 - 8); ctx.stroke();
-          ctx.setLineDash([5, 5]);
-        }
-        ctx.strokeStyle = '#dfe4e9'; ctx.lineWidth = 1;
-        ctx.beginPath(); ctx.moveTo(PAD_L, r.y + r.h - 8); ctx.lineTo(W - PAD_R, r.y + r.h - 8); ctx.stroke();
-        ctx.setLineDash([]);
-      }
-      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-      for (i = 0; i < strokes.length; i++){
-        s = strokes[i]; r = rows[s.li];
-        if (!r) continue;
-        if (!shift && (r.y + r.h + GAP < yTop - 80 || r.y - GAP > yBot + 80)) continue;
-        var dy = shift ? shift(s.li) : 0;
-        p = s.pts; var n = p.length;
-        ctx.strokeStyle = CO; ctx.fillStyle = CO;
-        if (n === 1){
-          ctx.beginPath(); ctx.arc(p[0][0], p[0][1] + dy, Math.max(.6, p[0][2] / 2), 0, 6.2832); ctx.fill();
-          continue;
-        }
-        lx = p[0][0]; ly = p[0][1] + dy;
-        for (j = 1; j < n; j++){
-          q = p[j]; o = p[j - 1];
-          mx = (o[0] + q[0]) / 2; my = (o[1] + q[1]) / 2 + dy;
-          ctx.lineWidth = q[2];
-          ctx.beginPath(); ctx.moveTo(lx, ly);
-          ctx.quadraticCurveTo(o[0], o[1] + dy, mx, my);
-          ctx.stroke();
-          lx = mx; ly = my;
-        }
-      }
-    }
-
-    function drawBlock(b){
-      var ctx = b.ctx;
-      ctx.setTransform(DPR, 0, 0, DPR, 0, -b.top * DPR);
-      ctx.clearRect(0, b.top, W, b.h);
-      ctx.fillStyle = '#fff';
-      ctx.fillRect(0, b.top, W, b.h);
-      drawInto(ctx, b.top, b.bot, null);
-    }
-    function drawAll(){ for (var i = 0; i < blocks.length; i++) drawBlock(blocks[i]); }
-    function drawRow(li){
-      if (li < 0) return;
-      for (var i = 0; i < blocks.length; i++){
-        var b = blocks[i];
-        if (li >= b.from && li < b.to){ drawBlock(b); return; }
-      }
-    }
-
-    function layout(force){
-      var cw = wrap.clientWidth;
-      if (!cw) return false;
-      if (!force && cw === W && blocks.length) return false;
-      W = cw;
-      wrap.innerHTML = '';
-      blocks = [];
-      for (var i = 0; i < rows.length; i += BLOCK_ROWS){
-        var to = Math.min(i + BLOCK_ROWS, rows.length);
-        var top = (i === 0) ? 0 : rows[i].y - GAP;
-        var bot = (to >= rows.length) ? H : rows[to].y - GAP;
-        var bh = bot - top;
-        var cv = document.createElement('canvas');
-        cv.width = Math.round(W * DPR);
-        cv.height = Math.round(bh * DPR);
-        cv.style.width = W + 'px';
-        cv.style.height = bh + 'px';
-        var b = { from:i, to:to, top:top, bot:bot, h:bh, cv:cv, ctx:cv.getContext('2d') };
-        cv.__blk = b;
-        wrap.appendChild(cv);
-        blocks.push(b);
-        drawBlock(b);
-      }
-      return true;
-    }
-
-    /* ── 书写（只有笔能写；手指留给滚动） ── */
-    function widthOf(e){
-      var p = (e.pointerType === 'pen' && typeof e.pressure === 'number' && e.pressure > 0) ? e.pressure : 0.5;
-      return Math.max(1.1, CW * (0.45 + p));
-    }
-    function locX(e, cv){ return e.clientX - cv.getBoundingClientRect().left; }
-    function locY(e, cv){ return e.clientY - cv.getBoundingClientRect().top + cv.__blk.top; }
-    function live(){
-      if (!cur || !cur.b) return;
-      var b = cur.b, ctx = b.ctx, p = cur.pts;
-      ctx.setTransform(DPR, 0, 0, DPR, 0, -b.top * DPR);
-      ctx.strokeStyle = CO; ctx.fillStyle = CO;
-      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-      if (p.length === 1){
-        ctx.beginPath(); ctx.arc(p[0][0], p[0][1], Math.max(.6, p[0][2] / 2), 0, 6.2832); ctx.fill();
-        cur.mid = [p[0][0], p[0][1]];
-      } else {
-        for (var i = cur.n; i < p.length; i++){
-          var q = p[i], o = p[i - 1];
-          var mx = (o[0] + q[0]) / 2, my = (o[1] + q[1]) / 2;
-          ctx.lineWidth = q[2];
-          ctx.beginPath(); ctx.moveTo(cur.mid[0], cur.mid[1]);
-          ctx.quadraticCurveTo(o[0], o[1], mx, my);
-          ctx.stroke();
-          cur.mid = [mx, my];
-        }
-      }
-      cur.n = p.length;
-    }
-
-    wrap.addEventListener('pointerdown', function(e){
-      if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
-      var cv = e.target;
-      if (!cv || !cv.__blk) return;
-      var x = locX(e, cv), y = locY(e, cv);
-      cur = { li:liAtY(y), pts:[[x, y, widthOf(e)]], n:1, mid:null, b:cv.__blk };
-      strokes.push(cur);
-      live();
-      e.preventDefault();
-    }, {passive:false});
-
-    wrap.addEventListener('pointermove', function(e){
-      if (!cur) return;
-      if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
-      var cv = cur.b.cv;
-      var evs = (typeof e.getCoalescedEvents === 'function') ? e.getCoalescedEvents() : null;
-      if (evs && evs.length){
-        for (var i = 0; i < evs.length; i++) cur.pts.push([locX(evs[i], cv), locY(evs[i], cv), widthOf(evs[i])]);
-      } else cur.pts.push([locX(e, cv), locY(e, cv), widthOf(e)]);
-      live();
-      e.preventDefault();
-    }, {passive:false});
-
-    ['pointerup', 'pointercancel'].forEach(function(ev){
-      wrap.addEventListener(ev, function(e){
-        if (!cur) return;
-        if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
-        var b = cur.b, r0 = rows[cur.li];
-        cur = null;
-        /* 收笔时按行高裁掉写飞出去的部分，避免串行 */
-        if (r0){
-          for (var i = strokes.length - 1; i >= 0; i--){
-            var s = strokes[i];
-            if (s.li !== r0.li) continue;
-            var lo = r0.y - 8, hi = r0.y + r0.h + 10;
-            for (var j = 0; j < s.pts.length; j++){
-              if (s.pts[j][1] < lo) s.pts[j][1] = lo;
-              if (s.pts[j][1] > hi) s.pts[j][1] = hi;
-            }
-            break;
-          }
-        }
-        if (b) drawBlock(b);
-        refreshCount();
+      list.innerHTML = h;
+      list.addEventListener('click', function(e){
+        var btn = e.target.closest('.dpx');
+        if (!btn) return;
+        var row = btn.closest('.dprow');
+        var li = parseInt(row.getAttribute('data-li'), 10);
+        setSkip(li, !skips[li]);
       });
-    });
+    }
 
-    /* ── 手指滚动（canvas 已 touch-action:none，需自己接管，含惯性） ── */
-    var TF = null;
-    wrap.addEventListener('pointerdown', function(e){
-      if (e.pointerType !== 'touch' || TF) return;
-      TF = { id:e.pointerId, y:e.clientY, base:(window.pageYOffset || 0), locked:false, hist:[[e.clientY, performance.now()]] };
-    }, {capture:true, passive:true});
-    wrap.addEventListener('pointermove', function(e){
-      if (!TF || e.pointerId !== TF.id) return;
-      var dy = TF.y - e.clientY;
-      if (!TF.locked){ if (Math.abs(dy) < 6) return; TF.locked = true; }
-      e.preventDefault();
-      window.scrollTo(window.pageXOffset || 0, TF.base + dy);
-      TF.hist.push([e.clientY, performance.now()]);
-      if (TF.hist.length > 5) TF.hist.shift();
-    }, {capture:true, passive:false});
-    ['pointerup', 'pointercancel'].forEach(function(ev){
-      wrap.addEventListener(ev, function(e){
-        if (!TF || e.pointerId !== TF.id) return;
-        var h = TF.hist, locked = TF.locked;
-        TF = null;
-        if (!locked || h.length < 2) return;
-        var a = h[0], b = h[h.length - 1], dt = b[1] - a[1];
-        if (dt < 8) return;
-        var vel = (a[0] - b[0]) / dt;
-        if (Math.abs(vel) < 0.1) return;
-        var last = performance.now();
-        (function step(){
-          var now = performance.now(), d = now - last; last = now;
-          if (d > 64) return;
-          vel *= Math.pow(0.9955, d);
-          if (Math.abs(vel) < 0.03) return;
-          window.scrollBy(0, vel * d);
-          requestAnimationFrame(step);
-        })();
-      }, {capture:true, passive:true});
-    });
-
-    /* ── 统计 / 按钮 ── */
-    var cnt = document.getElementById('dpCnt');
-    function writtenLi(){
-      var m = {}, i, j;
-      for (i = 0; i < strokes.length; i++){
-        var s = strokes[i], p = s.pts, x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
-        for (j = 0; j < p.length; j++){
-          if (p[j][0] < x0) x0 = p[j][0];
-          if (p[j][0] > x1) x1 = p[j][0];
-          if (p[j][1] < y0) y0 = p[j][1];
-          if (p[j][1] > y1) y1 = p[j][1];
-        }
-        if (p.length < 3 && (x1 - x0) < 12 && (y1 - y0) < 12) continue;   /* 误触点不算 */
-        m[s.li] = 1;
+    function paintRow(li){
+      var row = list.querySelector('.dprow[data-li="' + li + '"]');
+      if (!row) return;
+      var on = !!skips[li];
+      row.classList.toggle('skip', on);
+      var btn = row.querySelector('.dpx');
+      if (btn){
+        btn.textContent = on ? '✓ 已跳过' : '⏭ 跳过';
+        btn.classList.toggle('on', on);
       }
-      return m;
-    }
-    function refreshCount(){
-      var m = writtenLi(), n = 0;
-      for (var k in m) if (m.hasOwnProperty(k)) n++;
-      API.written = n;
-      if (cnt) cnt.textContent = n ? ('已写 ' + n + ' / ' + rows.length + ' 句') : '';
-    }
-
-    var undo = document.getElementById('dpUndo');
-    if (undo) undo.addEventListener('click', function(){
-      if (!strokes.length){ toast('还没有笔迹'); return; }
-      var s = strokes.pop();
-      drawRow(s.li);
-      refreshCount();
-    });
-    var clr = document.getElementById('dpClear');
-    if (clr) clr.addEventListener('click', function(){
-      if (!strokes.length) return;
-      strokes = []; cur = null;
-      drawAll(); refreshCount();
-      var o = document.getElementById('dpOut');
-      if (o) o.style.display = 'none';
-      toast('听写本已清空');
-    });
-
-    /* 导出：没写的行压扁，保证宽度够清晰、总高可控 */
-    function exportPNG(){
-      var seen = writtenLi(), ex = [], i;
-      var HEAD = 42;
-      var y = HEAD + GAP;
-      for (i = 0; i < rows.length; i++){
-        var h = (skips[i] || !seen[i]) ? 34 : rows[i].nh;
-        ex.push({ li:i, y:y, h:h });
-        y += h + GAP;
-      }
-      var exH = y, sc = Math.min(2.6, Math.max(1, 660 / W));
-      if (exH * sc > 7000) sc = 7000 / exH;
-      sc = Math.max(0.9, sc);
-
-      var c = document.createElement('canvas');
-      c.width = Math.round(W * sc); c.height = Math.round(exH * sc);
-      var cx = c.getContext('2d');
-      cx.setTransform(sc, 0, 0, sc, 0, 0);
-      cx.fillStyle = '#fff'; cx.fillRect(0, 0, W, exH);
-
-      var h1 = document.querySelector('header h1');
-      cx.font = '700 15px ' + FONT;
-      cx.fillStyle = '#1b1e23';
-      cx.textBaseline = 'top';
-      cx.fillText('听写照 · ' + (h1 ? h1.textContent.trim() : ''), 10, 8);
-      cx.font = '400 11.5px ' + FONT;
-      cx.fillStyle = '#9aa3ad';
-      var wc = 0, sc2 = 0, k2;
-      for (k2 in seen) if (seen.hasOwnProperty(k2)) wc++;
-      for (k2 in skips) if (skips.hasOwnProperty(k2) && skips[k2]) sc2++;
-      cx.fillText('已写 ' + wc + ' · 跳过 ' + sc2 + ' / 共 ' + rows.length + ' 句　·　空白行＝没听出来', 10, 27);
-      cx.strokeStyle = '#e8ebef'; cx.lineWidth = 1;
-      cx.beginPath(); cx.moveTo(0, HEAD - 0.5); cx.lineTo(W, HEAD - 0.5); cx.stroke();
-
-      var sh = [], keepRows = rows, keepH = H, keepLi = curLi;
-      for (i = 0; i < rows.length; i++) sh.push(ex[i].y - rows[i].y);
-      rows = ex; H = exH; curLi = -1;
-      drawInto(cx, 0, exH, function(li){ return sh[li] || 0; });
-      rows = keepRows; H = keepH; curLi = keepLi;
-      return c.toDataURL('image/png');
-    }
-
-    var save = document.getElementById('dpSave');
-    if (save) save.addEventListener('click', function(){
-      if (!strokes.length){ toast('还是空本子，先听写吧'); return; }
-      var out = document.getElementById('dpOut');
-      var img = document.getElementById('dpImg');
-      var dl = document.getElementById('dpDl');
-      toast('正在生成听写照…');
-      setTimeout(function(){
-        try{
-          var url = exportPNG();
-          img.src = url;
-          if (dl) dl.href = url;
-          out.style.display = 'block';
-          out.scrollIntoView({behavior:'smooth', block:'nearest'});
-          toast('已生成，长按图片保存或截图发我');
-        }catch(err){ toast('生成失败，直接截图吧'); }
-      }, 30);
-    });
-
-    var rzT = 0;
-    window.addEventListener('resize', function(){
-      clearTimeout(rzT);
-      rzT = setTimeout(function(){ layout(); }, 220);
-    }, {passive:true});
-
-    function show(){
-      card.classList.remove('hide');
-      layout();
-    }
-    function hide(){ card.classList.add('hide'); }
-    function focusLine(li){
-      if (card.classList.contains('hide')) return;
-      layout();
-      if (li !== curLi){ var old = curLi; curLi = li; drawRow(old); drawRow(li); }
-      if (cur) return;                                  /* 正在写，别抢滚动 */
-      var r = rows[li];
-      if (!r) return;
-      var top = wrap.getBoundingClientRect().top + (window.pageYOffset || 0) + r.y;
-      var vp = window.pageYOffset || 0;
-      if (top < vp + 90 || top > vp + window.innerHeight - 220)
-        window.scrollTo({ top: Math.max(0, top - 120), behavior:'smooth' });
     }
 
     function setSkip(li, bool){
       skips[li] = bool ? 1 : 0;
-      if (bool){
-        /* 标记「不写」时清掉该行已写的笔迹，避免导出时挤成一团 */
-        strokes = strokes.filter(function(s){ return s.li !== li; });
-      }
       saveSkips();
-      relayout();
-      layout(true);
+      paintRow(li);
       refreshCount();
     }
     function isSkip(li){ return !!skips[li]; }
 
-    API.show = show; API.hide = hide; API.focusLine = focusLine; API.layout = layout;
-    API.setSkip = setSkip; API.isSkip = isSkip;
+    /* 没跳过的句 = 没听清、需要写的句（进错题本） */
+    function getUnskipped(){
+      var out = [], i;
+      for (i = 0; i < LINES.length; i++){
+        if (!skips[i]) out.push({ li:i, en:LINES[i].en || '', zh:LINES[i].zh || '' });
+      }
+      return out;
+    }
+
+    function refreshCount(){
+      var n = 0, i;
+      for (i = 0; i < LINES.length; i++) if (!skips[i]) n++;
+      API.written = n;
+    }
+
+    function show(){
+      card.classList.remove('hide');
+      if (!list.childNodes.length) buildList();
+    }
+    function hide(){ card.classList.add('hide'); }
+    function focusLine(li){
+      if (card.classList.contains('hide')) return;
+      if (li === curLi) return;
+      var old = curLi; curLi = li;
+      if (old >= 0){
+        var r0 = list.querySelector('.dprow[data-li="' + old + '"]');
+        if (r0) r0.classList.remove('cur');
+      }
+      var row = list.querySelector('.dprow[data-li="' + li + '"]');
+      if (!row) return;
+      row.classList.add('cur');
+      var top = row.getBoundingClientRect().top + (window.pageYOffset || 0);
+      var vp = window.pageYOffset || 0;
+      if (top < vp + 90 || top > vp + window.innerHeight - 220)
+        row.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+
+    API.show = show; API.hide = hide; API.focusLine = focusLine;
+    API.setSkip = setSkip; API.isSkip = isSkip; API.getUnskipped = getUnskipped;
     window.__dictPad = API;
     return API;
   })();
@@ -1827,9 +1495,19 @@ var QUIZ = [{"id": "q8", "stem": "8. What does the woman say she was actually wo
 })();
 </script>
 
+<div id="dictBar">
+  <span class="db-txt"></span>
+  <button id="dbSpeed" title="播放速度（点一下切换）">🐢 1.0×</button>
+  <button id="dbRep" title="每句重复几遍（点一下切换）">🔂 3遍</button>
+  <button id="dbSkip" title="这句听清了就跳过，不写（进错题本的是没跳过的句）">⏭ 跳过</button>
+  <button id="dbAgain" title="把这句再读一遍">🔁<span class="lbl"> 重听</span></button>
+  <button id="dbNext" class="pri">▶ 下一句</button>
+  <button id="dbExit" title="退出听写模式">✕</button>
+</div>
 <script>
-/* 听写模式：逐句播放（可自动重读 N 遍）→ 播完自动暂停 → 听写本自动跳到那一行
-   新增：① 每句可标记「不写」（跳过，听写本压扁）② 倍速切换（0.85/1.0/1.15） */
+/* 听写模式：逐句播放（可自动重读 N 遍）→ 播完自动暂停 → 底部悬浮条控制
+   悬浮条进入模式即显示、始终可见；「下一句」播放中置灰、暂停时亮起；
+   退出时把「没跳过的句」写入错题本（localStorage） */
 (function(){
   var audio = document.getElementById('audio');
   var bar = document.getElementById('dictBar');
@@ -1843,7 +1521,7 @@ var QUIZ = [{"id": "q8", "stem": "8. What does the woman say she was actually wo
   var bSpeed = document.getElementById('dbSpeed');
   var bSkip = document.getElementById('dbSkip');
   var tpFollow = document.getElementById('tpFollow');
-  var on = false, curLi = -1, B = null, tick = 0, followBack = false, lastSelf = 0;
+  var on = false, curLi = -1, maxLi = -1, B = null, tick = 0, followBack = false, lastSelf = 0;
 
   var REP_KEY = 'cet4_rep_v1';
   var rep = 3, left = 0, gapTimer = 0, GAP_MS = 1800;   /* 遍与遍之间停 1.8 秒 */
@@ -1857,7 +1535,7 @@ var QUIZ = [{"id": "q8", "stem": "8. What does the woman say she was actually wo
   try {
     var sv = localStorage.getItem(SPD_KEY);
     if (sv === null || sv === ''){
-      var cr = (typeof rate !== 'undefined') ? rate : 0;   /* 主脚本的当前档位 */
+      var cr = (typeof rate !== 'undefined') ? rate : 0;
       for (var k = 0; k < SPD.length; k++) if (SPD[k].r === cr) spdI = k;
     } else {
       var v = parseInt(sv, 10); if (v >= 0 && v <= 2) spdI = v;
@@ -1873,12 +1551,13 @@ var QUIZ = [{"id": "q8", "stem": "8. What does the woman say she was actually wo
     try { localStorage.setItem(SPD_KEY, String(spdI)); } catch(e){}
   }
 
-  /* ── 逐句「写 / 不写」：状态交给听写本（pad）维护 ── */
-  function padSkip(li){ var D = window.__dictPad || null; return (D && D.isSkip) ? D.isSkip(li) : false; }
+  /* ── 逐句「跳过 / 写」：状态交给清单（pad）维护 ── */
+  function pad(){ return window.__dictPad || null; }
+  function padSkip(li){ var D = pad(); return (D && D.isSkip) ? D.isSkip(li) : false; }
   function skipLabel(){
     if (!bSkip) return;
     var s = curLi >= 0 && padSkip(curLi);
-    bSkip.textContent = s ? '✍️ 要写这句' : '⏭ 不写这句';
+    bSkip.textContent = s ? '✓ 要写' : '⏭ 跳过';
     bSkip.classList.toggle('on', !!s);
   }
 
@@ -1897,9 +1576,8 @@ var QUIZ = [{"id": "q8", "stem": "8. What does the woman say she was actually wo
     for (var i = 0; i < b.length; i++) if (t >= b[i][0] - 0.35 && t < b[i][1]) return i;
     return -1;
   }
-  function pad(){ return window.__dictPad || null; }
 
-  /* ── 句末判定：不靠 timeupdate 踩点，自己轮询，越过末尾就停 / 重读 ── */
+  /* ── 句末判定：轮询，越过末尾就停 / 重读 ── */
   function clearGap(){ if (gapTimer){ clearTimeout(gapTimer); gapTimer = 0; } }
   function stopTick(){ if (tick){ clearInterval(tick); tick = 0; } clearGap(); }
   function startTick(){ if (!tick) tick = setInterval(check, 70); }
@@ -1938,39 +1616,60 @@ var QUIZ = [{"id": "q8", "stem": "8. What does the woman say she was actually wo
     if (li < 0 || li >= b.length) return false;
     clearGap();
     curLi = li;
+    if (li > maxLi) maxLi = li;
     left = rep;
-    bar.classList.remove('on');
+    if (bNext) bNext.disabled = true;      /* 播放中：下一句置灰 */
+    txt.textContent = (li + 1) + '/' + b.length + ' ▶';
     var D = pad();
-    if (D) D.focusLine(li);             /* 本子跳到这一行 */
+    if (D) D.focusLine(li);                /* 清单跳到这一行 */
     skipLabel();
     playNow();
     return true;
   }
   function showWait(li){
     var b = bounds(), last = (li + 1 >= b.length);
-    if (last){
-      txt.innerHTML = '🎉 <b>全部播完</b> · 导出听写照发我';
-      bNext.textContent = '✓ 完成';
-    } else {
-      txt.innerHTML = '第 <b>' + (li + 1) + '</b> / ' + b.length + ' 句 · 没听清的写下来';
-      bNext.textContent = '▶ 下一句';
+    txt.textContent = (li + 1) + '/' + b.length + ' · 写或跳过';
+    if (bNext){
+      bNext.disabled = false;
+      bNext.textContent = last ? '✓ 完成' : '▶ 下一句';
     }
     skipLabel();
-    bar.classList.add('on');
   }
   function exitMode(){
-    on = false; curLi = -1;
+    on = false;
     stopTick();
+    saveWrongbook();
     btn.classList.remove('act'); btn.textContent = '✍️ 听写模式';
     bar.classList.remove('on');
+    if (bNext) bNext.disabled = false;
     if (window.__dictPad) window.__dictPad.hide();
     if (followBack && tpFollow){ tpFollow.click(); followBack = false; }
+  }
+
+  /* 把「没听清的句子」（没跳过的，且已播到过）写进错题本 */
+  function saveWrongbook(){
+    var D = pad();
+    if (!D || !D.getUnskipped) return;
+    var all = D.getUnskipped();
+    var items = all.filter(function(x){ return x.li <= maxLi; });
+    if (!items.length) return;
+    try {
+      var K = 'cet4_wrongbook', arr = JSON.parse(localStorage.getItem(K) || '[]') || [];
+      var page = location.pathname.split('/').pop() || '';
+      arr = arr.filter(function(x){ return !(x.type === 'listen-dict' && x.page === page); });
+      arr.push({
+        type: 'listen-dict', date: new Date().toISOString().slice(0, 10), page: page,
+        title: (document.querySelector('header h1') ? document.querySelector('header h1').textContent.trim() : page),
+        lines: items.map(function(x){ return { li:x.li, en:x.en, zh:x.zh }; })
+      });
+      localStorage.setItem(K, JSON.stringify(arr));
+    } catch(e){}
   }
 
   /* 用户自己点播放（或点单词跳播）时，把轮询接回来，并且这句不再自动重读 */
   audio.addEventListener('play', function(){
     if (!on) return;
-    if (performance.now() - lastSelf < 300) return;   /* 是「下一句」等自家触发的，别动遍数 */
+    if (performance.now() - lastSelf < 300) return;
     left = 1;
     startTick();
   });
@@ -1986,7 +1685,7 @@ var QUIZ = [{"id": "q8", "stem": "8. What does the woman say she was actually wo
     rep = rep >= 4 ? 1 : rep + 1;
     repLabel();
     try { localStorage.setItem(REP_KEY, rep); } catch(e){}
-    if (on && curLi >= 0 && !gapTimer){ left = rep; }   /* 当前句立即按新遍数来 */
+    if (on && curLi >= 0 && !gapTimer){ left = rep; }
   });
   if (bSpeed) bSpeed.addEventListener('click', function(){
     spdI = (spdI + 1) % SPD.length;
@@ -2003,15 +1702,13 @@ var QUIZ = [{"id": "q8", "stem": "8. What does the woman say she was actually wo
     if (on){ exitMode(); return; }
     on = true;
     btn.classList.add('act'); btn.textContent = '✍️ 听写模式 开';
-    /* 听写时由听写本主导滚动，先把播放器的「自动滚动」让出去，否则两边抢滚动 */
     if (tpFollow && tpFollow.classList.contains('act')){ followBack = true; tpFollow.click(); }
     applySpeed();
     var D = pad();
     if (D) D.show();
-    txt.innerHTML = '✍️ 每句播完自动暂停';
-    bNext.textContent = '▶ 下一句';
+    bar.classList.add('on');                /* 悬浮条立即显示，不再等到暂停 */
     var li0 = liAt(audio.currentTime);
-    playLine(li0 < 0 ? 0 : li0);      /* 播放中控制条收起，播完才吸顶出现 */
+    playLine(li0 < 0 ? 0 : li0);
   });
   bNext.addEventListener('click', function(){
     if (!on){ bar.classList.remove('on'); return; }
@@ -2038,5 +1735,56 @@ for (var qid in AL){
 }
 })();
 </script>
+<script>
+/* 错题本：判分完成后自动记录错题（从 DOM 读判分结果）到 localStorage */
+(function(){
+  var K = 'cet4_wrongbook', done = false, timer = 0;
+  function save(items, type){
+    try{
+      var arr = JSON.parse(localStorage.getItem(K) || '[]') || [];
+      var page = location.pathname.split('/').pop() || '';
+      arr = arr.filter(function(x){ return !(x.type === type && x.page === page); });
+      arr.push({ type: type, date: new Date().toISOString().slice(0, 10), page: page,
+                 title: (document.querySelector('header h1') ? document.querySelector('header h1').textContent.trim() : page),
+                 items: items });
+      localStorage.setItem(K, JSON.stringify(arr));
+    }catch(e){}
+  }
+  function collectWrong(){
+    var wrong = [];
+    document.querySelectorAll('.q[data-q]').forEach(function(qel){
+      var wrongEl = qel.querySelector('.opt.wrong');
+      if (!wrongEl) return;                     /* 做对了或没判分 */
+      var rightEl = qel.querySelector('.opt.right');
+      var stemEl = qel.querySelector('.stem, .qse');
+      var zhEl = qel.querySelector('.qsz');
+      var opts = [];
+      qel.querySelectorAll('.opt').forEach(function(o){ opts.push(o.textContent.trim()); });
+      wrong.push({
+        qid: qel.getAttribute('data-q'),
+        stem: stemEl ? stemEl.textContent.trim() : '',
+        zh: zhEl ? zhEl.textContent.trim() : '',
+        user: wrongEl.getAttribute('data-k'),
+        right: rightEl ? rightEl.getAttribute('data-k') : '',
+        opts: opts
+      });
+    });
+    return wrong;
+  }
+  function tryRecord(){
+    if (done) return;
+    if (!document.querySelector('.opt.wrong')) return;
+    done = true;
+    var wrong = collectWrong();
+    if (!wrong.length) return;
+    var isRead = /read-/.test(location.pathname);
+    save(wrong, isRead ? 'read-quiz' : 'listen-quiz');
+  }
+  timer = setInterval(tryRecord, 800);
+  setTimeout(function(){ clearInterval(timer); }, 600000);
+})();
+</script>
+
+
 </body>
 </html>

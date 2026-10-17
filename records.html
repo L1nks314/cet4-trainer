@@ -58,6 +58,12 @@ h1{font-size:22px;margin:0 0 16px;letter-spacing:-.3px}
   教练的归因与批改会追加在对应回执下面（晚间复盘后更新）。
 </div>
 
+
+<div class="card">
+  <div class="chead"><h2>错题本</h2><span class="cmeta" id="wcnt">0 题</span></div>
+  <div id="wrongList"><div class="empty">判分后错题会自动收进这里；听写没听清的句子也会进来。</div></div>
+</div>
+
 <div class="card">
   <div class="chead"><h2>回执与批改</h2><span class="cmeta" id="cnt">加载中…</span></div>
   <div id="list"><div class="empty">正在拉取云端记录…</div></div>
@@ -129,6 +135,47 @@ function coachFor(date, kind, coaches){
     return '<div class="coach"><b>教练归因</b><br>' + esc(c.text || '') + '</div>';
   }).join('');
 }
+
+/* 错题本：从 localStorage 渲染 */
+(function(){
+  function wbEsc(x){ return String(x==null?'':x).replace(/[&<>"]/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  try{
+    var arr = JSON.parse(localStorage.getItem('cet4_wrongbook') || '[]') || [];
+    var cnt = document.getElementById('wcnt'), box = document.getElementById('wrongList');
+    if (!cnt || !box) return;
+    if (!arr.length){ cnt.textContent = '0 题'; return; }
+    arr.sort(function(a,b){ return (b.date||'') < (a.date||'') ? -1 : 1; });
+    var html = '', total = 0, i, j;
+    for (i = 0; i < arr.length; i++){
+      var w = arr[i];
+      total += (w.items||[]).length + (w.lines||[]).length;
+      html += '<div class="day">' + wbEsc(w.date) + ' · ' + wbEsc(w.title || w.page || '') + '</div>';
+      if (w.type === 'listen-dict'){
+        html += '<div class="it"><div class="hd"><span class="pill a">听写没听清</span></div>';
+        for (j = 0; j < (w.lines||[]).length; j++){
+          var l = w.lines[j];
+          html += '<div class="bd" style="margin:4px 0">第' + (l.li + 1) + '句 · ' + wbEsc(l.en) + '</div>';
+        }
+        html += '</div>';
+      } else {
+        var isRead = w.type === 'read-quiz';
+        for (j = 0; j < (w.items||[]).length; j++){
+          var it = w.items[j];
+          html += '<div class="it"><div class="hd">'
+            + '<span class="pill ' + (isRead ? '' : 'g') + '">' + (isRead ? '阅读错题' : '听力错题') + '</span>'
+            + '<span class="tt">' + wbEsc(it.stem || '') + '</span></div>'
+            + '<div class="bd">你选 <b style="color:var(--red)">' + wbEsc(it.user || '') + '</b>，正确答案 <b style="color:var(--green)">' + wbEsc(it.right || '') + '</b></div>'
+            + (it.ansLine ? '<div class="bd" style="color:var(--sub);font-size:13px">答案句：' + wbEsc(it.ansLine) + '</div>' : '')
+            + '</div>';
+        }
+      }
+    }
+    cnt.textContent = total + ' 题';
+    box.innerHTML = html;
+  }catch(e){}
+})();
+
 </script>
 </body>
 </html>
