@@ -279,10 +279,28 @@ function pull(){
     .then(function(r){ return r.ok ? r.text() : ""; })
     .then(function(t){
       t=(t||"").trim(); if(!t) return null;
-      var lines=t.split("\n").filter(Boolean);
-      var d=JSON.parse(lines[lines.length-1]);
-      var p=JSON.parse(d.message);
-      return (p&&typeof p==="object")?p:null;
+      var out={}, found=false;
+      t.split("\n").filter(Boolean).forEach(function(line){
+        try{
+          var d=JSON.parse(line);
+          if(d.event && d.event!=="message") return;
+          var p=JSON.parse(d.message||"{}");
+          if(!p || typeof p!=="object" || p.t) return;       /* 跳过 rep/coach/photo */
+          var hasDate=false, k;
+          for(k in p){
+            if(k.length===10 && k.split("-").length===3){ hasDate=true; break; }
+          }
+          if(!hasDate) return;                              /* 只认打卡快照 */
+          found=true;
+          for(k in p){
+            if(!out[k]) out[k]={};
+            out[k].l = out[k].l || p[k].l;
+            out[k].o = out[k].o || p[k].o;
+            out[k].r = out[k].r || p[k].r;
+          }
+        }catch(e){}
+      });
+      return found ? out : null;
     })
     .catch(function(){ return undefined; });   // undefined = 网络失败
 }
@@ -410,13 +428,17 @@ renderHead();
 renderTasks();
 refreshStats();
 
-pull().then(function(remote){
-  if(remote === undefined){ setSync(false); return; }   // 网络不可用
+Promise.all([
+  pull(),
+  fetch("records.json?_="+Date.now(), {cache:"no-store"})
+    .then(function(r){ return r.json(); }).catch(function(){ return {}; })
+]).then(function(res){
+  var remote = res[0], arch = res[1] || {};
   var before = JSON.stringify(PROG);
-  PROG = mergeProg(BASE, loadLocal(), remote);
+  PROG = mergeProg(BASE, loadLocal(), remote, arch.prog || {});
   saveLocal(PROG);
   if(JSON.stringify(PROG) !== before){ renderTasks(); refreshStats(); }
-  setSync(true);
+  setSync(remote !== undefined);
   push(PROG);                                            // 每次打开刷新云端有效期
 });
 </script>
