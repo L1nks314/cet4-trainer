@@ -350,7 +350,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
   <h2><span class="num">__ND__</span>逐句听写清单</h2>
   <p class="hint"><b>分屏：一边网页当播放器，一边华为笔记写字。</b><br>点播放器里的 <b>✍️ 听写模式</b>，每句会自动重读几遍再停。没听清的句点「✗ 听不清」标记（<b>自动进错题本</b>），写进华为笔记。写完点右下角<b>「📷 上传手写照」</b>把照片传上来，我给你逐词批改。</p>
   <div class="dplist" id="dpList"></div>
-</div>>>>>>
+</div>>>>>>>
 
 
 <div class="card" id="receiptCard">
@@ -682,8 +682,12 @@ var QUIZ = [{"id": "q16", "stem": "16. What do children seem to have a natural d
     var L = ['【四级训练回执】', '日期：' + ds, '训练包：2024-12-1 · Section C 听力篇章'];
     if (typeof quizLines === 'function'){ L = L.concat(quizLines()); }
     var pd = window.__dictPad;
-    if (pd && pd.written) L.push('听不清：' + pd.written + ' 句（随附照片）');
-    else L.push('听不清：无（随附照片）');
+    if (pd && pd.written){
+      var nums = (pd.getUnclear ? pd.getUnclear() : []).map(function(x){ return x.li + 1; });
+      L.push('听不清：' + pd.written + ' 句' + (nums.length ? '（第 ' + nums.join('、') + ' 句）' : '') + '（随附照片）');
+    } else {
+      L.push('听不清：无（随附照片）');
+    }
     L.push('最难的一句：' + (document.getElementById('hardest').value || '（未填）'));
     L.push('—— 请据此给我出错因归因和改善方法');
     document.getElementById('receipt').value = L.join('\n');
@@ -708,7 +712,7 @@ var QUIZ = [{"id": "q16", "stem": "16. What do children seem to have a natural d
   document.getElementById('receipt').addEventListener('click', function(){ this.select(); this.setSelectionRange(0,99999); });
   buildReceipt();
 
-                  /* ---------- 逐句听写清单（纯列表 · 分屏手写 + 照片提交） ---------- */
+                    /* ---------- 逐句听写清单（纯列表 · 分屏手写 + 照片提交） ---------- */
   var DP = (function(){
     var card = document.getElementById('dictCard');
     var list = document.getElementById('dpList');
@@ -739,6 +743,9 @@ var QUIZ = [{"id": "q16", "stem": "16. What do children seem to have a natural d
            + '</div>';
       }
       list.innerHTML = h;
+      /* 恢复已标记状态（刷新页面后不能丢） */
+      for (var k = 0; k < LINES.length; k++) paintRow(k);
+      refreshCount();
       list.addEventListener('click', function(e){
         var eye = e.target.closest('.dpeye');
         if (eye){
@@ -779,6 +786,8 @@ var QUIZ = [{"id": "q16", "stem": "16. What do children seem to have a natural d
       saveUnclear();
       paintRow(li);
       refreshCount();
+      /* 标记变化后立即刷新回执（否则回执停在判分时的旧数量） */
+      if (window.__rebuild) { try { window.__rebuild(); } catch(e){} }
     }
     function isUnclear(li){ return !!unclear[li]; }
 
@@ -800,6 +809,7 @@ var QUIZ = [{"id": "q16", "stem": "16. What do children seem to have a natural d
     function show(){
       card.classList.remove('hide');
       if (!list.childNodes.length) buildList();
+      refreshCount();
     }
     function hide(){ card.classList.add('hide'); }
     function focusLine(li){
