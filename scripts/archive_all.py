@@ -43,7 +43,7 @@ def main():
     os.makedirs(PHOTOS, exist_ok=True)
     existing = set(os.listdir(PHOTOS))
 
-    arch = {"updated": "", "reps": [], "coaches": [], "photos": []}
+    arch = {"updated": "", "reps": [], "coaches": [], "photos": [], "prog": {}}
     if os.path.exists(RECORDS):
         try:
             arch = json.load(open(RECORDS, encoding="utf-8"))
@@ -51,11 +51,12 @@ def main():
             pass
     for k in ("reps", "coaches", "photos"):
         arch.setdefault(k, [])
+    arch.setdefault("prog", {})
 
     rep_keys = {(r.get("date"), r.get("kind"), r.get("page"), r.get("score") or "") for r in arch["reps"]}
     coach_keys = {(c.get("date"), c.get("kind"), c.get("text")) for c in arch["coaches"]}
     photo_keys = {p.get("name") for p in arch["photos"]}
-    ap = ar = ac = 0
+    ap = ar = ac = pg = 0
 
     for d in fetch_msgs():
         ts = datetime.datetime.fromtimestamp(d.get("time", 0)).strftime("%Y-%m-%d %H:%M")
@@ -101,11 +102,27 @@ def main():
                 coach_keys.add(k)
                 ac += 1
 
-    if ar or ac or ap:
+        elif not t:
+            # 打卡快照：形如 {"2026-10-17":{"l":1,"o":1,"r":1}}
+            for dk, dv in p.items():
+                if len(dk) != 10 or dk.count("-") != 2 or not isinstance(dv, dict):
+                    continue
+                cur = arch["prog"].get(dk, {})
+                changed = False
+                for f in ("l", "o", "r"):
+                    if dv.get(f) and not cur.get(f):
+                        cur[f] = 1
+                        changed = True
+                if changed or dk not in arch["prog"]:
+                    arch["prog"][dk] = cur
+                    if changed:
+                        pg += 1
+
+    if ar or ac or ap or pg:
         arch["updated"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
         with open(RECORDS, "w", encoding="utf-8") as f:
             json.dump(arch, f, ensure_ascii=False, indent=2)
-        print(f"照片+{ap} 回执+{ar} 批改+{ac}")
+        print(f"照片+{ap} 回执+{ar} 批改+{ac} 打卡+{pg}")
     else:
         print("无新增，跳过写入")
 
