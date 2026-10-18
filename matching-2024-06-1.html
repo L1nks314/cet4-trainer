@@ -1074,5 +1074,157 @@ var _sb=document.getElementById('sy-m1'); if(_sb)_sb.addEventListener('click',fu
   }
 })();
 </script>
+<!-- __ANS_SNAP_BEGIN__ -->
+<style>
+#ansReset{position:fixed;left:10px;bottom:72px;z-index:9998;display:none;align-items:center;gap:4px;
+ padding:7px 11px;font:600 12.5px/1 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+ color:#8a6d1f;background:#fffdf3;border:1.5px solid #e8d79b;border-radius:999px;
+ box-shadow:0 2px 10px rgba(0,0,0,.10);cursor:pointer;-webkit-tap-highlight-color:transparent}
+#ansReset:active{transform:scale(.96);background:#fdf6e3}
+@media(max-width:420px){#ansReset{bottom:66px;padding:6px 10px;font-size:12px}}
+</style>
+<button id="ansReset" title="清空本套作答，重新做一遍（作答与判分已自动保存，刷新不丢）">🔄 重做本套</button>
+<script>
+/* 作答快照：刷新/切后台后不丢答案，已提交状态可完整还原 */
+(function(){
+  var FILE = (location.pathname.split('/').pop() || 'index.html').replace(/[?#].*$/, '');
+  var KEY = 'cet4_ans_' + FILE;
+  var WEEK = 7 * 24 * 3600 * 1000;
+  var replaying = false;
+  var rawFetch = window.fetch;
+
+  /* 重放判分时屏蔽 ntfy 上云，避免重复回执 / 重复错题 */
+  window.fetch = function(url){
+    if (replaying && /ntfy\.sh/.test(String(url))){
+      return Promise.resolve(new Response('{}', { status: 200, headers: { 'Content-Type': 'application/json' } }));
+    }
+    return rawFetch.apply(this, arguments);
+  };
+
+  function setReplay(v){ replaying = v; window.__ansReplay = v; }
+
+  function load(){
+    try{
+      var o = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (!o || !o.picked) return null;
+      if (Date.now() - (o.at || 0) > WEEK){ localStorage.removeItem(KEY); return null; }
+      return o;
+    }catch(e){ return null; }
+  }
+
+  function collect(){
+    var p = {};
+    document.querySelectorAll('.q[data-q]').forEach(function(q){
+      var qid = q.getAttribute('data-q');
+      var sel = q.querySelector('.opt.sel');
+      if (sel){ p[qid] = sel.getAttribute('data-k'); return; }
+      /* 已判分：.sel 已被清除，从 p 对错标记反推当时的选择 */
+      var w = q.querySelector('.opt.wrong');
+      if (w){ p[qid] = w.getAttribute('data-k'); return; }
+      var r = q.querySelector('.opt.right');
+      if (r) p[qid] = r.getAttribute('data-k');
+    });
+    return p;
+  }
+
+  function collectCauses(){
+    var c = {};
+    document.querySelectorAll('.cchip input[data-q]:checked').forEach(function(cb){
+      var q = cb.getAttribute('data-q');
+      (c[q] = c[q] || []).push(cb.value);
+    });
+    return c;
+  }
+
+  function save(){
+    if (replaying) return;
+    var p = collect();
+    var has = Object.keys(p).length > 0;
+    if (!has && !document.querySelector('.q .opt.right')) return;
+    var submitted = !!document.querySelector('.q .opt.right');
+    var snap = { v: 1, at: Date.now(), page: FILE, picked: p, submitted: submitted, causes: submitted ? collectCauses() : {} };
+    try{ localStorage.setItem(KEY, JSON.stringify(snap)); }catch(e){}
+    syncBtn(snap);
+  }
+
+  function syncBtn(snap){
+    var b = document.getElementById('ansReset');
+    if (!b) return;
+    b.style.display = (snap && Object.keys(snap.picked || {}).length) ? 'inline-flex' : 'none';
+  }
+
+  function submitAll(snap){
+    var b1 = document.getElementById('submitBtn');
+    if (b1){
+      if (!b1.disabled) b1.click();
+      return;
+    }
+    document.querySelectorAll('.submit').forEach(function(b){
+      if (b.disabled) return;
+      var sec = b.getAttribute('data-sec');
+      var box = null;
+      if (sec) box = document.getElementById(sec) || document.getElementById(sec + '-quiz');
+      else box = b.closest('.card');
+      if (!box) return;
+      var has = false;
+      box.querySelectorAll('.q[data-q]').forEach(function(q){
+        if (snap.picked[q.getAttribute('data-q')] != null) has = true;
+      });
+      if (has) b.click();
+    });
+  }
+
+  function restore(snap){
+    var n = 0;
+    Object.keys(snap.picked).forEach(function(q){
+      var qEl = document.querySelector('.q[data-q="' + q + '"]');
+      if (!qEl) return;
+      var o = qEl.querySelector('.opt[data-k="' + snap.picked[q] + '"]');
+      if (o){ o.click(); n++; }
+    });
+    if (!snap.submitted || !n) return n > 0;
+
+    setReplay(true);
+    try{
+      submitAll(snap);
+      Object.keys(snap.causes || {}).forEach(function(q){
+        (snap.causes[q] || []).forEach(function(c){
+          var sel = '.cchip input[data-q="' + q + '"][value="' + c + '"]';
+          var cb = document.querySelector(sel);
+          if (cb && !cb.checked){ cb.checked = true; cb.dispatchEvent(new Event('change', { bubbles: true })); }
+        });
+      });
+    }catch(e){}
+    /* 留 2.5 秒静默窗：让错题本轮询跳过本轮，避免重复记录 */
+    setTimeout(function(){ setReplay(false); }, 2500);
+    return true;
+  }
+
+  /* 点选项 / 提交 / 勾错因后延迟保存 */
+  document.addEventListener('click', function(e){
+    if (replaying || !e.target || !e.target.closest) return;
+    if (!e.target.closest('.opt, .submit, #submitBtn, .cchip')) return;
+    setTimeout(save, 40);
+  }, true);
+
+  document.addEventListener('change', function(e){
+    if (replaying || !e.target || !e.target.matches) return;
+    if (!e.target.matches('.cchip input')) return;
+    setTimeout(save, 40);
+  }, true);
+
+  var btn = document.getElementById('ansReset');
+  if (btn) btn.addEventListener('click', function(){
+    if (!confirm('清空本套作答，重新做一遍？')) return;
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    location.reload();
+  });
+
+  var snap = load();
+  if (snap){ restore(snap); syncBtn(snap); }
+  else syncBtn(null);
+})();
+</script>
+<!-- __ANS_SNAP_END__ -->
 </body>
 </html>
