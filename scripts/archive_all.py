@@ -1,0 +1,111 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""GitHub Actions 复用：拉取 ntfy 近期消息 → 转存照片到 photos/ + 归档到 records.json。
+不需要任何个人 token；提交由 workflow 的 git 步骤完成。
+"""
+import json
+import os
+import re
+import subprocess
+import datetime
+
+TOPIC = "cet4-718beb5773e8edd9ef48eb651cb1439dd362eb4a8d28f449"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PHOTOS = os.path.join(ROOT, "photos")
+RECORDS = os.path.join(ROOT, "records.json")
+
+
+def fetch_msgs():
+    r = subprocess.run(
+        ["curl", "-sL", "--max-time", "30",
+         f"https://ntfy.sh/{TOPIC}/json?poll=1&since=3h"],
+        capture_output=True)
+    out = []
+    for line in r.stdout.decode("utf-8", "ignore").split("\n"):
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            d = json.loads(line)
+            if d.get("event") == "message":
+                out.append(d)
+        except Exception:
+            pass
+    return out
+
+
+def parse_score(text):
+    m = re.search(r"结果：(\d+/\d+)", text or "")
+    return m.group(1) if m else ""
+
+
+def main():
+    os.makedirs(PHOTOS, exist_ok=True)
+    existing = set(os.listdir(PHOTOS))
+
+    arch = {"updated": "", "reps": [], "coaches": [], "photos": []}
+    if os.path.exists(RECORDS):
+        try:
+            arch = json.load(open(RECORDS, encoding="utf-8"))
+        except Exception:
+            pass
+    for k in ("reps", "coaches", "photos"):
+        arch.setdefault(k, [])
+
+    rep_keys = {(r.get("date"), r.get("kind"), r.get("page"), r.get("score") or "") for r in arch["reps"]}
+    coach_keys = {(c.get("date"), c.get("kind"), c.get("text")) for c in arch["coaches"]}
+    photo_keys = {p.get("name") for p in arch["photos"]}
+    ap = ar = ac = 0
+
+    for d in fetch_msgs():
+        ts = datetime.datetime.fromtimestamp(d.get("time", 0)).strftime("%Y-%m-%d %H:%M")
+        try:
+            p = json.loads(d.get("message", "") or "{}")
+        except Exception:
+            continue
+        if not isinstance(p, dict):
+            continue
+        t = p.get("t")
+        att = d.get("attachment") or {}
+        name = att.get("name") or ""
+
+        if t == "photo" and name and not name.startswith("test_"):
+            if name not in existing:
+                dest = os.path.join(PHOTOS, name)
+                subprocess.run(["curl", "-sL", "--max-time", "90", "-o", dest, att.get("url", "")],
+                               capture_output=True)
+                if os.path.exists(dest) and os.path.getsize(dest) > 0:
+                    existing.add(name)
+                    ap += 1
+                elif os.path.exists(dest):
+                    os.remove(dest)
+            if name not in photo_keys:
+                arch["photos"].append({"date": p.get("date"), "kind": p.get("kind"), "page": p.get("page"),
+                                       "title": p.get("title", ""), "name": name, "ts": ts})
+                photo_keys.add(name)
+
+        elif t == "rep":
+            sc = p.get("score") or parse_score(p.get("text"))
+            k = (p.get("date"), p.get("kind"), p.get("page"), sc or "")
+            if k not in rep_keys:
+                arch["reps"].append({"date": p.get("date"), "kind": p.get("kind"), "page": p.get("page"),
+                                     "text": p.get("text", ""), "score": sc, "pct": p.get("pct"), "ts": ts})
+                rep_keys.add(k)
+                ar += 1
+
+        elif t == "coach":
+            k = (p.get("date"), p.get("kind"), p.get("text"))
+            if k not in coach_keys:
+                arch["coaches"].append({"date": p.get("date"), "kind": p.get("kind"),
+                                        "text": p.get("text", ""), "ts": ts})
+                coach_keys.add(k)
+                ac += 1
+
+    arch["updated"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    with open(RECORDS, "w", encoding="utf-8") as f:
+        json.dump(arch, f, ensure_ascii=False, indent=2)
+    print(f"照片+{ap} 回执+{ar} 批改+{ac}")
+
+
+if __name__ == "__main__":
+    main()
