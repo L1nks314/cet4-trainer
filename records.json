@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-18 08:29",
+  "updated": "2026-10-18 09:00",
   "reps": [
     {
       "date": "2026-10-17",
@@ -27,6 +27,15 @@
       "score": "3/8",
       "pct": null,
       "ts": "2026-10-18 06:51"
+    },
+    {
+      "date": "2026-10-18",
+      "kind": "listening",
+      "page": "2025-12-1 · Section B 长对话",
+      "text": "【四级训练回执】\n日期：2026-10-18\n训练包：2025-12-1 · Section B 长对话\n结果：0/8 · 正确率 0%\n第8题：✘  我选 undefined / 正确 C\n第9题：✘  我选 undefined / 正确 A\n第10题：✘  我选 undefined / 正确 B\n第11题：✘  我选 undefined / 正确 B\n第12题：✘  我选 undefined / 正确 A\n第13题：✘  我选 undefined / 正确 D\n第14题：✘  我选 undefined / 正确 C\n第15题：✘  我选 undefined / 正确 D\n听不清：4 句（第 15、16、19、20 句）（随附照片）\n最难的一句：（未填）\n—— 请据此给我出错因归因和改善方法",
+      "score": "0/8",
+      "pct": null,
+      "ts": "2026-10-18 08:57"
     }
   ],
   "coaches": [
