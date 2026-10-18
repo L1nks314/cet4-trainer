@@ -101,10 +101,13 @@ def main():
                 coach_keys.add(k)
                 ac += 1
 
-    arch["updated"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
-    with open(RECORDS, "w", encoding="utf-8") as f:
-        json.dump(arch, f, ensure_ascii=False, indent=2)
-    print(f"照片+{ap} 回执+{ar} 批改+{ac}")
+    if ar or ac or ap:
+        arch["updated"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+        with open(RECORDS, "w", encoding="utf-8") as f:
+            json.dump(arch, f, ensure_ascii=False, indent=2)
+        print(f"照片+{ap} 回执+{ar} 批改+{ac}")
+    else:
+        print("无新增，跳过写入")
 
 
 if __name__ == "__main__":
