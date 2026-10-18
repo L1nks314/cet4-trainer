@@ -53,6 +53,9 @@ def main():
         arch.setdefault(k, [])
     arch.setdefault("prog", {})
 
+    # 清掉历史遗留的无效回执（「我选 undefined」）
+    arch["reps"] = [r for r in arch["reps"] if "undefined" not in str(r.get("text", "")).lower()]
+
     rep_keys = {(r.get("date"), r.get("kind"), r.get("page"), r.get("score") or "") for r in arch["reps"]}
     coach_keys = {(c.get("date"), c.get("kind"), c.get("text")) for c in arch["coaches"]}
     photo_keys = {p.get("name") for p in arch["photos"]}
@@ -86,6 +89,9 @@ def main():
                 photo_keys.add(name)
 
         elif t == "rep":
+            # 无效回执：刷新后选项丢失又点提交 → 「我选 undefined」，不归档
+            if "undefined" in str(p.get("text", "")).lower():
+                continue
             sc = p.get("score") or parse_score(p.get("text"))
             k = (p.get("date"), p.get("kind"), p.get("page"), sc or "")
             if k not in rep_keys:
