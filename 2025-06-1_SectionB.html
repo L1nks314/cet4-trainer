@@ -1020,7 +1020,8 @@ for (var qid in AL){
     if (!c) return;
     var r = c.getBoundingClientRect();
     if (r.width > 0 && r.height > 0){ ctx.beginPath(); ctx.rect(r.left, r.top, r.width, r.height); ctx.clip(); }
-  }
+  }  function visEl(e){ return !!e && e.getClientRects().length > 0 && e.offsetWidth > 0; }
+
   function bboxOf(s){
     var p = s.pts, n = p.length, x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
     for (var i = 0; i < n; i++){
@@ -1084,6 +1085,7 @@ for (var qid in AL){
   }
 
   function drawStroke(s, sparse, acache){
+    if (s.host && !visEl(s.host)) return;
     var pts = s.pts, n = pts.length;
     if (!n) return;
     var off = offOf(s), bx = -OX, by = off - OY + shiftOf(s, acache);
@@ -1141,6 +1143,7 @@ for (var qid in AL){
 
   function live(){
     if (!cur) return;
+    if (cur.host && !visEl(cur.host)) return;
     var pts = cur.pts, n = pts.length;
     var off = offOf(cur), bx = -OX, by = off - OY + shiftOf(cur, null);
     ctx.save();
@@ -1173,6 +1176,13 @@ for (var qid in AL){
   }
 
   setSize(); syncScroll();
+  /* 分页切换（tab / 分栏）后重绘：隐藏分页的笔迹不再残留在画布上 */
+  var moT = 0;
+  try{
+    var mo = new MutationObserver(function(){ clearTimeout(moT); moT = setTimeout(function(){ schedule(true); }, 80); });
+    var pv = document.querySelectorAll('.panel, .card');
+    for (var pi = 0; pi < pv.length; pi++) mo.observe(pv[pi], {attributes:true, attributeFilter:['class']});
+  }catch(e){}
   window.addEventListener('scroll', function(){ schedule(true); }, {passive:true});
   window.addEventListener('resize', function(){
     clearTimeout(rzT);
@@ -1421,8 +1431,10 @@ for (var qid in AL){
     if (eraBtn && mode !== 'erase') flashEra();
     var x = e.pageX, y = e.pageY, w = widthOf(e, useEra);
     var o = ownerOf(x, y);
+    var he0 = document.elementFromPoint(e.clientX, e.clientY);
+    var host0 = o.c || (he0 && he0.closest ? (he0.closest('.panel') || he0.closest('.card')) : null);
     cur = { pts:[[x, y, w]], color:color, era:useEra,
-            c:o.c, c0:o.c0, n:1, mid:[0, 0], bb:null,
+            c:o.c, c0:o.c0, host:host0, n:1, mid:[0, 0], bb:null,
             anch: anchorOf(e.clientX, e.clientY) };
     if (cur.era) hasEra = true;
     strokes.push(cur);
