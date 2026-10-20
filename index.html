@@ -245,6 +245,17 @@ function loadLocal(){
 }
 function saveLocal(p){ try{ localStorage.setItem(PROG_KEY, JSON.stringify(p)); }catch(e){} }
 
+function loadDone(){                 // 训练页写的 cet4_done → PROG 结构（含历史）
+  try{
+    var d=JSON.parse(localStorage.getItem('cet4_done')||'{}'), out={}, k;
+    for(k in d){
+      var v=d[k]||{};
+      if(v.listen||v.other||v.receipt) out[k]={ l:v.listen?1:0, o:v.other?1:0, r:v.receipt?1:0 };
+    }
+    return out;
+  }catch(e){ return {}; }
+}
+
 function mergeProg(){                 // 并集：任一层标记完成即算完成
   var out={}, keys={}, i;
   for(i=0;i<arguments.length;i++){
@@ -435,7 +446,7 @@ Promise.all([
 ]).then(function(res){
   var remote = res[0], arch = res[1] || {};
   var before = JSON.stringify(PROG);
-  PROG = mergeProg(BASE, loadLocal(), remote, arch.prog || {});
+  PROG = mergeProg(BASE, loadLocal(), loadDone(), remote, arch.prog || {});
   saveLocal(PROG);
   if(JSON.stringify(PROG) !== before){ renderTasks(); refreshStats(); }
   setSync(remote !== undefined);
@@ -448,13 +459,27 @@ Promise.all([
 /* 完成记录：训练包做完后自动写入，作战台据此自动打勾 */
 (function(){
   window.__markDone = function(kind){
+    var changed = false, d = {};
     try{
-      var K='cet4_done', d=JSON.parse(localStorage.getItem(K)||'{}');
+      var K='cet4_done', d2=JSON.parse(localStorage.getItem(K)||'{}');
+      d = d2 || {};
       var t=new Date();
       var ds=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');
       d[ds]=d[ds]||{};
-      if(!d[ds][kind]) d[ds][kind]=Date.now();
+      if(!d[ds][kind]){ d[ds][kind]=Date.now(); changed = true; }
       localStorage.setItem(K, JSON.stringify(d));
+    }catch(e){}
+    if(!changed) return;
+    /* 完成即上云：最近 5 天快照推给云端，供首页累计 / Actions 归档 / 跨设备同步 */
+    try{
+      var snap={}, ks=Object.keys(d).sort().slice(-5), i;
+      for(i=0;i<ks.length;i++){
+        var v=d[ks[i]]||{};
+        snap[ks[i]]={ l:v.listen?1:0, o:v.other?1:0, r:v.receipt?1:0 };
+      }
+      var x=new XMLHttpRequest();
+      x.open('POST','https://ntfy.sh/cet4-718beb5773e8edd9ef48eb651cb1439dd362eb4a8d28f449',true);
+      x.send(JSON.stringify(snap));
     }catch(e){}
   };
   /* 判分/回执上云成功 = 当天这一项完成 */
@@ -462,7 +487,7 @@ Promise.all([
   window.fetch = function(u){
     var p = _f.apply(this, arguments);
     try{
-      if (typeof u === 'string' && u.indexOf('ntfy.sh') >= 0){
+      if (typeof u === 'string' && u.indexOf('ntfy.sh') >= 0 && !/(^|\/)(index|records)\.html$/.test(location.pathname)){
         p.then(function(r){
           if (r && r.ok){
             window.__markDone(/_Section/.test(location.pathname) ? 'listen' : 'other');
