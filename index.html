@@ -373,6 +373,25 @@ function renderTasks(){
     else { lessonTxt="两轮已完成 · 保温：重听错句、跟读"; lbtn=LESSONS[0].f; }
   }
   var tHtml='';
+  if (isRestDay(today)){
+    tHtml+='<div class="task'+(done.o?" on":"")+'" data-k="o"><div class="box'+(done.o?" on":"")+'"></div>'
+     +'<div class="tk"><div class="tt">轻量日 · 15 分钟</div>'
+     +'<div class="td">本周休息日：只把错题句重听一遍，或跟读 3 句。不做套题、不写回执——歇够明天才有劲。</div>'
+     +'<a class="btn" href="records.html">打开错题本 →</a></div></div>';
+    tHtml+='<div class="streak"><div><b id="sk">0</b><div class="lb">连续打卡（天）</div></div>'
+     +'<div><b id="td">0</b><div class="lb">累计完成（天）</div></div></div>';
+    document.getElementById("tasks").innerHTML = tHtml;
+    document.querySelectorAll(".task").forEach(function(el){
+      el.querySelector(".box").addEventListener("click", function(){
+        var k = el.dataset.k, cur = PROG[fmt(today)] || {};
+        cur[k] = !cur[k]; PROG[fmt(today)] = cur;
+        saveLocal(PROG); push(PROG);
+        el.classList.toggle("on", cur[k]); this.classList.toggle("on", cur[k]);
+        refreshStats(); setSync(synced===null?null:true);
+      });
+    });
+    return;
+  }
   tHtml+='<div class="task'+(done.l?" on":"")+'" data-k="l"><div class="box'+(done.l?" on":"")+'"></div>'
    +'<div class="tk"><div class="tt">听力精听 · 40 分钟</div>'
    +'<div class="td">'+lessonTxt+'</div>'
@@ -416,6 +435,8 @@ function renderTasks(){
   });
 }
 
+function isRestDay(d){ return d.getDay() === 0; }   /* 每周日 = 轻量日（15 分钟，不算断签） */
+
 function refreshStats(){
   var cnt=0,run=0,d,dd,v;
   for(d=0;d<400;d++){
@@ -426,9 +447,11 @@ function refreshStats(){
   }
   for(d=0;d<400;d++){
     dd=new Date(today.getFullYear(),today.getMonth(),today.getDate()-d);
+    if(dd<START) break;
     v=PROG[fmt(dd)];
-    if(v && (v.l||v.o)) run++; else if(d>0) break; else { /* 今天未做不算断档 */ }
-    if(d>0 && !(v && (v.l||v.o))) break;
+    if(v && (v.l||v.o)){ run++; continue; }   /* 有完成 */
+    if(isRestDay(dd)){ continue; }            /* 休息日：不断签、也不计天数 */
+    if(d>0) break;                            /* 非休息日空缺 → 断 */
   }
   var a=document.getElementById("sk"), b=document.getElementById("td");
   if(a) a.textContent=run; if(b) b.textContent=cnt;
