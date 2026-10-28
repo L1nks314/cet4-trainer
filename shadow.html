@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>跟读训练</title>
+<style>
+  :root{ --bg:#0f1216; --panel:#171b21; --line:#2a3038; --txt:#e8ecf1; --sub:#8b95a3;
+         --blue:#38bdf8; --green:#34d399; --amber:#fbbf24; }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%}
+  body{background:var(--bg);color:var(--txt);font:400 15px/1.5 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+       display:flex;flex-direction:column;overflow:hidden}
+
+  header{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+  header .back{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--panel);
+       color:var(--txt);font-size:17px;line-height:1;display:flex;align-items:center;justify-content:center;text-decoration:none}
+  header .ttl{flex:1;min-width:0;font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  header .eye{width:38px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--sub);font-size:15px}
+  header .eye.on{color:var(--blue);border-color:var(--blue)}
+
+  main{flex:1;min-height:0;display:flex;flex-direction:column;padding:14px 16px 0}
+
+  .modebar{display:flex;gap:8px;margin-bottom:14px}
+  .modebar button{flex:1;padding:10px 6px;border-radius:12px;border:1.5px solid var(--line);background:var(--panel);
+       color:var(--sub);font:600 13.5px/1.2 inherit}
+  .modebar button.on{background:rgba(56,189,248,.14);border-color:var(--blue);color:var(--blue)}
+
+  .stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center}
+  .idx{font:700 34px/1.1 -apple-system,"PingFang SC",sans-serif;letter-spacing:.5px}
+  .idx small{font-size:15px;color:var(--sub);font-weight:500}
+  .hint{color:var(--sub);font-size:13.5px;min-height:20px}
+  .en{margin-top:6px;max-width:92%;font:400 16px/1.6 Georgia,"Times New Roman",serif;color:#cfe3f5;
+      display:none;padding:10px 14px;border-radius:12px;background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.18)}
+  .en.on{display:block}
+
+  .track{width:100%;max-width:520px;height:6px;border-radius:6px;background:var(--panel);overflow:hidden;margin-top:16px}
+  .track i{display:block;height:100%;width:0;background:linear-gradient(90deg,#38bdf8,#34d399);transition:width .12s linear}
+
+  .tips{padding:12px 4px 6px;color:var(--sub);font-size:12.5px;line-height:1.65;text-align:center}
+
+  footer{flex:0 0 auto;padding:10px 16px calc(16px + env(safe-area-inset-bottom));
+         display:grid;grid-template-columns:1fr 1.6fr 1fr;gap:10px;align-items:center;border-top:1px solid var(--line)}
+  footer button{border-radius:14px;border:1.5px solid var(--line);background:var(--panel);color:var(--txt);
+         font:600 15px/1 inherit;padding:14px 6px}
+  footer button:active{background:#212832}
+  footer #main{font-size:22px;padding:16px 6px;border-color:#1f6f8f;background:rgba(56,189,248,.12);color:var(--blue)}
+  footer #again{grid-column:1/2}
+  footer #finish{grid-column:3/4;font-size:13px;color:var(--sub)}
+
+  .rate{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6);padding:20px}
+  .rate.on{display:flex}
+  .rate .box{width:100%;max-width:360px;background:#161b22;border:1px solid var(--line);border-radius:18px;padding:20px 18px 16px;text-align:center}
+  .rate .t{font:700 16px/1.4 inherit;margin-bottom:6px}
+  .rate .s{font-size:12.5px;color:var(--sub);margin-bottom:14px;line-height:1.6}
+  .rate button{display:block;width:100%;margin:8px 0;padding:13px;border-radius:12px;border:1.5px solid var(--line);
+       background:#1c222b;color:var(--txt);font:600 14.5px/1.2 inherit}
+  .rate button[data-r="good"]{border-color:#166534;background:#0f2419;color:#6ee7b7}
+  .rate button[data-r="words"]{border-color:#78350f;background:#241a0c;color:#fcd34d}
+  .rate button[data-r="lost"]{border-color:#7f1d1d;background:#241010;color:#fca5a5}
+  .rate .skip{margin-top:6px;border:0;background:transparent;color:var(--sub);font-size:12.5px;padding:8px}
+
+  .toast{position:fixed;left:50%;top:12%;transform:translateX(-50%);z-index:60;display:none;
+       background:rgba(15,18,22,.94);border:1px solid var(--line);color:var(--txt);padding:10px 16px;border-radius:999px;font-size:13px}
+  .toast.on{display:block}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="back" href="javascript:history.back()" title="返回">←</a>
+  <div class="ttl" id="ttl">跟读训练</div>
+  <button class="eye" id="eye" title="显示/隐藏原文">👁</button>
+</header>
+
+<main>
+  <div class="modebar">
+    <button class="on" data-m="line">逐句跟读</button>
+    <button data-m="shadow">影子跟读</button>
+  </div>
+
+  <div class="stage">
+    <div class="idx" id="idx">第 1 <small>/ 1 句</small></div>
+    <div class="hint" id="hint">准备中…</div>
+    <div class="en" id="en"></div>
+    <div class="track"><i id="prog"></i></div>
+  </div>
+
+  <div class="tips" id="tips">每句播 3 遍，句间停 1.3 秒——你跟着说出来</div>
+</main>
+
+<footer>
+  <button id="prev">⏮</button>
+  <button id="main">▶</button>
+  <button id="next">⏭</button>
+  <button id="again">🔁 重播</button>
+  <button id="finish">✓ 结束</button>
+</footer>
+
+<div class="rate" id="rate">
+  <div class="box">
+    <div class="t">这段话你听懂了多少？</div>
+    <div class="s">凭直觉点一个，用来判断是「没听懂」还是「翻译来不及」</div>
+    <button data-r="good">能说出大意</button>
+    <button data-r="words">只听到零散的词</button>
+    <button data-r="lost">基本没跟上</button>
+    <button class="skip" id="skipRate">先不评，直接返回</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<audio id="audio" preload="auto"></audio>
+
+<script>
+(function(){
+  var TOPIC = 'cet4-718beb5773e8edd9ef48eb651cb1439dd362eb4a8d28f449';
+  var qs = new URLSearchParams(location.search);
+  var FILE = qs.get('p') || '';
+  var audio = document.getElementById('audio');
+  var elIdx = document.getElementById('idx'), elHint = document.getElementById('hint');
+  var elEn = document.getElementById('en'), elProg = document.getElementById('prog');
+  var elTips = document.getElementById('tips'), toast = document.getElementById('toast');
+
+  var DATA = null, L = [], B = null, TITLE = '跟读训练';
+  var on = false, mode = 'line', cur = 0, rep = 0;
+  var tick = 0, gapT = 0, afterT = 0;
+  var REPEAT = 3, GAP = 1300, AFTER = 1800;
+  var visited = 0;
+
+  function say(t){ toast.textContent = t; toast.classList.add('on'); clearTimeout(say._t); say._t = setTimeout(function(){ toast.classList.remove('on'); }, 2200); }
+
+  /* ── 从目标页抓 DATA ── */
+  function pickData(html){
+    var i = html.indexOf('var DATA');
+    if (i < 0) return null;
+    var j = html.indexOf('{', i);
+    if (j < 0) return null;
+    var depth = 0, inStr = false, esc = false, k;
+    for (k = j; k < html.length; k++){
+      var ch = html[k];
+      if (inStr){
+        if (esc){ esc = false; }
+        else if (ch === '\\'){ esc = true; }
+        else if (ch === '"'){ inStr = false; }
+        continue;
+      }
+      if (ch === '"'){ inStr = true; continue; }
+      if (ch === '{'){ depth++; }
+      else if (ch === '}'){ depth--; if (depth === 0){ break; } }
+    }
+    if (depth !== 0) return null;
+    try{ return JSON.parse(html.slice(j, k + 1)); }catch(e){ return null; }
+  }
+
+  function bounds(){
+    if (B) return B;
+    var out = [], i;
+    for (i = 0; i < L.length; i++){
+      var t0 = (L[i].tokens && L[i].tokens[0]) ? L[i].tokens[0].s : 0;
+      var nx = (i + 1 < L.length && L[i+1].tokens && L[i+1].tokens[0]) ? L[i+1].tokens[0].s : (DATA.dur || 1e9);
+      out.push([Math.max(0, t0 - 0.08), nx]);
+    }
+    B = out; return B;
+  }
+
+  function paint(){
+    var n = bounds().length;
+    elIdx.innerHTML = '第 ' + (cur + 1) + ' <small>/ ' + n + ' 句</small>';
+    var ln = L[cur] || {};
+    elEn.textContent = ln.en || '';
+    if (visited > 0){ elHint.textContent = ''; }
+  }
+
+  function clearT(){
+    if (tick){ clearInterval(tick); tick = 0; }
+    if (gapT){ clearTimeout(gapT); gapT = 0; }
+    if (afterT){ clearTimeout(afterT); afterT = 0; }
+  }
+  function play(){ var p = audio.play(); if (p && p.catch) p.catch(function(){}); }
+  function pause(){ try{ audio.pause(); }catch(e){} }
+  function setMain(playing){ document.getElementById('main').textContent = playing ? '⏸' : '▶'; }
+
+  function startTick(){
+    if (tick){ clearInterval(tick); tick = 0; }
+    tick = setInterval(function(){
+      if (!on || mode !== 'line') return;
+      var b = bounds();
+      if (cur < 0 || cur >= b.length) return;
+      if (audio.currentTime >= b[cur][1] - 0.05){
+        pause(); rep++;
+        clearInterval(tick); tick = 0;
+        if (rep < REPEAT){
+          gapT = setTimeout(function(){ if (on && mode === 'line') playOnce(); }, GAP);
+        } else {
+          afterT = setTimeout(function(){
+            if (!on || mode !== 'line') return;
+            if (cur + 1 < bounds().length) go(cur + 1); else finish();
+          }, AFTER);
+        }
+      }
+    }, 70);
+  }
+  function playOnce(){
+    audio.currentTime = bounds()[cur][0];
+    play(); setMain(true); startTick();
+  }
+  function go(i){
+    var b = bounds();
+    if (i < 0) i = 0;
+    if (i >= b.length) i = b.length - 1;
+    cur = i; rep = 0; visited++; paint();
+    clearT(); playOnce();
+  }
+
+  function playShadow(){
+    clearT();
+    audio.currentTime = (cur >= 0 && cur < bounds().length) ? bounds()[cur][0] : 0;
+    play(); setMain(true);
+    tick = setInterval(function(){
+      if (!on || mode !== 'shadow') return;
+      var b = bounds(), t = audio.currentTime, i;
+      for (i = 0; i < b.length; i++){
+        if (t >= b[i][0] && t < b[i][1]){ if (i !== cur){ cur = i; paint(); } break; }
+      }
+      if (audio.ended || t >= (DATA.dur || 1e9) - 0.15) finish();
+    }, 250);
+  }
+
+  function setMode(m){
+    mode = m;
+    document.querySelectorAll('.modebar button').forEach(function(b){
+      b.classList.toggle('on', b.getAttribute('data-m') === m);
+    });
+    if (m === 'line'){
+      elTips.textContent = '每句播 3 遍，句间停 1.3 秒——你跟着说出来';
+      elHint.textContent = '第 1 遍听，第 2、3 遍跟着说';
+    } else {
+      elTips.textContent = '音频不会停：落后半句跟着说，跟不上就哼哼，千万别暂停';
+      elHint.textContent = '像影子一样黏在音频后面';
+    }
+    if (on){ clearT(); pause(); if (m === 'line') go(cur); else playShadow(); }
+  }
+
+  function stop(){
+    on = false; clearT(); pause(); setMain(false);
+  }
+  function finish(){
+    if (visited === 0){ location.href = backUrl(); return; }
+    stop();
+    document.getElementById('rate').classList.add('on');
+  }
+
+  function backUrl(){ return FILE ? FILE : 'index.html'; }
+
+  function report(rate){
+    try{
+      var d = new Date(), p2 = function(n){ return String(n).padStart(2,'0'); };
+      fetch('https://ntfy.sh/' + TOPIC, { method:'POST', body: JSON.stringify({
+        t:'shadow', date: d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()),
+        page: FILE, title: TITLE,
+        mode: mode, lines: bounds().length, at: cur + 1, rate: rate
+      })}).catch(function(){});
+    }catch(e){}
+    say('✓ 已记录，批改时我会看到');
+    setTimeout(function(){ location.href = backUrl(); }, 900);
+  }
+
+  /* ── 事件 ── */
+  document.getElementById('main').addEventListener('click', function(){
+    if (!on){
+      on = true; setMain(true);
+      if (mode === 'line') go(cur); else playShadow();
+      return;
+    }
+    if (audio.paused){ play(); setMain(true); if (mode === 'line') startTick(); }
+    else { pause(); setMain(false); clearT(); }
+  });
+  document.getElementById('prev').addEventListener('click', function(){ if (on && mode==='line') go(cur-1); });
+  document.getElementById('next').addEventListener('click', function(){ if (on && mode==='line') go(cur+1); });
+  document.getElementById('again').addEventListener('click', function(){ if (on){ if (mode==='line') go(cur); else playShadow(); } });
+  document.getElementById('finish').addEventListener('click', finish);
+  document.getElementById('skipRate').addEventListener('click', function(){ location.href = backUrl(); });
+
+  document.querySelectorAll('.modebar button').forEach(function(b){
+    b.addEventListener('click', function(){ setMode(b.getAttribute('data-m')); });
+  });
+  document.querySelectorAll('#rate [data-r]').forEach(function(b){
+    b.addEventListener('click', function(){ report(b.getAttribute('data-r')); });
+  });
+  document.getElementById('eye').addEventListener('click', function(){
+    var on2 = elEn.classList.toggle('on');
+    this.classList.toggle('on', on2);
+  });
+  audio.addEventListener('timeupdate', function(){
+    var d = DATA && DATA.dur ? DATA.dur : (audio.duration || 1);
+    elProg.style.width = Math.min(100, (audio.currentTime / d) * 100) + '%';
+  });
+  audio.addEventListener('ended', function(){ setMain(false); if (mode === 'shadow') finish(); });
+
+  /* ── 启动 ── */
+  if (!FILE){
+    elHint.textContent = '缺少参数，请从听力页进入';
+    return;
+  }
+  document.getElementById('ttl').textContent = '跟读训练';
+  fetch(FILE, { cache: 'no-store' })
+    .then(function(r){ return r.text(); })
+    .then(function(html){
+      DATA = pickData(html);
+      if (!DATA || !DATA.lines || !DATA.lines.length){
+        elHint.textContent = '读取音频数据失败，请返回重试';
+        return;
+      }
+      L = DATA.lines;
+      var src = (DATA.rates && DATA.rates[0] && DATA.rates[0].src) || '';
+      if (!src){ elHint.textContent = '该页没有音频'; return; }
+      audio.src = src;
+      var m = html.match(/<title>([^<]*)<\/title>/);
+      if (m){ TITLE = m[1].replace(/\s*·\s*四级.*$/, ''); document.getElementById('ttl').textContent = TITLE; }
+      cur = 0; paint();
+      elHint.textContent = '点 ▶ 开始：第 1 遍听，第 2、3 遍跟着说';
+      elTips.textContent = '每句播 3 遍，句间停 1.3 秒——你跟着说出来';
+    })
+    .catch(function(){ elHint.textContent = '加载失败，检查网络后重试'; });
+})();
+</script>
+</body>
+</html>
