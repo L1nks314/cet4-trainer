@@ -104,6 +104,12 @@ a.it.now .tx{font-weight:700;color:var(--green)}
     border-radius:2px;background:var(--blue);opacity:.28;transition:background .2s,opacity .2s;}
   .task.on::before{background:var(--green);opacity:1;}
 
+.tiers{display:flex;gap:6px;margin:10px 0 12px}
+.tier{flex:1;padding:7px 4px;border-radius:10px;border:1.5px solid var(--line,#e5e8ec);background:#fff;
+ font:600 12.5px/1.35 inherit;color:var(--sub,#6b7280);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.tier i{font-style:normal;font-size:11px;opacity:.72;font-weight:500}
+.tier.on{background:var(--blue,#2563eb);border-color:var(--blue,#2563eb);color:#fff}
+.tier.on i{opacity:.88}
 </style>
 </head>
 <body>
@@ -359,11 +365,25 @@ function renderHead(){
    +'<div class="note">本阶段重点：'+st[3]+'</div>';
 }
 
+var TIER_KEY = 'cet4_tier_';
+function getTier(){
+  try{
+    var t = localStorage.getItem(TIER_KEY + fmt(today));
+    if (t === 'full' || t === 'std' || t === 'min') return t;
+  }catch(e){}
+  return (wd === 1 || wd === 3 || wd === 5) ? 'full' : 'std';
+}
+function setTier(t){
+  try{ localStorage.setItem(TIER_KEY + fmt(today), t); }catch(e){}
+  renderTasks();
+}
+
 function renderTasks(){
   var man = PROG[fmt(today)] || {};
   var au = {};
   try{ au = (JSON.parse(localStorage.getItem('cet4_done')||'{}')[fmt(today)]) || {}; }catch(e){ au = {}; }
   done = { l: !!(man.l || au.listen), o: !!(man.o || au.other), r: !!(man.r || au.receipt) };
+
   var lessonTxt, lbtn;
   if (gap<0){ lessonTxt="集训 10/17 开始 · 今天先歇着，明天从这里起步"; lbtn=LESSONS[0].f; }
   else if (gap<LESSONS.length){ lessonTxt=LESSONS[idx].d; lbtn=LESSONS[idx].f; }
@@ -372,65 +392,88 @@ function renderTasks(){
     if(r2){ lessonTxt="第2轮精听 · "+r2.d+"（重点听第一遍没听清的句子）"; lbtn=r2.f; }
     else { lessonTxt="两轮已完成 · 保温：重听错句、跟读"; lbtn=LESSONS[0].f; }
   }
-  var tHtml='';
+
+  var streak='<div class="streak"><div><b id="sk">0</b><div class="lb">连续打卡（天）</div></div>'
+     +'<div><b id="td">0</b><div class="lb">累计完成（天）</div></div></div>';
+
+  /* ── 周日：轻量日 ── */
   if (isRestDay(today)){
-    tHtml+='<div class="task'+(done.o?" on":"")+'" data-k="o"><div class="box'+(done.o?" on":"")+'"></div>'
+    var h1='<div class="task'+(done.o?" on":"")+'" data-k="o"><div class="box'+(done.o?" on":"")+'"></div>'
      +'<div class="tk"><div class="tt">轻量日 · 15 分钟</div>'
      +'<div class="td">本周休息日：只把错题句重听一遍，或跟读 3 句。不做套题、不写回执——歇够明天才有劲。</div>'
-     +'<a class="btn" href="records.html">打开错题本 →</a></div></div>';
-    tHtml+='<div class="streak"><div><b id="sk">0</b><div class="lb">连续打卡（天）</div></div>'
-     +'<div><b id="td">0</b><div class="lb">累计完成（天）</div></div></div>';
-    document.getElementById("tasks").innerHTML = tHtml;
-    document.querySelectorAll(".task").forEach(function(el){
-      el.querySelector(".box").addEventListener("click", function(){
-        var k = el.dataset.k, cur = PROG[fmt(today)] || {};
-        cur[k] = !cur[k]; PROG[fmt(today)] = cur;
-        saveLocal(PROG); push(PROG);
-        el.classList.toggle("on", cur[k]); this.classList.toggle("on", cur[k]);
-        refreshStats(); setSync(synced===null?null:true);
-      });
-    });
+     +'<a class="btn" href="records.html">打开错题本 →</a></div></div>' + streak;
+    document.getElementById("tasks").innerHTML = h1;
+    bindBoxes();
     return;
   }
-  tHtml+='<div class="task'+(done.l?" on":"")+'" data-k="l"><div class="box'+(done.l?" on":"")+'"></div>'
-   +'<div class="tk"><div class="tt">听力精听 · 40 分钟</div>'
-   +'<div class="td">'+lessonTxt+'</div>'
-   +'<a class="btn" href="'+encodeURI(lbtn)+'">开始今天的训练 →</a></div></div>';
-  var obtn=(function(){
-    if(wd===6 && inFinal){
-      var mock = (today.getDate()===28) ? "2025-12-1_SectionA.html" : "2025-06-2_SectionA.html";
-      return '<a class="btn" href="'+encodeURI(mock)+'">整套模考：A→B→C 连做 →</a>';
-    }
-    var arr=null, lbl='', n=0;
-    if(wd===1||wd===3){ arr=TL; lbl='翻译'; n=seq(today,[1,3])-1; }
-    else if(wd===2||wd===4){ arr=RL; lbl='阅读'; n=seq(today,[2,4])-1; }
-    else if(wd===5){ arr=WL; lbl='写作'; n=seq(today,[5])-1; }
-    else if(wd===6 && gap<7){ arr=WL; lbl='写作'; n=seq(today,[6])-1; }
-    if(!arr || !arr[n]) return '';
-    return '<a class="btn" href="'+encodeURI(arr[n].f)+'">开始今天的'+lbl+' →</a>';
-  })();
-  tHtml+='<div class="task'+(done.o?" on":"")+'" data-k="o"><div class="box'+(done.o?" on":"")+'"></div>'
-   +'<div class="tk"><div class="tt">'+OTHER+'</div>'
-   +'<div class="td">'+(wd===6?(inFinal?"和平时一样，另抽 40 分钟连做三节":"占每天 60 分钟里的后 20 分钟"):"占每天 60 分钟里的后 20 分钟")+'</div>'+obtn+'</div></div>';
-  tHtml+='<div class="task'+(done.r?" on":"")+'" data-k="r"><div class="box'+(done.r?" on":"")+'"></div>'
-   +'<div class="tk"><div class="tt">回对话交回执 · 2 分钟</div>'
-   +'<div class="td">做完回到对话把回执发出来，我给出错因归因和明天的调整</div></div></div>';
-  tHtml+='<div class="streak"><div><b id="sk">0</b><div class="lb">连续打卡（天）</div></div>'
-   +'<div><b id="td">0</b><div class="lb">累计完成（天）</div></div></div>';
-  document.getElementById("tasks").innerHTML=tHtml;
 
+  var tier = getTier();
+  var hasOther = true;   /* 非周日每天都有「其他」项，但只在满配档出现 */
+  var tHtml='';
+
+  /* ── 三档选择 ── */
+  tHtml += '<div class="tiers">'
+    + '<button class="tier'+(tier==='full'?' on':'')+'" data-tier="full">满配<br><i>50 分钟</i></button>'
+    + '<button class="tier'+(tier==='std'?' on':'')+'" data-tier="std">标准<br><i>35 分钟</i></button>'
+    + '<button class="tier'+(tier==='min'?' on':'')+'" data-tier="min">最小<br><i>10 分钟</i></button>'
+    + '</div>';
+
+  /* ── 主任务：听力 / 跟读 ── */
+  if (tier === 'min'){
+    tHtml += '<div class="task'+(done.l?" on":"")+'" data-k="l"><div class="box'+(done.l?" on":"")+'"></div>'
+     +'<div class="tk"><div class="tt">跟读 3 句 · 10 分钟</div>'
+     +'<div class="td">只跟读今天听不清的那 3 句：0.85 跟 2 遍 → 1.0 跟 1 遍。做完这一步就算今天完成。</div>'
+     +'<a class="btn" href="'+encodeURI(lbtn)+'">去跟读 →</a></div></div>';
+  } else {
+    var ttl = (tier==='full') ? '听力 + 跟读 · 40 分钟' : '听力 + 跟读 · 35 分钟';
+    var hint = (tier==='full')
+      ? '盲听判断能否复述 → 听写 3-5 句 → 跟读 3 遍'
+      : '时间紧：跳过听写，只做「盲听 + 跟读」';
+    tHtml += '<div class="task'+(done.l?" on":"")+'" data-k="l"><div class="box'+(done.l?" on":"")+'"></div>'
+     +'<div class="tk"><div class="tt">'+ttl+'</div>'
+     +'<div class="td">'+lessonTxt+'<br>'+hint+'</div>'
+     +'<a class="btn" href="'+encodeURI(lbtn)+'">开始今天的训练 →</a></div></div>';
+  }
+
+  /* ── 写译：仅满配 + 一/三/五 ── */
+  if (tier === 'full' && hasOther){
+    var obtn=(function(){
+      if(wd===6 && inFinal){
+        var mock = (today.getDate()===28) ? "2025-12-1_SectionA.html" : "2025-06-2_SectionA.html";
+        return '<a class="btn" href="'+encodeURI(mock)+'">整套模考：A→B→C 连做 →</a>';
+      }
+      var arr=null, lbl='', n=0;
+      if(wd===1||wd===3){ arr=TL; lbl='翻译'; n=seq(today,[1,3])-1; }
+      else if(wd===2||wd===4){ arr=RL; lbl='阅读'; n=seq(today,[2,4])-1; }
+      else if(wd===5){ arr=WL; lbl='写作'; n=seq(today,[5])-1; }
+      else if(wd===6 && gap<7){ arr=WL; lbl='写作'; n=seq(today,[6])-1; }
+      if(!arr || !arr[n]) return '';
+      return '<a class="btn" href="'+encodeURI(arr[n].f)+'">开始今天的'+lbl+' →</a>';
+    })();
+    if (obtn){
+      tHtml += '<div class="task'+(done.o?" on":"")+'" data-k="o"><div class="box'+(done.o?" on":"")+'"></div>'
+       +'<div class="tk"><div class="tt">'+OTHER.replace(/（\d+ 分钟）/, '')+' · 15 分钟</div>'
+       +'<div class="td">写译/阅读只在满配档出现；状态一般就切「标准」，不用勉强。</div>'+obtn+'</div></div>';
+    }
+  }
+
+  tHtml += streak;
+  document.getElementById("tasks").innerHTML = tHtml;
+
+  document.querySelectorAll('.tier').forEach(function(b){
+    b.addEventListener('click', function(){ setTier(b.getAttribute('data-tier')); });
+  });
+  bindBoxes();
+}
+
+function bindBoxes(){
   document.querySelectorAll(".task").forEach(function(el){
-    el.querySelector(".box").addEventListener("click",function(){
-      var k=el.dataset.k;
-      var cur = PROG[fmt(today)] || {};
-      cur[k] = !cur[k];
-      PROG[fmt(today)] = cur;
-      saveLocal(PROG);                 // ① 本机
-      push(PROG);                      // ② 云端
-      el.classList.toggle("on", cur[k]);
-      this.classList.toggle("on", cur[k]);
-      refreshStats();
-      setSync(synced===null?null:true);
+    el.querySelector(".box").addEventListener("click", function(){
+      var k = el.dataset.k, cur = PROG[fmt(today)] || {};
+      cur[k] = !cur[k]; PROG[fmt(today)] = cur;
+      saveLocal(PROG); push(PROG);
+      el.classList.toggle("on", cur[k]); this.classList.toggle("on", cur[k]);
+      refreshStats(); setSync(synced===null?null:true);
     });
   });
 }
