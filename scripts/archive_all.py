@@ -43,13 +43,13 @@ def main():
     os.makedirs(PHOTOS, exist_ok=True)
     existing = set(os.listdir(PHOTOS))
 
-    arch = {"updated": "", "reps": [], "coaches": [], "photos": [], "prog": {}}
+    arch = {"updated": "", "reps": [], "coaches": [], "photos": [], "prog": {}, "shadow": []}
     if os.path.exists(RECORDS):
         try:
             arch = json.load(open(RECORDS, encoding="utf-8"))
         except Exception:
             pass
-    for k in ("reps", "coaches", "photos"):
+    for k in ("reps", "coaches", "photos", "shadow"):
         arch.setdefault(k, [])
     arch.setdefault("prog", {})
 
@@ -58,6 +58,7 @@ def main():
 
     rep_keys = {(r.get("date"), r.get("kind"), r.get("page"), r.get("score") or "") for r in arch["reps"]}
     coach_keys = {(c.get("date"), c.get("kind"), c.get("text")) for c in arch["coaches"]}
+    shadow_keys = {(x.get("date"), x.get("page"), x.get("mode")) for x in arch["shadow"]}
     photo_keys = {p.get("name") for p in arch["photos"]}
     ap = ar = ac = pg = 0
 
@@ -99,6 +100,15 @@ def main():
                                      "text": p.get("text", ""), "score": sc, "pct": p.get("pct"), "ts": ts})
                 rep_keys.add(k)
                 ar += 1
+
+        elif t == "shadow":
+            k = (p.get("date"), p.get("page"), p.get("mode"))
+            if k not in shadow_keys:
+                arch["shadow"].append({"date": p.get("date"), "page": p.get("page"),
+                                       "title": p.get("title", ""), "mode": p.get("mode"),
+                                       "lines": p.get("lines"), "at": p.get("at"),
+                                       "rate": p.get("rate"), "ts": ts})
+                shadow_keys.add(k)
 
         elif t == "coach":
             k = (p.get("date"), p.get("kind"), p.get("text"))
