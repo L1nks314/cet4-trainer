@@ -360,7 +360,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
   <h2><span class="num">__ND__</span>逐句听写清单</h2>
   <p class="hint"><b>分屏：一边网页当播放器，一边华为笔记写字。</b><br>点播放器里的 <b>✍️ 听写模式</b>，每句会自动重读几遍再停。没听清的句点「✗ 听不清」标记（<b>自动进错题本</b>），写进华为笔记。写完点右下角<b>「📷 上传手写照」</b>把照片传上来，我给你逐词批改。</p>
   <div class="dplist" id="dpList"></div>
-</div>>>>>>>
+</div>>>>>>>>
 
 
 <div class="card" id="receiptCard">
@@ -726,7 +726,7 @@ var QUIZ = [{"id": "q16", "stem": "16. How did language come into being, accordi
   document.getElementById('receipt').addEventListener('click', function(){ this.select(); this.setSelectionRange(0,99999); });
   buildReceipt();
 
-                    /* ---------- 逐句听写清单（纯列表 · 分屏手写 + 照片提交） ---------- */
+                      /* ---------- 逐句听写清单（纯列表 · 分屏手写 + 照片提交） ---------- */
   var DP = (function(){
     var card = document.getElementById('dictCard');
     var list = document.getElementById('dpList');
@@ -1769,6 +1769,8 @@ for (var qid in AL){
     saveWrongbook();
     btn.classList.remove('act'); btn.textContent = '✍️ 听写模式';
     bar.classList.remove('on');
+    var cb1 = document.getElementById('cloudBar');
+    if (cb1) cb1.style.bottom = '';
     if (bNext) bNext.disabled = false;
     if (window.__dictPad) window.__dictPad.hide();
     if (followBack && tpFollow){ tpFollow.click(); followBack = false; }
@@ -1833,6 +1835,9 @@ for (var qid in AL){
     if (on){ exitMode(); return; }
     on = true;
     btn.classList.add('act'); btn.textContent = '✍️ 听写模式 开';
+    /* 悬浮窗避让：听写条居中占底部，云条上移一档 */
+    var cb0 = document.getElementById('cloudBar');
+    if (cb0) cb0.style.bottom = '84px';
     if (tpFollow && tpFollow.classList.contains('act')){ followBack = true; tpFollow.click(); }
     applySpeed();
     var D = pad();
