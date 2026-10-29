@@ -280,14 +280,27 @@
   function pause(){ try{ audio.pause(); }catch(e){} }
   function setMain(playing){ document.getElementById('main').textContent = playing ? '⏸' : '▶'; }
 
-  /* 等 metadata 就绪再 seek —— 这是原来「快进没用」的根因 */
+  /* 等 metadata 就绪再 seek —— 这是原来「快进没用」的根因。
+     音频还没开始加载时，主动 load() 催一下，否则 currentTime 赋值会被静默丢弃。 */
   function seekTo(t, cb){
+    t = Math.max(0, t);
     var run = function(){
-      try{ audio.currentTime = Math.max(0, t); }catch(e){}
+      try{ audio.currentTime = t; }catch(e){}
       if (cb) cb();
     };
-    if (audio.readyState >= 1) run();
-    else audio.addEventListener('loadedmetadata', run, { once: true });
+    if (audio.readyState >= 1){ run(); return; }
+    var once = function(){
+      audio.removeEventListener('loadedmetadata', once);
+      run();
+    };
+    audio.addEventListener('loadedmetadata', once);
+    try{ audio.load(); }catch(e){}
+    setTimeout(function(){
+      if (audio.readyState >= 1){
+        audio.removeEventListener('loadedmetadata', once);
+        if (Math.abs(audio.currentTime - t) > 0.5) run();
+      }
+    }, 2000);
   }
 
   function startTick(){
@@ -446,6 +459,7 @@
       var src = (DATA.rates && DATA.rates[0] && DATA.rates[0].src) || '';
       if (!src){ elTips.textContent = '该页没有音频'; return; }
       audio.src = src;
+      try{ audio.load(); }catch(e){}      /* 提前拉流，避免第一次点 ⏭ 无反应 */
       var m = html.match(/<title>([^<]*)<\/title>/);
       if (m){ TITLE = m[1].replace(/\s*·\s*四级.*$/, ''); document.getElementById('ttl').textContent = TITLE; }
       cur = 0; rep = 0; buildNav(); paint();
