@@ -52,7 +52,7 @@ h1{font-size:20px;margin:2px 0 16px;letter-spacing:.2px;font-weight:800;
 .btn{display:inline-block;margin-top:9px;padding:9px 16px;border-radius:9px;background:var(--blue);
  color:#fff;text-decoration:none;font-size:14px;font-weight:700}
 .btn.ghost{background:var(--blue-soft);color:var(--blue)}
-.streak{display:flex;gap:10px;margin-top:18px;padding-top:15px;border-top:1px solid var(--line2)}
+.streak{display:flex;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
 .streak>div{flex:1;background:var(--soft);border-radius:12px;padding:14px 15px;border:1px solid var(--line)}
 .streak>b,.streak>div>b{font-size:28px;font-weight:800;letter-spacing:-.8px;color:var(--blue);
  display:block;line-height:1.15}
@@ -316,8 +316,8 @@ function setSync(ok){
   var el=document.getElementById("syncTag"); if(!el) return;
   var t=new Date();
   var hh=String(t.getHours()).padStart(2,"0"), mm=String(t.getMinutes()).padStart(2,"0");
-  if(ok===true){ el.textContent="☁ 已同步 "+hh+":"+mm; el.style.color=""; }
-  else if(ok===false){ el.textContent="⌂ 离线保存（本机）"; el.style.color="rgba(255,255,255,.72)"; }
+  if(ok===true){ el.textContent="☁ "+hh+":"+mm; el.style.color=""; }
+  else if(ok===false){ el.textContent="⌂ 本机"; el.style.color="rgba(255,255,255,.72)"; }
   else { el.textContent="☁ 同步中…"; }
 }
 
