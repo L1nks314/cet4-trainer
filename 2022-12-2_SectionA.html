@@ -1563,8 +1563,7 @@ var QUIZ = [{"id": "q1", "stem": "1. What event will take place in Glasgow?", "z
   try{ st = JSON.parse(localStorage.getItem(KEY) || 'null'); }catch(e){}
   if (st && st.o) bar.classList.add('open');
   if (st && st.l != null){ place(st.l, st.t); clamp(st.l, st.t); }
-  else { var off = 16;
-    place(window.innerWidth - 306 - 16, window.innerHeight - 124 - off); }
+  else { place(10, window.innerHeight - 44 - 96); }   /* 默认贴左下，别压在正文中间 */
 
   function setOpen(o){
     bar.classList.toggle('open', o);
