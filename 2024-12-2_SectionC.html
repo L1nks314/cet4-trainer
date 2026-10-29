@@ -1200,7 +1200,7 @@ for (var qid in AL){
     if (era) era.classList.toggle('on', m === 'erase');
     if (m !== 'off'){ scanSC(); syncScroll(); }
     if (m === 'draw' && !window.__penHint){ window.__penHint = 1;
-      setTimeout(function(){ toast('💡 双击笔尖可切换橡皮'); }, 500); }
+      /* 双击提示已移除 */ }
     schedule(true);
   }
   if (pen) pen.addEventListener('click', function(){ setMode(mode === 'draw' ? 'off' : 'draw'); });
@@ -1328,10 +1328,7 @@ for (var qid in AL){
       lastPenTap = { t: now, x: was.x, y: was.y };
     }
   }
-  document.addEventListener('pointerdown', penTapDown, {capture:true});
-  document.addEventListener('pointermove', penTapMove, {capture:true});
-  document.addEventListener('pointerup', penTapUp, {capture:true});
-  document.addEventListener('pointercancel', function(e){ if (e.pointerType === 'pen') penTapRec = null; }, {capture:true});
+  /* 双击笔尖切换橡皮：按用户要求已停用（误触率太高） */
 
   var EXCLUDE = 'input,textarea,select,#markBar';
   var PEN_SKIP = '.dpwrap';        /* 听写本自带笔迹，全局画笔让位 */

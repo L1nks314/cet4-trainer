@@ -52,7 +52,7 @@ h1{font-size:20px;margin:2px 0 16px;letter-spacing:.2px;font-weight:800;
 .btn{display:inline-block;margin-top:9px;padding:9px 16px;border-radius:9px;background:var(--blue);
  color:#fff;text-decoration:none;font-size:14px;font-weight:700}
 .btn.ghost{background:var(--blue-soft);color:var(--blue)}
-.streak{display:flex;gap:10px;margin-top:8px}
+.streak{display:flex;gap:10px;margin-top:18px;padding-top:15px;border-top:1px solid var(--line2)}
 .streak>div{flex:1;background:var(--soft);border-radius:12px;padding:14px 15px;border:1px solid var(--line)}
 .streak>b,.streak>div>b{font-size:28px;font-weight:800;letter-spacing:-.8px;color:var(--blue);
  display:block;line-height:1.15}
@@ -76,12 +76,12 @@ a.it.now .tx{font-weight:700;color:var(--green)}
 
   /* ── 顶部主视觉 ── */
   .hero{background:linear-gradient(135deg,#2563eb 0%,#4f46e5 100%);color:#fff;
-    border-radius:18px;padding:20px;margin-bottom:14px;
-    box-shadow:0 8px 24px rgba(37,99,235,.28);position:relative;overflow:hidden;}
+    border-radius:16px;padding:17px 18px 15px;margin-bottom:14px;
+    box-shadow:0 6px 18px rgba(37,99,235,.22);position:relative;overflow:hidden;}
   .hero::after{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;
     border-radius:50%;background:rgba(255,255,255,.09);}
   .hero .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;position:relative;}
-  .hero .days{font-size:44px;font-weight:800;letter-spacing:-2px;color:#fff;line-height:1.05;}
+  .hero .days{font-size:36px;font-weight:800;letter-spacing:-1.5px;color:#fff;line-height:1.05;}
   .hero .days small{font-size:13px;font-weight:500;color:rgba(255,255,255,.82);
     margin-left:6px;letter-spacing:0;display:inline-block;}
   .hero .stage{font-size:12.5px;padding:6px 13px;border-radius:20px;white-space:nowrap;
@@ -110,38 +110,69 @@ a.it.now .tx{font-weight:700;color:var(--green)}
 .tier i{font-style:normal;font-size:11px;opacity:.72;font-weight:500}
 .tier.on{background:var(--blue,#2563eb);border-color:var(--blue,#2563eb);color:#fff}
 .tier.on i{opacity:.88}
+
+/* ── 折叠区 ── */
+.fold{background:var(--card);border:1px solid var(--line);border-radius:14px;
+ margin-bottom:14px;box-shadow:var(--shadow);overflow:hidden}
+.fold>summary{display:flex;align-items:center;gap:8px;padding:14px 16px;
+ font-weight:700;font-size:14.5px;cursor:pointer;list-style:none}
+.fold>summary::-webkit-details-marker{display:none}
+.fold>summary span:first-child{flex:1}
+.fold>summary::after{content:"›";color:var(--sub2);font-size:18px;line-height:1;
+ transform:rotate(90deg);transition:transform .18s}
+.fold[open]>summary::after{transform:rotate(-90deg)}
+.fold .cnt{font-size:12px;color:var(--sub2);font-weight:500}
+.fold>summary{border-bottom:0}
+.fold[open]>summary{border-bottom:1px solid var(--line)}
+
+/* ── 今日三步 ── */
+.steps .shd{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px}
+.steps .shd b{font-size:15.5px;font-weight:800;letter-spacing:.1px}
+.steps .sdt{font-size:12.5px;color:var(--sub);margin-top:3px;line-height:1.5}
+.steps .smin{font-size:12px;color:var(--blue);background:var(--blue-soft);
+ padding:3px 9px;border-radius:20px;font-weight:700;white-space:nowrap;flex:0 0 auto}
+.step{display:flex;align-items:flex-start;gap:11px;padding:13px 0;
+ border-top:1px solid var(--line2);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.step .ck{flex:0 0 22px;width:22px;height:22px;border:1.8px solid var(--sub2);border-radius:50%;
+ display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;
+ margin-top:1px;transition:background .15s,border-color .15s}
+.step.on .ck{background:var(--green);border-color:var(--green)}
+.step.on .ck::after{content:"✓"}
+.step .sx{flex:1;min-width:0}
+.step .st{font-size:14.5px;font-weight:700;line-height:1.4}
+.step .sd{font-size:12.5px;color:var(--sub);margin-top:3px;line-height:1.55}
+.step.on .st{color:var(--sub2);text-decoration:line-through;text-decoration-color:#c3c8d0}
+.step .sm{font-size:11.5px;color:var(--sub2);font-variant-numeric:tabular-nums;
+ margin-top:2px;flex:0 0 auto}
+.stepacts{display:flex;gap:8px;margin-top:14px}
+.stepacts .btn{margin-top:0;flex:1;text-align:center;padding:12px 10px}
+
+/* 训练列表 */
+#list a.it .st-done{color:var(--green);font-size:12px;font-weight:700}
 </style>
 </head>
 <body>
-<h1>四级备考作战台</h1>
-
 <div class="hero" id="head"></div>
 <div class="card" id="tasks"></div>
-<div class="list"><div class="lh">全部训练（<span id="tot"></span> 节）</div><div id="list"></div></div>
 
-<div class="list">
-  <div class="lh">写作与翻译</div>
-  <a class="it" href="writing.html"><span class="no">W</span><span class="tx">写作与翻译总览<span class="tag">18 套写作 · 18 套翻译 · 模板与句式</span></span><span class="ar">›</span></a>
+<details class="fold">
+  <summary><span>全部训练</span><span class="cnt"><span id="tot"></span> 节</span></summary>
+  <div id="list"></div>
+</details>
+
+<details class="fold">
+  <summary><span>更多入口</span><span class="cnt">6 个</span></summary>
+  <a class="it" href="writing.html"><span class="no">W</span><span class="tx">写作与翻译<span class="tag">18 套写作 · 18 套翻译</span></span><span class="ar">›</span></a>
+  <a class="it" href="reading.html"><span class="no">R</span><span class="tx">仔细阅读<span class="tag">8 套 15 篇 · 逐题解析</span></span><span class="ar">›</span></a>
   <a class="it" href="records.html"><span class="no">R</span><span class="tx">我的记录<span class="tag">回执 · 归因 · 云端</span></span><span class="ar">›</span></a>
-</div>
-
-<div class="list">
-  <div class="lh">阅读训练</div>
-  <a class="it" href="reading.html"><span class="no">R</span><span class="tx">仔细阅读总览<span class="tag">8套15篇·含逐题解析与同义替换本</span></span><span class="ar">›</span></a>
-</div>
-
-<div class="list">
-  <div class="lh">计划与专题</div>
-  <a class="it" href="plan.html"><span class="no">0</span><span class="tx">备考计划总览<span class="tag">三阶段·每日模板·韧性规则</span></span><span class="ar">›</span></a>
-  <div class="lh" style="border-top:1px solid var(--line)">方法与专题</div>
-  <a class="it" href="method-5steps.html"><span class="no">1</span><span class="tx">精听五步法 · 操作卡 + 语音点专题<span class="tag">连读/弱读/失爆</span></span><span class="ar">›</span></a>
-  <a class="it" href="digest.html"><span class="no">2</span><span class="tx">6 套真题提炼<span class="tag">信号词·吞音句·高频词</span></span><span class="ar">›</span></a>
-  <a class="it" href="method-l1.html"><span class="no">3</span><span class="tx">三档语速辨音训练<span class="tag">慢速/原速/提速</span></span><span class="ar">›</span></a>
-</div>
+  <a class="it" href="plan.html"><span class="no">0</span><span class="tx">备考计划<span class="tag">三阶段 · 每日模板</span></span><span class="ar">›</span></a>
+  <a class="it" href="method-5steps.html"><span class="no">1</span><span class="tx">精听五步法<span class="tag">连读 / 弱读 / 失爆</span></span><span class="ar">›</span></a>
+  <a class="it" href="method-l1.html"><span class="no">2</span><span class="tx">三档语速辨音<span class="tag">慢速 / 原速 / 提速</span></span><span class="ar">›</span></a>
+</details>
 
 <div class="hint">
- <b>怎么用：</b>打开本页 → 按顺序做完勾掉 → 晚上回到对话交回执。<br>
- 勾选状态存在本机，换设备不同步。进度按日期推算，漏做的那天从下面列表补。
+ <b>顺序：</b>①② 在同一页做完，③ 点「去跟读」→ 三步都勾上才算今天完成。<br>
+ 勾选存在本机；换设备不同步，但回执会上云。
 </div>
 
 <script>
@@ -378,6 +409,27 @@ function setTier(t){
   renderTasks();
 }
 
+/* ── 今日三步（三遍法）勾选 ── */
+var STEP_KEY = 'cet4_steps_';
+function getSteps(){
+  try{
+    var o = JSON.parse(localStorage.getItem(STEP_KEY + fmt(today)) || '{}');
+    return (o && typeof o === 'object') ? o : {};
+  }catch(e){ return {}; }
+}
+function toggleStep(k){
+  var st = getSteps();
+  st[k] = !st[k];
+  try{ localStorage.setItem(STEP_KEY + fmt(today), JSON.stringify(st)); }catch(e){}
+  /* 前三步都勾上 → 自动算今天听力完成（第 4 步听写是满配加分项，不强制） */
+  var all = !!(st.s1 && st.s2 && st.s3);
+  var cur = PROG[fmt(today)] || {};
+  if (all && !cur.l){ cur.l = true; PROG[fmt(today)] = cur; saveLocal(PROG); push(PROG); setSync(true); }
+  if (!all && cur.l){ cur.l = false; PROG[fmt(today)] = cur; saveLocal(PROG); push(PROG); }
+  renderTasks();
+  refreshStats();
+}
+
 function renderTasks(){
   var man = PROG[fmt(today)] || {};
   var au = {};
@@ -413,26 +465,46 @@ function renderTasks(){
 
   /* ── 三档选择 ── */
   tHtml += '<div class="tiers">'
-    + '<button class="tier'+(tier==='full'?' on':'')+'" data-tier="full">满配<br><i>50 分钟</i></button>'
-    + '<button class="tier'+(tier==='std'?' on':'')+'" data-tier="std">标准<br><i>35 分钟</i></button>'
+    + '<button class="tier'+(tier==='full'?' on':'')+'" data-tier="full">满配<br><i>30 分钟</i></button>'
+    + '<button class="tier'+(tier==='std'?' on':'')+'" data-tier="std">标准<br><i>20 分钟</i></button>'
     + '<button class="tier'+(tier==='min'?' on':'')+'" data-tier="min">最小<br><i>10 分钟</i></button>'
     + '</div>';
 
-  /* ── 主任务：听力 / 跟读 ── */
+  /* ── 主任务：三遍法（可勾选的三步） ── */
   if (tier === 'min'){
     tHtml += '<div class="task'+(done.l?" on":"")+'" data-k="l"><div class="box'+(done.l?" on":"")+'"></div>'
      +'<div class="tk"><div class="tt">跟读 3 句 · 10 分钟</div>'
      +'<div class="td">只跟读今天听不清的那 3 句：0.85 跟 2 遍 → 1.0 跟 1 遍。做完这一步就算今天完成。</div>'
-     +'<a class="btn" href="'+encodeURI(lbtn)+'">去跟读 →</a></div></div>';
+     +'<a class="btn" href="shadow.html?p='+encodeURIComponent(lbtn)+'">去跟读 →</a></div></div>';
   } else {
-    var ttl = (tier==='full') ? '听力 + 跟读 · 40 分钟' : '听力 + 跟读 · 35 分钟';
-    var hint = (tier==='full')
-      ? '盲听判断能否复述 → 听写 3-5 句 → 跟读 3 遍'
-      : '时间紧：跳过听写，只做「盲听 + 跟读」';
-    tHtml += '<div class="task'+(done.l?" on":"")+'" data-k="l"><div class="box'+(done.l?" on":"")+'"></div>'
-     +'<div class="tk"><div class="tt">'+ttl+'</div>'
-     +'<div class="td">'+lessonTxt+'<br>'+hint+'</div>'
-     +'<a class="btn" href="'+encodeURI(lbtn)+'">开始今天的训练 →</a></div></div>';
+    var ST = getSteps();
+    var full = (tier === 'full');
+    var steps = [
+      {k:'s1', n:'①', t:'只听大意', d:'整段放完，用一句话说出讲什么。听不出也往下走，不回头。', m:'3′'},
+      {k:'s2', n:'②', t:'逐句抓主干', d:'每句听完用 3–5 个字说主干：谁·做了什么。每句最多听 2 遍。', m:'8′'},
+      {k:'s3', n:'③', t:'影子跟读', d:'不看文本，跟着念。慢半拍、念错都行，嘴不许停。', m:'9′'}
+    ];
+    if (full) steps.push({k:'s4', n:'④', t:'听写 3 句', d:'挑最难的 3 句写下来，写完对照原文改。', m:'10′'});
+
+    var rows = steps.map(function(s){
+      var on = !!ST[s.k];
+      return '<div class="step'+(on?' on':'')+'" data-s="'+s.k+'">'
+        + '<div class="ck"></div>'
+        + '<div class="sx"><div class="st">'+s.n+' '+s.t+'</div><div class="sd">'+s.d+'</div></div>'
+        + '<div class="sm">'+s.m+'</div></div>';
+    }).join('');
+
+    tHtml += '<div class="steps">'
+      + '<div class="shd">'
+      +   '<div><b>今天 · 三遍法</b><div class="sdt">'+lessonTxt+'</div></div>'
+      +   '<div class="smin">'+(full?'30':'20')+' 分钟</div>'
+      + '</div>'
+      + rows
+      + '<div class="stepacts">'
+      +   '<a class="btn" href="'+encodeURI(lbtn)+'">打开训练页</a>'
+      +   '<a class="btn ghost" href="shadow.html?p='+encodeURIComponent(lbtn)+'">去跟读</a>'
+      + '</div>'
+      + '</div>';
   }
 
   /* ── 写译：仅满配 + 一/三/五 ── */
@@ -462,6 +534,9 @@ function renderTasks(){
 
   document.querySelectorAll('.tier').forEach(function(b){
     b.addEventListener('click', function(){ setTier(b.getAttribute('data-tier')); });
+  });
+  document.querySelectorAll('.step').forEach(function(el){
+    el.addEventListener('click', function(){ toggleStep(el.getAttribute('data-s')); });
   });
   bindBoxes();
 }
@@ -500,9 +575,25 @@ function refreshStats(){
   if(a) a.textContent=run; if(b) b.textContent=cnt;
 }
 
+/* ── 全部训练清单 ── */
+function renderList(){
+  var el = document.getElementById('list'); if (!el) return;
+  var t = document.getElementById('tot'); if (t) t.textContent = LESSONS.length;
+  el.innerHTML = LESSONS.map(function(x, i){
+    var no = (i < 9 ? '0' : '') + (i + 1);
+    var now = (i === idx) ? ' now' : '';
+    var tail = (i === idx) ? '<span class="tag">今天</span>' : '';
+    return '<a class="it' + now + '" href="' + encodeURI(x.f) + '">'
+      + '<span class="no">' + no + '</span>'
+      + '<span class="tx">' + x.d.replace(' · ', ' · ') + tail + '</span>'
+      + '<span class="ar">›</span></a>';
+  }).join('');
+}
+
 /* ── 启动 ── */
 renderHead();
 renderTasks();
+renderList();
 refreshStats();
 
 Promise.all([

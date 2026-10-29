@@ -5,63 +5,109 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>跟读训练</title>
 <style>
-  :root{ --bg:#0f1216; --panel:#171b21; --line:#2a3038; --txt:#e8ecf1; --sub:#8b95a3;
-         --blue:#38bdf8; --green:#34d399; --amber:#fbbf24; }
+  :root{
+    --bg:#f4f5f7; --card:#fff; --soft:#fafbfc; --line:#e5e8ec; --line2:#eff1f4;
+    --txt:#1b1e23; --txt2:#3d434e; --sub:#6b7280; --sub2:#a8b0bb;
+    --blue:#2563eb; --blue-soft:#eef3ff; --green:#0d8a52; --green-soft:#e8f7ef;
+    --amber:#b45309; --amber-soft:#fef6e7;
+    --r:12px; --shadow:0 1px 2px rgba(16,24,40,.04),0 2px 6px rgba(16,24,40,.05);
+  }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;height:100%}
-  body{background:var(--bg);color:var(--txt);font:400 15px/1.5 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  body{background:var(--bg);color:var(--txt);
+       font:400 15px/1.5 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
        display:flex;flex-direction:column;overflow:hidden}
 
-  header{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
-  header .back{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--panel);
-       color:var(--txt);font-size:17px;line-height:1;display:flex;align-items:center;justify-content:center;text-decoration:none}
-  header .ttl{flex:1;min-width:0;font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  header .eye{width:38px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--sub);font-size:15px}
-  header .eye.on{color:var(--blue);border-color:var(--blue)}
+  /* ── 顶栏 ── */
+  header{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:10px 12px;
+         background:var(--card);border-bottom:1px solid var(--line)}
+  header .back{width:32px;height:32px;border-radius:9px;border:1px solid var(--line);
+       background:var(--soft);color:var(--txt2);font-size:16px;line-height:1;
+       display:flex;align-items:center;justify-content:center;text-decoration:none;flex:0 0 auto}
+  header .ttl{flex:1;min-width:0;font-weight:600;font-size:13.5px;color:var(--txt2);
+       white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  header .eye{flex:0 0 auto;height:32px;padding:0 11px;border-radius:9px;border:1px solid var(--line);
+       background:var(--soft);color:var(--sub);font:600 12.5px/1 inherit}
+  header .eye.on{color:var(--blue);border-color:#c7d7fb;background:var(--blue-soft)}
 
-  main{flex:1;min-height:0;display:flex;flex-direction:column;padding:14px 16px 0}
+  /* ── 主体 ── */
+  main{flex:1;min-height:0;display:flex;flex-direction:column;padding:12px 14px 0}
 
-  .modebar{display:flex;gap:8px;margin-bottom:14px}
-  .modebar button{flex:1;padding:10px 6px;border-radius:12px;border:1.5px solid var(--line);background:var(--panel);
-       color:var(--sub);font:600 13.5px/1.2 inherit}
-  .modebar button.on{background:rgba(56,189,248,.14);border-color:var(--blue);color:var(--blue)}
+  /* 分段控件 */
+  .seg{display:flex;gap:4px;padding:3px;background:#eceef1;border-radius:11px;margin-bottom:14px}
+  .seg button{flex:1;padding:8px 6px;border:0;border-radius:8px;background:transparent;
+       color:var(--sub);font:600 13px/1.2 inherit;transition:.15s}
+  .seg button.on{background:var(--card);color:var(--txt);box-shadow:0 1px 2px rgba(16,24,40,.08)}
 
-  .stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center}
-  .idx{font:700 34px/1.1 -apple-system,"PingFang SC",sans-serif;letter-spacing:.5px}
-  .idx small{font-size:15px;color:var(--sub);font-weight:500}
-  .hint{color:var(--sub);font-size:13.5px;min-height:20px}
-  .en{margin-top:6px;max-width:92%;font:400 16px/1.6 Georgia,"Times New Roman",serif;color:#cfe3f5;
-      display:none;padding:10px 14px;border-radius:12px;background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.18)}
+  .stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;
+         justify-content:center;text-align:center;gap:0;padding-bottom:6px}
+
+  .panel{width:100%;background:var(--card);border:1px solid var(--line);border-radius:16px;
+         box-shadow:var(--shadow);padding:42px 18px 36px;display:flex;flex-direction:column;
+         align-items:center;gap:10px}
+
+  .idx{font:600 58px/1 -apple-system,"PingFang SC",sans-serif;letter-spacing:-1.5px;
+       font-variant-numeric:tabular-nums;color:var(--txt)}
+  .idx small{font-size:15px;color:var(--sub2);font-weight:500;letter-spacing:0}
+
+  .pass{display:inline-flex;align-items:center;gap:7px;
+        padding:5px 12px;border-radius:999px;background:var(--blue-soft);
+        color:var(--blue);font:600 12px/1 inherit}
+  .pass dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.22}
+  .pass dot.on{opacity:1}
+
+  .en{margin-top:2px;width:100%;font:400 16.5px/1.62 Georgia,"Times New Roman",serif;
+      color:var(--txt2);text-align:left;display:none;padding:11px 13px;
+      border-radius:10px;background:var(--soft);border:1px solid var(--line2)}
   .en.on{display:block}
 
-  .track{width:100%;max-width:520px;height:6px;border-radius:6px;background:var(--panel);overflow:hidden;margin-top:16px}
-  .track i{display:block;height:100%;width:0;background:linear-gradient(90deg,#38bdf8,#34d399);transition:width .12s linear}
+  .ph{color:var(--sub2);font-size:12.5px;line-height:1.6;padding:0 6px}
 
-  .tips{padding:12px 4px 6px;color:var(--sub);font-size:12.5px;line-height:1.65;text-align:center}
+  /* 句子刻度条：一格一句，点哪跳哪 */
+  .nav{width:100%;display:flex;gap:1.5px;margin:22px 0 14px;height:20px;align-items:flex-end}
+  .nav i{flex:1;height:9px;background:#e7eaee;border-radius:2px;cursor:pointer;
+         transition:background .12s,height .12s}
+  .nav i.past{background:#c9d9f7}
+  .nav i.on{background:var(--blue);height:20px}
 
-  footer{flex:0 0 auto;padding:10px 16px calc(16px + env(safe-area-inset-bottom));
-         display:grid;grid-template-columns:1fr 1.6fr 1fr;gap:10px;align-items:center;border-top:1px solid var(--line)}
-  footer button{border-radius:14px;border:1.5px solid var(--line);background:var(--panel);color:var(--txt);
-         font:600 15px/1 inherit;padding:14px 6px}
-  footer button:active{background:#212832}
-  footer #main{font-size:22px;padding:16px 6px;border-color:#1f6f8f;background:rgba(56,189,248,.12);color:var(--blue)}
-  footer #again{grid-column:1/2}
-  footer #finish{grid-column:3/4;font-size:13px;color:var(--sub)}
+  .track{width:100%;height:4px;border-radius:4px;background:#e8ebef;
+         overflow:hidden;margin:2px 0 10px;position:relative}
+  .track i{display:block;height:100%;width:0;background:var(--blue);
+           border-radius:4px;transition:width .1s linear}
 
-  .rate{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6);padding:20px}
+  .tips{padding:10px 6px 8px;color:var(--sub2);font-size:12px;line-height:1.6;text-align:center}
+
+  /* ── 底栏 ── */
+  footer{flex:0 0 auto;background:var(--card);border-top:1px solid var(--line);
+         padding:10px 14px calc(12px + env(safe-area-inset-bottom))}
+  .pad{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:8px;align-items:center}
+  .pad button{border:1px solid var(--line);background:var(--soft);color:var(--txt2);
+       border-radius:var(--r);font:600 15px/1 inherit;padding:14px 0;transition:.12s}
+  .pad button:active{background:#eceef1}
+  .pad #main{background:var(--blue);border-color:var(--blue);color:#fff;font-size:20px;padding:15px 0}
+  .pad #main:active{background:#1d4ed8}
+  .sub2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+  .sub2 button{border:1px solid var(--line);background:transparent;color:var(--sub);
+       border-radius:10px;font:500 12.5px/1 inherit;padding:11px 0}
+
+  /* ── 自评弹层 ── */
+  .rate{position:fixed;inset:0;z-index:50;display:none;align-items:flex-end;
+        justify-content:center;background:rgba(16,24,40,.42);padding:0}
   .rate.on{display:flex}
-  .rate .box{width:100%;max-width:360px;background:#161b22;border:1px solid var(--line);border-radius:18px;padding:20px 18px 16px;text-align:center}
-  .rate .t{font:700 16px/1.4 inherit;margin-bottom:6px}
-  .rate .s{font-size:12.5px;color:var(--sub);margin-bottom:14px;line-height:1.6}
-  .rate button{display:block;width:100%;margin:8px 0;padding:13px;border-radius:12px;border:1.5px solid var(--line);
-       background:#1c222b;color:var(--txt);font:600 14.5px/1.2 inherit}
-  .rate button[data-r="good"]{border-color:#166534;background:#0f2419;color:#6ee7b7}
-  .rate button[data-r="words"]{border-color:#78350f;background:#241a0c;color:#fcd34d}
-  .rate button[data-r="lost"]{border-color:#7f1d1d;background:#241010;color:#fca5a5}
-  .rate .skip{margin-top:6px;border:0;background:transparent;color:var(--sub);font-size:12.5px;padding:8px}
+  .rate .box{width:100%;max-width:440px;background:var(--card);border-radius:18px 18px 0 0;
+        padding:20px 18px calc(20px + env(safe-area-inset-bottom))}
+  .rate .t{font:700 16px/1.4 inherit;text-align:center}
+  .rate .s{font-size:12.5px;color:var(--sub);text-align:center;margin:6px 0 16px;line-height:1.6}
+  .rate button{display:block;width:100%;margin:0 0 8px;padding:14px;border-radius:var(--r);
+       border:1px solid var(--line);background:var(--soft);color:var(--txt);
+       font:600 14.5px/1.2 inherit}
+  .rate button[data-r="good"]{border-color:#bfe3cf;background:var(--green-soft);color:var(--green)}
+  .rate button[data-r="words"]{border-color:#f0dfb8;background:var(--amber-soft);color:var(--amber)}
+  .rate button[data-r="lost"]{border-color:#f3c9c4;background:#fdecea;color:#c0392b}
+  .rate .skip{margin-top:4px;border:0;background:transparent;color:var(--sub2);font-size:12.5px;padding:10px}
 
-  .toast{position:fixed;left:50%;top:12%;transform:translateX(-50%);z-index:60;display:none;
-       background:rgba(15,18,22,.94);border:1px solid var(--line);color:var(--txt);padding:10px 16px;border-radius:999px;font-size:13px}
+  .toast{position:fixed;left:50%;top:14%;transform:translateX(-50%);z-index:60;display:none;
+       background:rgba(27,30,35,.92);color:#fff;padding:9px 16px;border-radius:999px;font-size:13px}
   .toast.on{display:block}
 </style>
 </head>
@@ -70,41 +116,48 @@
 <header>
   <a class="back" href="javascript:history.back()" title="返回">←</a>
   <div class="ttl" id="ttl">跟读训练</div>
-  <button class="eye" id="eye" title="显示/隐藏原文">👁</button>
+  <button class="eye" id="eye" title="显示/隐藏原文">原文</button>
 </header>
 
 <main>
-  <div class="modebar">
+  <div class="seg">
     <button class="on" data-m="line">逐句跟读</button>
     <button data-m="shadow">影子跟读</button>
   </div>
 
   <div class="stage">
-    <div class="idx" id="idx">第 1 <small>/ 1 句</small></div>
-    <div class="hint" id="hint">准备中…</div>
-    <div class="en" id="en"></div>
-    <div class="track"><i id="prog"></i></div>
+    <div class="panel">
+      <div class="idx" id="idx">1 <small>/ 1 句</small></div>
+      <div class="pass" id="pass"><dot class="on"></dot><dot></dot><dot></dot><span id="passTx">第 1 遍</span></div>
+      <div class="en" id="en"></div>
+    </div>
+    <div class="nav" id="nav"></div>
+    <div class="ph" id="ph">可点右上「原文」对照</div>
   </div>
 
-  <div class="tips" id="tips">每句播 3 遍，句间停 1.3 秒——你跟着说出来</div>
+  <div class="tips" id="tips">每句播 3 遍 · 你跟着说出来</div>
 </main>
 
 <footer>
-  <button id="prev">⏮</button>
-  <button id="main">▶</button>
-  <button id="next">⏭</button>
-  <button id="again">🔁 重播</button>
-  <button id="finish">✓ 结束</button>
+  <div class="pad">
+    <button id="prev" title="上一句">⏮</button>
+    <button id="main" title="播放/暂停">▶</button>
+    <button id="next" title="下一句">⏭</button>
+  </div>
+  <div class="sub2">
+    <button id="again">↻ 重播本句</button>
+    <button id="finish">结束并自评</button>
+  </div>
 </footer>
 
 <div class="rate" id="rate">
   <div class="box">
-    <div class="t">这段话你听懂了多少？</div>
-    <div class="s">凭直觉点一个，用来判断是「没听懂」还是「翻译来不及」</div>
-    <button data-r="good">能说出大意</button>
-    <button data-r="words">只听到零散的词</button>
-    <button data-r="lost">基本没跟上</button>
-    <button class="skip" id="skipRate">先不评，直接返回</button>
+    <div class="t">这段跟下来感觉如何？</div>
+    <div class="s">凭第一感觉点一个，用来判断是「跟不上的连读」还是「理解来不及」</div>
+    <button data-r="good">能跟着说下来</button>
+    <button data-r="words">只能蹦几个词</button>
+    <button data-r="lost">嘴完全跟不上</button>
+    <button class="skip" id="skipRate">跳过，直接返回</button>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -117,9 +170,11 @@
   var qs = new URLSearchParams(location.search);
   var FILE = qs.get('p') || '';
   var audio = document.getElementById('audio');
-  var elIdx = document.getElementById('idx'), elHint = document.getElementById('hint');
-  var elEn = document.getElementById('en'), elProg = document.getElementById('prog');
-  var elTips = document.getElementById('tips'), toast = document.getElementById('toast');
+  var elIdx = document.getElementById('idx'), elEn = document.getElementById('en');
+  var elProg = document.getElementById('prog'), elTips = document.getElementById('tips');
+  var elPass = document.getElementById('pass'), elPassTx = document.getElementById('passTx');
+  var elNav = document.getElementById('nav');
+  var toast = document.getElementById('toast');
 
   var DATA = null, L = [], B = null, TITLE = '跟读训练';
   var on = false, mode = 'line', cur = 0, rep = 0;
@@ -127,9 +182,12 @@
   var REPEAT = 3, GAP = 1300, AFTER = 1800;
   var visited = 0;
 
-  function say(t){ toast.textContent = t; toast.classList.add('on'); clearTimeout(say._t); say._t = setTimeout(function(){ toast.classList.remove('on'); }, 2200); }
+  function say(t){
+    toast.textContent = t; toast.classList.add('on');
+    clearTimeout(say._t); say._t = setTimeout(function(){ toast.classList.remove('on'); }, 2000);
+  }
 
-  /* ── 从目标页抓 DATA ── */
+  /* ── 从听力页抓 DATA ── */
   function pickData(html){
     var i = html.indexOf('var DATA');
     if (i < 0) return null;
@@ -139,17 +197,32 @@
     for (k = j; k < html.length; k++){
       var ch = html[k];
       if (inStr){
-        if (esc){ esc = false; }
-        else if (ch === '\\'){ esc = true; }
-        else if (ch === '"'){ inStr = false; }
+        if (esc) esc = false;
+        else if (ch === '\\') esc = true;
+        else if (ch === '"') inStr = false;
         continue;
       }
       if (ch === '"'){ inStr = true; continue; }
-      if (ch === '{'){ depth++; }
-      else if (ch === '}'){ depth--; if (depth === 0){ break; } }
+      if (ch === '{') depth++;
+      else if (ch === '}'){ depth--; if (depth === 0) break; }
     }
     if (depth !== 0) return null;
     try{ return JSON.parse(html.slice(j, k + 1)); }catch(e){ return null; }
+  }
+
+  /* 去掉 "News Report 1." "Directions" 这类题头，跟读它们没意义 */
+  function filterLines(arr){
+    var re=/^(news report|passage|conversation|section)\s*[a-c0-9]*\.?$/i;
+    var out = arr.filter(function(l){
+      var en = (l.en || '').trim();
+      if (!en) return false;
+      if (/[\u4e00-\u9fa5]/.test(en)) return false;        /* 中文试音说明 */
+      if (re.test(en.replace(/[.。]$/, ''))) return false;
+      if (/^directions/i.test(en)) return false;
+      if (en.split(/\s+/).length <= 2 && en.length < 16) return false;
+      return true;
+    });
+    return out.length ? out : arr;
   }
 
   function bounds(){
@@ -165,10 +238,37 @@
 
   function paint(){
     var n = bounds().length;
-    elIdx.innerHTML = '第 ' + (cur + 1) + ' <small>/ ' + n + ' 句</small>';
-    var ln = L[cur] || {};
-    elEn.textContent = ln.en || '';
-    if (visited > 0){ elHint.textContent = ''; }
+    elIdx.innerHTML = (cur + 1) + ' <small>/ ' + n + ' 句</small>';
+    elEn.textContent = (L[cur] || {}).en || '';
+    /* 第几遍 */
+    if (mode === 'line'){
+      elPass.style.display = '';
+      var dots = elPass.querySelectorAll('dot');
+      for (var d = 0; d < dots.length; d++) dots[d].classList.toggle('on', d <= Math.min(rep, REPEAT - 1));
+      elPassTx.textContent = '第 ' + Math.min(rep + 1, REPEAT) + ' 遍 / 共 ' + REPEAT + ' 遍';
+    } else {
+      elPass.style.display = 'none';
+    }
+    if (elNav){
+      var ks = elNav.children;
+      for (var q = 0; q < ks.length; q++){
+        ks[q].classList.toggle('on', q === cur);
+        ks[q].classList.toggle('past', q < cur);
+      }
+    }
+  }
+
+  function buildNav(){
+    if (!elNav) return;
+    var h = '';
+    for (var i = 0; i < bounds().length; i++) h += '<i data-i="' + i + '"></i>';
+    elNav.innerHTML = h;
+    elNav.querySelectorAll('i').forEach(function(el){
+      el.addEventListener('click', function(){
+        go(parseInt(el.getAttribute('data-i'), 10), on);
+        if (audio.paused) pause();
+      });
+    });
   }
 
   function clearT(){
@@ -180,6 +280,16 @@
   function pause(){ try{ audio.pause(); }catch(e){} }
   function setMain(playing){ document.getElementById('main').textContent = playing ? '⏸' : '▶'; }
 
+  /* 等 metadata 就绪再 seek —— 这是原来「快进没用」的根因 */
+  function seekTo(t, cb){
+    var run = function(){
+      try{ audio.currentTime = Math.max(0, t); }catch(e){}
+      if (cb) cb();
+    };
+    if (audio.readyState >= 1) run();
+    else audio.addEventListener('loadedmetadata', run, { once: true });
+  }
+
   function startTick(){
     if (tick){ clearInterval(tick); tick = 0; }
     tick = setInterval(function(){
@@ -189,6 +299,7 @@
       if (audio.currentTime >= b[cur][1] - 0.05){
         pause(); rep++;
         clearInterval(tick); tick = 0;
+        paint();
         if (rep < REPEAT){
           gapT = setTimeout(function(){ if (on && mode === 'line') playOnce(); }, GAP);
         } else {
@@ -201,49 +312,58 @@
     }, 70);
   }
   function playOnce(){
-    audio.currentTime = bounds()[cur][0];
-    play(); setMain(true); startTick();
+    seekTo(bounds()[cur][0], function(){ play(); setMain(true); startTick(); });
   }
-  function go(i){
+
+  /* 统一跳句：播放中→续播；暂停/未开始→只定位不播 */
+  function go(i, forcePlay){
     var b = bounds();
-    if (i < 0) i = 0;
-    if (i >= b.length) i = b.length - 1;
-    cur = i; rep = 0; visited++; paint();
-    clearT(); playOnce();
+    i = Math.max(0, Math.min(b.length - 1, i));
+    cur = i; rep = 0; visited++;
+    clearT(); paint();
+    var shouldPlay = (forcePlay === undefined) ? on : !!forcePlay;
+    if (shouldPlay && mode === 'line'){
+      on = true; playOnce();
+    } else {
+      seekTo(b[cur][0], function(){
+        if (shouldPlay && mode === 'shadow'){ on = true; playShadow(); }
+        else { pause(); setMain(false); }
+      });
+    }
   }
 
   function playShadow(){
     clearT();
-    audio.currentTime = (cur >= 0 && cur < bounds().length) ? bounds()[cur][0] : 0;
-    play(); setMain(true);
-    tick = setInterval(function(){
-      if (!on || mode !== 'shadow') return;
-      var b = bounds(), t = audio.currentTime, i;
-      for (i = 0; i < b.length; i++){
-        if (t >= b[i][0] && t < b[i][1]){ if (i !== cur){ cur = i; paint(); } break; }
-      }
-      if (audio.ended || t >= (DATA.dur || 1e9) - 0.15) finish();
-    }, 250);
+    var start = (cur >= 0 && cur < bounds().length) ? bounds()[cur][0] : 0;
+    seekTo(start, function(){
+      play(); setMain(true);
+      tick = setInterval(function(){
+        if (!on || mode !== 'shadow') return;
+        var b = bounds(), t = audio.currentTime, i;
+        for (i = 0; i < b.length; i++){
+          if (t >= b[i][0] && t < b[i][1]){ if (i !== cur){ cur = i; visited++; paint(); } break; }
+        }
+        if (audio.ended || t >= (DATA.dur || 1e9) - 0.15) finish();
+      }, 250);
+    });
   }
 
   function setMode(m){
     mode = m;
-    document.querySelectorAll('.modebar button').forEach(function(b){
+    document.querySelectorAll('.seg button').forEach(function(b){
       b.classList.toggle('on', b.getAttribute('data-m') === m);
     });
     if (m === 'line'){
-      elTips.textContent = '每句播 3 遍，句间停 1.3 秒——你跟着说出来';
-      elHint.textContent = '第 1 遍听，第 2、3 遍跟着说';
+      elTips.textContent = '每句播 3 遍 · 你跟着说出来';
     } else {
-      elTips.textContent = '音频不会停：落后半句跟着说，跟不上就哼哼，千万别暂停';
-      elHint.textContent = '像影子一样黏在音频后面';
+      elTips.textContent = '音频不停 · 落后半句跟着走 · 跟不上也别暂停';
     }
-    if (on){ clearT(); pause(); if (m === 'line') go(cur); else playShadow(); }
+    paint();
+    if (on){ clearT(); pause(); if (m === 'line') go(cur, true); else playShadow(); }
   }
 
-  function stop(){
-    on = false; clearT(); pause(); setMain(false);
-  }
+  function stop(){ on = false; clearT(); pause(); setMain(false); }
+
   function finish(){
     if (visited === 0){ location.href = backUrl(); return; }
     stop();
@@ -257,71 +377,80 @@
       var d = new Date(), p2 = function(n){ return String(n).padStart(2,'0'); };
       fetch('https://ntfy.sh/' + TOPIC, { method:'POST', body: JSON.stringify({
         t:'shadow', date: d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()),
-        page: FILE, title: TITLE,
-        mode: mode, lines: bounds().length, at: cur + 1, rate: rate
+        page: FILE, title: TITLE, mode: mode, lines: bounds().length,
+        at: cur + 1, rate: rate
       })}).catch(function(){});
     }catch(e){}
-    say('✓ 已记录，批改时我会看到');
-    setTimeout(function(){ location.href = backUrl(); }, 900);
+    say('✓ 已记录');
+    setTimeout(function(){ location.href = backUrl(); }, 800);
   }
 
   /* ── 事件 ── */
   document.getElementById('main').addEventListener('click', function(){
     if (!on){
-      on = true; setMain(true);
-      if (mode === 'line') go(cur); else playShadow();
+      on = true;
+      if (mode === 'line') go(cur, true); else playShadow();
+      setMain(true);
       return;
     }
     if (audio.paused){ play(); setMain(true); if (mode === 'line') startTick(); }
     else { pause(); setMain(false); clearT(); }
   });
-  document.getElementById('prev').addEventListener('click', function(){ if (on && mode==='line') go(cur-1); });
-  document.getElementById('next').addEventListener('click', function(){ if (on && mode==='line') go(cur+1); });
-  document.getElementById('again').addEventListener('click', function(){ if (on){ if (mode==='line') go(cur); else playShadow(); } });
+
+  /* 关键修复：不再要求「已开始播放」，影子模式也可用 */
+  document.getElementById('prev').addEventListener('click', function(){
+    go(mode === 'shadow' ? cur - 1 : cur - 1, on ? true : false);
+    if (audio.paused) say('第 ' + (cur + 1) + ' 句');
+  });
+  document.getElementById('next').addEventListener('click', function(){
+    go(cur + 1, on ? true : false);
+    if (audio.paused) say('第 ' + (cur + 1) + ' 句');
+  });
+  document.getElementById('again').addEventListener('click', function(){
+    on = true; rep = 0; paint();
+    if (mode === 'line') go(cur, true); else playShadow();
+  });
   document.getElementById('finish').addEventListener('click', finish);
   document.getElementById('skipRate').addEventListener('click', function(){ location.href = backUrl(); });
 
-  document.querySelectorAll('.modebar button').forEach(function(b){
+  document.querySelectorAll('.seg button').forEach(function(b){
     b.addEventListener('click', function(){ setMode(b.getAttribute('data-m')); });
   });
   document.querySelectorAll('#rate [data-r]').forEach(function(b){
     b.addEventListener('click', function(){ report(b.getAttribute('data-r')); });
   });
   document.getElementById('eye').addEventListener('click', function(){
-    var on2 = elEn.classList.toggle('on');
-    this.classList.toggle('on', on2);
+    var v = elEn.classList.toggle('on');
+    this.classList.toggle('on', v);
+    this.textContent = v ? '收起' : '原文';
+    var ph = document.getElementById('ph');
+    if (ph) ph.style.display = v ? 'none' : '';
   });
   audio.addEventListener('timeupdate', function(){
-    var d = DATA && DATA.dur ? DATA.dur : (audio.duration || 1);
+    if (!elProg) return;
+    var d = (DATA && DATA.dur) ? DATA.dur : (audio.duration || 1);
     elProg.style.width = Math.min(100, (audio.currentTime / d) * 100) + '%';
   });
   audio.addEventListener('ended', function(){ setMain(false); if (mode === 'shadow') finish(); });
 
   /* ── 启动 ── */
-  if (!FILE){
-    elHint.textContent = '缺少参数，请从听力页进入';
-    return;
-  }
-  document.getElementById('ttl').textContent = '跟读训练';
+  if (!FILE){ elTips.textContent = '缺少参数，请从听力页进入'; return; }
   fetch(FILE, { cache: 'no-store' })
     .then(function(r){ return r.text(); })
     .then(function(html){
       DATA = pickData(html);
       if (!DATA || !DATA.lines || !DATA.lines.length){
-        elHint.textContent = '读取音频数据失败，请返回重试';
-        return;
+        elTips.textContent = '读取音频数据失败，请返回重试'; return;
       }
-      L = DATA.lines;
+      L = filterLines(DATA.lines);
       var src = (DATA.rates && DATA.rates[0] && DATA.rates[0].src) || '';
-      if (!src){ elHint.textContent = '该页没有音频'; return; }
+      if (!src){ elTips.textContent = '该页没有音频'; return; }
       audio.src = src;
       var m = html.match(/<title>([^<]*)<\/title>/);
       if (m){ TITLE = m[1].replace(/\s*·\s*四级.*$/, ''); document.getElementById('ttl').textContent = TITLE; }
-      cur = 0; paint();
-      elHint.textContent = '点 ▶ 开始：第 1 遍听，第 2、3 遍跟着说';
-      elTips.textContent = '每句播 3 遍，句间停 1.3 秒——你跟着说出来';
+      cur = 0; rep = 0; buildNav(); paint();
     })
-    .catch(function(){ elHint.textContent = '加载失败，检查网络后重试'; });
+    .catch(function(){ elTips.textContent = '加载失败，检查网络后重试'; });
 })();
 </script>
 </body>
