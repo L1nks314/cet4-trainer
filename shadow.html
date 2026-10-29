@@ -289,18 +289,16 @@
       if (cb) cb();
     };
     if (audio.readyState >= 1){ run(); return; }
+    var fired = false;
     var once = function(){
+      if (fired) return; fired = true;
       audio.removeEventListener('loadedmetadata', once);
       run();
     };
     audio.addEventListener('loadedmetadata', once);
-    try{ audio.load(); }catch(e){}
     setTimeout(function(){
-      if (audio.readyState >= 1){
-        audio.removeEventListener('loadedmetadata', once);
-        if (Math.abs(audio.currentTime - t) > 0.5) run();
-      }
-    }, 2000);
+      if (!fired && audio.readyState >= 1) once();
+    }, 1200);
   }
 
   function startTick(){
@@ -400,6 +398,14 @@
 
   /* ── 事件 ── */
   document.getElementById('main').addEventListener('click', function(){
+    if (audio.readyState < 2){
+      elTips.textContent = '音频加载中，稍等两秒…';
+      audio.addEventListener('canplay', function h(){
+        audio.removeEventListener('canplay', h);
+        elTips.textContent = mode === 'line' ? '每句播 3 遍 · 你跟着说出来'
+                                             : '音频不停 · 落后半句跟着走 · 跟不上也别暂停';
+      });
+    }
     if (!on){
       on = true;
       if (mode === 'line') go(cur, true); else playShadow();
@@ -459,7 +465,6 @@
       var src = (DATA.rates && DATA.rates[0] && DATA.rates[0].src) || '';
       if (!src){ elTips.textContent = '该页没有音频'; return; }
       audio.src = src;
-      try{ audio.load(); }catch(e){}      /* 提前拉流，避免第一次点 ⏭ 无反应 */
       var m = html.match(/<title>([^<]*)<\/title>/);
       if (m){ TITLE = m[1].replace(/\s*·\s*四级.*$/, ''); document.getElementById('ttl').textContent = TITLE; }
       cur = 0; rep = 0; buildNav(); paint();
