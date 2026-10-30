@@ -1167,7 +1167,38 @@ var _sb=document.getElementById('sy-m1'); if(_sb)_sb.addEventListener('click',fu
     var submitted = !!document.querySelector('.q .opt.right');
     var snap = { v: 1, at: Date.now(), page: FILE, picked: p, submitted: submitted, causes: submitted ? collectCauses() : {} };
     try{ localStorage.setItem(KEY, JSON.stringify(snap)); }catch(e){}
+    recordWhy(snap);
     syncBtn(snap);
+  }
+
+  /* 错因沉淀：把每题「为什么错」累积成可统计的记录（同一题重做只保留最新）
+     原本错因只写进回执文本和本页快照，跨页无法统计，等于做完就丢 */
+  function recordWhy(snap){
+    try{
+      if (!snap || !snap.submitted) return;
+      var cs = snap.causes || {};
+      var ks = Object.keys(cs).filter(function(k){ return cs[k] && cs[k].length; });
+      if (!ks.length) return;
+      var K = 'cet4_why_v1', db = null;
+      try{ db = JSON.parse(localStorage.getItem(K) || ''); }catch(e){ db = null; }
+      if (!db || !db.items) db = { v: 1, items: [] };
+      var h1 = document.querySelector('h1');
+      var title = (h1 && h1.textContent ? h1.textContent : FILE).replace(/\s+/g, ' ').trim().slice(0, 40);
+      ks.forEach(function(qid){
+        var q = null;
+        for (var i = 0; i < QUIZ.length; i++){ if (QUIZ[i].id === qid){ q = QUIZ[i]; break; } }
+        if (!q) return;
+        db.items = db.items.filter(function(x){ return !(x.page === FILE && x.qid === qid); });
+        db.items.push({
+          page: FILE, title: title,
+          kind: FILE.indexOf('read-') === 0 ? 'read' : 'listen',
+          qid: qid, why: cs[qid].slice(),
+          picked: snap.picked[qid] || '', answer: q.answer,
+          ts: Date.now()
+        });
+      });
+      localStorage.setItem(K, JSON.stringify(db));
+    }catch(e){}
   }
 
   function syncBtn(snap){

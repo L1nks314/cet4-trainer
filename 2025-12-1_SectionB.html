@@ -2140,6 +2140,42 @@ for (var qid in AL){
  box-shadow:0 2px 10px rgba(0,0,0,.10);cursor:pointer;-webkit-tap-highlight-color:transparent}
 #ansReset:active{transform:scale(.96);background:#fdf6e3}
 @media(max-width:420px){#ansReset{bottom:66px;padding:6px 10px;font-size:12px}}
+  /* ---------- 听词过关 ---------- */
+  #wdOv{position:fixed;inset:0;z-index:9500;background:rgba(10,12,16,.55);
+    display:none;align-items:center;justify-content:center;padding:18px;}
+  #wdOv.on{display:flex;}
+  .wd-card{background:var(--card);border:1px solid var(--line);border-radius:18px;width:100%;max-width:430px;
+    padding:18px 16px 20px;box-shadow:var(--shadow-lg);}
+  .wd-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;}
+  .wd-top b{font-size:15px;}
+  #wdIdx{font-size:12.5px;color:var(--sub);margin-left:auto;margin-right:10px;font-variant-numeric:tabular-nums;}
+  #wdX{border:0;background:transparent;font-size:19px;line-height:1;color:var(--sub);cursor:pointer;padding:2px 4px;}
+  .wd-hint{font-size:12.5px;color:var(--sub);margin-bottom:12px;}
+  .wd-play{width:100%;border:0;border-radius:12px;background:var(--blue);color:#fff;
+    font-size:16px;font-weight:700;padding:14px;cursor:pointer;font-family:inherit;}
+  .wd-play:active{transform:scale(.99);}
+  .wd-opts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px;}
+  .wd-opt{border:1.5px solid var(--line);background:var(--soft);border-radius:11px;
+    padding:13px 8px;font-size:15px;font-weight:600;color:var(--txt);cursor:pointer;font-family:inherit;
+    word-break:break-all;transition:.12s;}
+  .wd-opt.locked{cursor:default;}
+  .wd-opt.right{border-color:var(--green);background:var(--green-soft);color:var(--green);}
+  .wd-opt.wrong{border-color:var(--red);background:var(--red-soft);color:var(--red);}
+  .wd-fb{margin-top:14px;font-size:13.5px;line-height:1.7;}
+  .wd-fb.ok{color:var(--green);}
+  .wd-fb.no{color:var(--red);}
+  .wd-sent{margin-top:6px;color:var(--txt2);font-size:13px;line-height:1.7;}
+  .wd-zh{margin-top:2px;color:var(--sub);font-size:12.5px;}
+  .wd-again{margin-top:10px;border:0;border-radius:9px;background:var(--blue);color:#fff;
+    padding:9px 16px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;}
+  /* ---------- 快捷键提示 ---------- */
+  body.en-only .line > .cn,
+  body.en-only .line .lh .cn{display:none;}
+  body.cn-only .line > .en{display:none;}
+  #kbTip{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:rgba(20,24,30,.9);
+    color:#fff;font-size:13px;padding:9px 16px;border-radius:20px;z-index:9600;opacity:0;
+    transition:opacity .18s;pointer-events:none;white-space:nowrap;}
+  #kbTip.on{opacity:1;}
 </style>
 <button id="ansReset" title="清空本套作答，重新做一遍（作答与判分已自动保存，刷新不丢）">🔄 重做本套</button>
 <script>
@@ -2202,7 +2238,38 @@ for (var qid in AL){
     var submitted = !!document.querySelector('.q .opt.right');
     var snap = { v: 1, at: Date.now(), page: FILE, picked: p, submitted: submitted, causes: submitted ? collectCauses() : {} };
     try{ localStorage.setItem(KEY, JSON.stringify(snap)); }catch(e){}
+    recordWhy(snap);
     syncBtn(snap);
+  }
+
+  /* 错因沉淀：把每题「为什么错」累积成可统计的记录（同一题重做只保留最新）
+     原本错因只写进回执文本和本页快照，跨页无法统计，等于做完就丢 */
+  function recordWhy(snap){
+    try{
+      if (!snap || !snap.submitted) return;
+      var cs = snap.causes || {};
+      var ks = Object.keys(cs).filter(function(k){ return cs[k] && cs[k].length; });
+      if (!ks.length) return;
+      var K = 'cet4_why_v1', db = null;
+      try{ db = JSON.parse(localStorage.getItem(K) || ''); }catch(e){ db = null; }
+      if (!db || !db.items) db = { v: 1, items: [] };
+      var h1 = document.querySelector('h1');
+      var title = (h1 && h1.textContent ? h1.textContent : FILE).replace(/\s+/g, ' ').trim().slice(0, 40);
+      ks.forEach(function(qid){
+        var q = null;
+        for (var i = 0; i < QUIZ.length; i++){ if (QUIZ[i].id === qid){ q = QUIZ[i]; break; } }
+        if (!q) return;
+        db.items = db.items.filter(function(x){ return !(x.page === FILE && x.qid === qid); });
+        db.items.push({
+          page: FILE, title: title,
+          kind: FILE.indexOf('read-') === 0 ? 'read' : 'listen',
+          qid: qid, why: cs[qid].slice(),
+          picked: snap.picked[qid] || '', answer: q.answer,
+          ts: Date.now()
+        });
+      });
+      localStorage.setItem(K, JSON.stringify(db));
+    }catch(e){}
   }
 
   function syncBtn(snap){
@@ -2298,6 +2365,15 @@ for (var qid in AL){
     });
     var tip = document.querySelector('.card .tip.blue');
     if (tip) box.appendChild(tip);
+    /* 听词过关入口 */
+    var wdBtn = document.createElement('button');
+    wdBtn.id = 'tpWord'; wdBtn.type = 'button';
+    wdBtn.className = 'btn btn-ghost';
+    wdBtn.textContent = '\u{1F524} 听词过关';
+    wdBtn.addEventListener('click', function(){
+      if (window.__openWordDrill) window.__openWordDrill();
+    });
+    box.appendChild(wdBtn);
   }
 
   /* 2. 中文译文移到英文下方 */
@@ -2314,6 +2390,288 @@ for (var qid in AL){
     if (lb && cn) cn.insertBefore(lb, cn.firstChild);
   });
 })();
+</script>
+<script>
+/* ═══ 键盘快捷键 + 中英三态 ═══
+   空格播放/暂停、←/→ 退进 5 秒、1/2/3 切「只英文 / 中英对照 / 只中文」
+   输入框、回执框内不拦截，避免打字时误触 */
+(function(){
+  var A = document.getElementById('audio');
+  if (!A || window.__kbOn) return;
+  window.__kbOn = 1;
+  var K = 'cet4_keymode_v1';
+
+  var tip = document.createElement('div');
+  tip.id = 'kbTip';
+  document.body.appendChild(tip);
+  var tt = 0;
+  function toast(s){
+    tip.textContent = s;
+    tip.classList.add('on');
+    if (tt) clearTimeout(tt);
+    tt = setTimeout(function(){ tip.classList.remove('on'); }, 1300);
+  }
+
+  function applyMode(m, quiet){
+    document.body.classList.remove('en-only', 'cn-only');
+    if (m === 1) document.body.classList.add('en-only');
+    else if (m === 3) document.body.classList.add('cn-only');
+    try{ localStorage.setItem(K, String(m)); }catch(e){}
+    if (!quiet) toast(m === 1 ? '只显示英文' : (m === 3 ? '只显示中文' : '中英对照'));
+  }
+
+  try{
+    var sv = parseInt(localStorage.getItem(K) || '2', 10);
+    if (sv === 1) applyMode(1, true);
+    else if (sv === 3) applyMode(3, true);
+  }catch(e){}
+
+  function toggle(){
+    if (A.paused){
+      if (A.readyState < 2){ toast('音频加载中，稍等一秒'); }
+      var p = A.play();
+      if (p && p.catch) p.catch(function(){});
+    } else A.pause();
+  }
+
+  document.addEventListener('keydown', function(e){
+    var t = e.target;
+    if (t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+    if (k === ' ' || k === 'Spacebar'){
+      e.preventDefault(); toggle(); return;
+    }
+    if (k === 'ArrowLeft'){
+      e.preventDefault();
+      A.currentTime = Math.max(0, A.currentTime - 5);
+      toast('\u2212 5 秒'); return;
+    }
+    if (k === 'ArrowRight'){
+      e.preventDefault();
+      var d = A.duration || 1e9;
+      A.currentTime = Math.min(d - 0.05, A.currentTime + 5);
+      toast('+ 5 秒'); return;
+    }
+    if (k === '1'){ e.preventDefault(); applyMode(1); return; }
+    if (k === '2'){ e.preventDefault(); applyMode(2); return; }
+    if (k === '3'){ e.preventDefault(); applyMode(3); return; }
+  });
+})();
+
+</script>
+<script>
+/* ═══ 听词过关（词级辨音）═══
+   从本页 tokens 里取词，播一个 ~0.5 秒的片段，四选一拼写。
+   干扰项优先取编辑距离最近的本页词，逼出 affect/effect、adapt/adopt 这类真混淆。
+   答错写入 cet4_word_v1，可回炉。 */
+(function(){
+  var A = document.getElementById('audio');
+  if (!A || !window.DATA) return;
+  var LS = DATA.lines || (DATA.rates && DATA.rates[0] && DATA.rates[0].lines) || [];
+  if (!LS.length) return;
+
+  var STOP = ('this that they them their there these those with have has had were was been being from will would could should '
+    + 'what when where which while whose about after again also back been both come does done down each even ever every '
+    + 'good have here into just know like long make many more most much must need only other over same some than that '
+    + 'then thing think time very want well what when will with year your yours').split(' ');
+
+  var POOL = [];
+  (function build(){
+    var seen = {};
+    LS.forEach(function(L, li){
+      (L.tokens || []).forEach(function(tk, ti){
+        var w = String(tk.w || '').replace(/[^A-Za-z'-]/g, '');
+        if (w.length < 4 || w.length > 12) return;
+        if (!/^[A-Za-z][a-z'-]+$/.test(w)) return;
+        /* 句中出现的大写词是专有名词，听出 Americans 没意义 */
+        if (ti > 0 && /^[A-Z]/.test(w)) return;
+        var low = w.toLowerCase();
+        if (STOP.indexOf(low) >= 0) return;
+        /* -ly 副词听力价值低，且容易凑成 -ly 干扰项 */
+        if (/[a-z]{4,}ly$/.test(low)) return;
+        if (seen[low]) return;
+        seen[low] = 1;
+        POOL.push({ w: low, s: tk.s, e: tk.e, li: li });
+      });
+    });
+  })();
+  if (POOL.length < 6) return;
+
+  function lev(a, b){
+    var m = a.length, n = b.length, i, j, prev = [], cur = [];
+    for (j = 0; j <= n; j++) prev[j] = j;
+    for (i = 1; i <= m; i++){
+      cur[0] = i;
+      for (j = 1; j <= n; j++){
+        cur[j] = Math.min(prev[j] + 1, cur[j-1] + 1, prev[j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+      }
+      prev = cur.slice();
+    }
+    return prev[n];
+  }
+
+  function pickDistractors(target, k){
+    var scored = POOL.filter(function(x){ return x.w !== target.w; }).map(function(x){
+      var d = lev(target.w, x.w);
+      var lenPen = Math.abs(x.w.length - target.w.length);
+      return { x: x, score: d + lenPen * 0.35 };
+    }).sort(function(p, q){ return p.score - q.score; });
+    /* 只从最近的 10 个里挑：太远的干扰项一眼排除，练不到东西 */
+    var near = scored.slice(0, 10);
+    var out = [];
+    for (var i = 0; i < k && near.length; i++){
+      var idx = Math.floor(Math.random() * near.length);
+      out.push(near[idx].x);
+      near.splice(idx, 1);
+    }
+    return out;
+  }
+
+  /* ── 播放片段：前后各留缓冲，短词才听得见 ── */
+  var stopTimer = 0, stopListener = null;
+  function playClip(s, e){
+    if (stopTimer){ clearTimeout(stopTimer); stopTimer = 0; }
+    if (stopListener){ A.removeEventListener('timeupdate', stopListener); stopListener = null; }
+    var st = Math.max(0, s - 0.10), en = e + 0.18;
+    function go(){
+      try{ A.currentTime = st; }catch(err){}
+      var p = A.play();
+      if (p && p.catch) p.catch(function(){});
+      stopListener = function(){
+        if (A.currentTime >= en){ A.pause(); A.removeEventListener('timeupdate', stopListener); stopListener = null; }
+      };
+      A.addEventListener('timeupdate', stopListener);
+      /* 兜底：误差大时按时间封顶 */
+      stopTimer = setTimeout(function(){ try{ A.pause(); }catch(err){} }, (en - st) * 1000 + 260);
+    }
+    if (A.readyState >= 1) go();
+    else {
+      var once = function(){ A.removeEventListener('loadedmetadata', once); go(); };
+      A.addEventListener('loadedmetadata', once);
+      try{ A.load(); }catch(err){}
+    }
+  }
+
+  /* ── UI ── */
+  var ov = document.createElement('div');
+  ov.id = 'wdOv';
+  ov.innerHTML = '<div class="wd-card">'
+    + '<div class="wd-top"><b>听词过关</b><span id="wdIdx"></span><button id="wdX" aria-label="关闭">✕</button></div>'
+    + '<div class="wd-hint">只播一个词，听清后选拼写</div>'
+    + '<button id="wdPlay" class="wd-play">▶ 再听一遍</button>'
+    + '<div class="wd-opts" id="wdOpts"></div>'
+    + '<div class="wd-fb" id="wdFb"></div>'
+    + '</div>';
+  document.body.appendChild(ov);
+
+  var queue = [], at = 0, cur = null, answered = false, RIGHT = 0, WRONG = 0;
+
+  function shuffle(a){
+    for (var i = a.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i+1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+
+  /* 本页错过关的词优先出：先过旧账，再随机抽新词 */
+  function missedSet(){
+    var m = {};
+    try{
+      var db = JSON.parse(localStorage.getItem('cet4_word_v1') || '');
+      var page = (location.pathname.split('/').pop() || '').replace(/[?#].*$/, '');
+      (db.items || []).forEach(function(x){ if (x.page === page) m[x.w] = 1; });
+    }catch(e){}
+    return m;
+  }
+
+  function open(){
+    var miss = missedSet();
+    var hard = POOL.filter(function(x){ return miss[x.w]; });
+    var rest = shuffle(POOL.filter(function(x){ return !miss[x.w]; }));
+    queue = hard.concat(rest).slice(0, 20);
+    at = 0; RIGHT = 0; WRONG = 0;
+    ov.classList.add('on');
+    next();
+  }
+
+  function next(){
+    if (at >= queue.length){ finish(); return; }
+    cur = queue[at];
+    answered = false;
+    document.getElementById('wdIdx').textContent = (at+1) + '/' + queue.length;
+    document.getElementById('wdFb').className = 'wd-fb';
+    document.getElementById('wdFb').textContent = '';
+    var ds = pickDistractors(cur, 3);
+    var opts = shuffle([{ w: cur.w, ok: true }].concat(ds.map(function(x){ return { w: x.w, ok: false }; })));
+    var box = document.getElementById('wdOpts');
+    box.innerHTML = opts.map(function(o){
+      return '<button class="wd-opt" data-ok="' + (o.ok ? 1 : 0) + '">' + o.w + '</button>';
+    }).join('');
+    Array.prototype.forEach.call(box.querySelectorAll('.wd-opt'), function(b){
+      b.addEventListener('click', function(){ answer(b); });
+    });
+    playClip(cur.s, cur.e);
+  }
+
+  function answer(btn){
+    if (answered) return;
+    answered = true;
+    var ok = btn.dataset.ok === '1';
+    Array.prototype.forEach.call(document.querySelectorAll('#wdOpts .wd-opt'), function(b){
+      b.classList.add('locked');
+      if (b.dataset.ok === '1') b.classList.add('right');
+    });
+    if (!ok) btn.classList.add('wrong');
+    var fb = document.getElementById('wdFb');
+    if (ok){ RIGHT++; fb.className = 'wd-fb ok'; fb.textContent = '✓ ' + cur.w + ' — 听清了'; }
+    else {
+      WRONG++;
+      fb.className = 'wd-fb no';
+      var L = LS[cur.li] || {};
+      fb.innerHTML = '<b>✗ 正确答案：' + cur.w + '</b>'
+        + (L.en ? '<div class="wd-sent">' + L.en + '</div>' : '')
+        + (L.zh ? '<div class="wd-zh">' + L.zh + '</div>' : '');
+      recordMiss(cur);
+    }
+    setTimeout(function(){ at++; next(); }, ok ? 900 : 2000);
+  }
+
+  function recordMiss(word){
+    try{
+      var K = 'cet4_word_v1', db = null;
+      try{ db = JSON.parse(localStorage.getItem(K) || ''); }catch(e){ db = null; }
+      if (!db || !db.items) db = { v: 1, items: [] };
+      var page = (location.pathname.split('/').pop() || '').replace(/[?#].*$/, '');
+      var key = page + '#' + word.w;
+      db.items = db.items.filter(function(x){ return x.id !== key; });
+      db.items.push({ id: key, page: page, w: word.w, li: word.li, ts: Date.now() });
+      localStorage.setItem(K, JSON.stringify(db));
+    }catch(e){}
+  }
+
+  function finish(){
+    var box = document.getElementById('wdOpts');
+    box.innerHTML = '';
+    document.getElementById('wdIdx').textContent = '';
+    var fb = document.getElementById('wdFb');
+    fb.className = 'wd-fb ok';
+    fb.innerHTML = '<b>这一轮 ' + RIGHT + '/' + (RIGHT + WRONG) + '</b>'
+      + '<div class="wd-sent">' + (WRONG ? '错的 ' + WRONG + ' 个词已记下，稍后可以再过一遍' : '全对，这批词你已经能听出来了') + '</div>'
+      + '<button class="wd-again" id="wdAgain">再来一轮</button>';
+    document.getElementById('wdAgain').addEventListener('click', open);
+  }
+
+  document.getElementById('wdX').addEventListener('click', function(){
+    try{ A.pause(); }catch(e){}
+    ov.classList.remove('on');
+  });
+  document.getElementById('wdPlay').addEventListener('click', function(){
+    if (cur) playClip(cur.s, cur.e);
+  });
+  window.__openWordDrill = open;
+  /* 从记录页点「页名」过来时自动开始 */
+  if (/[?&]wd=1/.test(location.search)) setTimeout(open, 700);
+})();
+
 </script>
 </body>
 </html>

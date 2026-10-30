@@ -472,5 +472,28 @@
     .catch(function(){ elTips.textContent = '加载失败，检查网络后重试'; });
 })();
 </script>
+<script>
+/* 键盘：空格播放/暂停 · J 下一句 · K 上一句 · R 重播本句
+   直接触发已有按钮，不碰内部状态 */
+(function(){
+  if (window.__shKb) return; window.__shKb = 1;
+  function ready(){ var n = document.getElementById('nav'); return !!(n && n.children.length); }
+  function tap(id){
+    if (!ready()) return;                      /* 没指定训练页时别动，避免越界 */
+    var b = document.getElementById(id);
+    if (b && b.offsetParent !== null) b.click();
+  }
+  document.addEventListener('keydown', function(e){
+    var t = e.target;
+    if (t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+    if (k === ' ' || k === 'Spacebar'){ e.preventDefault(); tap('main'); return; }
+    if (k === 'j' || k === 'J' || k === 'ArrowDown'){ e.preventDefault(); tap('next'); return; }
+    if (k === 'k' || k === 'K' || k === 'ArrowUp'){ e.preventDefault(); tap('prev'); return; }
+    if (k === 'r' || k === 'R'){ e.preventDefault(); tap('again'); return; }
+  });
+})();
+</script>
 </body>
 </html>

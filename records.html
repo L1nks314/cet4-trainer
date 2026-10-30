@@ -46,6 +46,14 @@ h1{font-size:22px;margin:0 0 16px;letter-spacing:-.3px}
 .empty{color:var(--sub);font-size:13.5px;text-align:center;padding:26px 0}
 .tip{background:var(--blue-soft);color:var(--blue);border-radius:11px;padding:11px 14px;
  font-size:13px;line-height:1.75;margin-bottom:14px}
+.wbar{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:13.5px}
+.wbar .nm{flex:0 0 76px;color:var(--txt2);font-weight:600}
+.wbar .tr{flex:1;height:9px;border-radius:5px;background:var(--line2);overflow:hidden}
+.wbar .tr i{display:block;height:100%;border-radius:5px}
+.wchip{display:inline-block;background:var(--red-soft);color:var(--red);border-radius:7px;
+ padding:3px 9px;font-size:12.5px;font-weight:600;margin:0 5px 5px 0}
+.wchip.more{background:var(--line2);color:var(--sub)}
+.wbar .n{flex:0 0 30px;text-align:right;color:var(--sub);font-size:12.5px;font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
@@ -58,6 +66,17 @@ h1{font-size:22px;margin:0 0 16px;letter-spacing:-.3px}
   教练的归因与批改会追加在对应回执下面（晚间复盘后更新）。
 </div>
 
+
+<div class="card" id="wordCard" style="display:none">
+  <div class="chead"><h2>听词卡壳</h2><span class="cmeta" id="wordMeta"></span></div>
+  <div id="wordList"></div>
+</div>
+
+<div class="card" id="whyCard" style="display:none">
+  <div class="chead"><h2>错因分布</h2><span class="cmeta" id="whyMeta"></span></div>
+  <div id="whyBars"></div>
+  <div class="tip" id="whyInsight" style="margin:12px 0 0;display:none"></div>
+</div>
 
 <div class="card">
   <div class="chead"><h2>错题本</h2><span class="cmeta" id="wcnt">0 题</span></div>
@@ -252,6 +271,93 @@ function renderWrongbook(cloudWb){
     box.innerHTML = html;
   }catch(e){}
 }
+
+/* ── 错因分布：聚合 cet4_why_v1（听力/阅读交卷后勾的「为什么错」）── */
+(function(){
+  var LAYER = { '连读':'speech', '弱读':'speech', '失爆':'speech',
+                '生词':'word', '熟词僻义':'word',
+                '语法':'logic', '技巧':'logic', '走神':'state' };
+  var COLOR = { speech:'var(--red)', word:'var(--amber)', logic:'var(--blue)', state:'var(--sub)' };
+
+  function readItems(){
+    var db = null;
+    try{ db = JSON.parse(localStorage.getItem('cet4_why_v1') || ''); }catch(e){ db = null; }
+    return (db && db.items && db.items.length) ? db.items : [];
+  }
+
+  function render(){
+    var card = document.getElementById('whyCard');
+    if (!card) return;
+    var items = readItems();
+    if (!items.length) return;
+
+    var cnt = {}, total = 0;
+    items.forEach(function(it){
+      (it.why || []).forEach(function(w){ cnt[w] = (cnt[w] || 0) + 1; total++; });
+    });
+    if (!total) return;
+
+    var keys = Object.keys(cnt).sort(function(a,b){ return cnt[b] - cnt[a]; });
+    var max = cnt[keys[0]] || 1;
+
+    document.getElementById('whyBars').innerHTML = keys.map(function(w){
+      var pct = Math.round(cnt[w] / max * 100);
+      var c = COLOR[LAYER[w]] || 'var(--sub)';
+      return '<div class="wbar"><span class="nm">' + w + '</span>'
+           + '<span class="tr"><i style="width:' + pct + '%;background:' + c + '"></i></span>'
+           + '<span class="n">' + cnt[w] + '</span></div>';
+    }).join('');
+
+    document.getElementById('whyMeta').textContent = items.length + ' 道错题 · ' + total + ' 次标注';
+
+    var layer = { speech:0, word:0, logic:0, state:0 };
+    keys.forEach(function(w){ layer[LAYER[w] || 'state'] += cnt[w]; });
+    var top = Object.keys(layer).sort(function(a,b){ return layer[b] - layer[a]; })[0];
+    var pctTop = Math.round(layer[top] / total * 100);
+    var MSG = {
+      speech: '你的错 <b>' + pctTop + '%</b> 落在语音层——连读、弱读、失爆把词黏成一团。这不是词汇量问题：练逐句跟读和词级辨音，比背单词见效快。',
+      word:   '你的错 <b>' + pctTop + '%</b> 是词不认识，或认识的是另一个意思。先把生词过一遍，再回来重听同一段，效果翻倍。',
+      logic:  '你的错 <b>' + pctTop + '%</b> 在解题层——听懂了却没抓住考点。开听前先用选项反推问题，带着目标去听。',
+      state:  '你的错 <b>' + pctTop + '%</b> 是走神。说明单次训练偏长或选段太难，把一轮压到 10 分钟以内。'
+    };
+    var ins = document.getElementById('whyInsight');
+    if (MSG[top]){ ins.innerHTML = MSG[top]; ins.style.display = 'block'; }
+    card.style.display = 'block';
+  }
+
+  render();
+  window.__renderWhy = render;
+})();
+
+/* ── 听词卡壳：cet4_word_v1 按页分组 ── */
+(function(){
+  var card = document.getElementById('wordCard');
+  if (!card) return;
+  var items = [];
+  try{
+    var db = JSON.parse(localStorage.getItem('cet4_word_v1') || '');
+    items = (db && db.items) ? db.items : [];
+  }catch(e){ items = []; }
+  if (!items.length) return;
+
+  var byPage = {};
+  items.forEach(function(x){ (byPage[x.page] = byPage[x.page] || []).push(x.w); });
+  var pages = Object.keys(byPage).sort(function(a,b){ return byPage[b].length - byPage[a].length; });
+
+  document.getElementById('wordList').innerHTML = pages.map(function(pg){
+    var ws = byPage[pg];
+    return '<div style="margin-bottom:11px">'
+      + '<div style="font-size:12.5px;color:var(--sub);margin-bottom:6px">'
+      + '<a href="' + pg + '?wd=1" style="color:var(--blue);text-decoration:none;font-weight:700">'
+      + pg.replace('.html','') + '</a> · ' + ws.length + ' 词</div>'
+      + '<div>' + ws.slice(0, 14).map(function(w){ return '<span class="wchip">' + w + '</span>'; }).join('')
+      + (ws.length > 14 ? '<span class="wchip more">+' + (ws.length - 14) + '</span>' : '')
+      + '</div></div>';
+  }).join('');
+
+  document.getElementById('wordMeta').textContent = items.length + ' 个词 · 点页名重练';
+  card.style.display = 'block';
+})();
 
 </script>
 </body>
