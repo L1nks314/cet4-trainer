@@ -155,8 +155,8 @@
 .syncst{font-size:12.5px;color:var(--green);margin-top:9px;min-height:18px}
 
 /* ═══ 体验增强 ═══ */
-.stem{display:block}
-body.qhide .stem{display:none}
+.stem{display:none}
+body.qshow .stem{display:block}
 #stemToggle{margin-left:8px}
 #prepOverlay{position:fixed;top:0;left:0;right:0;z-index:9000;background:var(--card,#fff);
  border-bottom:1px solid var(--line,#e5e8ec);box-shadow:0 2px 12px rgba(0,0,0,.08);
@@ -991,19 +991,19 @@ var QUIZ = [{"id": "q16", "stem": "16. Why is the speaker launching a campaign?"
   var PREP = 15;
   var prepDone = false;
 
-  /* 1) 题干默认显示，可按需临时隐藏；提交后强制显示 */
+  /* 1) 题干默认隐藏：四级卷面只有选项、问题由录音念出；交卷后自动展开供复盘 */
   var stemBtn = document.createElement('button');
   stemBtn.className = 'btn btn-ghost';
   stemBtn.id = 'stemToggle';
-  stemBtn.textContent = '🙈 隐藏题干';
+  stemBtn.textContent = '👁 看题干';
   var submitBtn = document.getElementById('submitBtn');
   if (submitBtn && submitBtn.parentNode) submitBtn.parentNode.insertBefore(stemBtn, submitBtn);
   stemBtn.addEventListener('click', function(){
-    var on = document.body.classList.toggle('qhide');
-    stemBtn.textContent = on ? '👁 显示题干' : '🙈 隐藏题干';
+    var on = document.body.classList.toggle('qshow');
+    stemBtn.textContent = on ? '🙈 收起题干' : '👁 看题干';
   });
   if (submitBtn) submitBtn.addEventListener('click', function(){
-    setTimeout(function(){ document.body.classList.remove('qhide'); stemBtn.textContent = '🙈 隐藏题干'; }, 0);
+    setTimeout(function(){ document.body.classList.add('qshow'); stemBtn.textContent = '🙈 收起题干'; }, 0);
   });
 
   /* 2) 首次播放前读题倒计时 */
