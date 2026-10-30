@@ -74,7 +74,7 @@
   /* ---------- 题目 ---------- */
   .q{padding:14px 0;border-bottom:1px dashed var(--line);}
   .q:last-of-type{border-bottom:none;}
-  .q .stem{font-weight:600;margin-bottom:9px;font-size:15px;}
+  .q .stem{font-weight:600;margin-bottom:12px;font-size:15px;line-height:1.55;}
   .zh{color:var(--sub);font-size:13px;font-weight:400;display:block;margin-top:3px;}
   .opt{display:flex;align-items:flex-start;gap:9px;width:100%;text-align:left;cursor:pointer;
     padding:9px 13px;border:1.5px solid var(--line);border-radius:9px;margin-bottom:7px;
@@ -180,8 +180,8 @@
 .syncst{font-size:12.5px;color:var(--green);margin-top:9px;min-height:18px}
 
 /* ═══ 体验增强 ═══ */
-.stem{display:none}
-body.qshow .stem{display:block}
+.stem{display:block}
+body.qhide .stem{display:none}
 #stemToggle{margin-left:8px}
 #prepOverlay{position:fixed;top:0;left:0;right:0;z-index:9000;background:var(--card,#fff);
  border-bottom:1px solid var(--line,#e5e8ec);box-shadow:0 2px 12px rgba(0,0,0,.08);
@@ -428,7 +428,7 @@ var QUIZ = [];
   }
 
   function switchRate(i){
-    if (i === rate) return;
+    if (i === rate){ if (!audio.getAttribute('src')) load(false); return; }
     var playing = !audio.paused;
     var R = DATA.rates[i];
     var sameAudio = !R.src;
@@ -583,19 +583,19 @@ var QUIZ = [];
   buildReceipt();
 
 
-  /* 1) 题干默认隐藏，提交后显示 */
+  /* 1) 题干默认显示，可按需临时隐藏；提交后强制显示 */
   var stemBtn = document.createElement('button');
   stemBtn.className = 'btn btn-ghost';
   stemBtn.id = 'stemToggle';
-  stemBtn.textContent = '👁 显示题干';
+  stemBtn.textContent = '🙈 隐藏题干';
   var submitBtn = document.getElementById('submitBtn');
   if (submitBtn && submitBtn.parentNode) submitBtn.parentNode.insertBefore(stemBtn, submitBtn);
   stemBtn.addEventListener('click', function(){
-    var on = document.body.classList.toggle('qshow');
-    stemBtn.textContent = on ? '🙈 隐藏题干' : '👁 显示题干';
+    var on = document.body.classList.toggle('qhide');
+    stemBtn.textContent = on ? '👁 显示题干' : '🙈 隐藏题干';
   });
   if (submitBtn) submitBtn.addEventListener('click', function(){
-    setTimeout(function(){ document.body.classList.add('qshow'); stemBtn.textContent = '🙈 隐藏题干'; }, 0);
+    setTimeout(function(){ document.body.classList.remove('qhide'); stemBtn.textContent = '🙈 隐藏题干'; }, 0);
   });
 
   /* 2) 首次播放前读题倒计时 */
@@ -624,6 +624,11 @@ var QUIZ = [];
       document.getElementById('audio').play();
     });
   }
+
+  /* 3) 首屏初始化：建词索引 + 装载当前档位音频
+     此前 buildIndex/load 只在「切换语速」里调用，页面打开时 audio.src 为空、时间轴 00:00、点播放无反应 */
+  buildIndex();
+  load(false);
 })();
 </script>
 
