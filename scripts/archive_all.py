@@ -43,13 +43,13 @@ def main():
     os.makedirs(PHOTOS, exist_ok=True)
     existing = set(os.listdir(PHOTOS))
 
-    arch = {"updated": "", "reps": [], "coaches": [], "photos": [], "prog": {}, "shadow": []}
+    arch = {"updated": "", "reps": [], "coaches": [], "photos": [], "prog": {}, "shadow": [], "review": []}
     if os.path.exists(RECORDS):
         try:
             arch = json.load(open(RECORDS, encoding="utf-8"))
         except Exception:
             pass
-    for k in ("reps", "coaches", "photos", "shadow"):
+    for k in ("reps", "coaches", "photos", "shadow", "review"):
         arch.setdefault(k, [])
     arch.setdefault("prog", {})
 
@@ -60,6 +60,8 @@ def main():
     coach_keys = {(c.get("date"), c.get("kind"), c.get("text")) for c in arch["coaches"]}
     shadow_keys = {(x.get("date"), x.get("page"), x.get("mode")) for x in arch["shadow"]}
     photo_keys = {p.get("name") for p in arch["photos"]}
+    review_idx = {x.get("id"): i for i, x in enumerate(arch["review"])}
+    rv = 0
     ap = ar = ac = pg = 0
 
     for d in fetch_msgs():
@@ -110,6 +112,25 @@ def main():
                                        "rate": p.get("rate"), "ts": ts})
                 shadow_keys.add(k)
 
+        elif t == "review":
+            for it in (p.get("items") or []):
+                rid = it.get("id")
+                if not rid:
+                    continue
+                rec = {"id": rid, "page": it.get("page"), "title": it.get("title", ""),
+                       "li": it.get("li"), "en": it.get("en", ""), "zh": it.get("zh", ""),
+                       "stage": it.get("stage", 0), "due": it.get("due"),
+                       "last": it.get("last", ""), "stuck": it.get("stuck", 0),
+                       "done": it.get("done", 0), "ts": ts}
+                i = review_idx.get(rid)
+                if i is None:
+                    review_idx[rid] = len(arch["review"])
+                    arch["review"].append(rec)
+                    rv += 1
+                else:
+                    arch["review"][i] = rec
+                    rv += 1
+
         elif t == "coach":
             k = (p.get("date"), p.get("kind"), p.get("text"))
             if k not in coach_keys:
@@ -134,11 +155,11 @@ def main():
                     if changed:
                         pg += 1
 
-    if ar or ac or ap or pg:
+    if ar or ac or ap or pg or rv:
         arch["updated"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
         with open(RECORDS, "w", encoding="utf-8") as f:
             json.dump(arch, f, ensure_ascii=False, indent=2)
-        print(f"照片+{ap} 回执+{ar} 批改+{ac} 打卡+{pg}")
+        print(f"照片+{ap} 回执+{ar} 批改+{ac} 打卡+{pg} 回炉{rv}")
     else:
         print("无新增，跳过写入")
 

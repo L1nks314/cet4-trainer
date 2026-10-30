@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>今日回炉 · 四级听力</title>
+<style>
+  :root{
+    --bg:#f4f5f7; --card:#fff; --line:#e5e8ec; --line2:#eff1f4;
+    --txt:#1b1e23; --txt2:#2b303a; --sub:#6b7280; --sub2:#a8b0bb;
+    --blue:#2563eb; --blue-soft:#eef3ff; --green:#0d8a52; --green-soft:#e8f7ef;
+    --red:#c0392b; --red-soft:#fdecea; --amber:#b45309; --amber-soft:#fef6e7;
+    --shadow:0 1px 2px rgba(16,24,40,.04),0 2px 6px rgba(16,24,40,.05);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#101216; --card:#191c21; --line:#2c313a; --line2:#242930;
+      --txt:#e9ebee; --txt2:#d7dade; --sub:#98a0aa; --sub2:#6b7280;
+      --blue:#6b96fb; --blue-soft:#1a2742; --green:#41d18f; --green-soft:#14301f;
+      --red:#ef7261; --red-soft:#371d19; --amber:#e0a53f; --amber-soft:#312713;
+      --shadow:0 1px 2px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.28); color-scheme:dark; }
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:16px;line-height:1.7;-webkit-text-size-adjust:100%;
+    min-height:100vh;display:flex;flex-direction:column;}
+  .wrap{max-width:560px;width:100%;margin:0 auto;padding:0 16px 28px;flex:1;display:flex;flex-direction:column}
+
+  /* 顶栏 */
+  .top{display:flex;align-items:center;gap:10px;padding:14px 2px 12px;}
+  .top .back{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--card);
+    display:flex;align-items:center;justify-content:center;font-size:17px;color:var(--sub);text-decoration:none;flex:0 0 auto}
+  .top .tt{font-size:15.5px;font-weight:700;letter-spacing:-.2px}
+  .top .cnt{margin-left:auto;font-size:12.5px;color:var(--sub);font-variant-numeric:tabular-nums}
+
+  /* 进度点 */
+  .dots{display:flex;gap:6px;justify-content:center;padding:6px 0 16px}
+  .dots i{width:22px;height:3px;border-radius:3px;background:var(--line);transition:.2s}
+  .dots i.on{background:var(--blue)}
+  .dots i.ok{background:var(--green)}
+  .dots i.no{background:var(--amber)}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:20px 18px;box-shadow:var(--shadow);margin-bottom:12px}
+
+  /* 播放区 */
+  .from{font-size:12px;color:var(--sub2);text-align:center;margin-bottom:16px;
+    line-height:1.5;word-break:break-all}
+  .playbtn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;
+    padding:18px;border-radius:14px;border:1.5px solid var(--blue);background:var(--blue-soft);
+    color:var(--blue);font:600 16px/1 inherit;cursor:pointer;}
+  .playbtn:active{transform:scale(.985)}
+  .playbtn.playing{background:var(--blue);color:#fff}
+  .ask{text-align:center;font-size:13px;color:var(--sub);margin:18px 0 10px}
+
+  .acts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+  .acts button{padding:15px 8px;border-radius:13px;font:600 15px/1.3 inherit;cursor:pointer;
+    border:1.5px solid var(--line);background:var(--card);color:var(--txt2)}
+  .acts .ok{border-color:#bfe3cf;background:var(--green-soft);color:var(--green)}
+  .acts .no{border-color:#f0dfb8;background:var(--amber-soft);color:var(--amber)}
+  .acts button:active{transform:scale(.98)}
+
+  /* 揭晓 */
+  .en{font-family:Georgia,"Times New Roman",serif;font-size:17px;line-height:1.65;
+    color:var(--txt);margin-bottom:10px;word-break:break-word}
+  .zh{font-size:13.5px;color:var(--sub);line-height:1.7;padding-top:10px;border-top:1px dashed var(--line2)}
+  .verdict{display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:5px 11px;
+    border-radius:999px;font:600 12.5px/1 inherit}
+  .verdict.up{background:var(--green-soft);color:var(--green)}
+  .verdict.down{background:var(--amber-soft);color:var(--amber)}
+  .replay{width:100%;margin-top:14px;padding:11px;border-radius:11px;
+    border:1px solid var(--line);background:var(--card);color:var(--sub);
+    font:500 13px/1 inherit;cursor:pointer}
+  .replay:active{transform:scale(.985)}
+  .nextbtn{width:100%;margin-top:16px;padding:15px;border-radius:13px;border:0;
+    background:var(--blue);color:#fff;font:600 15.5px/1 inherit;cursor:pointer}
+  .nextbtn:active{transform:scale(.985)}
+
+  /* 空 / 结算 */
+  .empty{text-align:center;padding:26px 8px}
+  .empty .ico{font-size:34px;line-height:1;margin-bottom:12px;opacity:.9}
+  .empty h3{margin:0 0 8px;font-size:17px}
+  .empty p{margin:0 0 18px;font-size:13.5px;color:var(--sub);line-height:1.8}
+  .lnk{display:inline-block;padding:12px 20px;border-radius:12px;background:var(--blue);color:#fff;
+    text-decoration:none;font:600 14.5px/1 inherit}
+  .stat{display:flex;gap:10px;margin:18px 0 4px}
+  .stat div{flex:1;background:var(--card);border:1px solid var(--line);border-radius:13px;
+    padding:14px 8px;text-align:center}
+  .stat b{display:block;font-size:22px;line-height:1.2;letter-spacing:-.5px}
+  .stat span{font-size:11.5px;color:var(--sub)}
+
+  .rule{font-size:12.5px;color:var(--sub2);line-height:1.85;padding:2px 6px}
+  .rule b{color:var(--sub);font-weight:600}
+  .toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,10px);
+    background:rgba(20,24,30,.9);color:#fff;font-size:13px;padding:9px 16px;border-radius:10px;
+    opacity:0;pointer-events:none;transition:.2s;z-index:99;max-width:86vw;text-align:center}
+  .toast.on{opacity:1;transform:translate(-50%,0)}
+  audio{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="index.html" aria-label="返回">‹</a>
+    <span class="tt">今日回炉</span>
+    <span class="cnt" id="cnt"></span>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div id="app"></div>
+</div>
+<div class="toast" id="toast"></div>
+<audio id="audio" preload="none"></audio>
+
+<script>
+(function(){
+  var TOPIC = 'cet4-718beb5773e8edd9ef48eb651cb1439dd362eb4a8d28f449';
+  var KEY   = 'cet4_review_v1';
+  var STEPS = [1, 3, 7, 21];        /* 天：隔 1 / 3 / 7 / 21 天再见 */
+  var PER_DAY = 3;                  /* 每天最多回炉 3 句 */
+
+  var app = document.getElementById('app');
+  var dots = document.getElementById('dots');
+  var cnt  = document.getElementById('cnt');
+  var audio = document.getElementById('audio');
+  var toast = document.getElementById('toast');
+
+  var queue = [], today = [], cur = 0, picked = [], stopAt = 0, playing = false;
+  var pageCache = {};
+
+  /* ── 日期 ── */
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function todayStr(){
+    var d = new Date();
+    return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+  }
+  function addDays(n){
+    var d = new Date(); d.setDate(d.getDate() + n);
+    return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+  }
+
+  /* ── 存储 ── */
+  function load(){
+    try{ return JSON.parse(localStorage.getItem(KEY) || '[]') || []; }catch(e){ return []; }
+  }
+  function save(){
+    try{ localStorage.setItem(KEY, JSON.stringify(queue)); }catch(e){}
+  }
+  function pushCloud(){
+    try{
+      fetch('https://ntfy.sh/' + TOPIC, { method:'POST', body: JSON.stringify({
+        t:'review', date: todayStr(), items: queue
+      })}).catch(function(){});
+    }catch(e){}
+  }
+
+  /* 把「✗ 听不清」的句子导进复习队列（幂等） */
+  function useless(en){
+    en = String(en || '').trim();
+    if (!en) return true;
+    if (/[\u4e00-\u9fa5]/.test(en)) return true;
+    if (/^(news report|passage|conversation|section|directions)\b/i.test(en)) return true;
+    if (en.split(/\s+/).length <= 2 && en.length < 16) return true;
+    return false;
+  }
+
+  function importFromWrongbook(){
+    var wb = [];
+    try{ wb = JSON.parse(localStorage.getItem('cet4_wrongbook') || '[]') || []; }catch(e){}
+    var idx = {}, added = 0, i, j;
+    for (i = 0; i < queue.length; i++) idx[queue[i].id] = 1;
+    for (i = 0; i < wb.length; i++){
+      var w = wb[i];
+      if (w.type !== 'listen-dict' || !w.page) continue;
+      var lines = w.lines || [];
+      for (j = 0; j < lines.length; j++){
+        var l = lines[j], id = w.page + '#' + l.li;
+        if (idx[id] || useless(l.en)) continue;
+        queue.push({
+          id: id, page: w.page, title: w.title || w.page, li: l.li,
+          en: l.en || '', zh: l.zh || '',
+          stage: 0, due: todayStr(), last: '', stuck: 0, done: 0
+        });
+        idx[id] = 1; added++;
+      }
+    }
+    if (added) save();
+    return added;
+  }
+
+  /* ── 取今天要到期的句子 ── */
+  function pickDue(){
+    var t = todayStr();
+    var list = queue.filter(function(x){ return (x.due || t) <= t; });
+    list.sort(function(a,b){
+      var da = a.due || '', db = b.due || '';
+      if (da !== db) return da < db ? -1 : 1;
+      return (a.stage||0) - (b.stage||0);
+    });
+    /* 同一页不连着出，避免一次只回炉一篇 */
+    var out = [], used = {};
+    for (var i = 0; i < list.length && out.length < PER_DAY; i++){
+      if (used[list[i].page] && out.length < PER_DAY - 1) continue;
+      out.push(list[i]); used[list[i].page] = 1;
+    }
+    if (out.length < PER_DAY){
+      for (var k = 0; k < list.length && out.length < PER_DAY; k++){
+        if (out.indexOf(list[k]) < 0) out.push(list[k]);
+      }
+    }
+    return out;
+  }
+
+  /* ── 从听力页抓数据（与 shadow.html 同款解析） ── */
+  function pickData(html){
+    var i = html.indexOf('var DATA');
+    if (i < 0) return null;
+    var j = html.indexOf('{', i);
+    if (j < 0) return null;
+    var depth = 0, inStr = false, esc = false, k;
+    for (k = j; k < html.length; k++){
+      var ch = html[k];
+      if (inStr){
+        if (esc) esc = false;
+        else if (ch === '\\') esc = true;
+        else if (ch === '"') inStr = false;
+        continue;
+      }
+      if (ch === '"'){ inStr = true; continue; }
+      if (ch === '{') depth++;
+      else if (ch === '}'){ depth--; if (depth === 0) break; }
+    }
+    if (depth !== 0) return null;
+    try{ return JSON.parse(html.slice(j, k + 1)); }catch(e){ return null; }
+  }
+
+  function loadPage(page){
+    if (pageCache[page]) return Promise.resolve(pageCache[page]);
+    return fetch(page).then(function(r){ return r.text(); }).then(function(html){
+      pageCache[page] = { D: pickData(html) };
+      return pageCache[page];
+    }).catch(function(){
+      pageCache[page] = { D: null };
+      return pageCache[page];
+    });
+  }
+
+  /* ── 播放 ── */
+  function say(t){
+    toast.textContent = t; toast.classList.add('on');
+    clearTimeout(say._t);
+    say._t = setTimeout(function(){ toast.classList.remove('on'); }, 2200);
+  }
+
+  function stopPlay(){
+    playing = false;
+    try{ audio.pause(); }catch(e){}
+    var b = document.querySelector('.playbtn');
+    if (b){ b.classList.remove('playing'); b.innerHTML = '▶ 再听一遍'; }
+  }
+
+  function playCurrent(){
+    var it = today[cur];
+    if (!it) return;
+    var btn = document.querySelector('.playbtn');
+    if (playing){ stopPlay(); return; }
+    if (btn){ btn.innerHTML = '… 加载中'; }
+    playItem(it, btn);
+  }
+
+  function playItem(it, btn){
+    loadPage(it.page).then(function(p){
+      if (!p || !p.D){
+        if (btn){ btn.innerHTML = '▶ 听这一句'; }
+        say('这段音频没取到，检查下网络');
+        return;
+      }
+      var D = p.D, L = D.lines || [];
+      var src = (D.rates && D.rates[0] && D.rates[0].src) || '';
+      if (!src){ say('这页没有音频'); return; }
+      if (audio.getAttribute('src') !== src){
+        audio.setAttribute('src', src);
+      }
+      var li = it.li;
+      var s = (L[li] && L[li].tokens && L[li].tokens[0]) ? L[li].tokens[0].s : 0;
+      var e = (li + 1 < L.length && L[li+1].tokens) ? L[li+1].tokens[0].s : (D.dur || s + 8);
+      stopAt = e;
+      try{ audio.currentTime = Math.max(0, s - 0.12); }catch(err){}
+      var pr = audio.play();
+      playing = true;
+      if (btn){ btn.classList.add('playing'); btn.innerHTML = '⏸ 正在播'; }
+      if (pr && pr.catch) pr.catch(function(){
+        playing = false;
+        if (btn){ btn.classList.remove('playing'); btn.innerHTML = '▶ 听这一句'; }
+      });
+    });
+  }
+
+  audio.addEventListener('timeupdate', function(){
+    if (stopAt && audio.currentTime >= stopAt - 0.02) stopPlay();
+  });
+  audio.addEventListener('ended', stopPlay);
+
+  /* ── 渲染 ── */
+  function renderDots(){
+    var h = '';
+    for (var i = 0; i < today.length; i++){
+      var cls = '';
+      if (picked[i] === 1) cls = 'ok';
+      else if (picked[i] === 0) cls = 'no';
+      else if (i === cur) cls = 'on';
+      h += '<i class="' + cls + '"></i>';
+    }
+    dots.innerHTML = h;
+    cnt.textContent = today.length ? (Math.min(cur + 1, today.length) + ' / ' + today.length) : '';
+  }
+
+  function renderEmpty(why){
+    dots.innerHTML = ''; cnt.textContent = '';
+    var n = queue.length;
+    var soon = queue.slice().sort(function(a,b){ return (a.due||'') < (b.due||'') ? -1 : 1; });
+    var nextDue = soon.length ? soon[0].due : '';
+    var body = '';
+    if (why === 'all-done'){
+      body = '<div class="empty"><div class="ico">🎉</div><h3>今天回炉完了</h3>'
+        + '<p>明天再来。<br>想练新的，就回首页开今天那篇。</p>'
+        + '<a class="lnk" href="index.html">回首页</a></div>';
+    } else {
+      body = '<div class="empty"><div class="ico">☕️</div><h3>今天没有要回炉的</h3>'
+        + '<p>' + (n ? ('队列里还有 ' + n + ' 句，最近一句 ' + (nextDue || '') + ' 到期。<br>')
+                     : '练听力时听到糊的句子，点「✗ 听不清」，<br>第二天它就会出现在这里。<br>')
+        + '现在去开今天那篇新的。</p>'
+        + '<a class="lnk" href="index.html">去练今天那篇</a></div>';
+    }
+    app.innerHTML = body;
+  }
+
+  function renderCard(){
+    var it = today[cur];
+    if (!it) return renderEmpty('all-done');
+    renderDots();
+    app.innerHTML =
+      '<div class="card">'
+      +   '<div class="from">' + esc(it.title || it.page) + ' · 第 ' + (it.li + 1) + ' 句</div>'
+      +   '<button class="playbtn" id="pl">▶ 听这一句</button>'
+      +   '<div class="ask">不看文本，能拼出这句在说什么吗？</div>'
+      +   '<div class="acts">'
+      +     '<button class="ok" id="ok">能拼起来</button>'
+      +     '<button class="no" id="no">还是糊</button>'
+      +   '</div>'
+      + '</div>'
+      + '<div class="rule">'
+      +   '<b>判断标准</b>：能说出这句在讲什么，不用每个词都抓到。<br>'
+      +   '点「还是糊」不丢人，它明天还会来；点「能拼起来」就往后推 3 天。'
+      + '</div>';
+    document.getElementById('pl').addEventListener('click', playCurrent);
+    document.getElementById('ok').addEventListener('click', function(){ judge(1); });
+    document.getElementById('no').addEventListener('click', function(){ judge(0); });
+  }
+
+  function daysUntil(due){
+    if (!due) return 0;
+    var a = new Date(todayStr().replace(/-/g,'/'));
+    var b = new Date(due.replace(/-/g,'/'));
+    return Math.round((b - a) / 86400000);
+  }
+
+  function renderReveal(ok){
+    var it = today[cur];
+    var tipTxt, tipCls;
+    var n = daysUntil(it.due);
+    if (ok){
+      tipTxt = n > 30 ? '✓ 吃透了 · 两个月后抽查' : ('✓ 晋级 · ' + n + ' 天后再见');
+      tipCls = 'up';
+    } else {
+      tipTxt = '↺ 退回 · 明天再来';
+      tipCls = 'down';
+    }
+    var isLast = (cur + 1 >= today.length);
+    app.innerHTML =
+      '<div class="card">'
+      +   '<div class="en">' + esc(it.en || '（这句文本没存下）') + '</div>'
+      +   (it.zh ? '<div class="zh">' + esc(it.zh) + '</div>' : '')
+      +   '<button class="replay" id="rp">🔊 对着文本再听一遍</button>'
+      +   '<div class="verdict ' + tipCls + '">' + tipTxt + '</div>'
+      + '</div>'
+      + '<button class="nextbtn" id="nx">' + (isLast ? '看今天的结果' : '下一句 →') + '</button>';
+    var rp = document.getElementById('rp');
+    if (rp) rp.addEventListener('click', function(){ playItem(it); });
+    document.getElementById('nx').addEventListener('click', function(){
+      cur++;
+      if (cur >= today.length) renderSummary(); else renderCard();
+    });
+  }
+
+  function renderSummary(){
+    var ok = picked.filter(function(x){ return x === 1; }).length;
+    var no = picked.length - ok;
+    var left = queue.filter(function(x){ return (x.due || '') <= todayStr(); }).length;
+    dots.innerHTML = ''; cnt.textContent = '';
+    app.innerHTML =
+      '<div class="card">'
+      +  '<div class="empty" style="padding:14px 4px 4px">'
+      +    '<div class="ico">✓</div><h3>今天 ' + picked.length + ' 句回炉完成</h3>'
+      +  '</div>'
+      +  '<div class="stat">'
+      +    '<div><b style="color:var(--green)">' + ok + '</b><span>过关</span></div>'
+      +    '<div><b style="color:var(--amber)">' + no + '</b><span>明天再来</span></div>'
+      +    '<div><b>' + left + '</b><span>队列剩余</span></div>'
+      +  '</div>'
+      +  '<p style="text-align:center;font-size:12.5px;color:var(--sub);margin:16px 0 0">'
+      +    (no ? '退回的句子明天还会出现，直到你能一次拼出来。' : '全部过关，间隔自动拉长。')
+      +  '</p>'
+      + '</div>'
+      + '<a class="lnk" href="index.html" style="display:block;text-align:center">回首页</a>';
+  }
+
+  function esc(x){
+    return String(x == null ? '' : x).replace(/[&<>"]/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+    });
+  }
+
+  /* ── 判定 ── */
+  function judge(ok){
+    var it = today[cur];
+    if (!it) return;
+    stopPlay();
+    var st = it.stage || 0;
+    if (ok){
+      it.stage = Math.min(st + 1, STEPS.length);
+      it.done = (it.done || 0) + 1;
+      it.stuck = 0;
+      if (it.stage >= STEPS.length){
+        it.due = addDays(60);              /* 吃透了，两个月后再抽查 */
+      } else {
+        it.due = addDays(STEPS[it.stage]);
+      }
+    } else {
+      it.stage = Math.max(0, st - 1);
+      it.stuck = (it.stuck || 0) + 1;
+      it.due = addDays(1);
+    }
+    it.last = todayStr();
+    collected.push(ok);
+    picked[cur] = ok;
+    save();
+    renderReveal(ok);
+  }
+
+  var collected = [];
+
+  /* ── 启动 ── */
+  function oneId(){
+    var m = location.search.match(/[?&]one=([^&]+)/);
+    return m ? decodeURIComponent(m[1]) : '';
+  }
+
+  function boot(){
+    queue = load();
+    var added = importFromWrongbook();
+    var oid = oneId();
+    if (oid){
+      today = queue.filter(function(x){ return x.id === oid; });
+      var back = document.querySelector('.top .back');
+      if (back){ back.href = 'records.html'; }
+      document.querySelector('.top .tt').textContent = '回炉一句';
+    } else {
+      today = pickDue();
+    }
+    picked = [];
+    cur = 0;
+    if (!today.length){ renderEmpty(added ? 'none' : 'none'); return; }
+    renderDots();
+    renderCard();
+    if (added) say('新导入 ' + added + ' 句待回炉');
+  }
+
+  /* 离开时把队列同步到云端（一次） */
+  window.addEventListener('pagehide', function(){ if (collected.length) pushCloud(); });
+  document.addEventListener('visibilitychange', function(){
+    if (document.visibilityState === 'hidden' && collected.length) pushCloud();
+  });
+
+  boot();
+})();
+</script>
+</body>
+</html>

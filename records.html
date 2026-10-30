@@ -230,7 +230,9 @@ function renderWrongbook(cloudWb){
         html += '<div class="it"><div class="hd"><span class="pill a">听写没听清</span></div>';
         for (j = 0; j < (w.lines||[]).length; j++){
           var l = w.lines[j];
-          html += '<div class="bd" style="margin:4px 0">第' + (l.li + 1) + '句 · ' + wbEsc(l.en) + '</div>';
+          html += '<div class="bd" style="margin:4px 0">第' + (l.li + 1) + '句 · ' + wbEsc(l.en)
+            + ' <a href="review.html?one=' + encodeURIComponent((w.page||'') + '#' + l.li)
+            + '" style="white-space:nowrap;color:var(--blue);text-decoration:none;font-weight:600">回炉 ›</a></div>';
         }
         html += '</div>';
       } else {
