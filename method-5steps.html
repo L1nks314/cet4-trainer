@@ -1280,7 +1280,8 @@ var QUIZ = [];
 
     var API = { written:0, total:LINES.length };
     var unclear = {};
-    var UNCLEAR_KEY = 'cet4_dict_unclear_v1';
+    /* 按页面隔离：原来全局共用一个键，A 页标的「听不清」会串到 B 页，打开就像自己选的 */
+    var UNCLEAR_KEY = 'cet4_dict_unclear_v1:' + (location.pathname.split('/').pop() || 'x');
     var curLi = -1;
     try { unclear = JSON.parse(localStorage.getItem(UNCLEAR_KEY) || '{}') || {}; } catch(e){ unclear = {}; }
     function saveUnclear(){ try { localStorage.setItem(UNCLEAR_KEY, JSON.stringify(unclear)); } catch(e){} }

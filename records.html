@@ -171,6 +171,7 @@ function renderKinds(recs){
   var NAME = {listening:'听力', reading:'仔细阅读', matching:'长篇匹配', writing:'写作', translation:'翻译'};
   var g = {}, order = ['listening','reading','matching','writing','translation'];
   recs.forEach(function(r){
+    if (r.excluded) return;                 /* 演练 / 误触产生的回执，不计入正确率 */
     var sc = r.score || (String(r.text || '').match(/结果：(\d+\/\d+)/) || [])[1] || '';
     var m = String(sc).match(/(\d+)\s*\/\s*(\d+)/);
     if (!m) return;
@@ -197,7 +198,8 @@ function renderKinds(recs){
   if (!rows.length){ card.style.display = 'none'; return; }
   card.style.display = '';
   var total = rows.reduce(function(a,x){ return a + x.n; }, 0);
-  document.getElementById('kindMeta').textContent = total + ' 次判分';
+  var exN = recs.filter(function(x){ return x.excluded; }).length;
+  document.getElementById('kindMeta').textContent = total + ' 次判分' + (exN ? '（另 ' + exN + ' 条存疑未计入）' : '');
   document.getElementById('kindBars').innerHTML = rows.map(function(x){
     var color = x.pct >= 60 ? '#16a34a' : (x.pct >= 40 ? '#d97706' : '#dc2626');
     var arrow = x.n > 1 ? (x.lp >= x.fp ? ' <span style="color:#16a34a">↑</span>' : ' <span style="color:#dc2626">↓</span>') : '';
@@ -268,6 +270,7 @@ function render(recs, coaches, photos){
         var meta = esc(r.page || '');
         if (r.score) meta += ' · ' + esc(r.score);
         if (r.pct != null) meta += ' · ' + r.pct + '%';
+        if (r.excluded) meta += ' · <b style="color:#b45309">存疑·' + esc(r.excl_reason || '') + '，未计入</b>';
         html += '<div class="it">'
           + '<div class="hd"><span class="pill ' + pillCls + '">' + (KIND[k] || '回执') + '</span>'
           + '<span class="tt">' + meta + '</span></div>'

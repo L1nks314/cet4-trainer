@@ -1158,8 +1158,8 @@ var _sb=document.getElementById('sy-m1'); if(_sb)_sb.addEventListener('click',fu
       /* 已判分：.sel 已被清除，从 p 对错标记反推当时的选择 */
       var w = q.querySelector('.opt.wrong');
       if (w){ p[qid] = w.getAttribute('data-k'); return; }
-      var r = q.querySelector('.opt.right');
-      if (r) p[qid] = r.getAttribute('data-k');
+      /* 只从 .wrong 反推「我自己选的那个」。绝不从 .right 反推——
+         那是正确答案，会把「一题没选」记成「选对了」，并回填成你的作答。 */
     });
     return p;
   }
@@ -1254,6 +1254,8 @@ var _sb=document.getElementById('sy-m1'); if(_sb)_sb.addEventListener('click',fu
 
     setReplay(true);
     try{
+      /* 重放判分：恢复「上次交过卷」的样子。replaying 期间 ntfy 全被拦掉，
+         所以这里不会产生新回执；删掉这步反而会让按钮变回「可提交」，更容易误交。 */
       submitAll(snap);
       Object.keys(snap.causes || {}).forEach(function(q){
         (snap.causes[q] || []).forEach(function(c){

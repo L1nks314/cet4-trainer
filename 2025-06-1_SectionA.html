@@ -733,6 +733,14 @@ var QUIZ = [{"id": "q1", "stem": "1. How did Tariq make corn taste better?", "zh
 
   submitBtn.addEventListener('click', function(){
     if (submitted) return;
+    /* 同一选项占 80% 以上先确认：手机上 A 选项上下对齐，滑动时容易连点 */
+    var _ks = Object.keys(picked).map(function(k){ return picked[k]; });
+    if (_ks.length >= 4){
+      var _c = {}, _mx = 0, _k;
+      for (var _i = 0; _i < _ks.length; _i++){ _c[_ks[_i]] = (_c[_ks[_i]] || 0) + 1; }
+      for (_k in _c){ if (_c[_k] > _mx) _mx = _c[_k]; }
+      if (_mx / _ks.length >= 0.8 && !window.confirm('你有 ' + _mx + ' / ' + _ks.length + ' 题选了同一个选项，确认这是你的作答？')) return;
+    }
     submitted = true;
     var right = 0;
 
@@ -807,7 +815,9 @@ var QUIZ = [{"id": "q1", "stem": "1. How did Tariq make corn taste better?", "zh
       out.push(ln);
     });
     var pct = Math.round(right / QUIZ.length * 100);
-    return ['结果：' + right + '/' + QUIZ.length + ' · 正确率 ' + pct + '%'].concat(out);
+    var miss = 0;
+    QUIZ.forEach(function(q){ if (!picked[q.id]) miss++; });
+    return ['结果：' + right + '/' + QUIZ.length + ' · 正确率 ' + pct + '%' + (miss ? ' · 未答 ' + miss + ' 题' : '')].concat(out);
   }
 
 
@@ -858,7 +868,8 @@ var QUIZ = [{"id": "q1", "stem": "1. How did Tariq make corn taste better?", "zh
 
     var API = { written:0, total:LINES.length };
     var unclear = {};
-    var UNCLEAR_KEY = 'cet4_dict_unclear_v1';
+    /* 按页面隔离：原来全局共用一个键，A 页标的「听不清」会串到 B 页，打开就像自己选的 */
+    var UNCLEAR_KEY = 'cet4_dict_unclear_v1:' + (location.pathname.split('/').pop() || 'x');
     var curLi = -1;
     try { unclear = JSON.parse(localStorage.getItem(UNCLEAR_KEY) || '{}') || {}; } catch(e){ unclear = {}; }
     function saveUnclear(){ try { localStorage.setItem(UNCLEAR_KEY, JSON.stringify(unclear)); } catch(e){} }
@@ -2302,8 +2313,8 @@ body.mock #quizCard{padding-top:14px}
       /* 已判分：.sel 已被清除，从 p 对错标记反推当时的选择 */
       var w = q.querySelector('.opt.wrong');
       if (w){ p[qid] = w.getAttribute('data-k'); return; }
-      var r = q.querySelector('.opt.right');
-      if (r) p[qid] = r.getAttribute('data-k');
+      /* 只从 .wrong 反推「我自己选的那个」。绝不从 .right 反推——
+         那是正确答案，会把「一题没选」记成「选对了」，并回填成你的作答。 */
     });
     return p;
   }
@@ -2398,6 +2409,8 @@ body.mock #quizCard{padding-top:14px}
 
     setReplay(true);
     try{
+      /* 重放判分：恢复「上次交过卷」的样子。replaying 期间 ntfy 全被拦掉，
+         所以这里不会产生新回执；删掉这步反而会让按钮变回「可提交」，更容易误交。 */
       submitAll(snap);
       Object.keys(snap.causes || {}).forEach(function(q){
         (snap.causes[q] || []).forEach(function(c){
