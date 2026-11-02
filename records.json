@@ -29,6 +29,56 @@
       "ts": "2026-10-18 06:51"
     },
     {
+      "date": "2026-10-19",
+      "kind": "listening",
+      "page": "2025-12-1 · Section C 听力篇章",
+      "text": "",
+      "score": "2/10",
+      "pct": 40,
+      "ts": "2026-10-19 00:00",
+      "backfill": "transcript"
+    },
+    {
+      "date": "2026-10-21",
+      "kind": "listening",
+      "page": "2025-06-2 · Section B 长对话",
+      "text": "",
+      "score": "3/8",
+      "pct": 38,
+      "ts": "2026-10-21 00:00",
+      "backfill": "transcript"
+    },
+    {
+      "date": "2026-10-22",
+      "kind": "listening",
+      "page": "2025-06-2 · Section C 听力篇章",
+      "text": "",
+      "score": "3/10",
+      "pct": 30,
+      "ts": "2026-10-22 00:00",
+      "backfill": "transcript"
+    },
+    {
+      "date": "2026-10-22",
+      "kind": "reading",
+      "page": "仔细阅读 · 2025年6月 第2套",
+      "text": "",
+      "score": "4/5",
+      "pct": 80,
+      "ts": "2026-10-22 00:00",
+      "backfill": "transcript"
+    },
+    {
+      "date": "2026-10-22",
+      "kind": "reading",
+      "page": "仔细阅读 · 2025年6月 第2套",
+      "text": "",
+      "score": "3/5",
+      "pct": 60,
+      "ts": "2026-10-22 00:00",
+      "backfill": "transcript"
+    },
+    {
       "date": "2026-10-28",
       "kind": "listening",
       "page": "2024-12-2 · Section C 听力篇章",

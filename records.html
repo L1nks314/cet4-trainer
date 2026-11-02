@@ -175,7 +175,8 @@ function renderKinds(recs){
     var m = String(sc).match(/(\d+)\s*\/\s*(\d+)/);
     if (!m) return;
     var k = r.kind || 'listening';
-    var key = (r.date || '') + '|' + k + '|' + (r.page || '');
+    /* 同一天同一页可能有两篇（P1/P2），分数不同要分开算；同分重复提交才去重 */
+    var key = (r.date || '') + '|' + k + '|' + (r.page || '') + '|' + String(sc);
     g[k] = g[k] || {};
     g[k][key] = {r: parseInt(m[1],10), t: parseInt(m[2],10), date: (r.date || '')};
   });
