@@ -667,6 +667,43 @@ function renderTasks(){
       if (CLIST[cj].f === _cur.f){ nextC = CLIST[cj]; cpos = cj; break; }
     }
   }
+
+  /* 今天真交过卷的那一段，优先级最高，压过 curseg 和「跳过已做」。
+     旧 bug 在交卷后会把 curseg 覆盖成下一套，光看 curseg 纠正不回来；
+     交卷卡在 localStorage 里，是唯一硬证据。 */
+  var _todaySub = '';
+  try{
+    var _t0 = new Date(); _t0.setHours(0,0,0,0);
+    var _bestAt = 0;
+    for (var _i=0; _i<localStorage.length; _i++){
+      var _k = localStorage.key(_i);
+      if (!/^cet4_ans_/.test(_k)) continue;
+      var _sn = JSON.parse(localStorage.getItem(_k) || 'null');
+      if (_sn && _sn.submitted && _sn.at && _sn.at >= _t0.getTime() && _sn.at > _bestAt){
+        _bestAt = _sn.at; _todaySub = _k.replace(/^cet4_ans_/, '');
+      }
+    }
+  }catch(e){ _todaySub = ''; }
+  if (_todaySub){
+    for (var ct=0; ct<CLIST.length; ct++){
+      if (CLIST[ct].f === _todaySub){ nextC = CLIST[ct]; cpos = ct; break; }
+    }
+    if (nextC){
+      try{ localStorage.setItem('cet4_curseg', JSON.stringify({f:nextC.f, d:nextC.d, wk:wk0})); }catch(e){}
+    }
+  }
+
+  /* 本周已经定过段就沿用它，哪怕今天已经交过卷。
+     交卷只走完 ②，后面还有听写 / 归因 / 跟读；周三复听也必须是同一段。
+     上一版只看 cet4_lseg 挑「第一段没做过的」，所以交卷后一刷新首页就换到下一套。
+     只有跨周（_cur.wk 不是本周）、或 curseg 指着历史已做过的旧段时才重选。 */
+  var _curStay = !!(_cur && _cur.f && (_cur.wk === undefined || _cur.wk === wk0)
+                    && HIST_DONE.indexOf(_cur.f) < 0);
+  if (!nextC && _curStay){
+    for (var cm=0; cm<CLIST.length; cm++){
+      if (CLIST[cm].f === _cur.f){ nextC = CLIST[cm]; cpos = cm; break; }
+    }
+  }
   if (!nextC){
     /* 取第一个没做过的段 */
     for (var ci=0; ci<CLIST.length; ci++){
@@ -697,6 +734,13 @@ function renderTasks(){
   } else if (kind === 'listen'){
     var ST = getSteps();
     var steps, head, sub;
+    /* 今天这一段是不是已经交过卷。交卷只算走完 ②，后面还有听写 / 归因 / 跟读，
+       所以卡片要说「接着做」，不能因为交过卷就当成今天这段做完了。 */
+    var _subbed = false;
+    try{
+      var _s0 = JSON.parse(localStorage.getItem('cet4_ans_' + lbtn) || 'null');
+      _subbed = !!(_s0 && _s0.submitted);
+    }catch(e){ _subbed = false; }
     /* 听力时长按真实音频长度分档（13 套真题中位数：A 6′19″ / B 6′04″ / C 9′14″） */
     var SEC = /sectionc\.html$/i.test(lbtn) ? 'C' : (/sectionb\.html$/i.test(lbtn) ? 'B' : 'A');
     var LE = {
@@ -730,8 +774,8 @@ function renderTasks(){
       ];
     } else {
       /* ── 周一：新段精听 ── */
-      head = '今天 · 听力新段 · Section ' + SEC;
-      sub  = lessonTxt;
+      head = _subbed ? ('今天 · 接着做 · Section ' + SEC) : ('今天 · 听力新段 · Section ' + SEC);
+      sub  = lessonTxt + (_subbed ? '　·　已交卷，接着往下' : '');
       steps = SHORT ? [
         {k:'s1', n:'①', t:'横看竖看选项', d:'四级卷面只有 A–D 选项，问题在录音最后才念，不印在卷上。横看同一题四个选项找差异点，竖看本段选项串话题。不查词、不看原文。', m:LE.sp},
         {k:'s2', n:'②', t:'盲听做题', d:'一遍放完，不暂停、不回放。答案在放音中定，别等问题念完再回想。选不出就选最像的，先往下走。', m:LE.sb},
@@ -746,6 +790,9 @@ function renderTasks(){
         {k:'s5', n:'⑤', t:'跟读', d:'不看文本，慢半拍跟着念，卡住就退回那句重来。本段 '+LE.aud+'，'+LE.note+'。', m:LE.s}
       ];
     }
+
+    /* 短版第 ③ 步就是「交卷」：今天已经交过卷，这一步该是勾上的 */
+    if (_subbed && SHORT && !ST['s3']) ST['s3'] = 1;
 
     var rows = steps.map(function(s){
       var on = !!ST[s.k];
@@ -762,7 +809,7 @@ function renderTasks(){
       + '</div>'
       + rows
       + '<div class="stepacts">'
-      +   '<a class="btn" href="'+encodeURI(lbtn)+'">打开训练页</a>'
+      +   '<a class="btn" href="'+encodeURI(lbtn)+'">'+((!isReplay && _subbed) ? '继续这段（已交卷）' : '打开训练页')+'</a>'
       +   (SHORT ? '' : '<a class="btn ghost" href="shadow.html?p='+encodeURIComponent(lbtn)+'">去跟读</a>')
       + '</div>'
       + '</div>';

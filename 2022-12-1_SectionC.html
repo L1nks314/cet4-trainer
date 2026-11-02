@@ -1065,18 +1065,18 @@ var QUIZ = [{"id": "q16", "stem": "16. What did the researchers of the new study
 (function(){
   var TOPIC = "cet4-718beb5773e8edd9ef48eb651cb1439dd362eb4a8d28f449";
   var btn = document.getElementById('syncBtn'), st = document.getElementById('syncSt');
-  var last = '';
-  function doSync(manual){
-    var txt = window.__receiptText || '';
-    if (!txt.trim()) return;
-    if (txt === last) return;
-    last = txt;
+  var last = '', _timer = 0, _sentOnce = false;
+
+  function pushRep(txt){
+    if (!txt.trim() || txt === last) return;
+    last = txt; _sentOnce = true;
     if (btn) btn.disabled = true;
     if (st) st.textContent = '同步中…';
     var d = new Date();
     var ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
     fetch('https://ntfy.sh/' + TOPIC, {
       method:'POST',
+      keepalive:true,
       body: JSON.stringify({t:'rep', kind:'listening', date:ds, page:document.title, text:txt})
     }).then(function(x){
       var cs = document.getElementById('cloudSt');
@@ -1092,6 +1092,26 @@ var QUIZ = [{"id": "q16", "stem": "16. What did the researchers of the new study
       if (btn) btn.disabled = false;
     });
   }
+
+  function doSync(manual){
+    var txt = window.__receiptText || '';
+    if (!txt.trim()) return;
+    if (txt === last) return;
+    /* 交卷后还会反复改错因、标听不清，每改一次就推一条会刷出一串重复回执。
+       第一次（交卷那一刻）立刻推；之后的改动 20 秒合并，只推最后那版。 */
+    if (_sentOnce && !manual){
+      clearTimeout(_timer);
+      _timer = setTimeout(function(){ _timer = 0; pushRep(window.__receiptText || ''); }, 20000);
+      return;
+    }
+    pushRep(txt);
+  }
+
+  /* 改完最后一条就关页时，别把这一版丢掉 */
+  window.addEventListener('pagehide', function(){
+    if (_timer){ clearTimeout(_timer); _timer = 0; pushRep(window.__receiptText || ''); }
+  });
+
   window.__autoSync = doSync;
   if (btn) btn.addEventListener('click', function(){ doSync(true); });
 })();
@@ -1811,6 +1831,17 @@ for (var qid in AL){
                 if (_key){
                   var _ls = JSON.parse(localStorage.getItem(_key)||'[]') || [];
                   if (_ls.indexOf(_lp) < 0){ _ls.push(_lp); localStorage.setItem(_key, JSON.stringify(_ls)); }
+                }
+                /* 首页靠 cet4_curseg 记「本周这一段」。直接从训练页进来做、没经过首页时，
+                   这一格是空的，首页下次就会以为没定段，把你换到下一套去。这里补上。 */
+                if (/_SectionC/.test(_lp)){
+                  try{
+                    var _cs = JSON.parse(localStorage.getItem('cet4_curseg')||'null');
+                    var _wk = Math.max(0, Math.floor((Date.now() - new Date(2026,10,2).getTime()) / 604800000));
+                    if (!_cs || !_cs.f || _cs.wk !== _wk){
+                      localStorage.setItem('cet4_curseg', JSON.stringify({f:_lp, d:document.title.replace(/\s*·.*/, ''), wk:_wk}));
+                    }
+                  }catch(e){}
                 }
               }catch(e){}
             }
