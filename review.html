@@ -455,9 +455,32 @@
     return m ? decodeURIComponent(m[1]) : '';
   }
 
+  /* v7：回炉并入周三复听，队列不再从错题本自动导入；
+     只保留最近 2 段的句子作为证据，其余归档到 cet4_review_v1_archived（可恢复，不展示） */
+  function trimToRecent(maxPages){
+    maxPages = maxPages || 2;
+    var pages = [], i;
+    for (i = queue.length - 1; i >= 0; i--){
+      if (pages.indexOf(queue[i].page) < 0) pages.push(queue[i].page);
+    }
+    if (pages.length <= maxPages) return 0;
+    var keep = pages.slice(0, maxPages);
+    var drop = queue.filter(function(x){ return keep.indexOf(x.page) < 0; });
+    if (!drop.length) return 0;
+    try{
+      var old = [];
+      try{ old = JSON.parse(localStorage.getItem(KEY + '_archived') || '[]') || []; }catch(e){}
+      localStorage.setItem(KEY + '_archived', JSON.stringify(old.concat(drop).slice(-400)));
+    }catch(e){}
+    queue = queue.filter(function(x){ return keep.indexOf(x.page) >= 0; });
+    save();
+    return drop.length;
+  }
+
   function boot(){
     queue = load();
-    var added = importFromWrongbook();
+    var trimmed = trimToRecent(2);
+    var added = 0;                      /* v7：停止自动导入，队列只减不增 */
     var oid = oneId();
     if (oid){
       today = queue.filter(function(x){ return x.id === oid; });
@@ -473,6 +496,7 @@
     renderDots();
     renderCard();
     if (added) say('新导入 ' + added + ' 句待回炉');
+    else if (trimmed) say('已收起 ' + trimmed + ' 句旧句，只留最近 2 段');
   }
 
   /* 离开时把队列同步到云端（一次） */

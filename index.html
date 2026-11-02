@@ -213,13 +213,14 @@ a.it.now .tx{font-weight:700;color:var(--green)}
 </details>
 
 <details class="fold">
-  <summary><span>更多入口</span><span class="cnt">6 个</span></summary>
+  <summary><span>更多入口</span><span class="cnt">7 个</span></summary>
   <a class="it" href="writing.html"><span class="no">W</span><span class="tx">写作与翻译<span class="tag">18 套写作 · 18 套翻译</span></span><span class="ar">›</span></a>
   <a class="it" href="reading.html"><span class="no">R</span><span class="tx">仔细阅读<span class="tag">8 套 15 篇 · 逐题解析</span></span><span class="ar">›</span></a>
   <a class="it" href="records.html"><span class="no">R</span><span class="tx">我的记录<span class="tag">回执 · 归因 · 云端</span></span><span class="ar">›</span></a>
   <a class="it" href="plan.html"><span class="no">0</span><span class="tx">备考计划<span class="tag">三阶段 · 每日模板</span></span><span class="ar">›</span></a>
   <a class="it" href="method-5steps.html"><span class="no">1</span><span class="tx">精听五步法<span class="tag">连读 / 弱读 / 失爆</span></span><span class="ar">›</span></a>
   <a class="it" href="method-l1.html"><span class="no">2</span><span class="tx">三档语速辨音<span class="tag">慢速 / 原速 / 提速</span></span><span class="ar">›</span></a>
+  <a class="it" href="review.html"><span class="no">↻</span><span class="tx">回炉（旧）<span class="tag">已并入周三复听 · 备查</span></span><span class="ar">›</span></a>
 </details>
 
 <div class="hint">
@@ -648,12 +649,16 @@ function renderTasks(){
     }
   }
   if (!nextC){
-    /* 周一（或周三但本周还没开新段）：取第一个没做过的，并记为本阶段当前段 */
+    /* 取第一个没做过的段 */
     for (var ci=0; ci<CLIST.length; ci++){
       if (cdone.indexOf(CLIST[ci].f) < 0){ nextC = CLIST[ci]; cpos = ci; break; }
     }
     if (!nextC){ nextC = CLIST[0]; cpos = 0; }
-    try{ localStorage.setItem('cet4_curseg', JSON.stringify({f:nextC.f, d:nextC.d, wk:wk0})); }catch(e){}
+    /* 只在「本周还没定段」或「周一跨周开新段」时写 curseg；
+       否则周二~周日、或周一做完再打开，会把本周那段覆盖掉，周三就没法复听了 */
+    if (!_cur || !_cur.f || (wd === 1 && _cur.wk !== wk0)){
+      try{ localStorage.setItem('cet4_curseg', JSON.stringify({f:nextC.f, d:nextC.d, wk:wk0})); }catch(e){}
+    }
   }
   lessonTxt = nextC.d + '　（第 ' + (cpos+1) + '/' + CLIST.length + ' 个篇章）';
   lbtn = nextC.f;
@@ -795,16 +800,7 @@ function renderTasks(){
     tHtml += '<div class="tierlink"><a href="javascript:void(0)" data-tier="min">状态不好？切最小档（10 分钟，做几题算几题）</a></div>';
   }
 
-  /* ── 回炉：之前没听清的句子 ── */
-  var rvN = reviewDueCount();
-  if (rvN > 0){
-    var rvShow = Math.min(rvN, 3);
-    tHtml += '<a class="rvtask" href="review.html">'
-      + '<span class="ri">↻</span>'
-      + '<span class="rt"><b>回炉 ' + rvShow + ' 句</b>'
-      + '<i>' + (rvN > 3 ? ('排队 ' + rvN + ' 句，今天先过 3 句') : '之前没听清的，5 分钟过一遍') + '</i></span>'
-      + '<span class="ra">›</span></a>';
-  }
+  /* 回炉已于 v7 并入周三复听：这里不再提示，队列不再自动增长。review.html 保留备查。 */
 
   tHtml += streak;
   document.getElementById("tasks").innerHTML = tHtml;
@@ -898,7 +894,7 @@ function renderList(){
 }
 
 /* ── 启动 ── */
-syncReviewQueue();
+/* v7：回炉队列不再自动导入（并入周三复听），syncReviewQueue 保留但停用 */
 renderHead();
 renderTasks();
 renderList();
