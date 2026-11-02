@@ -335,6 +335,7 @@ document.querySelectorAll('.submit').forEach(function(btn){
       total++;
       qd.querySelectorAll('.opt').forEach(function(o){
         o.classList.remove('sel','right','wrong');
+        if(o.dataset.k===picked[q])o.setAttribute('data-pick','1');
         if (o.dataset.k === ans) o.classList.add('right');
         else if (o.dataset.k === picked[q]) o.classList.add('wrong');
       });
@@ -1290,13 +1291,16 @@ document.querySelectorAll('.jump').forEach(function(b){
     var p = {};
     document.querySelectorAll('.q[data-q]').forEach(function(q){
       var qid = q.getAttribute('data-q');
+      /* 判分时打在选项上的 data-pick 最可靠：答对的题没有 .wrong，
+         只有这个标记能把「我自己选的那个」留住。 */
+      var pk = q.querySelector('.opt[data-pick]');
+      if (pk){ p[qid] = pk.getAttribute('data-k'); return; }
       var sel = q.querySelector('.opt.sel');
       if (sel){ p[qid] = sel.getAttribute('data-k'); return; }
-      /* 已判分：.sel 已被清除，从 p 对错标记反推当时的选择 */
+      /* 兜底：判分后没有 data-pick 的老状态下，从 .wrong 反推答错的那题。
+         绝不从 .right 反推——那是正确答案，会把「一题没选」记成「选对了」。 */
       var w = q.querySelector('.opt.wrong');
-      if (w){ p[qid] = w.getAttribute('data-k'); return; }
-      /* 只从 .wrong 反推「我自己选的那个」。绝不从 .right 反推——
-         那是正确答案，会把「一题没选」记成「选对了」，并回填成你的作答。 */
+      if (w){ p[qid] = w.getAttribute('data-k'); }
     });
     return p;
   }

@@ -732,6 +732,7 @@ var QUIZ = [{"id": "q16", "stem": "16. What do we learn about Steve Miller?", "z
       if (ok) right++;
       qEl.querySelectorAll('.opt').forEach(function(o){
         o.classList.remove('sel'); o.classList.add('locked');
+        if(o.dataset.k===picked[q.id])o.setAttribute('data-pick','1');
         if (o.dataset.k === q.answer) o.classList.add('right');
         else if (o.dataset.k === picked[q.id]) o.classList.add('wrong');
       });
@@ -1027,16 +1028,33 @@ var QUIZ = [{"id": "q16", "stem": "16. What do we learn about Steve Miller?", "z
   var stemBtn = document.createElement('button');
   stemBtn.className = 'btn btn-ghost';
   stemBtn.id = 'stemToggle';
-  stemBtn.textContent = '👁 看题干';
+  stemBtn.textContent = '👁 看题干（交卷后解锁）';
+  stemBtn.disabled = true;
+  stemBtn.style.opacity = '.5';
+  stemBtn.title = '四级卷面只有选项，问题在录音里念。交卷后才给看题干。';
   var submitBtn = document.getElementById('submitBtn');
   if (submitBtn && submitBtn.parentNode) submitBtn.parentNode.insertBefore(stemBtn, submitBtn);
+  var stemOpen = false;
+  function unlockStem(){
+    if (!stemBtn.disabled) return;
+    stemBtn.disabled = false;
+    stemBtn.style.opacity = '';
+    stemBtn.textContent = '👁 看题干';
+  }
   stemBtn.addEventListener('click', function(){
-    var on = document.body.classList.toggle('qshow');
-    stemBtn.textContent = on ? '🙈 收起题干' : '👁 看题干';
+    if (stemBtn.disabled) return;
+    stemOpen = !stemOpen;
+    document.body.classList.toggle('qshow', stemOpen);
+    stemBtn.textContent = stemOpen ? '🙈 收起题干' : '👁 看题干';
   });
   if (submitBtn) submitBtn.addEventListener('click', function(){
+    unlockStem(); stemOpen = true;
     setTimeout(function(){ document.body.classList.add('qshow'); stemBtn.textContent = '🙈 收起题干'; }, 0);
   });
+  /* 打开页面时若已交过卷（回执恢复），直接解锁 */
+  setTimeout(function(){
+    if (document.querySelector('.opt.right, .opt.wrong')) unlockStem();
+  }, 1500);
 
   /* 2) 首次播放前读题倒计时 */
   function startPrep(){
@@ -2289,13 +2307,16 @@ body.mock #quizCard{padding-top:14px}
     var p = {};
     document.querySelectorAll('.q[data-q]').forEach(function(q){
       var qid = q.getAttribute('data-q');
+      /* 判分时打在选项上的 data-pick 最可靠：答对的题没有 .wrong，
+         只有这个标记能把「我自己选的那个」留住。 */
+      var pk = q.querySelector('.opt[data-pick]');
+      if (pk){ p[qid] = pk.getAttribute('data-k'); return; }
       var sel = q.querySelector('.opt.sel');
       if (sel){ p[qid] = sel.getAttribute('data-k'); return; }
-      /* 已判分：.sel 已被清除，从 p 对错标记反推当时的选择 */
+      /* 兜底：判分后没有 data-pick 的老状态下，从 .wrong 反推答错的那题。
+         绝不从 .right 反推——那是正确答案，会把「一题没选」记成「选对了」。 */
       var w = q.querySelector('.opt.wrong');
-      if (w){ p[qid] = w.getAttribute('data-k'); return; }
-      /* 只从 .wrong 反推「我自己选的那个」。绝不从 .right 反推——
-         那是正确答案，会把「一题没选」记成「选对了」，并回填成你的作答。 */
+      if (w){ p[qid] = w.getAttribute('data-k'); }
     });
     return p;
   }
