@@ -61,6 +61,26 @@
       border-radius:10px;background:var(--soft);border:1px solid var(--line2)}
   .en.on{display:block}
 
+  /* 连读标记：标在「词与词之间」，不是标在词上 */
+  .en .w{white-space:nowrap}
+  .en .lk{font-style:normal;font-weight:700;padding:0 .5px;letter-spacing:-.5px}
+  .en .lk.link{color:#2563eb}
+  .en .lk.stop{color:#c2410c}
+  .en .lk.assim{color:#7c3aed}
+  .en .lk.hdrop{color:#0d8a52}
+  .lkbar{margin-top:9px;width:100%;padding:8px 11px;border-radius:10px;
+         background:#f2f6ff;border:1px solid #dde7fb;color:#3d434e;
+         font:400 12.5px/1.75 -apple-system,"PingFang SC",sans-serif;text-align:left;
+         display:none;max-height:96px;overflow:auto}
+  .lkbar.on{display:block}
+  .lkbar b{color:#2563eb;font-weight:700;margin-right:6px}
+  .lkbar i{font-style:normal;font-weight:700;color:#2563eb}
+  .lkbar em{font-style:normal;color:#8a93a3;margin:0 2px 0 4px}
+  .lkbar .none{color:#a8b0bb}
+  .lkbar .pp{display:inline-block;margin:0 9px 2px 0}
+  .lkbar .ck{float:right;color:#0d8a52;background:#e8f7ef;border:1px solid #cfeddd;
+             border-radius:6px;padding:0 5px;font:600 11px/1.6 inherit}
+
   .ph{color:var(--sub2);font-size:12.5px;line-height:1.6;padding:0 6px}
 
   /* 句子刻度条：一格一句，点哪跳哪 */
@@ -130,6 +150,7 @@
       <div class="idx" id="idx">1 <small>/ 1 句</small></div>
       <div class="pass" id="pass"><dot class="on"></dot><dot></dot><dot></dot><span id="passTx">第 1 遍</span></div>
       <div class="en" id="en"></div>
+      <div class="lkbar" id="lkbar"></div>
     </div>
     <div class="nav" id="nav"></div>
     <div class="ph" id="ph">可点右上「原文」对照</div>
@@ -171,6 +192,7 @@
   var FILE = qs.get('p') || '';
   var audio = document.getElementById('audio');
   var elIdx = document.getElementById('idx'), elEn = document.getElementById('en');
+  var elLk = document.getElementById('lkbar');
   var elProg = document.getElementById('prog'), elTips = document.getElementById('tips');
   var elPass = document.getElementById('pass'), elPassTx = document.getElementById('passTx');
   var elNav = document.getElementById('nav');
@@ -236,10 +258,94 @@
     B = out; return B;
   }
 
+  /* ── 连读标记：标在「词与词之间」──────────────
+     连读是边界现象，不是词的属性：一个词可能既接前一个、又接后一个。
+     原来是标在词上（原文页那 331 处黄底），一个词只能一个标，所以一半是错的。 */
+  var LK_NAME = { link:'连读', stop:'失爆', assim:'同化', hdrop:'h 脱落' };
+  var LK_SYM  = { link:'‿', stop:'⌐', assim:'~', hdrop:'ʰ' };
+  var MANUAL = null;      /* 人工标注，优先生效 */
+
+  function esc(s){
+    return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c];
+    });
+  }
+  /* 提示行里去掉句尾标点，读起来干净：invented. → invented */
+  function tidy(w){ return String(w == null ? '' : w).replace(/[.,!?;:]+$/, ''); }
+
+  function lkNorm(w){
+    return String(w || '').toLowerCase().replace(/^[^a-z]+/, '').replace(/[^a-z']+$/, '');
+  }
+  function lkType(a, b){
+    var A = lkNorm(a), B = lkNorm(b);
+    if (!A || !B) return '';
+    /* 同化：t/d/s/z + you → tʃ / dʒ / ʃ / ʒ（don't you, did you, miss you） */
+    if (/[tdsz]$/.test(A) && /^you/.test(B)) return 'assim';
+    /* h 脱落：tell him / give her，h 不发音 */
+    if (/^(him|her|his|he)$/.test(B) && /[bcdfgklmnprstvxz]$/.test(A)) return 'hdrop';
+    /* 连读：辅音结尾 + 元音开头（Talking‿is） */
+    if (/[bcdfgklmnprstvxz]$/.test(A) && /^[aeiou]/.test(B)) return 'link';
+    /* 失爆：爆破音结尾 + 辅音开头，只做口型不爆破（sounds⌐but） */
+    if (/[pbtdkg]$/.test(A) && !/^[aeiou]/.test(B)) return 'stop';
+    return '';
+  }
+  /* 人工标了就用人工的；没标过这句才用规则算 */
+  function marksFor(idx, toks){
+    var key = String(idx);
+    if (MANUAL && Object.prototype.hasOwnProperty.call(MANUAL, key)) return MANUAL[key] || [];
+    var out = [], i;
+    for (i = 0; i < toks.length - 1; i++){
+      var t = lkType(toks[i].w, toks[i + 1].w);
+      if (t) out.push([i, i + 1, t]);
+    }
+    return out;
+  }
+  function renderEn(idx){
+    var l = L[idx] || {}, toks = l.tokens || [], i;
+    if (!toks.length){ elEn.textContent = l.en || ''; elLk.classList.remove('on'); return; }
+    var mk = marksFor(idx, toks), byStart = {};
+    for (i = 0; i < mk.length; i++) byStart[mk[i][0]] = mk[i][2];
+    var html = '';
+    for (i = 0; i < toks.length; i++){
+      html += '<span class="w">' + esc(toks[i].w) + '</span>';
+      if (i < toks.length - 1){
+        var t = byStart[i];
+        html += t ? '<i class="lk ' + t + '">' + LK_SYM[t] + '</i>' : ' ';
+      }
+    }
+    elEn.innerHTML = html;
+
+    /* 下面这行不跟着「原文」开关走，跟读时也看得见 */
+    if (!mk.length){
+      elLk.innerHTML = '<span class="none">本句没有明显连读，正常语速整句跟下来就行</span>';
+    } else {
+      var parts = [];
+      for (i = 0; i < mk.length; i++){
+        var m = mk[i];
+        parts.push('<span class="pp"><i>' + esc(tidy(toks[m[0]].w)) + LK_SYM[m[2]] + esc(tidy(toks[m[1]].w)) + '</i>'
+                 + '<em>' + LK_NAME[m[2]] + '</em></span>');
+      }
+      elLk.innerHTML = '<b>本句 ' + mk.length + ' 处</b>' + parts.join('')
+                     + (MANUAL ? '<span class="ck">逐句校对</span>' : '');
+    }
+    elLk.classList.add('on');
+  }
+
+  function loadManual(){
+    if (!FILE) return;
+    var f = 'links_' + FILE.replace(/\.html$/i, '') + '.json';
+    fetch(f, { cache: 'no-store' })
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(j){
+        if (j && j.lines){ MANUAL = j.lines; if (L && L.length) paint(); }
+      })
+      .catch(function(){ /* 没有人工标注就全程用规则 */ });
+  }
+
   function paint(){
     var n = bounds().length;
     elIdx.innerHTML = (cur + 1) + ' <small>/ ' + n + ' 句</small>';
-    elEn.textContent = (L[cur] || {}).en || '';
+    renderEn(cur);
     /* 第几遍 */
     if (mode === 'line'){
       elPass.style.display = '';
@@ -467,7 +573,7 @@
       audio.src = src;
       var m = html.match(/<title>([^<]*)<\/title>/);
       if (m){ TITLE = m[1].replace(/\s*·\s*四级.*$/, ''); document.getElementById('ttl').textContent = TITLE; }
-      cur = 0; rep = 0; buildNav(); paint();
+      cur = 0; rep = 0; buildNav(); paint(); loadManual();
     })
     .catch(function(){ elTips.textContent = '加载失败，检查网络后重试'; });
 })();
