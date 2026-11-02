@@ -1663,18 +1663,32 @@ var QUIZ = [{"id": "q1", "stem": "1. What event will take place in Glasgow?", "z
       x.send(JSON.stringify(snap));
     }catch(e){}
   };
-  /* 判分/回执上云成功 = 当天这一项完成 */
+  /* 只有「判分提交」才算今天完成：拍照上传、错题本、进度快照一律不算 */
   var _f = window.fetch;
-  window.fetch = function(u){
+  window.fetch = function(u, init){
     var p = _f.apply(this, arguments);
     try{
       if (typeof u === 'string' && u.indexOf('ntfy.sh') >= 0 && !/(^|\/)(index|records)\.html$/.test(location.pathname)){
-        p.then(function(r){
-          if (r && r.ok){
-            window.__markDone(/_Section/.test(location.pathname) ? 'listen' : 'other');
-            window.__markDone('receipt');
-          }
-        }).catch(function(){});
+        var _b = (init && init.body) ? String(init.body) : '';
+        var _isRep = /["']t["']\s*:\s*["']rep["']/.test(_b);
+        if (_isRep){
+          p.then(function(r){
+            if (r && r.ok){
+              window.__markDone(/_Section/.test(location.pathname) ? 'listen' : 'other');
+              window.__markDone('receipt');
+              /* 记下这段已做过，首页据此自动跳到下一个没做过的篇章 */
+              try{
+                var _lp = location.pathname.split('/').pop();
+                var _key = /_Section/.test(location.pathname) ? 'cet4_lseg'
+                         : /^matching-/.test(_lp) ? 'cet4_mseg' : '';
+                if (_key){
+                  var _ls = JSON.parse(localStorage.getItem(_key)||'[]') || [];
+                  if (_ls.indexOf(_lp) < 0){ _ls.push(_lp); localStorage.setItem(_key, JSON.stringify(_ls)); }
+                }
+              }catch(e){}
+            }
+          }).catch(function(){});
+        }
       }
     }catch(e){}
     return p;
@@ -3095,5 +3109,6 @@ body.mock #quizCard{padding-top:14px}
 })();
 
 </script>
+<script src="goal.js"></script>
 </body>
 </html>

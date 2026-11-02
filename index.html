@@ -172,6 +172,18 @@ a.it.now .tx{font-weight:700;color:var(--green)}
 .step.on .st{color:var(--sub2);text-decoration:line-through;text-decoration-color:#c3c8d0}
 .step .sm{font-size:11.5px;color:var(--sub2);font-variant-numeric:tabular-nums;
  margin-top:2px;flex:0 0 auto}
+.step.static{cursor:default}
+.step .ck.dim{background:transparent;border-style:dashed;border-color:#d3d8df}
+/* 阶段目标卡 */
+.goalcard{margin:0 0 14px;padding:12px 14px;border-radius:13px;background:var(--soft,#fafbfc);
+ border:1px solid var(--line,#e5e8ec)}
+.goalcard .gchd{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px}
+.goalcard .gchd b{font-size:13.5px}
+.goalcard .gchd span{font-size:11.5px;color:var(--sub2,#8b93a1);font-variant-numeric:tabular-nums}
+.goalcard .grow{display:flex;gap:8px;font-size:12.5px;line-height:1.65;color:var(--sub,#6b7280);padding:1px 0}
+.goalcard .grow i{flex:0 0 34px;font-style:normal;font-weight:700;color:var(--sub2,#8b93a1);font-size:11.5px;white-space:nowrap}
+.goalcard .grow.cur{color:var(--txt,#1b1e23);font-weight:600}
+.goalcard .grow.cur i{color:var(--blue,#2563eb)}
 .stepacts{display:flex;gap:8px;margin-top:14px}
 .stepacts .btn{margin-top:0;flex:1;text-align:center;padding:12px 10px}
 
@@ -199,8 +211,9 @@ a.it.now .tx{font-weight:700;color:var(--green)}
 </details>
 
 <div class="hint">
- <b>顺序：</b>①② 在同一页做完，③ 点「去跟读」→ 三步都勾上才算今天完成。<br>
- 勾选存在本机；换设备不同步，但回执会上云。
+ <b>顺序：</b>①–④ 在训练页做完（②做完就交卷，解析自动解锁），⑤ 点「去跟读」。<br>
+ 步骤勾选只是进度条，<b>不会自动算完成</b>——只有交卷判分，或你自己点「今天这段做完了」才算。<br>
+ 勾选存在本机；换设备不同步，但交卷记录会上云。
 </div>
 
 <script>
@@ -284,11 +297,29 @@ var TL = [  {f:"trans-2025-12-1.html",d:"2025年12月 第1套"},
   {f:"trans-2022-12-2.html",d:"2022年12月 第2套"},
   {f:"trans-2022-06-1.html",d:"2022年6月 第1套"}];
 var RL = [{f:"read-2025-12-1.html"},{f:"read-2025-06-2.html"},{f:"read-2025-06-1.html"},{f:"read-2024-06-1.html"},{f:"read-2023-12-1.html"},{f:"read-2023-06-1.html"},{f:"read-2023-06-2.html"},{f:"read-2022-12-1.html"}];
+var ML = [{f:"matching-2025-12-1.html",d:"2025年12月 第1套"},{f:"matching-2025-06-2.html",d:"2025年6月 第2套"},
+          {f:"matching-2025-06-1.html",d:"2025年6月 第1套"},{f:"matching-2024-06-1.html",d:"2024年6月 第1套"},
+          {f:"matching-2023-12-1.html",d:"2023年12月 第1套"},{f:"matching-2023-06-1.html",d:"2023年6月 第1套"},
+          {f:"matching-2023-06-2.html",d:"2023年6月 第2套"},{f:"matching-2022-12-1.html",d:"2022年12月 第1套"}];
 function seq(date,days){var n=0,d=new Date(START.getFullYear(),START.getMonth(),START.getDate());while(d<=date){if(days.indexOf(d.getDay())>=0)n++;d.setDate(d.getDate()+1);}return n;}
 
-var STAGES = [[new Date(2026,9,17), new Date(2026,10,8), "筑基期 · 解决「听不清」", "出口条件：留白 ≤5 句，且一段 ≥5/10"],
-              [new Date(2026,10,9), new Date(2026,10,25), "强化期 · 解决「跟不上+做不对」", "篇章正确率目标 50%"],
-              [new Date(2026,10,26),new Date(2026,11,11), "冲刺期 · 考场保温", "盯稳定性，别再上新材料"]];
+/* 两段式：打底（11/2–11/22）→ 上考场节奏（11/23–12/11）
+   每段有明确的「出口/达标」数字，写在 index 与所有训练页顶部，随时能看到 */
+var STAGES = [
+  [new Date(2026,9,17), new Date(2026,10,22), "打底期 · 抓听力与匹配",
+   "阶段目标：听力篇章≥5/10、留白≤5 句；长篇匹配≥60%；仔细阅读守住 70%"],
+  [new Date(2026,10,23), new Date(2026,11,11), "上考场期 · 连做与保温",
+   "阶段目标：整套听力 40 分钟连做≥45%；写作模板能默写；模拟总分≥420"]
+];
+/* 阶段目标（供训练页顶部展示，字段：名称/目标/达标线） */
+var GOALS = {
+  base: { name:"打底期", range:"11/2 – 11/22",
+    listen:"听力篇章 ≥5/10，且留白 ≤5 句", read:"仔细阅读守住 ≥70%",
+    match:"长篇匹配 ≥60%（现在 0 次）", write:"写作结构分先拿满：三段式 + 2 套模板" },
+  exam: { name:"上考场期", range:"11/23 – 12/11",
+    listen:"整套听力 A→B→C 连做 ≥45%，中途不停", read:"仔细阅读 ≥70%，限时 12 分钟/篇",
+    match:"长篇匹配 ≥65%，15 分钟做完", write:"模板默写 + 模拟总分 ≥420" }
+};
 
 /* ═══ 跨端同步 ═══
    三层数据，加载时取并集，任何一层有记录就算完成：
@@ -310,30 +341,29 @@ function loadLocal(){
 }
 function saveLocal(p){ try{ localStorage.setItem(PROG_KEY, JSON.stringify(p)); }catch(e){} }
 
-function loadDone(){                 // 训练页写的 cet4_done → PROG 结构（含历史）
+function loadDone(){                 // 训练页写的 cet4_done → PROG 结构（只输出为真的键，避免 false 覆盖真值）
   try{
     var d=JSON.parse(localStorage.getItem('cet4_done')||'{}'), out={}, k;
     for(k in d){
-      var v=d[k]||{};
-      if(v.listen||v.other||v.receipt) out[k]={ l:v.listen?1:0, o:v.other?1:0, r:v.receipt?1:0 };
+      var v=d[k]||{}, m={};
+      if(v.listen) m.l=1; if(v.other) m.o=1; if(v.receipt) m.r=1;
+      if(m.l||m.o||m.r) out[k]=m;
     }
     return out;
   }catch(e){ return {}; }
 }
 
-function mergeProg(){                 // 并集：任一层标记完成即算完成
-  var out={}, keys={}, i;
-  for(i=0;i<arguments.length;i++){
-    var o=arguments[i]; if(!o) continue;
-    for(var k in o) keys[k]=1;
-  }
-  for(var k in keys){
-    var m={};
-    for(var j=0;j<arguments.length;j++){
-      var v=(arguments[j]||{})[k]||{};
-      m.l = m.l || v.l; m.o = m.o || v.o; m.r = m.r || v.r;
+function mergeProg(){                 // 后者覆盖前者：本地手动勾/取消优先级最高
+  var out={};
+  for(var j=0;j<arguments.length;j++){
+    var o=arguments[j]; if(!o) continue;
+    for(var k in o){
+      var v=o[k]||{}, m=out[k]||{};
+      if(v.l!==undefined) m.l=v.l;
+      if(v.o!==undefined) m.o=v.o;
+      if(v.r!==undefined) m.r=v.r;
+      if(m.l||m.o||m.r||v.l===0||v.o===0||v.r===0) out[k]=m;
     }
-    if(m.l||m.o||m.r) out[k]=m;
   }
   return out;
 }
@@ -421,7 +451,7 @@ function renderHead(){
    +'<div class="bar"><i style="width:'+Math.max(pct,3)+'%"></i></div>'
    +'<div class="sub">集训第 '+dayNo+' 天 / 共 '+totalDays+' 天 · '+(today.getMonth()+1)+'月'+today.getDate()+'日 周'+'日一二三四五六'[wd]
    +' &nbsp;·&nbsp; <span id="syncTag" style="font-size:12px;opacity:.9">☁ 同步中…</span></div>'
-   +'<div class="note">本阶段重点：'+st[3]+'</div>';
+   +'<div class="note">一天只做一件事 · 做完就结束（目标见下方卡片）</div>';
 }
 
 var TIER_KEY = 'cet4_tier_';
@@ -449,11 +479,8 @@ function toggleStep(k){
   var st = getSteps();
   st[k] = !st[k];
   try{ localStorage.setItem(STEP_KEY + fmt(today), JSON.stringify(st)); }catch(e){}
-  /* 前三步都勾上 → 自动算今天听力完成（第 4 步听写是满配加分项，不强制） */
-  var all = !!(st.s1 && st.s2 && st.s3);
-  var cur = PROG[fmt(today)] || {};
-  if (all && !cur.l){ cur.l = true; PROG[fmt(today)] = cur; saveLocal(PROG); push(PROG); setSync(true); }
-  if (!all && cur.l){ cur.l = false; PROG[fmt(today)] = cur; saveLocal(PROG); push(PROG); }
+  /* 步骤勾选只用来跟进进度，不再自动算「完成」——
+     完成只有两个来源：判分提交（训练页确认）或自己点下面那个框 */
   renderTasks();
   refreshStats();
 }
@@ -497,11 +524,41 @@ function reviewDueCount(){
   }catch(e){ return 0; }
 }
 
+/* 本周完成情况 + 当前阶段目标（每天打开第一眼看到的就是这个） */
+function weekStat(){
+  var mon = new Date(today.getFullYear(), today.getMonth(), today.getDate() - ((today.getDay()+6)%7));
+  var n=0, l=0, i, dd, v;
+  for(i=0;i<7;i++){
+    dd = new Date(mon.getFullYear(), mon.getMonth(), mon.getDate()+i);
+    if (dd > today) break;
+    v = PROG[fmt(dd)] || {};
+    if (v.l || v.o) n++;
+    if (v.l) l++;
+  }
+  return {n:n, l:l};
+}
+function goalCard(cur){
+  var g = (st === STAGES[0]) ? GOALS.base : GOALS.exam;
+  var wc = weekStat();
+  function row(k, label, txt){
+    return '<div class="grow'+(cur===k?' cur':'')+'"><i>'+label+'</i><span>'+txt+'</span></div>';
+  }
+  return '<div class="goalcard">'
+    + '<div class="gchd"><b>'+g.name+' · '+g.range+'</b>'
+    +   '<span>本周 '+wc.n+'/5 天 · 听力 '+wc.l+' 次</span></div>'
+    + row('listen','听力', g.listen)
+    + row('match','匹配', g.match)
+    + row('write','写译', g.write)
+    + '</div>';
+}
+
 function renderTasks(){
   var man = PROG[fmt(today)] || {};
   var au = {};
   try{ au = (JSON.parse(localStorage.getItem('cet4_done')||'{}')[fmt(today)]) || {}; }catch(e){ au = {}; }
-  done = { l: !!(man.l || au.listen), o: !!(man.o || au.other), r: !!(man.r || au.receipt) };
+  /* 以 PROG 为准：PROG 里存在该键（哪怕是用户手动取消的 0）就不用 cet4_done 覆盖 */
+  function pick(k, auv){ return (k in man) ? !!man[k] : !!auv; }
+  done = { l: pick('l', au.listen), o: pick('o', au.other), r: pick('r', au.receipt) };
 
   var lessonTxt, lbtn;
   if (gap<0){ lessonTxt="集训 10/17 开始 · 今天先歇着，明天从这里起步"; lbtn=LESSONS[0].f; }
@@ -517,7 +574,7 @@ function renderTasks(){
 
   /* ── 周五 / 周六：休息日 ── */
   if (isRestDay(today)){
-    var h1='<div class="task'+(done.o?" on":"")+'" data-k="o"><div class="box'+(done.o?" on":"")+'"></div>'
+    var h1=goalCard('')+'<div class="task'+(done.o?" on":"")+'" data-k="o"><div class="box'+(done.o?" on":"")+'"></div>'
      +'<div class="tk"><div class="tt">休息日 · 不用打卡</div>'
      +'<div class="td">周五、周六固定休息，不训练也<b>不断签</b>。想动一下就听 10 分钟旧音频，不想动就直接关掉。</div>'
      +'<a class="btn ghost" href="review.html">随便听 10 分钟 →</a></div></div>' + streak;
@@ -526,22 +583,50 @@ function renderTasks(){
     return;
   }
 
-  /* ── 单线日：一天只做一件事 ── */
-  var kind = (wd===1||wd===3) ? 'listen' : (wd===2||wd===4) ? 'read' : 'write';
+  /* ── 单线日（方案 A）：一/三/四 听力 60′ · 二 长篇匹配 60′ · 日 写译 60′ ── */
+  var W0x = d0(new Date(2026,10,2));
+  var wk0 = Math.max(0, Math.floor((today - W0x) / 604800000));
+  /* 周四：双周换仔细阅读保手感，单周仍是听力 */
+  var kind = (wd===1||wd===3) ? 'listen'
+           : (wd===4) ? ((wk0 % 2 === 1) ? 'read' : 'listen')
+           : (wd===2) ? 'match' : 'write';
   var tier = getTier();
-  var tHtml = '';
+  var doneKey = (tier==='min' || kind==='listen') ? 'l' : 'o';
+  var dn = !!done[doneKey];
+  var wk = wk0;                                           /* 方案 A 起点 11/2 */
+
+  /* 听力篇章：只走 Section C，自动跳过已做过的段 */
+  var CLIST = LESSONS.filter(function(x){ return /SectionC/.test(x.f); });
+  /* 历史上已做过的篇章（10-19 / 10-22 的记录），先跳过，别让你重做已做过的 */
+  var SEED = ['2025-12-1_SectionC.html', '2025-06-2_SectionC.html'];
+  var cdone = SEED.slice();
+  try{
+    var _sv = JSON.parse(localStorage.getItem('cet4_lseg')||'[]') || [];
+    cdone = cdone.concat(_sv);
+  }catch(e){}
+  var nextC = null, cpos = 0;
+  for (var ci=0; ci<CLIST.length; ci++){
+    if (cdone.indexOf(CLIST[ci].f) < 0){ nextC = CLIST[ci]; cpos = ci; break; }
+  }
+  if (!nextC){ nextC = CLIST[0]; cpos = 0; }
+  lessonTxt = nextC.d + '　（第 ' + (cpos+1) + '/' + CLIST.length + ' 个篇章）';
+  lbtn = nextC.f;
+
+  var tHtml = goalCard(kind);
 
   if (tier === 'min'){
-    tHtml += '<div class="task'+(done.l?" on":"")+'" data-k="l"><div class="box'+(done.l?" on":"")+'"></div>'
+    tHtml += '<div class="task'+(dn?" on":"")+'" data-k="l"><div class="box'+(dn?" on":"")+'"></div>'
      +'<div class="tk"><div class="tt">最小档 · 跟读 3 句 · 10 分钟</div>'
-     +'<div class="td">只跟读今天听不清的那 3 句：0.85 跟 2 遍 → 1.0 跟 1 遍。做完这一步就算今天完成。</div>'
+     +'<div class="td">只跟读今天那 3 句：0.85 跟 2 遍 → 1.0 跟 1 遍。做完这一步就算今天完成。</div>'
      +'<a class="btn" href="shadow.html?p='+encodeURIComponent(lbtn)+'">去跟读 →</a></div></div>';
   } else if (kind === 'listen'){
     var ST = getSteps();
     var steps = [
-      {k:'s1', n:'①', t:'只听大意', d:'整段放完，用一句话说出讲什么。听不出也往下走，不回头。', m:'3′'},
-      {k:'s2', n:'②', t:'逐句抓主干', d:'每句听完用 3–5 个字说主干：谁·做了什么。每句最多听 2 遍。', m:'8′'},
-      {k:'s3', n:'③', t:'影子跟读', d:'不看文本，跟着念。慢半拍、念错都行，嘴不许停。', m:'14′'}
+      {k:'s1', n:'①', t:'预读选项', d:'圈出 5 道题里重复出现的名词、数字、人名。不查词，只圈。', m:'5′'},
+      {k:'s2', n:'②', t:'盲听做题', d:'一遍放完，不暂停、不回放。选不出来就选最像的那个，先往下走。', m:'7′'},
+      {k:'s3', n:'③', t:'逐句听写', d:'只写 8–10 句最难的。听不出就画「—」，绝不留空、绝不猜。', m:'20′'},
+      {k:'s4', n:'④', t:'对照归因', d:'只看画「—」的句子，每处标一个原因：连读 / 生词 / 走神。', m:'10′'},
+      {k:'s5', n:'⑤', t:'跟读 3 遍', d:'不看文本，慢半拍跟着念。重点念标出来的连读处。', m:'15′'}
     ];
     var rows = steps.map(function(s){
       var on = !!ST[s.k];
@@ -553,8 +638,8 @@ function renderTasks(){
 
     tHtml += '<div class="steps">'
       + '<div class="shd">'
-      +   '<div><b>今天 · 听力一段</b><div class="sdt">'+lessonTxt+'</div></div>'
-      +   '<div class="smin">25 分钟</div>'
+      +   '<div><b>今天 · 听力一段 60′</b><div class="sdt">'+lessonTxt+'</div></div>'
+      +   '<div class="smin">60 分钟</div>'
       + '</div>'
       + rows
       + '<div class="stepacts">'
@@ -563,21 +648,76 @@ function renderTasks(){
       + '</div>'
       + '</div>';
     tHtml += blankHtml();
+    tHtml += '<div class="task'+(dn?" on":"")+'" data-k="l"><div class="box'+(dn?" on":"")+'"></div>'
+      + '<div class="tk"><div class="tt">今天这段做完了</div>'
+      + '<div class="td">判分提交后会自动勾上；没提交成、或者只听了没做题，就手动点这里。</div></div></div>';
   } else if (kind === 'read'){
-    var rn = seq(today,[2,4]) - 1, rd = RL[rn] || RL[RL.length-1];
-    tHtml += '<div class="task'+(done.l?" on":"")+'" data-k="l"><div class="box'+(done.l?" on":"")+'"></div>'
-      +'<div class="tk"><div class="tt">仔细阅读 1 篇 · 20 分钟</div>'
-      +'<div class="td">前 12 分钟限时做完，不查词、不回看；后 8 分钟只做一件事——把每道题的答案句在原文里划出来，看它是怎么被同义替换的。</div>'
-      +'<a class="btn" href="'+encodeURI(rd.f)+'">打开阅读页 →</a></div></div>'
-      +'<div class="tiphint">阅读日：听力今天不做。听力和阅读分开练，一次只干一件。</div>';
+    var rd = RL[wk % RL.length];
+    var rsteps = [
+      {n:'①', t:'限时做', d:'12 分钟做完 10 题，不查词、不回看。做完立刻停表。', m:'12′'},
+      {n:'②', t:'划答案句', d:'每题回原文划出答案句，别整段翻译，只找那一句。', m:'8′'},
+      {n:'③', t:'对解析记替换', d:'逐题看「定位词 → 原文替换词」，只记这一对，不抄解析。', m:'25′'},
+      {n:'④', t:'收 3 个生词', d:'从原文里挑 3 个反复出现的词记下来，不背单词书。', m:'15′'}
+    ];
+    tHtml += '<div class="steps">'
+      + '<div class="shd"><div><b>今天 · 仔细阅读 60′</b><div class="sdt">'+rd.f.replace('read-','').replace('.html','')+'　（两周一次，只为保手感）</div></div>'
+      + '<div class="smin">60 分钟</div></div>'
+      + rsteps.map(function(x){
+          return '<div class="step static"><div class="ck dim"></div>'
+            + '<div class="sx"><div class="st">'+x.n+' '+x.t+'</div><div class="sd">'+x.d+'</div></div>'
+            + '<div class="sm">'+x.m+'</div></div>';
+        }).join('')
+      + '<div class="stepacts"><a class="btn" href="'+encodeURI(rd.f)+'">打开阅读页</a></div>'
+      + '</div>'
+      + '<div class="task'+(dn?" on":"")+'" data-k="o"><div class="box'+(dn?" on":"")+'"></div>'
+      + '<div class="tk"><div class="tt">做完点这里打勾</div>'
+      + '<div class="td">阅读页提交后会自动打勾；没提交成就手动点。</div></div></div>';
+  } else if (kind === 'match'){
+    var mp = ML[wk % ML.length];
+    var mdone = 0;
+    try{ mdone = (JSON.parse(localStorage.getItem('cet4_mseg')||'[]')||[]).length; }catch(e){ mdone = 0; }
+    var mcnt = '第 ' + (mdone+1) + ' 次练长篇匹配（71 分，一次没练过）';
+    var msteps = [
+      {n:'①', t:'限时做', d:'15 分钟，10 道题找段落。不查词，凭关键词定位，做完立刻停表。', m:'15′'},
+      {n:'②', t:'回原文找替换', d:'逐题回段落里划出对应句，把「题干的词 → 原文的词」这一对写下来。', m:'25′'},
+      {n:'③', t:'归因', d:'错题只写一句：是没找到定位，还是替换没认出来。二选一，不写第三条。', m:'20′'}
+    ];
+    tHtml += '<div class="steps">'
+      + '<div class="shd"><div><b>今天 · 长篇匹配 60′</b><div class="sdt">'+mp.d+'　'+mcnt+'</div></div>'
+      + '<div class="smin">60 分钟</div></div>'
+      + msteps.map(function(s){
+          return '<div class="step static"><div class="ck dim"></div>'
+            + '<div class="sx"><div class="st">'+s.n+' '+s.t+'</div><div class="sd">'+s.d+'</div></div>'
+            + '<div class="sm">'+s.m+'</div></div>';
+        }).join('')
+      + '<div class="stepacts"><a class="btn" href="'+encodeURI(mp.f)+'">打开匹配页</a></div>'
+      + '</div>'
+      + '<div class="task'+(dn?" on":"")+'" data-k="o"><div class="box'+(dn?" on":"")+'"></div>'
+      + '<div class="tk"><div class="tt">做完点这里打勾</div>'
+      + '<div class="td">匹配页提交后会自动打勾；没提交成就手动点。</div></div></div>';
   } else {
-    var arr = WL.concat(TL), wn = seq(today,[6]) - 1, wp = arr[wn] || arr[0];
-    var wlbl = /^write/.test(wp.f) ? '写作' : '翻译';
-    tHtml += '<div class="task'+(done.l?" on":"")+'" data-k="l"><div class="box'+(done.l?" on":"")+'"></div>'
-      +'<div class="tk"><div class="tt">'+wlbl+' 1 篇 · 30 分钟</div>'
-      +'<div class="td">先写 25 分钟，不看范文；写完只挑 3 处改：时态、单复数、连接词。不要重写全篇。</div>'
-      +'<a class="btn" href="'+encodeURI(wp.f)+'">打开'+wlbl+'页 →</a></div></div>'
-      +'<div class="tiphint">写译日：听力和阅读今天都不做。</div>';
+    var isW = (wk % 2 === 0);
+    var arr = isW ? WL : TL, wp = arr[wk % arr.length];
+    var wlbl = isW ? '写作' : '翻译';
+    var wsteps = [
+      {n:'①', t:'写', d:'25 分钟写完，不看范文、不查词。卡住就换一句简单的话说完。', m:'25′'},
+      {n:'②', t:'自查 3 处', d:'只看时态、单复数、连接词。三样各挑一处改，不改别的。', m:'10′'},
+      {n:'③', t:'对范文改', d:'对完只改 3 句，不重写全篇。把范文里那个句式抄下来。', m:'15′'},
+      {n:'④', t:'默写句式', d:'合上范文，把那 1 个句式默写一遍。写不出说明没记住。', m:'10′'}
+    ];
+    tHtml += '<div class="steps">'
+      + '<div class="shd"><div><b>今天 · '+wlbl+' 1 篇 60′</b><div class="sdt">'+wp.d+'</div></div>'
+      + '<div class="smin">60 分钟</div></div>'
+      + wsteps.map(function(s){
+          return '<div class="step static"><div class="ck dim"></div>'
+            + '<div class="sx"><div class="st">'+s.n+' '+s.t+'</div><div class="sd">'+s.d+'</div></div>'
+            + '<div class="sm">'+s.m+'</div></div>';
+        }).join('')
+      + '<div class="stepacts"><a class="btn" href="'+encodeURI(wp.f)+'">打开'+wlbl+'页</a></div>'
+      + '</div>'
+      + '<div class="task'+(dn?" on":"")+'" data-k="o"><div class="box'+(dn?" on":"")+'"></div>'
+      + '<div class="tk"><div class="tt">做完点这里打勾</div>'
+      + '<div class="td">'+wlbl+'页提交后会自动打勾；没提交成就手动点。</div></div></div>';
   }
 
   if (tier === 'min'){
@@ -586,7 +726,7 @@ function renderTasks(){
     tHtml += '<div class="tierlink"><a href="javascript:void(0)" data-tier="min">状态不好？切最小档（只跟读 3 句，10 分钟）</a></div>';
   }
 
-  /* ── 回炉：昨天没听清的句子 ── */
+  /* ── 回炉：之前没听清的句子 ── */
   var rvN = reviewDueCount();
   if (rvN > 0){
     var rvShow = Math.min(rvN, 3);
@@ -606,7 +746,7 @@ function renderTasks(){
   document.querySelectorAll('.bchip').forEach(function(b){
     b.addEventListener('click', function(){ setBlank(b.getAttribute('data-b')); });
   });
-  document.querySelectorAll('.step').forEach(function(el){
+  document.querySelectorAll('.step[data-s]').forEach(function(el){
     el.addEventListener('click', function(){ toggleStep(el.getAttribute('data-s')); });
   });
   bindBoxes();
@@ -702,7 +842,7 @@ Promise.all([
 ]).then(function(res){
   var remote = res[0], arch = res[1] || {};
   var before = JSON.stringify(PROG);
-  PROG = mergeProg(BASE, loadLocal(), loadDone(), remote, arch.prog || {});
+  PROG = mergeProg(BASE, remote, arch.prog || {}, loadDone(), loadLocal());
   saveLocal(PROG);
   if(JSON.stringify(PROG) !== before){ renderTasks(); refreshStats(); }
   setSync(remote !== undefined);
@@ -738,23 +878,38 @@ Promise.all([
       x.send(JSON.stringify(snap));
     }catch(e){}
   };
-  /* 判分/回执上云成功 = 当天这一项完成 */
+  /* 只有「判分提交」才算今天完成：拍照上传、错题本、进度快照一律不算 */
   var _f = window.fetch;
-  window.fetch = function(u){
+  window.fetch = function(u, init){
     var p = _f.apply(this, arguments);
     try{
       if (typeof u === 'string' && u.indexOf('ntfy.sh') >= 0 && !/(^|\/)(index|records)\.html$/.test(location.pathname)){
-        p.then(function(r){
-          if (r && r.ok){
-            window.__markDone(/_Section/.test(location.pathname) ? 'listen' : 'other');
-            window.__markDone('receipt');
-          }
-        }).catch(function(){});
+        var _b = (init && init.body) ? String(init.body) : '';
+        var _isRep = /["']t["']\s*:\s*["']rep["']/.test(_b);
+        if (_isRep){
+          p.then(function(r){
+            if (r && r.ok){
+              window.__markDone(/_Section/.test(location.pathname) ? 'listen' : 'other');
+              window.__markDone('receipt');
+              /* 记下这段已做过，首页据此自动跳到下一个没做过的篇章 */
+              try{
+                var _lp = location.pathname.split('/').pop();
+                var _key = /_Section/.test(location.pathname) ? 'cet4_lseg'
+                         : /^matching-/.test(_lp) ? 'cet4_mseg' : '';
+                if (_key){
+                  var _ls = JSON.parse(localStorage.getItem(_key)||'[]') || [];
+                  if (_ls.indexOf(_lp) < 0){ _ls.push(_lp); localStorage.setItem(_key, JSON.stringify(_ls)); }
+                }
+              }catch(e){}
+            }
+          }).catch(function(){});
+        }
       }
     }catch(e){}
     return p;
   };
 })();
 </script>
+<script src="goal.js"></script>
 </body>
 </html>
