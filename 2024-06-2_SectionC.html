@@ -221,14 +221,14 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 
 /* ═══ 听写模式（底部悬浮条 + 逐句清单） ═══ */
 #dictBar{display:none;position:fixed;left:50%;bottom:14px;transform:translateX(-50%);
- z-index:9000;margin:0;max-width:calc(100vw - 16px);
+ z-index:9000;margin:0;width:calc(100vw - 16px);max-width:560px;
  background:var(--card,#fff);border:1.5px solid var(--line);border-radius:16px;
- padding:8px 10px;align-items:center;gap:7px;flex-wrap:nowrap;
+ padding:7px 8px;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;
  box-shadow:0 8px 28px rgba(15,20,30,.22)}
 #dictBar.on{display:flex}
-#dictBar .db-txt{font-size:12.5px;font-weight:700;color:var(--sub);white-space:nowrap;padding:0 2px}
+#dictBar .db-txt{font-size:12.5px;font-weight:700;color:var(--sub);white-space:nowrap;padding:0 2px;flex:1 0 100%;text-align:center}
 #dictBar button{border:1.5px solid var(--line);background:#fff;border-radius:10px;
- padding:11px 12px;font-size:14.5px;font-weight:700;font-family:inherit;color:inherit;
+ padding:9px 10px;font-size:13.5px;font-weight:700;font-family:inherit;color:inherit;
  cursor:pointer;-webkit-tap-highlight-color:transparent;white-space:nowrap}
 #dictBar button.pri{background:var(--blue);border-color:var(--blue);color:#fff}
 #dictBar button.pri[disabled]{background:#c9d4e4;border-color:#c9d4e4;color:#fff;cursor:default}
@@ -241,7 +241,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 @media (max-width:560px){
   #dictBar{padding:7px 8px;gap:5px;border-radius:14px;bottom:10px}
   #dictBar button{padding:11px 9px;font-size:13px}
-  #dictBar .db-txt{max-width:52px;overflow:hidden;text-overflow:ellipsis}
+  #dictBar .db-txt{max-width:none}
   #dictBar #dbAgain .lbl{display:none}
 }
 
@@ -2090,14 +2090,16 @@ for (var qid in AL){
     if (on){ exitMode(); return; }
     on = true;
     btn.classList.add('act'); btn.textContent = '✍️ 听写模式 开';
-    /* 悬浮窗避让：听写条居中占底部，云条上移一档 */
-    var cb0 = document.getElementById('cloudBar');
-    if (cb0) cb0.style.bottom = '84px';
+    /* 悬浮窗避让：等条显示出来再按实际高度上移云条（条会换行，高度不固定） */
     if (tpFollow && tpFollow.classList.contains('act')){ followBack = true; tpFollow.click(); }
     applySpeed();
     var D = pad();
     if (D) D.show();
     bar.classList.add('on');                /* 悬浮条立即显示，不再等到暂停 */
+    var cb0 = document.getElementById('cloudBar');
+    if (cb0) cb0.style.bottom = (bar.offsetHeight + 22) + 'px';
+    /* 第一帧时计数文案还没写进去，条会再长一截；补算一次，别让云条压住它 */
+    setTimeout(function(){ if (cb0 && bar.classList.contains('on')) cb0.style.bottom = (bar.offsetHeight + 22) + 'px'; }, 80);
     var li0 = liAt(audio.currentTime);
     var _P0 = padsPicks();
     if (_P0.length && _P0.indexOf(li0) < 0) li0 = _P0[0];   /* 不在今天这批里，就从第一句开始 */

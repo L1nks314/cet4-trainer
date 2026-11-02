@@ -451,12 +451,8 @@ if(!st) st = today<d0(STAGES[0][0]) ? STAGES[0] : STAGES[STAGES.length-1];
 
 var CALIB_G = (today.getTime() <= d0(new Date(2026,10,8)).getTime());   /* 11/2–11/8 校准期 */
 var wd=today.getDay();
-var inFinal = today >= d0(new Date(2026,10,28));   /* 11/28 起进入整套模考窗口（考前两周） */
-var OTHER={0:"本周复盘（30 分钟）",1:"翻译 1 段（20 分钟）",2:"仔细阅读 1 篇（20 分钟）",
-           3:"翻译 1 段（20 分钟）",4:"仔细阅读 1 篇（20 分钟）",5:"写作 1 篇（20 分钟）",
-           6: inFinal ? "整套模考（Section A→B→C 连做，另抽 40 分钟）"
-                      : (gap < 7 ? "写作 1 篇（20 分钟）"
-                                  : "本周弱项复盘：重听错题、重做错题（20 分钟）")}[wd];
+/* 旧的 OTHER 表（周几做什么）已删：结构改成单线日之后它没人读，
+   留着只会让下次改排期时照着错的抄。周几做什么只在 renderTasks 里定义一次。 */
 
 /* ── 状态 ── */
 var PROG = mergeProg(BASE, loadLocal());
