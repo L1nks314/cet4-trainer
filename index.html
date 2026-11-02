@@ -583,6 +583,23 @@ function calibBar(){
     + '</div>';
 }
 
+/* 归档里已经判过分的听力段。records.json 的 page 形如「2024-12-2 · Section C 听力篇章」，
+   要反推回文件名才能跟 LESSONS 对上。
+   作用：历史交卷时还没写 cet4_lseg，光靠本地记录会分不清「做过」和「没做过」，
+   结果首页把 10-28 已经做过的 2024-12-2 再推一遍。 */
+var HIST_DONE = [];
+function histFromArch(arch){
+  var out = [], seen = {};
+  ((arch && arch.reps) || []).forEach(function(r){
+    if (r.kind !== 'listening') return;
+    var m = /^(\d{4}-\d{2}-\d)\s*·\s*Section\s*([ABC])/.exec(String(r.page || ''));
+    if (!m) return;
+    var f = m[1] + '_Section' + m[2] + '.html';
+    if (!seen[f]){ seen[f] = 1; out.push(f); }
+  });
+  return out;
+}
+
 function renderTasks(){
   var man = PROG[fmt(today)] || {};
   var au = {};
@@ -633,7 +650,7 @@ function renderTasks(){
   var CLIST = LESSONS.filter(function(x){ return /SectionC/.test(x.f); });
   /* 历史上已做过的篇章（10-19 / 10-22 的记录），先跳过，别让你重做已做过的 */
   var SEED = ['2025-12-1_SectionC.html', '2025-06-2_SectionC.html'];
-  var cdone = SEED.slice();
+  var cdone = SEED.concat(HIST_DONE);
   try{
     var _sv = JSON.parse(localStorage.getItem('cet4_lseg')||'[]') || [];
     cdone = cdone.concat(_sv);
@@ -654,9 +671,10 @@ function renderTasks(){
       if (cdone.indexOf(CLIST[ci].f) < 0){ nextC = CLIST[ci]; cpos = ci; break; }
     }
     if (!nextC){ nextC = CLIST[0]; cpos = 0; }
-    /* 只在「本周还没定段」或「周一跨周开新段」时写 curseg；
+    /* 只在「本周还没定段」「周一跨周开新段」或「当前段其实是历史已做过的」时才写；
        否则周二~周日、或周一做完再打开，会把本周那段覆盖掉，周三就没法复听了 */
-    if (!_cur || !_cur.f || (wd === 1 && _cur.wk !== wk0)){
+    if (!_cur || !_cur.f || (wd === 1 && _cur.wk !== wk0)
+        || (HIST_DONE.indexOf(_cur.f) >= 0 && _cur.f !== nextC.f)){
       try{ localStorage.setItem('cet4_curseg', JSON.stringify({f:nextC.f, d:nextC.d, wk:wk0})); }catch(e){}
     }
   }
@@ -906,10 +924,15 @@ Promise.all([
     .then(function(r){ return r.json(); }).catch(function(){ return {}; })
 ]).then(function(res){
   var remote = res[0], arch = res[1] || {};
+  /* 先用归档回执补齐「哪些听力段真的做过」，再重渲一次。
+     否则首页只会跳过 SEED 里那两段，10-28 做过的 2024-12-2 会被当成没做过。 */
+  var _h = histFromArch(arch);
+  var _hChanged = _h.join(',') !== HIST_DONE.join(',');
+  HIST_DONE = _h;
   var before = JSON.stringify(PROG);
   PROG = mergeProg(BASE, remote, arch.prog || {}, loadDone(), loadLocal());
   saveLocal(PROG);
-  if(JSON.stringify(PROG) !== before){ renderTasks(); refreshStats(); }
+  if(_hChanged || JSON.stringify(PROG) !== before){ renderTasks(); refreshStats(); }
   setSync(remote !== undefined);
   push(PROG);                                            // 每次打开刷新云端有效期
 });
