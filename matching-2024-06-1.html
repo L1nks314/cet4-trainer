@@ -1036,7 +1036,8 @@ var _sb=document.getElementById('sy-m1'); if(_sb)_sb.addEventListener('click',fu
       }catch(e){}
       if (!done) return;
       over = true;
-      if (st && !st.classList.contains('read')) setMsg('📤 已交卷 · 记录已同步，等教练批');
+      /* 只在状态条还没被同步结果写过时才写，避免 3 秒轮询把「已同步」盖回「已交卷」 */
+      if (st && !st.classList.contains('read') && st.style.display === 'none') setMsg('📤 已交卷');
     }
     check();
     /* 交卷发生在页面打开之后，得再查几次；查到就停，不常驻 */
