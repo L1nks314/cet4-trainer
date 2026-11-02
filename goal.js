@@ -3,23 +3,35 @@
    目标来源与首页 index.html 的 GOALS 保持一致，改一处改两边。 */
 (function(){
   var D = new Date();
-  var EXAM = new Date(2026, 10, 23);          /* 11/23 起进入「上考场期」 */
-  var isExam = D >= EXAM;
-  var examDay = new Date(2026, 11, 12);
-  var left = Math.max(0, Math.round((new Date(examDay.getFullYear(), examDay.getMonth(), examDay.getDate()) -
-                                     new Date(D.getFullYear(), D.getMonth(), D.getDate())) / 86400000));
+  var d0 = function(x){ return new Date(x.getFullYear(), x.getMonth(), x.getDate()); };
+  var today = d0(D);
+  var CALIB_END = d0(new Date(2026, 10, 8));    /* 11/2 – 11/8 校准期 */
+  var EXAM_FROM = d0(new Date(2026, 10, 23));   /* 11/23 起上考场期 */
+  var isCalib = today <= CALIB_END;
+  var isExam  = today >= EXAM_FROM;
+  var examDay = d0(new Date(2026, 11, 12));
+  var left = Math.max(0, Math.round((examDay - today) / 86400000));
 
-  var G = isExam
-    ? { name:"上考场期", range:"11/23 – 12/11",
-        listen:{ goal:"整套听力 A→B→C 连做 ≥45%，中途不停", now:"单段 20–25%" },
-        read:  { goal:"仔细阅读 ≥70%，12 分钟/篇", now:"70%（已达标）" },
-        match: { goal:"长篇匹配 ≥65%，15 分钟做完", now:"0 次" },
-        write: { goal:"模板默写 + 模拟总分 ≥420", now:"写作 58%" } }
-    : { name:"打底期", range:"11/2 – 11/22",
+  var G;
+  if (isCalib){
+    G = { name:"校准期", range:"11/2 – 11/8",
+        listen:{ goal:"先测真实水平，别管目标", now:"篇章 20%（6/30）" },
+        read:  { goal:"再做 2 篇，把样本补到 20 题", now:"70%（7/10，样本小）" },
+        match: { goal:"做 1 篇，把自述变成数字", now:"0 次" },
+        write: { goal:"写 1 篇，看模板基础在哪档", now:"58%（8–9/15）" } };
+  } else if (isExam){
+    G = { name:"上考场期", range:"11/23 – 12/11",
+        listen:{ goal:"整套听力连做，中途不停", now:"单段 20–25%" },
+        read:  { goal:"仔细阅读 ≥85%，12 分钟/篇", now:"70%" },
+        match: { goal:"长篇匹配 ≥90%，15 分钟做完", now:"0 次" },
+        write: { goal:"模板默写 + 翻译 20 条句式", now:"写作 58%" } };
+  } else {
+    G = { name:"打底期", range:"11/9 – 11/22",
         listen:{ goal:"听力篇章 ≥5/10，且留白 ≤5 句", now:"篇章 20%（6/30）" },
-        read:  { goal:"仔细阅读守住 ≥70%", now:"70%（7/10）" },
-        match: { goal:"长篇匹配 ≥60%", now:"0 次，还没练过" },
-        write: { goal:"写作结构分先拿满：三段式 + 2 套模板", now:"58%（8–9/15）" } };
+        read:  { goal:"仔细阅读 ≥82%", now:"70%（7/10）" },
+        match: { goal:"长篇匹配 ≥85%", now:"0 次，还没练过" },
+        write: { goal:"写作进 9 分档：三段式 + 2 套模板", now:"58%（8–9/15）" } };
+  }
 
   var p = (location.pathname.split('/').pop() || '').toLowerCase();
   var cur = 'listen';
