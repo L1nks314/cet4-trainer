@@ -2884,6 +2884,10 @@ for (var qid in AL){
     });
   }
 
+  /* 交卷后收起提示条并取消暗化，免得复盘时题目还是灰的 */
+  var sb = document.getElementById('submitBtn');
+  if (sb) sb.addEventListener('click', function(){ setTimeout(reset, 0); });
+
   function done(ii){
     var old = document.getElementById('segToast'); if (old) old.remove();
     var nxt = (ii + 1 < bd.length - 1);
