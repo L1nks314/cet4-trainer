@@ -315,11 +315,13 @@ var ML = [{f:"matching-2025-12-1.html",d:"2025年12月 第1套"},{f:"matching-20
           {f:"matching-2023-06-2.html",d:"2023年6月 第2套"},{f:"matching-2022-12-1.html",d:"2022年12月 第1套"}];
 function seq(date,days){var n=0,d=new Date(START.getFullYear(),START.getMonth(),START.getDate());while(d<=date){if(days.indexOf(d.getDay())>=0)n++;d.setDate(d.getDate()+1);}return n;}
 
-/* 两段式：打底（11/2–11/22）→ 上考场节奏（11/23–12/11）
-   每段有明确的「出口/达标」数字，写在 index 与所有训练页顶部，随时能看到 */
+/* 三段式：校准（11/2–11/8）→ 打底（11/9–11/22）→ 上考场（11/23–12/11）
+   与 goal.js、GOALS 三处必须一致，改一处改三处 */
 var STAGES = [
-  [new Date(2026,9,17), new Date(2026,10,22), "打底期 · 抓听力与匹配",
-   "阶段目标：听力篇章≥5/10、留白≤5 句；长篇匹配≥60%；仔细阅读守住 70%"],
+  [new Date(2026,10,2), new Date(2026,10,8), "校准期 · 只测数据",
+   "阶段目标：听力篇章 / 仔细阅读 / 长篇匹配各测一次，只记录、不设目标"],
+  [new Date(2026,10,9), new Date(2026,10,22), "打底期 · 听力篇章 + 仔细阅读",
+   "阶段目标：听力篇章≥5/10 且留白≤5 句；仔细阅读≥82%；长篇匹配≥85%"],
   [new Date(2026,10,23), new Date(2026,11,11), "上考场期 · 连做与保温",
    "阶段目标：整套听力 40 分钟连做≥45%；写作模板能默写；模拟总分≥420"]
 ];
@@ -444,7 +446,7 @@ var pct=Math.min(100,Math.round((gap+1)/totalDays*100));
 
 var st=null;
 for(var i=0;i<STAGES.length;i++){ if(today>=d0(STAGES[i][0])&&today<=d0(STAGES[i][1])) st=STAGES[i]; }
-if(!st) st = today<d0(STAGES[0][0]) ? STAGES[0] : STAGES[2];
+if(!st) st = today<d0(STAGES[0][0]) ? STAGES[0] : STAGES[STAGES.length-1];
 
 var CALIB_G = (today.getTime() <= d0(new Date(2026,10,8)).getTime());   /* 11/2–11/8 校准期 */
 var wd=today.getDay();
@@ -555,7 +557,7 @@ function weekStat(){
 }
 function goalCard(cur){
   var _cb = (today.getTime() <= d0(new Date(2026,10,8)).getTime());   /* 校准期 11/2–11/8 */
-  var g = _cb ? GOALS.calib : ((st === STAGES[0]) ? GOALS.base : GOALS.exam);
+  var g = _cb ? GOALS.calib : ((st === STAGES[1]) ? GOALS.base : GOALS.exam);
   var wc = weekStat();
   function row(k, label, txt){
     return '<div class="grow'+(cur===k?' cur':'')+'"><i>'+label+'</i><span>'+txt+'</span></div>';
@@ -564,6 +566,7 @@ function goalCard(cur){
     + '<div class="gchd"><b>'+g.name+' · '+g.range+'</b>'
     +   '<span>本周 '+wc.n+'/5 天 · 听力 '+wc.l+' 次</span></div>'
     + row('listen','听力', g.listen)
+    + row('read','阅读', g.read)
     + row('match','匹配', g.match)
     + row('write','写译', g.write)
     + (_cb ? '<div class="gfoot">这周<b>不追进度，只测数据</b>。11/8 用真实数字定后 5 周，现在这张排期是草案。<br>唯一指标：这一周你打开了几次页面。对几题不重要。</div>' : '')
