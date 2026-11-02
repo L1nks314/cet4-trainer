@@ -121,6 +121,24 @@ a.it.now .tx{font-weight:700;color:var(--green)}
 .tier.on{background:var(--blue,#2563eb);border-color:var(--blue,#2563eb);color:#fff}
 .tier.on i{opacity:.88}
 
+/* ── 单线日：留白登记 / 档位切换 ── */
+.tierlink{margin:8px 0 2px;text-align:center}
+.tierlink a{font-size:12px;color:var(--sub2,#8b93a1);text-decoration:none;
+ border-bottom:1px dashed rgba(0,0,0,.18);padding-bottom:1px}
+.tiphint{margin:8px 2px 0;font-size:11.5px;line-height:1.6;color:var(--sub2,#8b93a1)}
+.blankbox{margin-top:10px;padding:12px 13px;border-radius:12px;background:#fff;
+ border:1px solid var(--line,#e5e8ec)}
+.blankbox .bl{font-size:12.5px;font-weight:600;color:var(--ink,#1f2937)}
+.blankbox .bl i{display:block;font-style:normal;font-weight:400;font-size:11px;
+ color:var(--sub2,#8b93a1);margin-top:2px}
+.blankbox .chips{display:flex;gap:6px;margin-top:9px}
+.bchip{flex:1;padding:7px 4px;border-radius:9px;border:1.5px solid var(--line,#e5e8ec);
+ background:#fff;font:600 12px/1.3 inherit;color:var(--sub,#6b7280);cursor:pointer;
+ -webkit-tap-highlight-color:transparent}
+.bchip.on{background:#eff6ff;border-color:#93b4fd;color:#1d4ed8}
+.bok{margin-top:8px;font-size:11.5px;line-height:1.55;color:#15803d}
+.bok.warn{color:#b45309}
+
 /* ── 折叠区 ── */
 .fold{background:var(--card);border:1px solid var(--line);border-radius:14px;
  margin-bottom:14px;box-shadow:var(--shadow);overflow:hidden}
@@ -268,8 +286,8 @@ var TL = [  {f:"trans-2025-12-1.html",d:"2025年12月 第1套"},
 var RL = [{f:"read-2025-12-1.html"},{f:"read-2025-06-2.html"},{f:"read-2025-06-1.html"},{f:"read-2024-06-1.html"},{f:"read-2023-12-1.html"},{f:"read-2023-06-1.html"},{f:"read-2023-06-2.html"},{f:"read-2022-12-1.html"}];
 function seq(date,days){var n=0,d=new Date(START.getFullYear(),START.getMonth(),START.getDate());while(d<=date){if(days.indexOf(d.getDay())>=0)n++;d.setDate(d.getDate()+1);}return n;}
 
-var STAGES = [[new Date(2026,9,17), new Date(2026,10,4), "筑基期 · 解决「听不清」", "盯「没听清的句子数」是否下降"],
-              [new Date(2026,10,5), new Date(2026,10,25), "强化期 · 解决「跟不上+做不对」", "篇章正确率目标 50%"],
+var STAGES = [[new Date(2026,9,17), new Date(2026,10,8), "筑基期 · 解决「听不清」", "出口条件：留白 ≤5 句，且一段 ≥5/10"],
+              [new Date(2026,10,9), new Date(2026,10,25), "强化期 · 解决「跟不上+做不对」", "篇章正确率目标 50%"],
               [new Date(2026,10,26),new Date(2026,11,11), "冲刺期 · 考场保温", "盯稳定性，别再上新材料"]];
 
 /* ═══ 跨端同步 ═══
@@ -508,33 +526,23 @@ function renderTasks(){
     return;
   }
 
+  /* ── 单线日：一天只做一件事 ── */
+  var kind = (wd===1||wd===3||wd===5) ? 'listen' : (wd===2||wd===4) ? 'read' : 'write';
   var tier = getTier();
-  var hasOther = true;   /* 非周日每天都有「其他」项，但只在满配档出现 */
-  var tHtml='';
+  var tHtml = '';
 
-  /* ── 三档选择 ── */
-  tHtml += '<div class="tiers">'
-    + '<button class="tier'+(tier==='full'?' on':'')+'" data-tier="full">满配<br><i>30 分钟</i></button>'
-    + '<button class="tier'+(tier==='std'?' on':'')+'" data-tier="std">标准<br><i>20 分钟</i></button>'
-    + '<button class="tier'+(tier==='min'?' on':'')+'" data-tier="min">最小<br><i>10 分钟</i></button>'
-    + '</div>';
-
-  /* ── 主任务：三遍法（可勾选的三步） ── */
   if (tier === 'min'){
     tHtml += '<div class="task'+(done.l?" on":"")+'" data-k="l"><div class="box'+(done.l?" on":"")+'"></div>'
-     +'<div class="tk"><div class="tt">跟读 3 句 · 10 分钟</div>'
+     +'<div class="tk"><div class="tt">最小档 · 跟读 3 句 · 10 分钟</div>'
      +'<div class="td">只跟读今天听不清的那 3 句：0.85 跟 2 遍 → 1.0 跟 1 遍。做完这一步就算今天完成。</div>'
      +'<a class="btn" href="shadow.html?p='+encodeURIComponent(lbtn)+'">去跟读 →</a></div></div>';
-  } else {
+  } else if (kind === 'listen'){
     var ST = getSteps();
-    var full = (tier === 'full');
     var steps = [
       {k:'s1', n:'①', t:'只听大意', d:'整段放完，用一句话说出讲什么。听不出也往下走，不回头。', m:'3′'},
       {k:'s2', n:'②', t:'逐句抓主干', d:'每句听完用 3–5 个字说主干：谁·做了什么。每句最多听 2 遍。', m:'8′'},
-      {k:'s3', n:'③', t:'影子跟读', d:'不看文本，跟着念。慢半拍、念错都行，嘴不许停。', m:'9′'}
+      {k:'s3', n:'③', t:'影子跟读', d:'不看文本，跟着念。慢半拍、念错都行，嘴不许停。', m:'14′'}
     ];
-    if (full) steps.push({k:'s4', n:'④', t:'听写 3 句', d:'挑最难的 3 句写下来，写完对照原文改。', m:'10′'});
-
     var rows = steps.map(function(s){
       var on = !!ST[s.k];
       return '<div class="step'+(on?' on':'')+'" data-s="'+s.k+'">'
@@ -545,8 +553,8 @@ function renderTasks(){
 
     tHtml += '<div class="steps">'
       + '<div class="shd">'
-      +   '<div><b>今天 · 三遍法</b><div class="sdt">'+lessonTxt+'</div></div>'
-      +   '<div class="smin">'+(full?'30':'20')+' 分钟</div>'
+      +   '<div><b>今天 · 听力一段</b><div class="sdt">'+lessonTxt+'</div></div>'
+      +   '<div class="smin">25 分钟</div>'
       + '</div>'
       + rows
       + '<div class="stepacts">'
@@ -554,6 +562,28 @@ function renderTasks(){
       +   '<a class="btn ghost" href="shadow.html?p='+encodeURIComponent(lbtn)+'">去跟读</a>'
       + '</div>'
       + '</div>';
+    tHtml += blankHtml();
+  } else if (kind === 'read'){
+    var rn = seq(today,[2,4]) - 1, rd = RL[rn] || RL[RL.length-1];
+    tHtml += '<div class="task'+(done.l?" on":"")+'" data-k="l"><div class="box'+(done.l?" on":"")+'"></div>'
+      +'<div class="tk"><div class="tt">仔细阅读 1 篇 · 20 分钟</div>'
+      +'<div class="td">前 12 分钟限时做完，不查词、不回看；后 8 分钟只做一件事——把每道题的答案句在原文里划出来，看它是怎么被同义替换的。</div>'
+      +'<a class="btn" href="'+encodeURI(rd.f)+'">打开阅读页 →</a></div></div>'
+      +'<div class="tiphint">阅读日：听力今天不做。听力和阅读分开练，一次只干一件。</div>';
+  } else {
+    var arr = WL.concat(TL), wn = seq(today,[6]) - 1, wp = arr[wn] || arr[0];
+    var wlbl = /^write/.test(wp.f) ? '写作' : '翻译';
+    tHtml += '<div class="task'+(done.l?" on":"")+'" data-k="l"><div class="box'+(done.l?" on":"")+'"></div>'
+      +'<div class="tk"><div class="tt">'+wlbl+' 1 篇 · 30 分钟</div>'
+      +'<div class="td">先写 25 分钟，不看范文；写完只挑 3 处改：时态、单复数、连接词。不要重写全篇。</div>'
+      +'<a class="btn" href="'+encodeURI(wp.f)+'">打开'+wlbl+'页 →</a></div></div>'
+      +'<div class="tiphint">写译日：听力和阅读今天都不做。</div>';
+  }
+
+  if (tier === 'min'){
+    tHtml += '<div class="tierlink"><a href="javascript:void(0)" data-tier="std">状态回来了，恢复今天的正常任务 →</a></div>';
+  } else {
+    tHtml += '<div class="tierlink"><a href="javascript:void(0)" data-tier="min">状态不好？切最小档（只跟读 3 句，10 分钟）</a></div>';
   }
 
   /* ── 回炉：昨天没听清的句子 ── */
@@ -567,38 +597,46 @@ function renderTasks(){
       + '<span class="ra">›</span></a>';
   }
 
-  /* ── 写译：仅满配 + 一/三/五 ── */
-  if (tier === 'full' && hasOther){
-    var obtn=(function(){
-      if(wd===6 && inFinal){
-        var mock = (today.getDate()===28) ? "2025-12-1_SectionA.html" : "2025-06-2_SectionA.html";
-        return '<a class="btn" href="'+encodeURI(mock)+'">整套模考：A→B→C 连做 →</a>';
-      }
-      var arr=null, lbl='', n=0;
-      if(wd===1||wd===3){ arr=TL; lbl='翻译'; n=seq(today,[1,3])-1; }
-      else if(wd===2||wd===4){ arr=RL; lbl='阅读'; n=seq(today,[2,4])-1; }
-      else if(wd===5){ arr=WL; lbl='写作'; n=seq(today,[5])-1; }
-      else if(wd===6 && gap<7){ arr=WL; lbl='写作'; n=seq(today,[6])-1; }
-      if(!arr || !arr[n]) return '';
-      return '<a class="btn" href="'+encodeURI(arr[n].f)+'">开始今天的'+lbl+' →</a>';
-    })();
-    if (obtn){
-      tHtml += '<div class="task'+(done.o?" on":"")+'" data-k="o"><div class="box'+(done.o?" on":"")+'"></div>'
-       +'<div class="tk"><div class="tt">'+OTHER.replace(/（\d+ 分钟）/, '')+' · 15 分钟</div>'
-       +'<div class="td">写译/阅读只在满配档出现；状态一般就切「标准」，不用勉强。</div>'+obtn+'</div></div>';
-    }
-  }
-
   tHtml += streak;
   document.getElementById("tasks").innerHTML = tHtml;
 
-  document.querySelectorAll('.tier').forEach(function(b){
+  document.querySelectorAll('.tierlink a').forEach(function(b){
     b.addEventListener('click', function(){ setTier(b.getAttribute('data-tier')); });
+  });
+  document.querySelectorAll('.bchip').forEach(function(b){
+    b.addEventListener('click', function(){ setBlank(b.getAttribute('data-b')); });
   });
   document.querySelectorAll('.step').forEach(function(el){
     el.addEventListener('click', function(){ toggleStep(el.getAttribute('data-s')); });
   });
   bindBoxes();
+}
+
+/* ── 留白登记：每天只记这一个数 ── */
+function getBlank(){
+  try{
+    var o = JSON.parse(localStorage.getItem('cet4_blank_v1') || '{}') || {};
+    return o[fmt(today)] || '';
+  }catch(e){ return ''; }
+}
+function setBlank(v){
+  try{
+    var o = JSON.parse(localStorage.getItem('cet4_blank_v1') || '{}') || {};
+    o[fmt(today)] = (o[fmt(today)] === v) ? '' : v;
+    localStorage.setItem('cet4_blank_v1', JSON.stringify(o));
+  }catch(e){}
+  renderTasks();
+}
+function blankHtml(){
+  var b = getBlank();
+  var items = [['low','0–2 句'],['mid','3–5 句'],['high','6 句以上']];
+  var tip = '';
+  if (b === 'low' || b === 'mid') tip = '<div class="bok">留白这一关过了（还要这段做题 ≥5/10，两条都满足才进强化期）。</div>';
+  else if (b === 'high') tip = '<div class="bok warn">还没达标：这一段再听一遍，别急着换新的。</div>';
+  return '<div class="blankbox"><div class="bl">这段没听清的句子有几处？<i>只记这一个数，别的都不用填</i></div>'
+    + '<div class="chips">'
+    + items.map(function(x){ return '<button class="bchip'+(b===x[0]?' on':'')+'" data-b="'+x[0]+'">'+x[1]+'</button>'; }).join('')
+    + '</div>' + tip + '</div>';
 }
 
 function bindBoxes(){
