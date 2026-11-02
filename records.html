@@ -78,6 +78,12 @@ h1{font-size:22px;margin:0 0 16px;letter-spacing:-.3px}
   <div class="tip" id="whyInsight" style="margin:12px 0 0;display:none"></div>
 </div>
 
+<div class="card" id="kindCard" style="display:none">
+  <div class="chead"><h2>各科正确率</h2><span class="cmeta" id="kindMeta"></span></div>
+  <div id="kindBars"></div>
+  <div class="tip" id="kindTip" style="margin:12px 0 0;display:none"></div>
+</div>
+
 <div class="card">
   <div class="chead"><h2>错题本</h2><span class="cmeta" id="wcnt">0 题</span></div>
   <div id="wrongList"><div class="empty">判分后错题会自动收进这里；听写没听清的句子也会进来。</div></div>
@@ -103,8 +109,17 @@ Promise.all([
     .then(function(r){ return r.text(); }).catch(function(){ return ''; })
 ]).then(function(res){
   var arch = res[0] || {};
-  /* 无效回执：刷新后选项丢失、点了提交 → 「我选 undefined / 0 分」，一律丢弃 */
-  function badRep(p){ return /undefined/i.test(String(p.text || '')); }
+  /* 无效回执：刷新后选项丢失、点了提交 → 「我选 undefined / 0 分」；或一题没答的空提交 */
+  function badRep(p){
+    var t = String(p.text || '');
+    if (/undefined/i.test(t)) return true;
+    var s = String(repScore(p) || '');
+    if (/^0\//.test(s) && t.indexOf('✔') < 0){
+      var un = (t.match(/未答/g) || []).length, tot = parseInt(s.split('/')[1] || '0', 10);
+      if (un && un >= tot) return true;
+    }
+    return false;
+  }
   var recs = (arch.reps || []).filter(function(r){ return !badRep(r); });
   var coaches = (arch.coaches || []).slice();
   var photos = (arch.photos || []).slice();
@@ -145,10 +160,69 @@ Promise.all([
   });
 
   render(recs, coaches, photos);
+  renderKinds(recs);
   renderWrongbook(wbs);
 }).catch(function(){
   document.getElementById('list').innerHTML = '<div class="empty">拉取失败 —— 检查网络后刷新本页。</div>';
 });
+
+/* ── 各科正确率：按 kind 聚合，同一天同一页只算最后一次 ── */
+function renderKinds(recs){
+  var NAME = {listening:'听力', reading:'仔细阅读', matching:'长篇匹配', writing:'写作', translation:'翻译'};
+  var g = {}, order = ['listening','reading','matching','writing','translation'];
+  recs.forEach(function(r){
+    var sc = r.score || (String(r.text || '').match(/结果：(\d+\/\d+)/) || [])[1] || '';
+    var m = String(sc).match(/(\d+)\s*\/\s*(\d+)/);
+    if (!m) return;
+    var k = r.kind || 'listening';
+    var key = (r.date || '') + '|' + k + '|' + (r.page || '');
+    g[k] = g[k] || {};
+    g[k][key] = {r: parseInt(m[1],10), t: parseInt(m[2],10), date: (r.date || '')};
+  });
+  var rows = [];
+  order.forEach(function(k){
+    var o = g[k]; if (!o) return;
+    var keys = Object.keys(o); if (!keys.length) return;
+    keys.sort(function(a,b){ return String(o[a].date).localeCompare(String(o[b].date)); });
+    var R = 0, T = 0, n = 0;
+    keys.forEach(function(x){ R += o[x].r; T += o[x].t; n++; });
+    var pct = T ? Math.round(R / T * 100) : 0;
+    var first = o[keys[0]], last = o[keys[n-1]];
+    var fp = first.t ? Math.round(first.r / first.t * 100) : 0;
+    var lp = last.t ? Math.round(last.r / last.t * 100) : 0;
+    rows.push({k:k, label:NAME[k] || k, n:n, R:R, T:T, pct:pct, fp:fp, lp:lp});
+  });
+  var card = document.getElementById('kindCard');
+  if (!rows.length){ card.style.display = 'none'; return; }
+  card.style.display = '';
+  var total = rows.reduce(function(a,x){ return a + x.n; }, 0);
+  document.getElementById('kindMeta').textContent = total + ' 次判分';
+  document.getElementById('kindBars').innerHTML = rows.map(function(x){
+    var color = x.pct >= 60 ? '#16a34a' : (x.pct >= 40 ? '#d97706' : '#dc2626');
+    var arrow = x.n > 1 ? (x.lp >= x.fp ? ' <span style="color:#16a34a">↑</span>' : ' <span style="color:#dc2626">↓</span>') : '';
+    return '<div style="margin-bottom:14px">'
+      + '<div style="display:flex;justify-content:space-between;gap:10px;font-size:13px;margin-bottom:6px">'
+      +   '<b>' + x.label + '</b>'
+      +   '<span style="color:#6b7280">' + x.n + ' 次 · ' + x.R + '/' + x.T + ' · <b style="color:' + color + '">' + x.pct + '%</b>'
+      +   '<span style="opacity:.75"> 最近 ' + x.lp + '%' + arrow + '</span></span>'
+      + '</div>'
+      + '<div style="height:8px;border-radius:6px;background:#eef1f5;overflow:hidden">'
+      +   '<i style="display:block;height:100%;width:' + Math.max(x.pct,2) + '%;background:' + color + '"></i>'
+      + '</div></div>';
+  }).join('');
+  var l = rows.filter(function(x){ return x.k === 'listening'; })[0];
+  var rd = rows.filter(function(x){ return x.k === 'reading' || x.k === 'matching'; });
+  var tips = [];
+  if (l) tips.push('听力 ' + l.pct + '%（目标线 60%，过线大约要 55%）。');
+  if (!rd.length) tips.push('阅读还没有任何判分记录 —— 做了但没点提交，或者还没开始。');
+  else {
+    var rp = Math.round(rd.reduce(function(a,x){ return a + x.R; },0) / Math.max(1, rd.reduce(function(a,x){ return a + x.T; },0)) * 100);
+    tips.push('阅读合计 ' + rp + '%（目标线 65%）。');
+  }
+  var tip = document.getElementById('kindTip');
+  tip.style.display = '';
+  tip.innerHTML = tips.join('<br>');
+}
 
 function render(recs, coaches, photos){
   var items = [];

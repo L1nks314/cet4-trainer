@@ -18,7 +18,7 @@ RECORDS = os.path.join(ROOT, "records.json")
 def fetch_msgs():
     r = subprocess.run(
         ["curl", "-sL", "--max-time", "30",
-         f"https://ntfy.sh/{TOPIC}/json?poll=1&since=3h"],
+         f"https://ntfy.sh/{TOPIC}/json?poll=1&since=12h"],
         capture_output=True)
     out = []
     for line in r.stdout.decode("utf-8", "ignore").split("\n"):
@@ -53,8 +53,20 @@ def main():
         arch.setdefault(k, [])
     arch.setdefault("prog", {})
 
-    # 清掉历史遗留的无效回执（「我选 undefined」）
-    arch["reps"] = [r for r in arch["reps"] if "undefined" not in str(r.get("text", "")).lower()]
+    # 清掉无效回执：①「我选 undefined」②一题没答的空提交（全「未答」且 0 分）
+    def _bad(r):
+        t = str(r.get("text", ""))
+        if "undefined" in t.lower():
+            return True
+        sc = str(r.get("score") or "")
+        if sc.startswith("0/") and "✔" not in t:
+            un = t.count("未答")
+            if un and un >= int(sc.split("/")[1] or 0):
+                return True
+        return False
+    _before = len(arch["reps"])
+    arch["reps"] = [r for r in arch["reps"] if not _bad(r)]
+    cleaned = _before - len(arch["reps"])
 
     rep_keys = {(r.get("date"), r.get("kind"), r.get("page"), r.get("score") or "") for r in arch["reps"]}
     coach_keys = {(c.get("date"), c.get("kind"), c.get("text")) for c in arch["coaches"]}
@@ -92,9 +104,15 @@ def main():
                 photo_keys.add(name)
 
         elif t == "rep":
-            # 无效回执：刷新后选项丢失又点提交 → 「我选 undefined」，不归档
-            if "undefined" in str(p.get("text", "")).lower():
+            # 无效回执：刷新后选项丢失又点提交（「我选 undefined」），或一题没答的空提交
+            _t = str(p.get("text", ""))
+            _sc = str(p.get("score") or parse_score(_t) or "")
+            if "undefined" in _t.lower():
                 continue
+            if _sc.startswith("0/") and "✔" not in _t:
+                _un = _t.count("未答")
+                if _un and _un >= int(_sc.split("/")[1] or 0):
+                    continue
             sc = p.get("score") or parse_score(p.get("text"))
             k = (p.get("date"), p.get("kind"), p.get("page"), sc or "")
             if k not in rep_keys:
@@ -155,11 +173,11 @@ def main():
                     if changed:
                         pg += 1
 
-    if ar or ac or ap or pg or rv:
+    if ar or ac or ap or pg or rv or cleaned:
         arch["updated"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
         with open(RECORDS, "w", encoding="utf-8") as f:
             json.dump(arch, f, ensure_ascii=False, indent=2)
-        print(f"照片+{ap} 回执+{ar} 批改+{ac} 打卡+{pg} 回炉{rv}")
+        print(f"照片+{ap} 回执+{ar} 批改+{ac} 打卡+{pg} 回炉{rv} 清理{cleaned}")
     else:
         print("无新增，跳过写入")
 
