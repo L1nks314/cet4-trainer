@@ -1113,7 +1113,7 @@ document.querySelectorAll('.jump').forEach(function(b){
 
 <div id="cloudBar">
   <button id="cloudPhoto" title="把手写照片传上来，教练自动收到并批改">📷 上传手写照</button>
-  <div id="cloudSt">⏳ 已上云 · 待批改</div>
+  <div id="cloudSt" style="display:none"></div>
   <input type="file" id="cloudFile" accept="image/*" multiple style="display:none">
 </div>
 <script>
@@ -1145,16 +1145,41 @@ document.querySelectorAll('.jump').forEach(function(b){
   }
   function showRead(at){
     if (!st) return;
+    st.style.display = '';
     st.textContent = hhmm(at) ? ('✅ 教练已读 · ' + hhmm(at)) : '✅ 教练已读';
     st.classList.add('read');
     st.classList.remove('err');
   }
   function setMsg(txt, cls){
     if (!st) return;
+    st.style.display = '';
     st.textContent = txt;
     st.classList.remove('read','err');
     if (cls) st.classList.add(cls);
   }
+
+  /* 状态条默认隐藏：没交卷就不该写「已上云 · 待批改」——那是没发生的事。
+     只有真的发生（交卷快照 / 写译完成 / 照片上传 / 教练已读）才让它出现。 */
+  (function(){
+    var over = false;
+    function check(){
+      if (over) return;
+      var done = false;
+      try{
+        var s1 = JSON.parse(localStorage.getItem('cet4_ans_' + PAGE) || 'null');
+        if (s1 && s1.submitted) done = true;
+        var s2 = JSON.parse(localStorage.getItem('cet4write:' + PAGE) || localStorage.getItem('cet4trans:' + PAGE) || 'null');
+        if (s2 && s2.done) done = true;
+      }catch(e){}
+      if (!done) return;
+      over = true;
+      if (st && !st.classList.contains('read')) setMsg('📤 已交卷 · 记录已同步，等教练批');
+    }
+    check();
+    /* 交卷发生在页面打开之后，得再查几次；查到就停，不常驻 */
+    var tm = setInterval(check, 3000);
+    setTimeout(function(){ clearInterval(tm); }, 1800000);
+  })();
 
   /* ── 已读：GitHub read_log.json 兜底 ── */
   try{
