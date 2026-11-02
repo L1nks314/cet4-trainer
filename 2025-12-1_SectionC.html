@@ -382,6 +382,27 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
   #markBar{width:44px;height:44px;}
   #mkFab{font-size:19px;}
   /* ═══════ 精简版式 v1 结束 ═══════ */
+.segbar{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:0 0 14px}
+.segttl{font-size:12.5px;font-weight:700;color:var(--txt2);display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.segttl span{font-weight:400;color:var(--sub)}
+.segsel{margin-left:auto;font-size:12px;border:1px solid var(--line);border-radius:7px;background:var(--card);color:var(--txt2);padding:2px 4px}
+.segrow{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px}
+.segchip{flex:0 0 auto;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 12px;text-align:left;cursor:pointer;color:var(--txt);font-family:inherit}
+.segchip b{display:block;font-size:13px}
+.segchip i{display:block;font-size:11px;color:var(--sub);font-style:normal;margin-top:2px}
+.segchip.on{border-color:var(--blue);background:var(--blue-soft);color:var(--blue)}
+.segchip.on i{color:var(--blue);opacity:.85}
+.segall b{font-size:12.5px;color:var(--sub);font-weight:600}
+.q.segdim{opacity:.28}
+.segpill{position:fixed;left:50%;top:14px;transform:translateX(-50%);background:var(--blue);color:#fff;border-radius:14px;padding:9px 14px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow-lg);z-index:9999;max-width:calc(100% - 24px)}
+.segpill b{font-size:21px;font-variant-numeric:tabular-nums;min-width:26px;text-align:center;line-height:1}
+.segpill .ptxt{display:flex;flex-direction:column;gap:2px}
+.segpill em{font-style:normal;font-size:12.5px;font-weight:700;white-space:nowrap}
+.segpill span{font-size:11px;line-height:1.35;opacity:.92;white-space:nowrap}
+.segpill i{font-size:11.5px;opacity:.9;font-style:normal;text-decoration:underline;cursor:pointer;white-space:nowrap}
+.segtoast{position:fixed;left:12px;right:12px;bottom:14px;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow-lg);z-index:9998}
+.segtoast span{font-size:12.5px;color:var(--txt2);flex:1;line-height:1.5}
+.segtoast button{border:0;background:var(--blue);color:#fff;border-radius:9px;padding:8px 12px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit}
 </style>
 <noscript><style>
   .locked-sec{filter:none !important;opacity:1 !important;pointer-events:auto !important;user-select:auto !important;}
@@ -427,7 +448,8 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 <div class="card" id="quizCard">
   <h2><span class="num">2</span>做题区</h2>
   <p class="hint">先听「原速」做完题，再点提交。提交后原文和解析才会解锁。</p>
-  <div class="q" data-q="q16"><span class="qno">16</span><div class="stem">What does the speaker think is the best way to get started in user experience design?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>Learning from skilled designers.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>Obtaining real-world experience.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>Joining a 6-month training camp.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>Anticipating actual challenges.</span></button></div><div class="q" data-q="q17"><span class="qno">17</span><div class="stem">What does the speaker say being effective requires?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>Core skills.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>Higher education.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>Adaptability.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>Capability.</span></button></div><div class="q" data-q="q18"><span class="qno">18</span><div class="stem">What can people do as long as they know their end goal and strive for it?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>Start anywhere.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>Face challenges.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>Pursue roles in teams.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>Follow their own path.</span></button></div><div class="q" data-q="q19"><span class="qno">19</span><div class="stem">Why did the school principal ask what needed to change?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>To respond actively to students' requests.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>To engage students more in their learning.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>To enable teachers to interact more with their students.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>To allow students more freedom in their academic work.</span></button></div><div class="q" data-q="q20"><span class="qno">20</span><div class="stem">What has flexible seating meant at the speaker&#x27;s school?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>Using new furniture to create a comfortable environment.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>Shifting from traditional teaching to task-based learning.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>Adopting a variety of different seating options.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>Rearranging most traditional chairs and desks.</span></button></div><div class="q" data-q="q21"><span class="qno">21</span><div class="stem">What has flexible seating brought about at the speaker&#x27;s school?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>A win for all people involved.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>A strengthened effect of its discipline.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>A harmonious relationship among its students.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>A change to teachers' opinion of their students.</span></button></div><div class="q" data-q="q22"><span class="qno">22</span><div class="stem">Why were dozens of British students sent home on Tuesday?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>They weren't informed of the school's updated rules.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>They arrived late for their first day of school.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>They answered their headteacher's email in an impolite way.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>They didn't wear the shoes required by the school's new policy.</span></button></div><div class="q" data-q="q23"><span class="qno">23</span><div class="stem">What can the price of school uniforms spark among families in financial difficulty?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>Riots.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>Anger.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>Disputes.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>Panic.</span></button></div><div class="q" data-q="q24"><span class="qno">24</span><div class="stem">What did the head teacher think of the school&#x27;s new uniform rules?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>They strengthened the school's discipline and order.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>They improved student behavior and performance.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>They enhanced the positive image of the school.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>They rendered the school unique in the district.</span></button></div><div class="q" data-q="q25"><span class="qno">25</span><div class="stem">What did Lucinda May have to do to buy her child the correct pair of shoes?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>Turn to her parents for help.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>Tighten her monthly budget.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>Borrow £65 from her friend.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>Postpone paying her other bills.</span></button></div>
+  <div class="segbar" id="segBar"></div>
+<div class="q" data-q="q16"><span class="qno">16</span><div class="stem">What does the speaker think is the best way to get started in user experience design?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>Learning from skilled designers.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>Obtaining real-world experience.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>Joining a 6-month training camp.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>Anticipating actual challenges.</span></button></div><div class="q" data-q="q17"><span class="qno">17</span><div class="stem">What does the speaker say being effective requires?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>Core skills.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>Higher education.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>Adaptability.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>Capability.</span></button></div><div class="q" data-q="q18"><span class="qno">18</span><div class="stem">What can people do as long as they know their end goal and strive for it?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>Start anywhere.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>Face challenges.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>Pursue roles in teams.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>Follow their own path.</span></button></div><div class="q" data-q="q19"><span class="qno">19</span><div class="stem">Why did the school principal ask what needed to change?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>To respond actively to students' requests.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>To engage students more in their learning.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>To enable teachers to interact more with their students.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>To allow students more freedom in their academic work.</span></button></div><div class="q" data-q="q20"><span class="qno">20</span><div class="stem">What has flexible seating meant at the speaker&#x27;s school?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>Using new furniture to create a comfortable environment.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>Shifting from traditional teaching to task-based learning.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>Adopting a variety of different seating options.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>Rearranging most traditional chairs and desks.</span></button></div><div class="q" data-q="q21"><span class="qno">21</span><div class="stem">What has flexible seating brought about at the speaker&#x27;s school?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>A win for all people involved.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>A strengthened effect of its discipline.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>A harmonious relationship among its students.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>A change to teachers' opinion of their students.</span></button></div><div class="q" data-q="q22"><span class="qno">22</span><div class="stem">Why were dozens of British students sent home on Tuesday?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>They weren't informed of the school's updated rules.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>They arrived late for their first day of school.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>They answered their headteacher's email in an impolite way.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>They didn't wear the shoes required by the school's new policy.</span></button></div><div class="q" data-q="q23"><span class="qno">23</span><div class="stem">What can the price of school uniforms spark among families in financial difficulty?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>Riots.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>Anger.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>Disputes.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>Panic.</span></button></div><div class="q" data-q="q24"><span class="qno">24</span><div class="stem">What did the head teacher think of the school&#x27;s new uniform rules?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>They strengthened the school's discipline and order.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>They improved student behavior and performance.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>They enhanced the positive image of the school.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>They rendered the school unique in the district.</span></button></div><div class="q" data-q="q25"><span class="qno">25</span><div class="stem">What did Lucinda May have to do to buy her child the correct pair of shoes?<span class="zh"></span></div><button class="opt" data-k="A"><span class="k">A)</span><span>Turn to her parents for help.</span></button><button class="opt" data-k="B"><span class="k">B)</span><span>Tighten her monthly budget.</span></button><button class="opt" data-k="C"><span class="k">C)</span><span>Borrow £65 from her friend.</span></button><button class="opt" data-k="D"><span class="k">D)</span><span>Postpone paying her other bills.</span></button></div>
   <button class="btn btn-primary" id="submitBtn" disabled>请先完成 10 道题</button>
   <div class="progress" id="progress">已作答 0 / 10</div>
   <button class="btn btn-ghost" id="skipBtn">我不想做题，直接进入原文点读</button>
@@ -2670,6 +2692,224 @@ for (var qid in AL){
   window.__openWordDrill = open;
   /* 从记录页点「页名」过来时自动开始 */
   if (/[?&]wd=1/.test(location.search)) setTimeout(open, 700);
+})();
+
+</script>
+<script>
+/* ═══ 分段听：一篇一听 + 预读倒计时 ═══ */
+(function(){
+  if (window.__seg) return; window.__seg = 1;
+  var audio = document.getElementById('audio');
+  if (!audio || !window.DATA) return;
+  var LINES = DATA.lines || (DATA.rates && DATA.rates[0] && DATA.rates[0].lines) || [];
+  var DUR = DATA.dur || (DATA.rates && DATA.rates[0] && DATA.rates[0].dur) || 0;
+  if (!LINES.length || !DUR) return;
+
+  /* ── 1. 纠正「词/分」：原值拿总时长（含念问题与 15 秒作答空白）当分母，读数偏低三成，
+        会让人误以为音频比真题慢。改成按「有声时长」算。 ── */
+  (function(){
+    var sec = 0, wds = 0;
+    LINES.forEach(function(x){
+      var tk = x.tokens || []; if (!tk.length) return;
+      var w = (x.en.match(/[A-Za-z']+/g) || []).length;
+      var d = tk[tk.length-1].e - tk[0].s;
+      if (w >= 4 && d / w < 1.0) { sec += d; wds += w; }   /* 跳过时间戳吞掉整段问题的行 */
+    });
+    if (!sec || !wds) return;
+    var base = wds / (sec / 60);
+    DATA.rates.forEach(function(r){ r.wpm = Math.round(base * (r.pb || 1)); });
+    var idx = 0;
+    document.querySelectorAll('.sbtn').forEach(function(b, k){ if (b.classList.contains('on')) idx = k; });
+    var r = DATA.rates[idx] || DATA.rates[0], lb = document.getElementById('plLabel');
+    if (lb && r) lb.textContent = r.label + ' · ' + r.wpm + ' 词/分';
+  })();
+
+  /* ── 2. 切篇：句首之间超过 25 秒 = 上一篇结束（中间是念问题与 15 秒作答） ── */
+  var ss = [];
+  LINES.forEach(function(x){ var tk = x.tokens || []; if (tk.length) ss.push(tk[0].s); });
+  ss.sort(function(a, b){ return a - b; });
+  var cand = [];
+  for (var i = 0; i < ss.length - 1; i++) if (ss[i+1] - ss[i] > 25) cand.push(ss[i+1]);
+
+  var SEC  = (location.pathname.match(/Section([ABC])\.html/i) || [])[1] || 'A';
+  var PLAN = { A: [2,2,3], B: [4,4], C: [3,3,4] }[SEC] || null;
+  var NAME = { A: ['新闻 1','新闻 2','新闻 3'], B: ['对话 1','对话 2'],
+               C: ['短文 1','短文 2','短文 3'] }[SEC] || [];
+  var QS  = document.querySelectorAll('.q');
+  var NQ  = QS.length;
+  var n   = PLAN ? PLAN.length : 3;
+
+  var bd = [0];
+  cand.forEach(function(v){ if (v > 30 && v < DUR - 30) bd.push(v); });
+  bd.push(DUR);
+  /* 边界多了：反复删掉让相邻某一段最短的那条，直到段数对 */
+  while (bd.length - 1 > n){
+    var wj = -1, wl = 1e9;
+    for (var j = 1; j < bd.length - 1; j++){
+      var len = Math.min(bd[j] - bd[j-1], bd[j+1] - bd[j]);
+      if (len < wl){ wl = len; wj = j; }
+    }
+    bd.splice(wj, 1);
+  }
+  /* 边界少了（整段无停顿的录音）：平均切 */
+  if (bd.length - 1 < n){
+    bd = [0];
+    for (var k = 1; k < n; k++) bd.push(+(DUR * k / n).toFixed(1));
+    bd.push(DUR);
+  }
+
+  /* 边界贴到最近的句首：整段无停顿的录音只能平均切，但不能切在一句话中间 */
+  for (var jj = 1; jj < bd.length - 1; jj++){
+    var bestT = bd[jj], bestG = 20;
+    for (var qq = 0; qq < ss.length; qq++){
+      var dd = Math.abs(ss[qq] - bd[jj]);
+      if (dd < bestG){ bestG = dd; bestT = ss[qq]; }
+    }
+    bd[jj] = bestT;
+  }
+
+  var qc = PLAN ? PLAN.slice() : [];
+  if (qc.reduce(function(a, c){ return a + c; }, 0) !== NQ){
+    qc = []; var per = Math.floor(NQ / n);
+    for (var m = 0; m < n; m++) qc.push(per + (m < NQ - per * n ? 1 : 0));
+  }
+  var qStart = [], acc = 0;
+  qc.forEach(function(c){ qStart.push(acc); acc += c; });
+
+  /* ── 3. 界面 ── */
+  var PREREAD = +(localStorage.getItem('cet4_preread') || 20);
+  function fmt(s){ s = Math.max(0, s || 0); return Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0'); }
+
+  var bar = document.getElementById('segBar');
+  if (!bar){
+    bar = document.createElement('div');
+    bar.id = 'segBar';
+    QS[0].parentNode.insertBefore(bar, QS[0]);
+  }
+  bar.className = 'segbar';
+  bar.innerHTML = '<div class="segttl">分段听 <span>一段一听，听完自动停</span></div><div class="segrow" id="segRow"></div>';
+
+  var row = document.getElementById('segRow');
+  bd.slice(0, -1).forEach(function(st, ii){
+    var en = bd[ii + 1];
+    var btn = document.createElement('button');
+    btn.className = 'segchip'; btn.dataset.i = ii;
+    btn.innerHTML = '<b>' + (NAME[ii] || ('第 ' + (ii + 1) + ' 段')) + '</b><i>' + qc[ii] + ' 题 · ' + fmt(en - st) + '</i>';
+    btn.addEventListener('click', function(){ start(ii, false); });
+    row.appendChild(btn);
+  });
+  var allBtn = document.createElement('button');
+  allBtn.className = 'segchip segall';
+  allBtn.innerHTML = '<b>全部</b><i>不分段</i>';
+  allBtn.addEventListener('click', reset);
+  row.appendChild(allBtn);
+
+  var sel = document.createElement('select');
+  sel.className = 'segsel';
+  [0, 10, 15, 20, 30].forEach(function(v){
+    var o = document.createElement('option');
+    o.value = v; o.textContent = v ? ('预读 ' + v + '″') : '不预读';
+    if (v === PREREAD) o.selected = true;
+    sel.appendChild(o);
+  });
+  sel.addEventListener('change', function(){
+    PREREAD = +sel.value;
+    try { localStorage.setItem('cet4_preread', PREREAD); } catch(e){}
+  });
+  bar.querySelector('.segttl').appendChild(sel);
+
+  /* ── 4. 播放控制 ── */
+  var cur = -1, timer = null, watcher = null, pill = null;
+
+  function clearTimer(){ if (timer){ clearInterval(timer); timer = null; } }
+  function clearWatcher(){ if (watcher){ audio.removeEventListener('timeupdate', watcher); watcher = null; } }
+  function killPill(){ if (pill && pill.parentNode) pill.remove(); pill = null; }
+
+  function seekTo(t, cb){
+    if (audio.readyState >= 1){ try { audio.currentTime = t; } catch(e){} cb && cb(); return; }
+    var h = function(){
+      audio.removeEventListener('loadedmetadata', h);
+      try { audio.currentTime = t; } catch(e){}
+      cb && cb();
+    };
+    audio.addEventListener('loadedmetadata', h);
+    setTimeout(function(){
+      if (audio.readyState >= 1){
+        audio.removeEventListener('loadedmetadata', h);
+        try { audio.currentTime = t; } catch(e){}
+        cb && cb();
+      }
+    }, 1500);
+  }
+
+  function dim(ii){
+    for (var k = 0; k < QS.length; k++){
+      var inB = (k >= qStart[ii] && k < qStart[ii] + qc[ii]);
+      QS[k].classList.toggle('segdim', !inB);
+    }
+  }
+  function undim(){ for (var k = 0; k < QS.length; k++) QS[k].classList.remove('segdim'); }
+
+  function reset(){
+    audio.pause(); clearWatcher(); clearTimer(); killPill();
+    cur = -1; undim();
+    for (var k = 0; k < row.children.length; k++) row.children[k].classList.remove('on');
+    var tb = document.getElementById('segToast'); if (tb) tb.remove();
+  }
+
+  function start(ii, skip){
+    reset();
+    cur = ii;
+    row.children[ii].classList.add('on');
+    dim(ii);
+    if (QS[qStart[ii]]) QS[qStart[ii]].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (skip || !PREREAD){ play(ii); return; }
+    countdown(ii, PREREAD);
+  }
+
+  function countdown(ii, left){
+    clearTimer();
+    pill = document.createElement('div');
+    pill.className = 'segpill';
+    pill.innerHTML = '<b>' + left + '</b><div class="ptxt"><em>先读这 ' + qc[ii] + ' 题的选项</em>'
+      + '<span>每个压成一个词，别逐词翻译</span></div><i>跳过</i>';
+    document.body.appendChild(pill);
+    pill.querySelector('i').addEventListener('click', function(){ clearTimer(); killPill(); play(ii); });
+    timer = setInterval(function(){
+      left--;
+      if (left <= 0){ clearTimer(); killPill(); play(ii); return; }
+      var bb = pill && pill.querySelector('b');
+      if (bb) bb.textContent = left;
+    }, 1000);
+  }
+
+  function play(ii){
+    var st = bd[ii], en = bd[ii + 1];
+    clearWatcher();
+    seekTo(st + 0.05, function(){
+      var p = audio.play();
+      if (p && p.catch) p.catch(function(){});
+      watcher = function(){
+        if (audio.currentTime >= en - 0.15){ audio.pause(); clearWatcher(); done(ii); }
+      };
+      audio.addEventListener('timeupdate', watcher);
+    });
+  }
+
+  function done(ii){
+    var old = document.getElementById('segToast'); if (old) old.remove();
+    var nxt = (ii + 1 < bd.length - 1);
+    var t = document.createElement('div');
+    t.className = 'segtoast'; t.id = 'segToast';
+    t.innerHTML = '<span>' + (NAME[ii] || ('第 ' + (ii + 1) + ' 段')) + ' 听完了 · 先把这 ' + qc[ii] + ' 题选出来</span><button>' +
+      (nxt ? ('听' + (NAME[ii + 1] || ('第 ' + (ii + 2) + ' 段')) + ' ›') : '全部听完') + '</button>';
+    document.body.appendChild(t);
+    t.querySelector('button').addEventListener('click', function(){
+      t.remove();
+      if (nxt) start(ii + 1, false); else reset();
+    });
+    setTimeout(function(){ if (t && t.parentNode) t.remove(); }, 15000);
+  }
 })();
 
 </script>
