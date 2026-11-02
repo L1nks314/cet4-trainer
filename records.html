@@ -214,11 +214,11 @@ function renderKinds(recs){
   var l = rows.filter(function(x){ return x.k === 'listening'; })[0];
   var rd = rows.filter(function(x){ return x.k === 'reading' || x.k === 'matching'; });
   var tips = [];
-  if (l) tips.push('听力 ' + l.pct + '%（目标线 60%，过线大约要 55%）。');
+  if (l) tips.push('听力 ' + l.pct + '%（阶段目标：单段篇章 ≥50% 且留白≤5 句，整套连做 ≥45%）。');
   if (!rd.length) tips.push('阅读还没有任何判分记录 —— 做了但没点提交，或者还没开始。');
   else {
     var rp = Math.round(rd.reduce(function(a,x){ return a + x.R; },0) / Math.max(1, rd.reduce(function(a,x){ return a + x.T; },0)) * 100);
-    tips.push('阅读合计 ' + rp + '%（目标线 65%）。');
+    tips.push('阅读合计 ' + rp + '%（阶段目标：仔细阅读 ≥82%，长篇匹配 ≥85%）。');
   }
   var tip = document.getElementById('kindTip');
   tip.style.display = '';
