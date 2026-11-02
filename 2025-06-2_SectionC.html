@@ -256,6 +256,16 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 
 /* ═══ 逐句听写清单 ═══ */
 #dictCard.hide{display:none}
+.dpick{margin:8px 0 10px;padding:9px 11px;border-radius:10px;background:#eef4ff;
+ border:1px solid #d6e2ff;font-size:12px;line-height:1.7;color:#2f4a6d}
+.dpick b{color:#1f3a5f}
+.dpick em{display:block;font-style:normal;color:#7a8798;font-size:11px;margin-top:3px}
+.dpick button{margin-left:6px;font-size:11.5px;padding:2px 8px;border-radius:8px;
+ border:1px solid #b9cdf0;background:#fff;color:#2f5ea8}
+.dprow.pk{border-color:#b9cdf0;background:#f5f9ff;border-left:3px solid #2563eb}
+.dplist.only .dprow:not(.pk){display:none}
+.dprow.pk .dpi{color:#2563eb}
+.dprow.pk .dpi::after{content:" ★";font-size:10px}
 .dplist{display:flex;flex-direction:column;gap:6px}
 .dprow{display:flex;align-items:center;gap:8px;padding:9px 11px;border:1px solid var(--line);
  border-radius:10px;background:var(--bg,#fff);transition:background .15s;cursor:pointer}
@@ -480,9 +490,12 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 
 <div class="card hide" id="dictCard">
   <h2><span class="num">4</span>逐句听写清单</h2>
-  <p class="hint"><b>分屏：一边网页当播放器，一边华为笔记写字。</b><br>点播放器里的 <b>✍️ 听写模式</b>，每句会自动重读几遍再停。没听清的句点「✗ 听不清」标记（<b>只记在本页，周三复听时直接调出来</b>），写进华为笔记。写完点右下角<b>「📷 上传手写照」</b>把照片传上来，我给你逐词批改。</p>
+  <p class="hint"><b>分屏：一边网页当播放器，一边华为笔记写字。</b><br>点播放器里的 <b>✍️ 听写模式</b>，它只在标 ★ 的几句之间走，每句重读 2 遍就停。没听清的句点「✗ 听不清」标记（<b>只记在本页，周三复听时直接调出来</b>），写进华为笔记。写完点右下角<b>「📷 上传手写照」</b>把照片传上来，我给你逐词批改。</p>
+  <div class="dpick"><b id="dpPickHead">今天写这 5 句</b>：<span id="dpPickTxt">—</span>
+    <button id="dpPickNew">换一批</button><button id="dpPickAll">看全篇</button>
+    <em>按信息量挑的：长句、带数字、带转折。不是整篇全抄 —— 这 5 句写完就算完成，剩下的对原文标一下没听清的词。</em></div>
   <div class="dplist" id="dpList"></div>
-</div>>>>>>>>
+</div>
 
 
 
@@ -867,6 +880,7 @@ var QUIZ = [{"id": "q16", "stem": "16. What do we learn from the passage about t
       /* 恢复已标记状态（刷新页面后不能丢） */
       for (var k = 0; k < LINES.length; k++) paintRow(k);
       refreshCount();
+      paintPicks();
       list.addEventListener('click', function(e){
         var eye = e.target.closest('.dpeye');
         if (eye){
@@ -950,8 +964,85 @@ var QUIZ = [{"id": "q16", "stem": "16. What do we learn from the passage about t
         row.scrollIntoView({behavior:'smooth', block:'center'});
     }
 
+    /* ── 今天写这几句：按信息量挑（长句 / 数字 / 转折 / 并列），不必整篇全抄 ── */
+    var PICK_KEY = 'cet4_dict_pick_v1:' + (location.pathname.split('/').pop() || 'x');
+    function pickCount(){
+      var d = new Date();
+      var ymd = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+      var t = '';
+      try{ t = localStorage.getItem('cet4_tier_' + ymd) || ''; }catch(e){}
+      return (t === 'std' || t === 'min') ? 5 : 10;
+    }
+    var N_PICK = Math.min(pickCount(), LINES.length);
+    var picks = [];
+    function scoreLine(i){
+      var en = LINES[i].en || '', s = 0;
+      var w = en.split(/\s+/).filter(function(x){ return /[A-Za-z0-9]/.test(x); });
+      s += Math.min(w.length, 26) * 0.6;
+      if (/\d/.test(en)) s += 3;
+      if (/\b(but|however|yet|instead|although|though|while|because|therefore|rather|so that)\b/i.test(en)) s += 3.5;
+      if (/\b(first|second|third|finally|also|another|other|most|many)\b/i.test(en)) s += 1.5;
+      if (/(^|\s)[A-Z][a-z]{2,}/.test(en)) s += 1;
+      return s;
+    }
+    function paintPicks(){
+      var rows = list.querySelectorAll('.dprow');
+      for (var i = 0; i < rows.length; i++) rows[i].classList.remove('pk');
+      for (var k = 0; k < picks.length; k++){
+        var r = list.querySelector('.dprow[data-li="' + picks[k] + '"]');
+        if (r) r.classList.add('pk');
+      }
+      var el = document.getElementById('dpPickTxt');
+      if (el) el.textContent = picks.map(function(x){ return x + 1; }).join('、');
+      var hd = document.getElementById('dpPickHead');
+      if (hd) hd.textContent = '今天写这 ' + picks.length + ' 句';
+    }
+    function buildPicks(exclude){
+      var scored = [], i, it;
+      for (i = 0; i < LINES.length; i++){
+        var sc = scoreLine(i);
+        if (exclude && exclude.indexOf(i) >= 0) sc -= 5;
+        scored.push({ i:i, s:sc });
+      }
+      scored.sort(function(a, b){ return b.s - a.s; });
+      /* 全篇分段各取一句，避免 5 句全挤在开头 */
+      var band = Math.ceil(LINES.length / N_PICK), out = [], used = {};
+      for (var b = 0; b < N_PICK; b++){
+        var lo = b * band, hi = Math.min(LINES.length, lo + band), hit = -1;
+        for (var k = 0; k < scored.length; k++){
+          it = scored[k];
+          if (used[it.i] || it.i < lo || it.i >= hi) continue;
+          hit = it.i; break;
+        }
+        if (hit >= 0){ used[hit] = 1; out.push(hit); }
+      }
+      for (var k2 = 0; k2 < scored.length && out.length < N_PICK; k2++){
+        if (!used[scored[k2].i]){ used[scored[k2].i] = 1; out.push(scored[k2].i); }
+      }
+      out.sort(function(a, b){ return a - b; });
+      picks = out;
+      try{ localStorage.setItem(PICK_KEY, JSON.stringify(picks)); }catch(e){}
+      paintPicks();
+      return picks;
+    }
+    try{
+      var _pk = JSON.parse(localStorage.getItem(PICK_KEY) || 'null');
+      if (_pk && _pk.length === N_PICK) picks = _pk;
+    }catch(e){}
+    if (!picks.length) buildPicks(null);
+
     API.show = show; API.hide = hide; API.focusLine = focusLine;
+    API.getPicks = function(){ return picks; };
+    API.repick = function(){ return buildPicks(picks.slice()); };
     API.setUnclear = setUnclear; API.isUnclear = isUnclear; API.getUnclear = getUnclear;
+    /* 默认只看 ★ 的几句；想看全篇点「看全篇」 */
+    list.classList.add('only');
+    var _bAll = document.getElementById('dpPickAll');
+    if (_bAll) _bAll.addEventListener('click', function(){
+      var only = list.classList.toggle('only');
+      _bAll.textContent = only ? '看全篇' : '只看 ★';
+    });
+
     window.__dictPad = API;
     return API;
   })();
@@ -1765,7 +1856,7 @@ for (var qid in AL){
   var on = false, curLi = -1, maxLi = -1, B = null, tick = 0, followBack = false, lastSelf = 0;
 
   var REP_KEY = 'cet4_rep_v1';
-  var rep = 3, left = 0, gapTimer = 0, GAP_MS = 1800;   /* 遍与遍之间停 1.8 秒 */
+  var rep = 2, left = 0, gapTimer = 0, GAP_MS = 4000;   /* 默认 2 遍；遍与遍之间停 4 秒，留写字时间 */
   try { var rv = parseInt(localStorage.getItem(REP_KEY) || '', 10); if (rv >= 1 && rv <= 4) rep = rv; } catch(e){}
   function repLabel(){ if (bRep) bRep.textContent = '🔂 ' + rep + '遍'; }
 
@@ -1794,6 +1885,12 @@ for (var qid in AL){
 
   /* ── 逐句「听不清」标记：状态交给清单（pad）维护 ── */
   function pad(){ return window.__dictPad || null; }
+  function padsPicks(){ var D = pad(); return (D && D.getPicks) ? (D.getPicks() || []) : []; }
+  function nextPick(li){
+    var P = padsPicks();
+    for (var i = 0; i < P.length; i++) if (P[i] > li) return P[i];
+    return -1;
+  }
   function padUnclear(li){ var D = pad(); return (D && D.isUnclear) ? D.isUnclear(li) : false; }
   function unclearLabel(){
     if (!bSkip) return;
@@ -1861,7 +1958,8 @@ for (var qid in AL){
     if (li > maxLi) maxLi = li;
     left = rep;
     if (bNext) bNext.disabled = true;      /* 播放中：下一句置灰 */
-    txt.textContent = (li + 1) + '/' + b.length + ' ▶';
+    var _P = padsPicks(), _n = _P.indexOf(li);
+    txt.textContent = (_n >= 0 ? ('第 ' + (_n + 1) + '/' + _P.length + ' 句 · 全篇 ' + (li + 1)) : ((li + 1) + '/' + b.length)) + ' ▶';
     var D = pad();
     if (D) D.focusLine(li);                /* 清单跳到这一行 */
     unclearLabel();
@@ -1869,8 +1967,9 @@ for (var qid in AL){
     return true;
   }
   function showWait(li){
-    var b = bounds(), last = (li + 1 >= b.length);
-    txt.textContent = (li + 1) + '/' + b.length + ' · 写或标记';
+    var b = bounds(), last = (nextPick(li) < 0);
+    var _P2 = padsPicks(), _n2 = _P2.indexOf(li);
+    txt.textContent = (_n2 >= 0 ? ('第 ' + (_n2 + 1) + '/' + _P2.length + ' 句') : ((li + 1) + '/' + b.length)) + ' · 写或标记';
     if (bNext){
       bNext.disabled = false;
       bNext.textContent = last ? '✓ 完成' : '▶ 下一句';
@@ -1978,17 +2077,27 @@ for (var qid in AL){
     if (D) D.show();
     bar.classList.add('on');                /* 悬浮条立即显示，不再等到暂停 */
     var li0 = liAt(audio.currentTime);
+    var _P0 = padsPicks();
+    if (_P0.length && _P0.indexOf(li0) < 0) li0 = _P0[0];   /* 不在今天这批里，就从第一句开始 */
     playLine(li0 < 0 ? 0 : li0);
   });
   bNext.addEventListener('click', function(){
     if (!on){ bar.classList.remove('on'); return; }
-    if (!playLine(curLi + 1)) exitMode();
+    var _nx = nextPick(curLi);
+    if (_nx < 0){ exitMode(); return; }        /* 这一批写完了 */
+    playLine(_nx);
   });
   bAgain.addEventListener('click', function(){
     if (curLi >= 0) playLine(curLi);
   });
   if (bPause) bPause.addEventListener('click', doPause);
   if (bExit) bExit.addEventListener('click', function(){ if (on) exitMode(); });
+
+  var _bNew = document.getElementById('dpPickNew');
+  if (_bNew) _bNew.addEventListener('click', function(){
+    var D = pad();
+    if (D && D.repick) D.repick();
+  });
 
   /* 暴露给清单：点哪句播哪句 */
   window.__dictMode = { playLine: playLine, togglePause: doPause };
