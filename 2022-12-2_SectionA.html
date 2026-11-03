@@ -1221,7 +1221,27 @@ var QUIZ = [{"id": "q1", "stem": "1. What event will take place in Glasgow?", "z
     return true;
   }
   function syncScroll(){ OX = window.pageXOffset || 0; OY = window.pageYOffset || 0; }
-  function offOf(s){ return s.c ? (s.c0 - s.c.scrollTop) : 0; }
+  /* 滚动容器状态按帧缓存：切 tab / 切单栏后容器可能不再滚动，scrollTop 归 0，
+     仍用落笔时的 c0 相减，笔画会凭空上移一大截 */
+  var SCOFF = { t:0, m:null };
+  function scOf(c){
+    var now = (window.performance && performance.now) ? performance.now() : Date.now();
+    if (!SCOFF.m || now - SCOFF.t > 8){ SCOFF.m = new Map(); SCOFF.t = now; }
+    var v = SCOFF.m.get(c);
+    if (v === undefined){
+      var st = window.getComputedStyle(c);
+      v = { ok: c.isConnected && (st.overflowY === 'auto' || st.overflowY === 'scroll'), top: c.scrollTop };
+      SCOFF.m.set(c, v);
+    }
+    return v;
+  }
+  function offOf(s){
+    if (!s.c) return 0;
+    var v = scOf(s.c);
+    /* 容器一旦不再滚动，scrollTop 自然回 0，这里就用 0 抵掉落笔时的滚动量；
+       与 shiftOf 的 docTopOf 口径配起来，两者相加才等于内容的真实位移 */
+    return s.c0 - v.top;
+  }
   function clipC(c){
     if (!c) return;
     var r = c.getBoundingClientRect();
@@ -1243,24 +1263,44 @@ var QUIZ = [{"id": "q1", "stem": "1. What event will take place in Glasgow?", "z
 
   /* ── 笔迹锚定：记录落笔处的内容块，重排后按内容位移整体平移 ── */
   var ANCH_SEL = '.line, .q, .card, .tip, p, li, h2, h3, .ptx, .para';
+  /* 锚元素的「文档坐标」必须把祖先滚动容器的 scrollTop 一起算进去：
+     split 模式下原文栏自己会滚，只加 pageYOffset 会漏掉容器滚动，
+     和笔画绘制时的 off 修正是两套口径，一滚容器或一开中译，字迹就偏了 */
+  function docTopOf(el){
+    var y = el.getBoundingClientRect().top + (window.pageYOffset || 0);
+    var p = el.parentElement;
+    while (p && p !== document.documentElement){
+      if (p.scrollTop) y += p.scrollTop;
+      p = p.parentElement;
+    }
+    return y;
+  }
   function anchorOf(clientX, clientY){
     var el = document.elementFromPoint(clientX, clientY);
     if (!el || !el.closest) return null;
     var a = el.closest(ANCH_SEL) || el;
     if (!a || a.nodeType !== 1) return null;
-    return { el: a, y0: a.getBoundingClientRect().top + (window.pageYOffset || 0) };
+    return { el: a, y0: docTopOf(a) };
+  }
+  /* 锚元素在隐藏的 tab 里时 rect 全 0，差值等于「负一整个页面高度」，
+     笔画会整条飞到页面顶部——这种帧一律不位移 */
+  function anchVis(el){
+    if (!el || !el.isConnected) return false;
+    var r = el.getBoundingClientRect();
+    return (r.width > 0 || r.height > 0);
+  }
+  function anchorShift(s){
+    if (!anchVis(s.anch.el)) return 0;
+    return docTopOf(s.anch.el) - s.anch.y0;
   }
   function shiftOf(s, cache){
     if (!s || !s.anch || !s.anch.el) return 0;
     if (cache){
       var v = cache.get(s.anch.el);
-      if (v === undefined){
-        v = (s.anch.el.getBoundingClientRect().top + (window.pageYOffset || 0)) - s.anch.y0;
-        cache.set(s.anch.el, v);
-      }
+      if (v === undefined){ v = anchorShift(s); cache.set(s.anch.el, v); }
       return v;
     }
-    return (s.anch.el.getBoundingClientRect().top + (window.pageYOffset || 0)) - s.anch.y0;
+    return anchorShift(s);
   }
 
   function scanSC(){
