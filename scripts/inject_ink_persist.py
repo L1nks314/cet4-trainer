@@ -11,24 +11,33 @@ INK_MODULE = r"""
   var INK_COL = ['#1b1e23', '#c0392b', '#2563eb', '#0f9d58', '#d97706'];
   var inkT = 0;
 
+  /* 顶层 body 的子节点会被脚本插入/挪动，纯结构路径会串到别的面板去；
+     改成「最近的有 id 祖先 + 相对路径」，只要段落 id 在，路径就稳 */
   function pathOf(el){
-    var out = [];
-    while (el && el.parentElement && el !== document.body){
-      var i = 0, c = el;
-      while ((c = c.previousElementSibling)) if (c.tagName === el.tagName) i++;
-      out.unshift(el.tagName.toLowerCase() + ':' + i);
-      el = el.parentElement;
+    var seg = [], cur = el;
+    while (cur && cur !== document.body){
+      if (cur.id && /^[A-Za-z]/.test(cur.id)) return '#' + cur.id + (seg.length ? '/' + seg.join('/') : '');
+      var i = 0, c = cur;
+      while ((c = c.previousElementSibling)) if (c.tagName === cur.tagName) i++;
+      seg.unshift(cur.tagName.toLowerCase() + ':' + i);
+      cur = cur.parentElement;
     }
-    return out.join('/');
+    return seg.join('/');
   }
   function byPath(p){
     if (!p) return null;
     var el = document.body, parts = p.split('/');
+    if (p.charAt(0) === '#'){
+      var k = p.indexOf('/'), id = k < 0 ? p.slice(1) : p.slice(1, k);
+      el = document.getElementById(id);
+      parts = k < 0 ? [] : p.slice(k + 1).split('/');
+      if (!el) return null;
+    }
     for (var i = 0; i < parts.length; i++){
       var m = /^([a-z0-9]+):(\d+)$/.exec(parts[i]);
       if (!m || !el) return null;
       var tag = m[1].toUpperCase(), idx = +m[2], n = 0, f = null, kids = el.children;
-      for (var k = 0; k < kids.length; k++) if (kids[k].tagName === tag){ if (n === idx){ f = kids[k]; break; } n++; }
+      for (var k2 = 0; k2 < kids.length; k2++) if (kids[k2].tagName === tag){ if (n === idx){ f = kids[k2]; break; } n++; }
       if (!f) return null;
       el = f;
     }
@@ -40,12 +49,17 @@ INK_MODULE = r"""
   }
   function inkFind(r){
     var el = byPath(r.a);
-    if (el && (!r.f || inkText(el).indexOf(r.f) === 0 || r.f.indexOf(inkText(el).slice(0, 8)) === 0)) return el;
-    if (r.f){                       /* 结构变了：按文本前 18 字在候选锚里找回 */
-      var cand = document.querySelectorAll(ANCH_SEL);
+    var okTxt = el && (!r.f || inkText(el).indexOf(r.f) === 0);
+    if (el && okTxt && anchVis(el)) return el;
+    if (r.f){          /* 路径失效：按文本找回，只认可见元素，取文本最短（最细）的那个 */
+      var cand = document.querySelectorAll(ANCH_SEL), best = null, bl = 1e9;
       for (var i = 0; i < cand.length; i++){
-        if (inkText(cand[i]).indexOf(r.f) === 0) return cand[i];
+        var c = cand[i];
+        if (!anchVis(c) || inkText(c).indexOf(r.f) !== 0) continue;
+        var L = (c.textContent || '').length;
+        if (L < bl){ bl = L; best = c; }
       }
+      if (best) return best;
     }
     return el || null;
   }
@@ -76,7 +90,8 @@ INK_MODULE = r"""
     for (var j = 0; j < raw.length; j++){
       var q = raw[j];
       var x = Math.max(0, Math.min(65535, Math.round(q[0])));
-      var y = Math.max(-32768, Math.min(32767, Math.round(q[1] - y0)));
+      /* 存「相对锚顶的纯内容偏移」：把落笔时的容器滚动折掉，换布局才不串位 */
+      var y = Math.max(-32768, Math.min(32767, Math.round(q[1] - y0 + (s.c0 || 0))));
       var w = Math.max(1, Math.min(15, Math.round(q[2] * 2)));
       if (j === 0){ out.push(x & 255, (x >> 8) & 255, y & 255, (y >> 8) & 255, w); px = x; py = y; }
       else {
@@ -113,7 +128,8 @@ INK_MODULE = r"""
       if (!el) continue;
       arr.push({ a: pathOf(el), f: inkText(el), d: Math.round(s.pts[0][1] - (s.anch ? s.anch.y0 : 0)),
                  e: s.era ? 1 : 0, c: Math.max(0, INK_COL.indexOf(s.color)),
-                 cp: s.c ? pathOf(s.c) : '', p: encPts(s) });
+                 cp: s.c ? pathOf(s.c) : '', k: s.c0 || 0,
+                 d0: Math.round(s.pts[0][1] - (s.anch ? s.anch.y0 : 0) + (s.c0 || 0)), p: encPts(s) });
     }
     if (!arr.length) return;
     var payload = JSON.stringify({ v: 1, day: INK_DAY, n: arr.length, s: arr });
@@ -138,8 +154,16 @@ INK_MODULE = r"""
       var pts = decPts(r.p, y0);
       if (!pts.length) continue;
       var c = r.cp ? byPath(r.cp) : null;
+      if (c && !c.contains(el)) c = null;      /* 路径漂移的旧数据：宁可不用容器 */
+      var ck = 0;
+      if (c) ck = c.scrollTop;
+      else {                                    /* 没容器时按当前祖先滚动折一次，避免整条偏一屏 */
+        var pa = el.parentElement;
+        while (pa && pa !== document.documentElement){ if (pa.scrollTop){ ck = pa.scrollTop; break; } pa = pa.parentElement; }
+      }
+      if (ck) for (var q = 0; q < pts.length; q++) pts[q][1] -= ck;
       var s = { pts: pts, color: INK_COL[r.c] || '#1b1e23', era: !!r.e,
-                c: c, c0: c ? c.scrollTop : 0,
+                c: c, c0: ck,
                 host: el.closest('.panel') || el.closest('.card'),
                 n: pts.length, mid: [0, 0], bb: null,
                 anch: { el: el, y0: y0 } };
@@ -173,6 +197,12 @@ NEW_TAIL = """      schedule(true);                    /* 收笔后统一重绘�
     }, {capture:true});
   });
 
+  /* 重做本套时由作答脚本调用：清内存 + 清存储，避免 pagehide 又把笔迹写回去 */
+  window.__inkReset = function(){
+    strokes = []; hasEra = false; cur = null; drawing = false;
+    try{ localStorage.removeItem(INK_KEY); }catch(e){}
+    try{ ctx.setTransform(DPR, 0, 0, DPR, 0, 0); ctx.clearRect(0, 0, VW, VH); }catch(e){}
+  };
   inkLoad();                             /* 页面打开即还原当天笔迹 */
   schedule(true);
   window.addEventListener('pagehide', inkFlush);
@@ -202,7 +232,7 @@ ANCH_SHIFT_NEW = """  function anchorShift(s){
 
 OLD_RST = "    if (!confirm('清空本套作答，重新做一遍？')) return;"
 NEW_RST = """    if (!confirm('清空本套作答，重新做一遍？')) return;
-    try{ localStorage.removeItem('cet4ink:v1:' + FILE); }catch(e){}"""
+    try{ if (window.__inkReset) window.__inkReset(); }catch(e){}"""
 
 
 def sub1(txt, old, new, name):
