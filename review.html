@@ -455,7 +455,7 @@
     return m ? decodeURIComponent(m[1]) : '';
   }
 
-  /* v7：回炉并入周三复听，队列不再从错题本自动导入；
+  /* v7：回炉并入每日副项，队列不再从错题本自动导入；
      只保留最近 2 段的句子作为证据，其余归档到 cet4_review_v1_archived（可恢复，不展示） */
   function trimToRecent(maxPages){
     maxPages = maxPages || 2;

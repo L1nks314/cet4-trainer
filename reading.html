@@ -99,7 +99,7 @@ details.fold .inner{padding:0 12px 10px;max-height:60vh;overflow:auto}
   </div>
 </div>
 
-<div class="list"><div class="lh">全部篇目（16 篇 / 80 题）</div><div id="list"></div></div>
+<div class="list"><div class="lh">仔细阅读（8 套 · 16 篇 / 80 题）</div><div id="list"></div></div>
 
 <div class="list"><div class="lh">长篇阅读 · 信息匹配（8 套 / 80 题）</div><div id="mlist"></div></div>
 
@@ -122,57 +122,37 @@ details.fold .inner{padding:0 12px 10px;max-height:60vh;overflow:auto}
 </div>
 
 <script>
-var START = new Date(2026,9,17);      // 集训起点（10/17 起，周二/周四各一篇）
 var LESSONS = [
-  {f:"read-2025-12-1.html",d:"2025年12月 第1套 · 第 1 篇",n:"46\u201350"},
-  {f:"read-2025-12-1.html",d:"2025年12月 第1套 · 第 2 篇",n:"51\u201355"},
-  {f:"read-2025-06-2.html",d:"2025年6月 第2套 · 第 1 篇",n:"46\u201350"},
-  {f:"read-2025-06-2.html",d:"2025年6月 第2套 · 第 2 篇",n:"51\u201355"},
-  {f:"read-2025-06-1.html",d:"2025年6月 第1套 · 第 1 篇",n:"46\u201350"},
-  {f:"read-2025-06-1.html",d:"2025年6月 第1套 · 第 2 篇",n:"51\u201355"},
-  {f:"read-2024-06-1.html",d:"2024年6月 第1套 · 第 1 篇",n:"46\u201350"},
-  {f:"read-2024-06-1.html",d:"2024年6月 第1套 · 第 2 篇",n:"51\u201355"},
-  {f:"read-2023-12-1.html",d:"2023年12月 第1套 · 第 1 篇",n:"46\u201350"},
-  {f:"read-2023-12-1.html",d:"2023年12月 第1套 · 第 2 篇",n:"51\u201355"},
-  {f:"read-2023-06-1.html",d:"2023年6月 第1套 · 第 1 篇",n:"46\u201350"},
-  {f:"read-2023-06-1.html",d:"2023年6月 第1套 · 第 2 篇",n:"51\u201355"},
-  {f:"read-2023-06-2.html",d:"2023年6月 第2套 · 第 1 篇",n:"46\u201350"},
-  {f:"read-2023-06-2.html",d:"2023年6月 第2套 · 第 2 篇",n:"51\u201355"},
-  {f:"read-2022-12-1.html",d:"2022年12月 第1套 · 第 1 篇",n:"46\u201350"},
-  {f:"read-2022-12-1.html",d:"2022年12月 第1套 · 第 2 篇",n:"51\u201355"}
+  {f:"read-2025-12-1.html",d:"2025年12月 第1套",n:"46\u201355"},
+  {f:"read-2025-06-2.html",d:"2025年6月 第2套",n:"46\u201355"},
+  {f:"read-2025-06-1.html",d:"2025年6月 第1套",n:"46\u201355"},
+  {f:"read-2024-06-1.html",d:"2024年6月 第1套",n:"46\u201355"},
+  {f:"read-2023-12-1.html",d:"2023年12月 第1套",n:"46\u201355"},
+  {f:"read-2023-06-1.html",d:"2023年6月 第1套",n:"46\u201355"},
+  {f:"read-2023-06-2.html",d:"2023年6月 第2套",n:"46\u201355"},
+  {f:"read-2022-12-1.html",d:"2022年12月 第1套",n:"46\u201355"}
 ];
-function d0(x){return new Date(x.getFullYear(),x.getMonth(),x.getDate());}
-function seqOf(date){
-  var n=0, d=new Date(START.getFullYear(),START.getMonth(),START.getDate());
-  while(d<=date){ var w=d.getDay(); if(w===2||w===4) n++; d.setDate(d.getDate()+1); }
-  return n;
+/* 这里不再自己算「今天第几篇」。一套 = 两篇 10 题，一周只做一套，
+   按周序推算会跟首页卡片打架（首页按已做过的套来挑）。今天做哪套以首页为准。 */
+function doneSet(f){
+  try{
+    var o=JSON.parse(localStorage.getItem('cet4_ans_'+f)||'null');
+    return !!(o && o.submitted);
+  }catch(e){ return false; }
 }
-var today=d0(new Date());
-var idx=seqOf(today)-1;
-var fin = idx>=LESSONS.length;
 var tb=document.getElementById('todayBox');
-var ds0=(today.getMonth()+1)+'月'+today.getDate()+'日';
-if(idx<0){
-  tb.innerHTML='<div class="k">'+ds0+'</div><div class="n">集训 10/17 开始</div>'
-   +'<div class="m">今天先歇着，明天从这里起步</div>';
-}else if(fin){
-  tb.innerHTML='<div class="k">全部 '+LESSONS.length+' 篇已排完</div>'
-   +'<div class="n">接下来回炉重做旧篇目</div>'
-   +'<div class="m">重做比做新题更值 —— 没记牢的替换对才是你的漏洞。</div>';
-}else{
-  var L=LESSONS[idx];
-  var ds=(today.getMonth()+1)+'月'+today.getDate()+'日';
-  tb.innerHTML='<div class="k">'+ds+' · 第 '+(idx+1)+' 篇 / 共 '+LESSONS.length+' 篇</div>'
-   +'<div class="n">'+L.d+'</div>'
-   +'<div class="m">第 '+L.n+' 题 · 12 分钟做题 + 8 分钟对照解析</div>'
-   +'<a class="go" href="'+encodeURI(L.f)+'">开始今天的阅读 →</a>';
-}
+var nd=0;
+LESSONS.forEach(function(l){ if(doneSet(l.f)) nd++; });
+tb.innerHTML='<div class="k">已做 '+nd+' / '+LESSONS.length+' 套</div>'
+ +'<div class="n">每套两篇 10 题（46\u201355）</div>'
+ +'<div class="m">15 分钟限时做，再 25 分钟划答案句、记替换对。今天做哪套看首页卡片。</div>'
+ +'<a class="go" href="index.html">回首页看今天做哪套 \u2192</a>';
 document.getElementById('list').innerHTML = LESSONS.map(function(l,i){
-  var cls='it'+(i===idx&&!fin?' now':'');
-  var tg=(i===idx&&!fin)?'<span class="tag">今天</span>':'';
-  return '<a class="'+cls+'" href="'+encodeURI(l.f)+'"><span class="no">'+(i+1)+'</span>'
-   +'<span class="tx">'+l.d+tg+'</span><span class="mt">'+l.n+' 题</span>'
-   +'<span class="ar">›</span></a>';
+  var dn=doneSet(l.f);
+  return '<a class="it" href="'+encodeURI(l.f)+'"><span class="no">'+(dn?'\u2713':(i+1))+'</span>'
+   +'<span class="tx">'+l.d+(dn?'<span class="tag">已交卷</span>':'')+'</span>'
+   +'<span class="mt">'+l.n+' 题</span>'
+   +'<span class="ar">\u203a</span></a>';
 }).join('');
 
 var MLEARNINGS = [{f:"matching-2025-12-1.html", d:"2025年12月 第1套", n:10},{f:"matching-2025-06-2.html", d:"2025年6月 第2套", n:10},{f:"matching-2025-06-1.html", d:"2025年6月 第1套", n:10},{f:"matching-2024-06-1.html", d:"2024年6月 第1套", n:10},{f:"matching-2023-12-1.html", d:"2023年12月 第1套", n:10},{f:"matching-2023-06-2.html", d:"2023年6月 第2套", n:10},{f:"matching-2023-06-1.html", d:"2023年6月 第1套", n:10},{f:"matching-2022-12-1.html", d:"2022年12月 第1套", n:10}];
