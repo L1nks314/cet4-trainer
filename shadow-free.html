@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>自由跟读（全篇）</title>
+<style>
+  :root{
+    --bg:#f4f5f7; --card:#fff; --soft:#fafbfc; --line:#e5e8ec; --line2:#eff1f4;
+    --txt:#1b1e23; --txt2:#3d434e; --sub:#6b7280; --sub2:#a8b0bb;
+    --blue:#2563eb; --blue-soft:#eef3ff; --green:#0d8a52; --green-soft:#e8f7ef;
+    --amber:#b45309; --amber-soft:#fef6e7;
+    --r:12px; --shadow:0 1px 2px rgba(16,24,40,.04),0 2px 6px rgba(16,24,40,.05);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%}
+  body{background:var(--bg);color:var(--txt);
+       font:400 15px/1.5 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+       display:flex;flex-direction:column;overflow:hidden}
+
+  /* ── 顶栏 ── */
+  header{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:10px 12px;
+         background:var(--card);border-bottom:1px solid var(--line)}
+  header .back{width:32px;height:32px;border-radius:9px;border:1px solid var(--line);
+       background:var(--soft);color:var(--txt2);font-size:16px;line-height:1;
+       display:flex;align-items:center;justify-content:center;text-decoration:none;flex:0 0 auto}
+  header .ttl{flex:1;min-width:0;font-weight:600;font-size:13.5px;color:var(--txt2);
+       white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  header .eye{flex:0 0 auto;height:32px;padding:0 11px;border-radius:9px;border:1px solid var(--line);
+       background:var(--soft);color:var(--sub);font:600 12.5px/1 inherit}
+  header .eye.on{color:var(--blue);border-color:#c7d7fb;background:var(--blue-soft)}
+
+  /* ── 主体 ── */
+  main{flex:1;min-height:0;display:flex;flex-direction:column;padding:12px 14px 0}
+
+  /* 分段控件 */
+  .seg{display:flex;gap:4px;padding:3px;background:#eceef1;border-radius:11px;margin-bottom:14px}
+  .seg button{flex:1;padding:8px 6px;border:0;border-radius:8px;background:transparent;
+       color:var(--sub);font:600 13px/1.2 inherit;transition:.15s}
+  .seg button.on{background:var(--card);color:var(--txt);box-shadow:0 1px 2px rgba(16,24,40,.08)}
+
+  .stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;
+         justify-content:center;text-align:center;gap:0;padding-bottom:6px}
+
+  .panel{width:100%;background:var(--card);border:1px solid var(--line);border-radius:16px;
+         box-shadow:var(--shadow);padding:42px 18px 36px;display:flex;flex-direction:column;
+         align-items:center;gap:10px}
+
+  .idx{font:600 58px/1 -apple-system,"PingFang SC",sans-serif;letter-spacing:-1.5px;
+       font-variant-numeric:tabular-nums;color:var(--txt)}
+  .idx small{font-size:15px;color:var(--sub2);font-weight:500;letter-spacing:0}
+
+  .pass{display:inline-flex;align-items:center;gap:7px;
+        padding:5px 12px;border-radius:999px;background:var(--blue-soft);
+        color:var(--blue);font:600 12px/1 inherit}
+  .pass dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.22}
+  .pass dot.on{opacity:1}
+
+  .en{margin-top:2px;width:100%;font:400 16.5px/1.62 Georgia,"Times New Roman",serif;
+      color:var(--txt2);text-align:left;display:none;padding:11px 13px;
+      border-radius:10px;background:var(--soft);border:1px solid var(--line2)}
+  .en.on{display:block}
+
+  /* 连读标记：标在「词与词之间」，不是标在词上 */
+  .en .w{white-space:nowrap}
+  .en .lk{font-style:normal;font-weight:700;padding:0 .5px;letter-spacing:-.5px}
+  .en .lk.link{color:#2563eb}
+  .en .lk.stop{color:#c2410c}
+  .en .lk.assim{color:#7c3aed}
+  .en .lk.hdrop{color:#0d8a52}
+  .lkbar{margin-top:9px;width:100%;padding:8px 11px;border-radius:10px;
+         background:#f2f6ff;border:1px solid #dde7fb;color:#3d434e;
+         font:400 12.5px/1.75 -apple-system,"PingFang SC",sans-serif;text-align:left;
+         display:none;max-height:96px;overflow:auto}
+  .lkbar.on{display:block}
+  .lkbar b{color:#2563eb;font-weight:700;margin-right:6px}
+  .lkbar i{font-style:normal;font-weight:700;color:#2563eb}
+  .lkbar em{font-style:normal;color:#8a93a3;margin:0 2px 0 4px}
+  .lkbar .none{color:#a8b0bb}
+  .lkbar .pp{display:inline-block;margin:0 9px 2px 0}
+  .lkbar .ck{float:right;color:#0d8a52;background:#e8f7ef;border:1px solid #cfeddd;
+             border-radius:6px;padding:0 5px;font:600 11px/1.6 inherit}
+
+  .ph{color:var(--sub2);font-size:12.5px;line-height:1.6;padding:0 6px}
+
+  /* 句子刻度条：一格一句，点哪跳哪 */
+  .nav{width:100%;display:flex;gap:1.5px;margin:22px 0 14px;height:20px;align-items:flex-end}
+  .nav i{flex:1;height:9px;background:#e7eaee;border-radius:2px;cursor:pointer;
+         transition:background .12s,height .12s}
+  .nav i.past{background:#c9d9f7}
+  .nav i.on{background:var(--blue);height:20px}
+
+  .track{width:100%;height:4px;border-radius:4px;background:#e8ebef;
+         overflow:hidden;margin:2px 0 10px;position:relative}
+  .track i{display:block;height:100%;width:0;background:var(--blue);
+           border-radius:4px;transition:width .1s linear}
+
+  .tips{padding:10px 6px 8px;color:var(--sub2);font-size:12px;line-height:1.6;text-align:center}
+
+  /* ── 底栏 ── */
+  footer{flex:0 0 auto;background:var(--card);border-top:1px solid var(--line);
+         padding:10px 14px calc(12px + env(safe-area-inset-bottom))}
+  .pad{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:8px;align-items:center}
+  .pad button{border:1px solid var(--line);background:var(--soft);color:var(--txt2);
+       border-radius:var(--r);font:600 15px/1 inherit;padding:14px 0;transition:.12s}
+  .pad button:active{background:#eceef1}
+  .pad #main{background:var(--blue);border-color:var(--blue);color:#fff;font-size:20px;padding:15px 0}
+  .pad #main:active{background:#1d4ed8}
+  .sub2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+  .sub2 button{border:1px solid var(--line);background:transparent;color:var(--sub);
+       border-radius:10px;font:500 12.5px/1 inherit;padding:11px 0}
+
+  /* ── 自评弹层 ── */
+  .rate{position:fixed;inset:0;z-index:50;display:none;align-items:flex-end;
+        justify-content:center;background:rgba(16,24,40,.42);padding:0}
+  .rate.on{display:flex}
+  .rate .box{width:100%;max-width:440px;background:var(--card);border-radius:18px 18px 0 0;
+        padding:20px 18px calc(20px + env(safe-area-inset-bottom))}
+  .rate .t{font:700 16px/1.4 inherit;text-align:center}
+  .rate .s{font-size:12.5px;color:var(--sub);text-align:center;margin:6px 0 16px;line-height:1.6}
+  .rate button{display:block;width:100%;margin:0 0 8px;padding:14px;border-radius:var(--r);
+       border:1px solid var(--line);background:var(--soft);color:var(--txt);
+       font:600 14.5px/1.2 inherit}
+  .rate button[data-r="good"]{border-color:#bfe3cf;background:var(--green-soft);color:var(--green)}
+  .rate button[data-r="words"]{border-color:#f0dfb8;background:var(--amber-soft);color:var(--amber)}
+  .rate button[data-r="lost"]{border-color:#f3c9c4;background:#fdecea;color:#c0392b}
+  .rate .skip{margin-top:4px;border:0;background:transparent;color:var(--sub2);font-size:12.5px;padding:10px}
+
+  .toast{position:fixed;left:50%;top:14%;transform:translateX(-50%);z-index:60;display:none;
+       background:rgba(27,30,35,.92);color:#fff;padding:9px 16px;border-radius:999px;font-size:13px}
+  .toast.on{display:block}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="back" href="javascript:history.back()" title="返回">←</a>
+  <div class="ttl" id="ttl">跟读训练</div>
+  <button class="eye" id="eye" title="显示/隐藏原文">原文</button>
+</header>
+
+<main>
+  <div class="seg">
+    <button class="on" data-m="line">逐句跟读</button>
+    <button data-m="shadow">影子跟读</button>
+  </div>
+
+  <div class="stage">
+    <div class="panel">
+      <div class="idx" id="idx">1 <small>/ 1 句</small></div>
+      <div class="pass" id="pass"><dot class="on"></dot><dot></dot><dot></dot><span id="passTx">第 1 遍</span></div>
+      <div class="en" id="en"></div>
+      <div class="lkbar" id="lkbar"></div>
+    </div>
+    <div class="nav" id="nav"></div>
+    <div class="ph" id="ph">可点右上「原文」对照</div>
+  </div>
+
+  <div class="tips" id="tips">每句播 3 遍 · 你跟着说出来</div>
+</main>
+
+<footer>
+  <div class="pad">
+    <button id="prev" title="上一句">⏮</button>
+    <button id="main" title="播放/暂停">▶</button>
+    <button id="next" title="下一句">⏭</button>
+  </div>
+  <div class="sub2">
+    <button id="again">↻ 重播本句</button>
+    <button id="finish">结束并自评</button>
+  </div>
+</footer>
+
+<div class="rate" id="rate">
+  <div class="box">
+    <div class="t">这段跟下来感觉如何？</div>
+    <div class="s">凭第一感觉点一个，用来判断是「跟不上的连读」还是「理解来不及」</div>
+    <button data-r="good">能跟着说下来</button>
+    <button data-r="words">只能蹦几个词</button>
+    <button data-r="lost">嘴完全跟不上</button>
+    <button class="skip" id="skipRate">跳过，直接返回</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<audio id="audio" preload="auto"></audio>
+
+<script>
+(function(){
+  var TOPIC = 'cet4-718beb5773e8edd9ef48eb651cb1439dd362eb4a8d28f449';
+  var qs = new URLSearchParams(location.search);
+  var FILE = qs.get('p') || '';
+  var audio = document.getElementById('audio');
+  var elIdx = document.getElementById('idx'), elEn = document.getElementById('en');
+  var elLk = document.getElementById('lkbar');
+  var elProg = document.getElementById('prog'), elTips = document.getElementById('tips');
+  var elPass = document.getElementById('pass'), elPassTx = document.getElementById('passTx');
+  var elNav = document.getElementById('nav');
+  var toast = document.getElementById('toast');
+
+  var DATA = null, L = [], B = null, TITLE = '跟读训练';
+  var on = false, mode = 'line', cur = 0, rep = 0;
+  var tick = 0, gapT = 0, afterT = 0;
+  var REPEAT = 3, GAP = 1300, AFTER = 1800;
+  var visited = 0;
+
+  function say(t){
+    toast.textContent = t; toast.classList.add('on');
+    clearTimeout(say._t); say._t = setTimeout(function(){ toast.classList.remove('on'); }, 2000);
+  }
+
+  /* ── 从听力页抓 DATA ── */
+  function pickData(html){
+    var i = html.indexOf('var DATA');
+    if (i < 0) return null;
+    var j = html.indexOf('{', i);
+    if (j < 0) return null;
+    var depth = 0, inStr = false, esc = false, k;
+    for (k = j; k < html.length; k++){
+      var ch = html[k];
+      if (inStr){
+        if (esc) esc = false;
+        else if (ch === '\\') esc = true;
+        else if (ch === '"') inStr = false;
+        continue;
+      }
+      if (ch === '"'){ inStr = true; continue; }
+      if (ch === '{') depth++;
+      else if (ch === '}'){ depth--; if (depth === 0) break; }
+    }
+    if (depth !== 0) return null;
+    try{ return JSON.parse(html.slice(j, k + 1)); }catch(e){ return null; }
+  }
+
+  /* 去掉 "News Report 1." "Directions" 这类题头，跟读它们没意义 */
+  function filterLines(arr){
+    var re=/^(news report|passage|conversation|section)\s*[a-c0-9]*\.?$/i;
+    var out = arr.filter(function(l){
+      var en = (l.en || '').trim();
+      if (!en) return false;
+      if (/[\u4e00-\u9fa5]/.test(en)) return false;        /* 中文试音说明 */
+      if (re.test(en.replace(/[.。]$/, ''))) return false;
+      if (/^directions/i.test(en)) return false;
+      if (en.split(/\s+/).length <= 2 && en.length < 16) return false;
+      return true;
+    });
+    return out.length ? out : arr;
+  }
+
+  function bounds(){
+    if (B) return B;
+    var out = [], i;
+    for (i = 0; i < L.length; i++){
+      var t0 = (L[i].tokens && L[i].tokens[0]) ? L[i].tokens[0].s : 0;
+      var nx = (i + 1 < L.length && L[i+1].tokens && L[i+1].tokens[0]) ? L[i+1].tokens[0].s : (DATA.dur || 1e9);
+      out.push([Math.max(0, t0 - 0.08), nx]);
+    }
+    B = out; return B;
+  }
+
+  /* ── 连读标记：标在「词与词之间」──────────────
+     连读是边界现象，不是词的属性：一个词可能既接前一个、又接后一个。
+     原来是标在词上（原文页那 331 处黄底），一个词只能一个标，所以一半是错的。 */
+  var LK_NAME = { link:'连读', stop:'失爆', assim:'同化', hdrop:'h 脱落' };
+  var LK_SYM  = { link:'‿', stop:'⌐', assim:'~', hdrop:'ʰ' };
+  var MANUAL = null;      /* 人工标注，优先生效 */
+
+  function esc(s){
+    return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c];
+    });
+  }
+  /* 提示行里去掉句尾标点，读起来干净：invented. → invented */
+  function tidy(w){ return String(w == null ? '' : w).replace(/[.,!?;:]+$/, ''); }
+
+  function lkNorm(w){
+    return String(w || '').toLowerCase().replace(/^[^a-z]+/, '').replace(/[^a-z']+$/, '');
+  }
+  function lkType(a, b){
+    var A = lkNorm(a), B = lkNorm(b);
+    if (!A || !B) return '';
+    /* 同化：t/d/s/z + you → tʃ / dʒ / ʃ / ʒ（don't you, did you, miss you） */
+    if (/[tdsz]$/.test(A) && /^you/.test(B)) return 'assim';
+    /* h 脱落：tell him / give her，h 不发音 */
+    if (/^(him|her|his|he)$/.test(B) && /[bcdfgklmnprstvxz]$/.test(A)) return 'hdrop';
+    /* 连读：辅音结尾 + 元音开头（Talking‿is） */
+    if (/[bcdfgklmnprstvxz]$/.test(A) && /^[aeiou]/.test(B)) return 'link';
+    /* 失爆：爆破音结尾 + 辅音开头，只做口型不爆破（sounds⌐but） */
+    if (/[pbtdkg]$/.test(A) && !/^[aeiou]/.test(B)) return 'stop';
+    return '';
+  }
+  /* 人工标了就用人工的；没标过这句才用规则算 */
+  function marksFor(idx, toks){
+    var key = String(idx);
+    if (MANUAL && Object.prototype.hasOwnProperty.call(MANUAL, key)) return MANUAL[key] || [];
+    var out = [], i;
+    for (i = 0; i < toks.length - 1; i++){
+      var t = lkType(toks[i].w, toks[i + 1].w);
+      if (t) out.push([i, i + 1, t]);
+    }
+    return out;
+  }
+  function renderEn(idx){
+    var l = L[idx] || {}, toks = l.tokens || [], i;
+    if (!toks.length){ elEn.textContent = l.en || ''; elLk.classList.remove('on'); return; }
+    var mk = marksFor(idx, toks), byStart = {};
+    for (i = 0; i < mk.length; i++) byStart[mk[i][0]] = mk[i][2];
+    var html = '';
+    for (i = 0; i < toks.length; i++){
+      html += '<span class="w">' + esc(toks[i].w) + '</span>';
+      if (i < toks.length - 1){
+        var t = byStart[i];
+        html += t ? '<i class="lk ' + t + '">' + LK_SYM[t] + '</i>' : ' ';
+      }
+    }
+    elEn.innerHTML = html;
+
+    /* 下面这行不跟着「原文」开关走，跟读时也看得见 */
+    if (!mk.length){
+      elLk.innerHTML = '<span class="none">本句没有明显连读，正常语速整句跟下来就行</span>';
+    } else {
+      var parts = [];
+      for (i = 0; i < mk.length; i++){
+        var m = mk[i];
+        parts.push('<span class="pp"><i>' + esc(tidy(toks[m[0]].w)) + LK_SYM[m[2]] + esc(tidy(toks[m[1]].w)) + '</i>'
+                 + '<em>' + LK_NAME[m[2]] + '</em></span>');
+      }
+      elLk.innerHTML = '<b>本句 ' + mk.length + ' 处</b>' + parts.join('')
+                     + (MANUAL ? '<span class="ck">逐句校对</span>' : '');
+    }
+    elLk.classList.add('on');
+  }
+
+  function loadManual(){
+    if (!FILE) return;
+    var f = 'links_' + FILE.replace(/\.html$/i, '') + '.json';
+    fetch(f, { cache: 'no-store' })
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(j){
+        if (j && j.lines){ MANUAL = j.lines; if (L && L.length) paint(); }
+      })
+      .catch(function(){ /* 没有人工标注就全程用规则 */ });
+  }
+
+  function paint(){
+    var n = bounds().length;
+    elIdx.innerHTML = (cur + 1) + ' <small>/ ' + n + ' 句</small>';
+    renderEn(cur);
+    /* 第几遍 */
+    if (mode === 'line'){
+      elPass.style.display = '';
+      var dots = elPass.querySelectorAll('dot');
+      for (var d = 0; d < dots.length; d++) dots[d].classList.toggle('on', d <= Math.min(rep, REPEAT - 1));
+      elPassTx.textContent = '第 ' + Math.min(rep + 1, REPEAT) + ' 遍 / 共 ' + REPEAT + ' 遍';
+    } else {
+      elPass.style.display = 'none';
+    }
+    if (elNav){
+      var ks = elNav.children;
+      for (var q = 0; q < ks.length; q++){
+        ks[q].classList.toggle('on', q === cur);
+        ks[q].classList.toggle('past', q < cur);
+      }
+    }
+  }
+
+  function buildNav(){
+    if (!elNav) return;
+    var h = '';
+    for (var i = 0; i < bounds().length; i++) h += '<i data-i="' + i + '"></i>';
+    elNav.innerHTML = h;
+    elNav.querySelectorAll('i').forEach(function(el){
+      el.addEventListener('click', function(){
+        go(parseInt(el.getAttribute('data-i'), 10), on);
+        if (audio.paused) pause();
+      });
+    });
+  }
+
+  function clearT(){
+    if (tick){ clearInterval(tick); tick = 0; }
+    if (gapT){ clearTimeout(gapT); gapT = 0; }
+    if (afterT){ clearTimeout(afterT); afterT = 0; }
+  }
+  function play(){ var p = audio.play(); if (p && p.catch) p.catch(function(){}); }
+  function pause(){ try{ audio.pause(); }catch(e){} }
+  function setMain(playing){ document.getElementById('main').textContent = playing ? '⏸' : '▶'; }
+
+  /* 等 metadata 就绪再 seek —— 这是原来「快进没用」的根因。
+     音频还没开始加载时，主动 load() 催一下，否则 currentTime 赋值会被静默丢弃。 */
+  function seekTo(t, cb){
+    t = Math.max(0, t);
+    var run = function(){
+      try{ audio.currentTime = t; }catch(e){}
+      if (cb) cb();
+    };
+    if (audio.readyState >= 1){ run(); return; }
+    var fired = false;
+    var once = function(){
+      if (fired) return; fired = true;
+      audio.removeEventListener('loadedmetadata', once);
+      run();
+    };
+    audio.addEventListener('loadedmetadata', once);
+    setTimeout(function(){
+      if (!fired && audio.readyState >= 1) once();
+    }, 1200);
+  }
+
+  function startTick(){
+    if (tick){ clearInterval(tick); tick = 0; }
+    tick = setInterval(function(){
+      if (!on || mode !== 'line') return;
+      var b = bounds();
+      if (cur < 0 || cur >= b.length) return;
+      if (audio.currentTime >= b[cur][1] - 0.05){
+        pause(); rep++;
+        clearInterval(tick); tick = 0;
+        paint();
+        if (rep < REPEAT){
+          gapT = setTimeout(function(){ if (on && mode === 'line') playOnce(); }, GAP);
+        } else {
+          afterT = setTimeout(function(){
+            if (!on || mode !== 'line') return;
+            if (cur + 1 < bounds().length) go(cur + 1); else finish();
+          }, AFTER);
+        }
+      }
+    }, 70);
+  }
+  function playOnce(){
+    seekTo(bounds()[cur][0], function(){ play(); setMain(true); startTick(); });
+  }
+
+  /* 统一跳句：播放中→续播；暂停/未开始→只定位不播 */
+  function go(i, forcePlay){
+    var b = bounds();
+    i = Math.max(0, Math.min(b.length - 1, i));
+    cur = i; rep = 0; visited++;
+    clearT(); paint();
+    var shouldPlay = (forcePlay === undefined) ? on : !!forcePlay;
+    if (shouldPlay && mode === 'line'){
+      on = true; playOnce();
+    } else {
+      seekTo(b[cur][0], function(){
+        if (shouldPlay && mode === 'shadow'){ on = true; playShadow(); }
+        else { pause(); setMain(false); }
+      });
+    }
+  }
+
+  function playShadow(){
+    clearT();
+    var start = (cur >= 0 && cur < bounds().length) ? bounds()[cur][0] : 0;
+    seekTo(start, function(){
+      play(); setMain(true);
+      tick = setInterval(function(){
+        if (!on || mode !== 'shadow') return;
+        var b = bounds(), t = audio.currentTime, i;
+        for (i = 0; i < b.length; i++){
+          if (t >= b[i][0] && t < b[i][1]){ if (i !== cur){ cur = i; visited++; paint(); } break; }
+        }
+        if (audio.ended || t >= (DATA.dur || 1e9) - 0.15) finish();
+      }, 250);
+    });
+  }
+
+  function setMode(m){
+    mode = m;
+    document.querySelectorAll('.seg button').forEach(function(b){
+      b.classList.toggle('on', b.getAttribute('data-m') === m);
+    });
+    if (m === 'line'){
+      elTips.textContent = '每句播 3 遍 · 你跟着说出来';
+    } else {
+      elTips.textContent = '音频不停 · 落后半句跟着走 · 跟不上也别暂停';
+    }
+    paint();
+    if (on){ clearT(); pause(); if (m === 'line') go(cur, true); else playShadow(); }
+  }
+
+  function stop(){ on = false; clearT(); pause(); setMain(false); }
+
+  function finish(){
+    if (visited === 0){ location.href = backUrl(); return; }
+    stop();
+    document.getElementById('rate').classList.add('on');
+  }
+
+  function backUrl(){ return FILE ? FILE : 'index.html'; }
+
+  function report(rate){
+    try{
+      var d = new Date(), p2 = function(n){ return String(n).padStart(2,'0'); };
+      fetch('https://ntfy.sh/' + TOPIC, { method:'POST', body: JSON.stringify({
+        t:'shadow', date: d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()),
+        page: FILE, title: TITLE, mode: mode, lines: bounds().length,
+        at: cur + 1, rate: rate
+      })}).catch(function(){});
+    }catch(e){}
+    say('✓ 已记录');
+    setTimeout(function(){ location.href = backUrl(); }, 800);
+  }
+
+  /* ── 事件 ── */
+  document.getElementById('main').addEventListener('click', function(){
+    if (audio.readyState < 2){
+      elTips.textContent = '音频加载中，稍等两秒…';
+      audio.addEventListener('canplay', function h(){
+        audio.removeEventListener('canplay', h);
+        elTips.textContent = mode === 'line' ? '每句播 3 遍 · 你跟着说出来'
+                                             : '音频不停 · 落后半句跟着走 · 跟不上也别暂停';
+      });
+    }
+    if (!on){
+      on = true;
+      if (mode === 'line') go(cur, true); else playShadow();
+      setMain(true);
+      return;
+    }
+    if (audio.paused){ play(); setMain(true); if (mode === 'line') startTick(); }
+    else { pause(); setMain(false); clearT(); }
+  });
+
+  /* 关键修复：不再要求「已开始播放」，影子模式也可用 */
+  document.getElementById('prev').addEventListener('click', function(){
+    go(mode === 'shadow' ? cur - 1 : cur - 1, on ? true : false);
+    if (audio.paused) say('第 ' + (cur + 1) + ' 句');
+  });
+  document.getElementById('next').addEventListener('click', function(){
+    go(cur + 1, on ? true : false);
+    if (audio.paused) say('第 ' + (cur + 1) + ' 句');
+  });
+  document.getElementById('again').addEventListener('click', function(){
+    on = true; rep = 0; paint();
+    if (mode === 'line') go(cur, true); else playShadow();
+  });
+  document.getElementById('finish').addEventListener('click', finish);
+  document.getElementById('skipRate').addEventListener('click', function(){ location.href = backUrl(); });
+
+  document.querySelectorAll('.seg button').forEach(function(b){
+    b.addEventListener('click', function(){ setMode(b.getAttribute('data-m')); });
+  });
+  document.querySelectorAll('#rate [data-r]').forEach(function(b){
+    b.addEventListener('click', function(){ report(b.getAttribute('data-r')); });
+  });
+  document.getElementById('eye').addEventListener('click', function(){
+    var v = elEn.classList.toggle('on');
+    this.classList.toggle('on', v);
+    this.textContent = v ? '收起' : '原文';
+    var ph = document.getElementById('ph');
+    if (ph) ph.style.display = v ? 'none' : '';
+  });
+  audio.addEventListener('timeupdate', function(){
+    if (!elProg) return;
+    var d = (DATA && DATA.dur) ? DATA.dur : (audio.duration || 1);
+    elProg.style.width = Math.min(100, (audio.currentTime / d) * 100) + '%';
+  });
+  audio.addEventListener('ended', function(){ setMain(false); if (mode === 'shadow') finish(); });
+
+  /* ── 启动 ── */
+  if (!FILE){ elTips.textContent = '缺少参数，请从听力页进入'; return; }
+  fetch(FILE, { cache: 'no-store' })
+    .then(function(r){ return r.text(); })
+    .then(function(html){
+      DATA = pickData(html);
+      if (!DATA || !DATA.lines || !DATA.lines.length){
+        elTips.textContent = '读取音频数据失败，请返回重试'; return;
+      }
+      L = filterLines(DATA.lines);
+      var src = (DATA.rates && DATA.rates[0] && DATA.rates[0].src) || '';
+      if (!src){ elTips.textContent = '该页没有音频'; return; }
+      audio.src = src;
+      var m = html.match(/<title>([^<]*)<\/title>/);
+      if (m){ TITLE = m[1].replace(/\s*·\s*四级.*$/, ''); document.getElementById('ttl').textContent = TITLE; }
+      cur = 0; rep = 0; buildNav(); paint(); loadManual();
+    })
+    .catch(function(){ elTips.textContent = '加载失败，检查网络后重试'; });
+})();
+</script>
+<script>
+/* 键盘：空格播放/暂停 · J 下一句 · K 上一句 · R 重播本句
+   直接触发已有按钮，不碰内部状态 */
+(function(){
+  if (window.__shKb) return; window.__shKb = 1;
+  function ready(){ var n = document.getElementById('nav'); return !!(n && n.children.length); }
+  function tap(id){
+    if (!ready()) return;                      /* 没指定训练页时别动，避免越界 */
+    var b = document.getElementById(id);
+    if (b && b.offsetParent !== null) b.click();
+  }
+  document.addEventListener('keydown', function(e){
+    var t = e.target;
+    if (t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+    if (k === ' ' || k === 'Spacebar'){ e.preventDefault(); tap('main'); return; }
+    if (k === 'j' || k === 'J' || k === 'ArrowDown'){ e.preventDefault(); tap('next'); return; }
+    if (k === 'k' || k === 'K' || k === 'ArrowUp'){ e.preventDefault(); tap('prev'); return; }
+    if (k === 'r' || k === 'R'){ e.preventDefault(); tap('again'); return; }
+  });
+})();
+</script>
+<script src="goal.js"></script>
+</body>
+</html>

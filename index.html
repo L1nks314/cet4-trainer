@@ -179,6 +179,16 @@ a.it.now .tx{font-weight:700;color:var(--green)}
  margin-top:2px;flex:0 0 auto}
 .step.static{cursor:default}
 .step .ck.dim{background:transparent;border-style:dashed;border-color:#d3d8df}
+/* 单线推进：当前步亮，后面的锁住 */
+.step.cur{background:var(--blue-soft);border-radius:11px;padding-left:9px;padding-right:9px;
+ margin:2px -9px;border-top-color:transparent}
+.step.cur .ck{border-color:var(--blue);border-width:2.4px}
+.step.lock{opacity:.42;cursor:not-allowed}
+.step.lock .st{color:var(--sub)}
+.step .now{display:inline-block;font-style:normal;font-size:10.5px;font-weight:700;
+ color:#fff;background:var(--blue);border-radius:5px;padding:1px 5px;margin-left:4px;vertical-align:1.5px}
+.stepacts .skip{display:block;width:100%;margin-top:7px;border:0;background:transparent;
+ color:var(--sub2);font:500 11.5px/1.6 inherit;padding:5px}
 /* 阶段目标卡 */
 .goalcard{margin:0 0 14px;padding:12px 14px;border-radius:13px;background:var(--soft,#fafbfc);
  border:1px solid var(--line,#e5e8ec)}
@@ -206,6 +216,10 @@ a.it.now .tx{font-weight:700;color:var(--green)}
 
 /* 训练列表 */
 #list a.it .st-done{color:var(--green);font-size:12px;font-weight:700}
+#flash{position:fixed;left:50%;top:12%;transform:translateX(-50%);z-index:90;display:none;
+ background:rgba(27,30,35,.92);color:#fff;padding:9px 16px;border-radius:999px;font-size:13px;
+ max-width:78vw;text-align:center;line-height:1.5}
+#flash.on{display:block}
 </style>
 </head>
 <body>
@@ -503,6 +517,18 @@ function toggleStep(k){
      完成只有两个来源：判分提交（训练页确认）或自己点下面那个框 */
   renderTasks();
   refreshStats();
+}
+
+/* 轻提示：步骤被锁住、跨页回传完成时用 */
+function flash(t){
+  var el = document.getElementById('flash');
+  if (!el){
+    el = document.createElement('div'); el.id = 'flash';
+    document.body.appendChild(el);
+  }
+  el.textContent = t; el.classList.add('on');
+  clearTimeout(flash._t);
+  flash._t = setTimeout(function(){ el.classList.remove('on'); }, 2000);
 }
 
 /* 把「✗ 听不清」的句子同步进回炉队列（幂等，和 review.html 共用一份数据） */
@@ -820,24 +846,41 @@ function renderTasks(){
         {t:'音义闪卡', d:'听发音，3 秒内说中文。想不起来点「没反应」，翻面看原句——练的是提取速度，不是背单词。', m:(SHORT ? LE.sc : LE.c)});
     }
     steps = _mk(_base);
-    var rows = steps.map(function(s){
-      var on = !!ST[s.k];
-      return '<div class="step'+(on?' on':'')+'" data-s="'+s.k+'">'
-        + '<div class="ck"></div>'
-        + '<div class="sx"><div class="st">'+s.n+' '+s.t+'</div><div class="sd">'+s.d+'</div></div>'
-        + '<div class="sm">'+s.m+'</div></div>';
+    /* ── 单线推进：只有第一个没完成的步骤能点，后面的锁住 ── */
+    var curI = -1, si, _maxOn = -1;
+    for (si = 0; si < steps.length; si++){ if (ST[steps[si].k]) _maxOn = si; }
+    /* 后面做了，前面必然做过（比如直接交卷没点「看选项」）——按最靠后的那步算，别让进度倒退 */
+    for (si = 0; si < steps.length; si++){ if (!ST[steps[si].k] && si > _maxOn){ curI = si; break; } }
+    var _hrefOf = function(s){
+      if (/音义闪卡/.test(s.t)) return 'soundcard.html?p=' + encodeURIComponent(lbtn) + '&n=' + (SHORT ? 12 : 20) + '&k=' + s.k;
+      if (/跟读/.test(s.t)) return 'shadow.html?p=' + encodeURIComponent(lbtn) + '&k=' + s.k;
+      return lbtn;
+    };
+    var rows = steps.map(function(s, i){
+      var on = !!ST[s.k] || (i < _maxOn);
+      var lock = (curI >= 0 && i > curI);
+      var cls = 'step' + (on ? ' on' : '') + (i === curI ? ' cur' : '') + (lock ? ' lock' : '');
+      return '<div class="' + cls + '" data-s="' + s.k + '" data-href="' + _hrefOf(s) + '">'
+        + '<div class="ck' + (lock ? ' dim' : '') + '"></div>'
+        + '<div class="sx"><div class="st">' + s.n + ' ' + s.t
+        +   (i === curI ? '<em class="now">现在做这步</em>' : '') + '</div>'
+        + '<div class="sd">' + s.d + '</div></div>'
+        + '<div class="sm">' + s.m + '</div></div>';
     }).join('');
+    var curS = (curI >= 0) ? steps[curI] : null;
+    var nowTxt = curS ? ('现在：第 ' + (curI + 1) + ' 步 · ' + curS.t + '　·　' + curS.m)
+                      : '今天这 ' + steps.length + ' 步都做完了';
 
     tHtml += '<div class="steps">'
       + '<div class="shd">'
-      +   '<div><b>'+head+'</b><div class="sdt">'+sub+(SHORT?'　·　35 分钟短版':'')+'</div></div>'
+      +   '<div><b>'+head+'</b><div class="sdt">'+nowTxt+(SHORT?'　·　35 分钟短版':'')+'</div></div>'
       +   '<div class="smin">'+(SHORT ? LE.stot : LE.tot)+'</div>'
       + '</div>'
       + rows
       + '<div class="stepacts">'
-      +   '<a class="btn" href="'+encodeURI(lbtn)+'">'+(_subbed ? '继续这段（已交卷）' : '打开训练页')+'</a>'
-      +   (SEC === 'C' ? '<a class="btn ghost" href="'+encodeURI('soundcard.html?p='+lbtn+'&n='+(SHORT?12:20))+'">音义闪卡</a>' : '')
-      +   (SHORT ? '' : '<a class="btn ghost" href="shadow.html?p='+encodeURIComponent(lbtn)+'">去跟读</a>')
+      +   '<a class="btn" href="'+encodeURI(curS ? _hrefOf(curS) : lbtn)+'">'
+      +     (curS ? ('去做第 ' + (curI + 1) + ' 步 →') : '今天这段做完了')+'</a>'
+      +   (curS ? '<button class="skip" data-skip="'+curS.k+'">卡住了？跳过这一步（自己确认）</button>' : '')
       + '</div>'
       + '</div>';
     tHtml += blankHtml();
@@ -1050,8 +1093,22 @@ function renderTasks(){
   document.querySelectorAll('.bchip').forEach(function(b){
     b.addEventListener('click', function(){ setBlank(b.getAttribute('data-b')); });
   });
+  /* 步骤：已完成的点一下可撤销；当前步点一下直接去做；锁住的点不动 */
   document.querySelectorAll('.step[data-s]').forEach(function(el){
-    el.addEventListener('click', function(){ toggleStep(el.getAttribute('data-s')); });
+    el.addEventListener('click', function(){
+      var k = el.getAttribute('data-s');
+      if (el.classList.contains('lock')){ flash('先做完前面那步，别跳'); return; }
+      if (el.classList.contains('on')){ toggleStep(k); return; }
+      var h = el.getAttribute('data-href');
+      if (h) location.href = encodeURI(h); else toggleStep(k);
+    });
+  });
+  document.querySelectorAll('[data-skip]').forEach(function(b){
+    b.addEventListener('click', function(e){
+      e.stopPropagation();
+      if (!confirm('跳过这一步？跳过后今天这段就算走过场了，自己确认。')) return;
+      toggleStep(b.getAttribute('data-skip'));
+    });
   });
   bindBoxes();
 }

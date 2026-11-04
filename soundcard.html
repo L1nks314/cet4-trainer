@@ -145,6 +145,7 @@ footer{font-size:11.5px;color:var(--sub);text-align:center;padding:0 18px 22px;m
   var want = parseInt(q.get('n') || '20', 10);
   if (!(want >= 5 && want <= 30)) want = 20;
   var page = q.get('p') || '';
+  var SKEY = q.get('k') || '';
   if (!page){
     try{ var cs = JSON.parse(localStorage.getItem('cet4_curseg') || 'null'); if (cs && cs.f) page = cs.f; }catch(e){}
   }
@@ -317,6 +318,17 @@ footer{font-size:11.5px;color:var(--sub);text-align:center;padding:0 18px 22px;m
       allr[page] = { at: Date.now(), day: ymd, total: n, ok: ok,
                      wrong: wrong.map(function(x){ return x.w; }) };
       localStorage.setItem(K, JSON.stringify(allr));
+    }catch(e){}
+
+    /* 回传给首页：这一步做完了 */
+    try{
+      if (SKEY){
+        var sd = new Date();
+        var sy = sd.getFullYear() + '-' + String(sd.getMonth() + 1).padStart(2, '0') + '-' + String(sd.getDate()).padStart(2, '0');
+        var so = JSON.parse(localStorage.getItem('cet4_steps_' + sy) || '{}') || {};
+        so[SKEY] = 1;
+        localStorage.setItem('cet4_steps_' + sy, JSON.stringify(so));
+      }
     }catch(e){}
   }
 
