@@ -952,7 +952,7 @@ var QUIZ = [{"id": "q16", "stem": "16. What do we learn about Steve Miller?", "z
       var ymd = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
       var t = '';
       try{ t = localStorage.getItem('cet4_tier_' + ymd) || ''; }catch(e){}
-      return (t === 'std' || t === 'min') ? 5 : 10;
+      return (t === 'std' || t === 'min') ? 2 : 3;   /* 3 句采样：只验证提取速度，不默写全文 */
     }
     var N_PICK = Math.min(pickCount(), LINES.length);
     var picks = [];

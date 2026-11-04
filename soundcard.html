@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>音义闪卡 · 四级听力</title>
+<style>
+:root{
+  --bg:#f6f4ee; --card:#fffdf8; --txt:#1b1e23; --sub:#6b7280; --line:#e4dfd3;
+  --blue:#2563eb; --green:#12805c; --red:#b4351f; --soft:#f1ece0;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--txt);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  display:flex;flex-direction:column;align-items:center}
+header{width:100%;max-width:720px;padding:14px 18px 6px;display:flex;align-items:center;gap:10px}
+header h1{font-size:15px;margin:0;font-weight:700;letter-spacing:.3px}
+header .src{font-size:12px;color:var(--sub);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+header a{font-size:12.5px;color:var(--sub);text-decoration:none;border:1px solid var(--line);padding:4px 10px;border-radius:999px}
+main{width:100%;max-width:720px;flex:1;padding:6px 18px 30px;display:flex;flex-direction:column;justify-content:center}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:340px;margin-top:10px}
+.meta{width:100%;display:flex;justify-content:space-between;font-size:12.5px;color:var(--sub);margin-bottom:6px}
+.bar{width:100%;height:3px;background:var(--soft);border-radius:2px;overflow:hidden;margin-bottom:22px}
+.bar i{display:block;height:100%;width:0;background:var(--blue);transition:width .1s linear}
+
+.play{margin:6px auto 18px;width:132px;height:132px;border-radius:50%;border:none;background:var(--blue);color:#fff;
+  font-size:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  box-shadow:0 10px 24px rgba(37,99,235,.22)}
+.play:active{transform:scale(.97)}
+.hint{font-size:13px;color:var(--sub);text-align:center;margin:0 0 18px}
+.hint b{color:var(--txt)}
+.count{font-size:13px;color:var(--sub);margin-bottom:4px;text-align:center}
+#ask{width:100%}
+.count b{font-size:22px;color:var(--txt);font-variant-numeric:tabular-nums}
+
+.acts{display:flex;gap:12px;width:100%;max-width:420px}
+.acts button{flex:1;padding:15px 10px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;
+  border:1.5px solid var(--line);background:#fff;color:var(--txt)}
+.acts button.ok{border-color:#bcd9cc;background:#f2faf6;color:var(--green)}
+.acts button.no{border-color:#eccfc6;background:#fdf4f1;color:var(--red)}
+.acts button:active{transform:scale(.985)}
+
+.answer{width:100%;display:none}
+.answer.on{display:block}
+.word{font-size:34px;font-weight:800;letter-spacing:.4px;text-align:center;margin:2px 0 4px;word-break:break-word;cursor:pointer}
+.replay{display:block;margin:0 auto 14px;padding:7px 16px;border-radius:999px;border:1.5px solid var(--line);
+  background:#fff;color:var(--sub);font-size:13px;font-weight:700;cursor:pointer}
+.pos{text-align:center;font-size:12px;color:var(--sub);margin-bottom:18px}
+.sent{background:var(--soft);border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.7;margin-bottom:10px}
+.sent b{color:var(--blue);background:#e7eefd;border-radius:4px;padding:0 2px}
+.cn{font-size:14px;color:var(--sub);line-height:1.7;padding:0 2px}
+.next{width:100%;max-width:420px;margin:22px auto 0;padding:15px;border-radius:12px;border:none;
+  background:var(--txt);color:#fff;font-size:16px;font-weight:700;cursor:pointer}
+
+.start{width:100%;max-width:420px;margin:26px auto 0;padding:17px;border-radius:12px;border:none;
+  background:var(--blue);color:#fff;font-size:16px;font-weight:700;cursor:pointer}
+.start:disabled{opacity:.5}
+
+.done{display:none;text-align:center}
+.done.on{display:block}
+.done .big{font-size:46px;font-weight:800;margin:8px 0 2px;font-variant-numeric:tabular-nums}
+.done .sub{color:var(--sub);font-size:13.5px;margin-bottom:20px}
+.wrongs{text-align:left;background:var(--soft);border-radius:12px;padding:14px 16px;margin:0 0 16px;max-height:42vh;overflow:auto}
+.wrongs div{padding:8px 0;border-bottom:1px solid #e6e0d3;font-size:15px}
+.wrongs div:last-child{border-bottom:none}
+.wrongs span{color:var(--sub);font-size:13px;display:block;margin-top:2px}
+.wrongs button{border:none;background:none;color:var(--blue);font-size:13px;padding:0;margin-left:6px;cursor:pointer}
+.row2{display:flex;gap:12px;max-width:420px;margin:0 auto}
+.row2 button{flex:1;padding:14px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;border:1.5px solid var(--line);background:#fff}
+.row2 button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+footer{font-size:11.5px;color:var(--sub);text-align:center;padding:0 18px 22px;max-width:720px}
+@media (max-width:420px){
+  .card{padding:20px 14px;min-height:300px}
+  .play{width:112px;height:112px;font-size:38px}
+  .word{font-size:28px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>音义闪卡</h1>
+  <span class="src" id="src">加载中…</span>
+  <a href="index.html">返回</a>
+</header>
+
+<main>
+  <div class="card" id="card">
+    <div class="meta"><span id="page">— / —</span><span id="state">听音 → 说中文</span></div>
+    <div class="bar"><i id="bar"></i></div>
+
+    <div id="ask">
+      <button class="play" id="play" aria-label="播放单词">🔊</button>
+      <p class="hint">听发音，<b>3 秒内</b>说出中文。想不起来就点「没反应」，别硬想。</p>
+      <div class="count">还剩 <b id="sec">3</b> 秒</div>
+    </div>
+
+    <div class="answer" id="answer">
+      <div class="word" id="word">—</div>
+      <button class="replay" id="play2">🔊 再听一遍</button>
+      <div class="pos" id="pos"></div>
+      <div class="sent" id="sent"></div>
+      <div class="cn" id="cn"></div>
+    </div>
+
+    <div class="acts" id="acts">
+      <button class="ok" id="btnOk">想起来了</button>
+      <button class="no" id="btnNo">没反应</button>
+    </div>
+    <button class="next" id="btnNext" style="display:none">下一个 →</button>
+  </div>
+
+  <div class="card done" id="done">
+    <div class="big" id="rate">0%</div>
+    <div class="sub" id="rateSub">—</div>
+    <div class="wrongs" id="wrongList"></div>
+    <div class="row2">
+      <button id="againWrong">只练错的</button>
+      <button class="primary" id="againAll">再来一轮</button>
+    </div>
+  </div>
+
+  <button class="start" id="btnStart">开始（20 个词）</button>
+</main>
+
+<footer>词与例句都取自这一段的原文；发音用系统语音，不等同真题录音，只练「音 → 义」的反应速度。</footer>
+
+<script>
+(function(){
+  var STOP = {};
+  ('a an the this that these those there here it its they them their themself ourselves you your yours we our ours he him his she her hers i me my mine '
+  +'is am are was were be been being do does did done have has had having will would shall should can could may might must '
+  +'and or but so if because as than then that which who whom whose what when where why how all any both each few more most other some such no nor not only own same too very '
+  +'about above across after against along among around at before behind below beneath beside between beyond by down during except for from in inside into like near of off on onto out outside over past since through throughout till to toward under until up upon with within without '
+  +'also just even still yet again ever never always often sometimes usually already almost enough quite rather really perhaps maybe however therefore thus hence instead although though while whereas whether either neither '
+  +'one two three four five six seven eight nine ten first second third next last another each every many much little few lot lots '
+  +'say says said says go goes going went gone get gets getting got make makes making made take takes taking took taken come comes coming came know knows knowing knew known think thinks thinking thought see sees seeing saw seen want wants wanting wanted use uses using used find finds finding found give gives giving gave given tell tells telling told work works working worked call calls calling called try tries trying tried ask asks asking asked need needs needing needed feel feels feeling felt become becomes becoming became leave leaves leaving left put puts putting keep keeps keeping kept let lets letting mean means meaning meant begin begins beginning began begun seem seems seeming seemed help helps helping helped talk talks talking talked turn turns turning turned start starts starting started show shows showing showed shown hear hears hearing heard play plays playing played run runs running ran move moves moving moved live lives living lived believe believes believing believed hold holds holding held bring brings bringing brought happen happens happening happened write writes writing wrote written provide provides providing provided sit sits sitting sat stand stands standing stood lose loses losing lost pay pays paying paid meet meets meeting met include includes including included continue continues continuing continued set sets setting learn learns learning learned change changes changing changed lead leads leading led understand understands understanding understood watch watches watching watched follow follows following followed stop stops stopping stopped create creates creating created speak speaks speaking spoke spoken read reads reading remember remembers remembering remembered consider considers considering considered appear appears appearing appeared buy buys buying bought wait waits waiting waited serve serves serving served die dies dying died send sends sending sent expect expects expecting expected build builds building built stay stays staying stayed fall falls falling fell fallen cut cuts cutting grow grows growing grew grown open opens opening opened win wins winning won offer offers offering offered walk walks walking walked '
+  +'passage section question answer answers university research researchers study studies students people person time year years day days way ways thing things part parts place places case cases point points number numbers group groups problem problems fact facts world life lives hand hands eye eyes head face house home school country countries government company companies system systems program programs water light air word words book books story stories name names room door car cars city cities area areas money job jobs health food music history science language languages')
+    .split(/\s+/).forEach(function(w){ if (w) STOP[w] = 1; });
+
+  var q = new URLSearchParams(location.search);
+  var want = parseInt(q.get('n') || '20', 10);
+  if (!(want >= 5 && want <= 30)) want = 20;
+  var page = q.get('p') || '';
+  if (!page){
+    try{ var cs = JSON.parse(localStorage.getItem('cet4_curseg') || 'null'); if (cs && cs.f) page = cs.f; }catch(e){}
+  }
+  if (!page) page = '2025-06-1_SectionC.html';
+
+  var srcEl = document.getElementById('src');
+  srcEl.textContent = page.replace(/\.html$/, '').replace(/_/g, ' ');
+
+  var all = [], deck = [], idx = 0, ok = 0, wrong = [], timer = 0, deadline = 0, revealed = false, running = false;
+
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  function speak(w){
+    try{
+      if (!window.speechSynthesis) return;
+      speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(w);
+      u.lang = 'en-US';
+      u.rate = 0.92;
+      u.pitch = 1;
+      speechSynthesis.speak(u);
+    }catch(e){}
+  }
+
+  function build(lines){
+    var map = {};
+    lines.forEach(function(ln, li){
+      var words = ln.en.toLowerCase().match(/[a-z][a-z'\-]{3,14}/g) || [];
+      words.forEach(function(w){
+        w = w.replace(/^['\-]+|['\-]+$/g, '');
+        if (w.length < 5 || w.length > 14) return;
+        if (STOP[w]) return;
+        if (/^(section|passage|question)$/.test(w)) return;
+        if (!map[w]) map[w] = { w:w, n:0, lis:[] };
+        map[w].n++;
+        if (map[w].lis.indexOf(li) < 0) map[w].lis.push(li);
+      });
+    });
+    var arr = Object.keys(map).map(function(k){
+      var it = map[k];
+      var longest = 0;
+      it.lis.forEach(function(li){ longest = Math.max(longest, (lines[li].en.match(/\s+/g)||[]).length); });
+      it.score = it.n * 2.2 + Math.min(it.w.length, 10) * 0.55 + Math.min(longest, 30) * 0.06;
+      return it;
+    }).filter(function(x){ return x.lis.length > 0; });
+    arr.sort(function(a, b){ return b.score - a.score; });
+
+    /* 分散取样：按句序分桶，避免 20 个词全挤在开头三段 */
+    var picked = [], N = want, band = Math.max(1, Math.ceil(lines.length / N));
+    var buckets = {};
+    arr.forEach(function(x){ x.li0 = x.lis[0]; });
+    arr.forEach(function(x){
+      var b = Math.floor(x.li0 / band);
+      if (!buckets[b]) buckets[b] = [];
+      buckets[b].push(x);
+    });
+    var keys = Object.keys(buckets).map(Number).sort(function(a, b){ return a - b; });
+    var round = 0;
+    while (picked.length < N && round < 6){
+      var added = false;
+      for (var i = 0; i < keys.length && picked.length < N; i++){
+        var b = buckets[keys[i]];
+        if (b && b.length > round){ picked.push(b[round]); added = true; }
+      }
+      if (!added) break;
+      round++;
+    }
+    if (picked.length < N){
+      for (var j = 0; j < arr.length && picked.length < N; j++){
+        if (picked.indexOf(arr[j]) < 0) picked.push(arr[j]);
+      }
+    }
+    return picked.slice(0, N).map(function(x){
+      var li = x.lis[0];
+      return { w:x.w, en:lines[li].en, cn:lines[li].cn || '' };
+    });
+  }
+
+  function start(list){
+    deck = list.slice(); idx = 0; ok = 0; wrong = [];
+    document.getElementById('done').classList.remove('on');
+    document.getElementById('card').style.display = 'flex';
+    document.getElementById('btnStart').style.display = 'none';
+    document.getElementById('rate').textContent = '0%';
+    show();
+  }
+
+  function show(){
+    if (idx >= deck.length){ finish(); return; }
+    revealed = false; running = true;
+    var it = deck[idx];
+    document.getElementById('page').textContent = (idx + 1) + ' / ' + deck.length;
+    document.getElementById('ask').style.display = 'block';
+    document.getElementById('answer').classList.remove('on');
+    document.getElementById('acts').style.display = 'flex';
+    document.getElementById('btnNext').style.display = 'none';
+    document.getElementById('bar').style.width = '0%';
+    document.getElementById('word').textContent = '—';
+    document.getElementById('sent').textContent = '';
+    document.getElementById('cn').textContent = '';
+    document.getElementById('sec').textContent = '3';
+    document.getElementById('state').textContent = '听音 → 说中文';
+    speak(it.w);
+    countdown();
+  }
+
+  function countdown(){
+    clearInterval(timer);
+    deadline = Date.now() + 3000;
+    timer = setInterval(function(){
+      var left = Math.max(0, deadline - Date.now());
+      var pct = 100 - (left / 3000 * 100);
+      document.getElementById('bar').style.width = Math.min(100, pct) + '%';
+      document.getElementById('sec').textContent = Math.ceil(left / 1000);
+      if (left <= 0){ clearInterval(timer); reveal(false); }
+    }, 80);
+  }
+
+  function reveal(good){
+    if (revealed) return;
+    revealed = true; running = false;
+    clearInterval(timer);
+    document.getElementById('bar').style.width = '100%';
+    var it = deck[idx];
+    if (good === true) ok++;
+    else wrong.push(it);
+
+    var en = esc(it.en);
+    var rx = new RegExp('\\b(' + it.w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')\\b', 'ig');
+    document.getElementById('word').textContent = it.w;
+    document.getElementById('sent').innerHTML = en.replace(rx, '<b>$1</b>');
+    document.getElementById('cn').textContent = it.cn || '';
+    document.getElementById('answer').classList.add('on');
+    document.getElementById('acts').style.display = 'none';
+    document.getElementById('btnNext').style.display = 'block';
+    document.getElementById('state').textContent = good ? '记住了' : '没反应';
+    document.getElementById('ask').style.display = 'none';
+  }
+
+  function next(){
+    idx++;
+    if (idx >= deck.length){ finish(); return; }
+    show();
+  }
+
+  function finish(){
+    running = false;
+    clearInterval(timer);
+    var n = deck.length, rate = n ? Math.round(ok / n * 100) : 0;
+    document.getElementById('rate').textContent = rate + '%';
+    document.getElementById('rateSub').textContent = '这轮 ' + n + ' 个词，' + ok + ' 个在 3 秒内说出来';
+    var box = document.getElementById('wrongList');
+    if (!wrong.length){
+      box.innerHTML = '<div style="text-align:center;color:var(--sub)">这一轮全过，换一段或明天再来。</div>';
+    } else {
+      box.innerHTML = wrong.map(function(x){
+        return '<div>' + esc(x.w) + '<button data-w="' + esc(x.w) + '">听</button>'
+             + '<span>' + esc(x.cn || x.en) + '</span></div>';
+      }).join('');
+    }
+    document.getElementById('card').style.display = 'none';
+    document.getElementById('done').classList.add('on');
+    document.getElementById('btnStart').style.display = 'none';
+
+    try{
+      var K = 'cet4_sound_v1';
+      var allr = JSON.parse(localStorage.getItem(K) || '{}') || {};
+      var d = new Date();
+      var ymd = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      allr[page] = { at: Date.now(), day: ymd, total: n, ok: ok,
+                     wrong: wrong.map(function(x){ return x.w; }) };
+      localStorage.setItem(K, JSON.stringify(allr));
+    }catch(e){}
+  }
+
+  document.getElementById('btnOk').addEventListener('click', function(){ reveal(true); });
+  document.getElementById('btnNo').addEventListener('click', function(){ reveal(false); });
+  document.getElementById('btnNext').addEventListener('click', next);
+  document.getElementById('play').addEventListener('click', function(){ if (running && deck[idx]) speak(deck[idx].w); });
+  document.getElementById('play2').addEventListener('click', function(){ if (deck[idx]) speak(deck[idx].w); });
+  document.getElementById('word').addEventListener('click', function(){ if (deck[idx]) speak(deck[idx].w); });
+  document.getElementById('againAll').addEventListener('click', function(){ start(all); });
+  document.getElementById('againWrong').addEventListener('click', function(){
+    if (!wrong.length) return;
+    start(wrong.slice());
+  });
+  document.getElementById('wrongList').addEventListener('click', function(e){
+    var b = e.target.closest('button[data-w]');
+    if (b) speak(b.getAttribute('data-w'));
+  });
+
+  document.getElementById('btnStart').addEventListener('click', function(){ start(all); });
+
+  fetch(page, { cache: 'no-store' }).then(function(r){
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.text();
+  }).then(function(html){
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var lines = [].slice.call(doc.querySelectorAll('.line')).map(function(l){
+      var en = [].slice.call(l.querySelectorAll('.en .w')).map(function(w){ return w.textContent; }).join(' ').replace(/\s+/g, ' ').trim();
+      var cnEl = l.querySelector('.lh .cn') || l.querySelector('.cn');
+      return { en:en, cn:(cnEl ? cnEl.textContent : '').trim() };
+    }).filter(function(x){ return x.en.length > 12; });
+
+    if (!lines.length) throw new Error('没找到原文句子');
+    all = build(lines);
+    if (!all.length) throw new Error('这段没抽出可用词');
+    document.getElementById('btnStart').textContent = '开始（' + all.length + ' 个词）';
+    document.getElementById('btnStart').disabled = false;
+    document.getElementById('page').textContent = '0 / ' + all.length;
+  }).catch(function(e){
+    document.getElementById('src').textContent = '加载失败：' + e.message;
+    document.getElementById('btnStart').disabled = true;
+  });
+})();
+</script>
+</body>
+</html>
