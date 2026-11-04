@@ -46,8 +46,9 @@ main{width:100%;max-width:720px;flex:1;padding:6px 18px 30px;display:flex;flex-d
 .answer{width:100%;display:none}
 .answer.on{display:block}
 .word{font-size:34px;font-weight:800;letter-spacing:.4px;text-align:center;margin:2px 0 4px;word-break:break-word;cursor:pointer}
-.replay{display:block;margin:0 auto 14px;padding:7px 16px;border-radius:999px;border:1.5px solid var(--line);
+.replay{display:block;margin:0 auto;padding:7px 16px;border-radius:999px;border:1.5px solid var(--line);
   background:#fff;color:var(--sub);font-size:13px;font-weight:700;cursor:pointer}
+.rowplay{display:flex;gap:10px;justify-content:center;margin:0 auto 14px}
 .pos{text-align:center;font-size:12px;color:var(--sub);margin-bottom:18px}
 .sent{background:var(--soft);border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.7;margin-bottom:10px}
 .sent b{color:var(--blue);background:#e7eefd;border-radius:4px;padding:0 2px}
@@ -67,7 +68,7 @@ main{width:100%;max-width:720px;flex:1;padding:6px 18px 30px;display:flex;flex-d
 .wrongs div{padding:8px 0;border-bottom:1px solid #e6e0d3;font-size:15px}
 .wrongs div:last-child{border-bottom:none}
 .wrongs span{color:var(--sub);font-size:13px;display:block;margin-top:2px}
-.wrongs button{border:none;background:none;color:var(--blue);font-size:13px;padding:0;margin-left:6px;cursor:pointer}
+.wrongs button{border:none;background:none;color:var(--blue);font-size:13px;padding:0;margin-left:10px;cursor:pointer}
 .row2{display:flex;gap:12px;max-width:420px;margin:0 auto}
 .row2 button{flex:1;padding:14px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;border:1.5px solid var(--line);background:#fff}
 .row2 button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
@@ -100,7 +101,10 @@ footer{font-size:11.5px;color:var(--sub);text-align:center;padding:0 18px 22px;m
 
     <div class="answer" id="answer">
       <div class="word" id="word">—</div>
-      <button class="replay" id="play2">🔊 再听一遍</button>
+      <div class="rowplay">
+        <button class="replay" id="play2">🔊 原声再听</button>
+        <button class="replay" id="playSent">🎧 听整句</button>
+      </div>
       <div class="pos" id="pos"></div>
       <div class="sent" id="sent"></div>
       <div class="cn" id="cn"></div>
@@ -126,7 +130,7 @@ footer{font-size:11.5px;color:var(--sub);text-align:center;padding:0 18px 22px;m
   <button class="start" id="btnStart">开始（20 个词）</button>
 </main>
 
-<footer>词与例句都取自这一段的原文；发音用系统语音，不等同真题录音，只练「音 → 义」的反应速度。</footer>
+<footer>词与例句都取自这一段的原文；发音直接从这段真题录音里切出来（不是合成音），听到的就是考试里的那个声音。</footer>
 
 <script>
 (function(){
@@ -158,6 +162,12 @@ footer{font-size:11.5px;color:var(--sub);text-align:center;padding:0 18px 22px;m
 
   function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
+  /* ---------- 原声切片 ---------- */
+  var SRC = '', DATA = null;              /* 当前段的音频地址 / 词级时间轴 */
+  var AU = new Audio(), AUReady = false, rafId = 0, clipEnd = 0, unlocked = false;
+  AU.preload = 'auto';
+
+  /* 系统语音只作兜底：页面里没有时间轴时才用 */
   function speak(w){
     try{
       if (!window.speechSynthesis) return;
@@ -170,33 +180,157 @@ footer{font-size:11.5px;color:var(--sub);text-align:center;padding:0 18px 22px;m
     }catch(e){}
   }
 
+  function tick(){
+    rafId = 0;
+    if (AU.paused) return;
+    if (AU.seeking){ rafId = requestAnimationFrame(tick); return; }
+    if (AU.currentTime >= clipEnd){ AU.pause(); return; }
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function stopClip(){
+    cancelAnimationFrame(rafId); rafId = 0;
+    try{ AU.pause(); }catch(e){}
+  }
+
+  /* iOS 要一次手势内的播放来解锁，否则倒计时结束时自动播会被拦 */
+  var unlockPending = false;
+  function unlock(){
+    if (unlocked || !SRC) return;
+    unlocked = true; unlockPending = true;
+    try{
+      AU.muted = true;
+      var p = AU.play();
+      var fin = function(){
+        AU.muted = false;
+        if (unlockPending){
+          unlockPending = false;
+          try{ AU.pause(); AU.currentTime = 0; }catch(e){}
+        }
+      };
+      if (p && p.then) p.then(fin).catch(function(){ AU.muted = false; unlockPending = false; });
+      else setTimeout(fin, 50);
+    }catch(e){ AU.muted = false; unlockPending = false; }
+  }
+
+  /* 播 [s,e] 秒的原声；whole=true 播整句 */
+  function playClip(it, whole){
+    if (!it){ return; }
+    if (!SRC || !DATA){ speak(it.w); return; }
+    unlockPending = false;
+    AU.muted = false;
+    var s = whole ? it.ns : it.s;
+    var e = whole ? it.ne : it.e;
+    if (typeof s !== 'number' || typeof e !== 'number'){ speak(it.w); return; }
+    /* 词头留 0.14s：ASR 标的起点在爆破之后，切太齐会把 b/d/p/t 的闭塞吃掉 */
+    s = Math.max(0, s - (whole ? 0.20 : 0.14));
+    e = e + (whole ? 0.30 : 0.15);
+    try{
+      stopClip();
+      var go = function(){
+        try{ AU.currentTime = s; }catch(err){}
+        clipEnd = e;
+        var p = AU.play();
+        if (p && p.catch) p.catch(function(){});
+        cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(tick);
+      };
+      if (AU.readyState >= 1) go();
+      else {
+        AU.addEventListener('loadedmetadata', function once(){
+          AU.removeEventListener('loadedmetadata', once); go();
+        });
+      }
+    }catch(err){ speak(it.w); }
+  }
+
+  /* 从页面 HTML 里取 DATA（里面有每个词的起止时间） */
+  function parseDATA(html){
+    var i = html.indexOf('var DATA = ');
+    if (i < 0) return null;
+    var j = html.indexOf('{', i), d = 0, inStr = false, escd = false;
+    for (var k = j; k < html.length; k++){
+      var c = html.charAt(k);
+      if (inStr){
+        if (escd) escd = false;
+        else if (c === '\\') escd = true;
+        else if (c === '"') inStr = false;
+      } else if (c === '"') inStr = true;
+      else if (c === '{') d++;
+      else if (c === '}'){
+        d--;
+        if (d === 0){ try{ return JSON.parse(html.slice(j, k + 1)); }catch(e){ return null; } }
+      }
+    }
+    return null;
+  }
+
+  var WMIN = 0.22, WMAX = 1.10;
+
+  function normTok(w){
+    return String(w || '').toLowerCase().replace(/^[^a-z]+/, '').replace(/[^a-z]+$/, '');
+  }
+
+  /* 行首若是 "News Report 1" / "Passage 2" 这类标题，返回正文起始下标 */
+  function headSkip(tk){
+    var w0 = String(tk[0] && tk[0].w || '').toLowerCase();
+    if (!/^(news|passage|section|conversation|questions?|directions?)$/.test(w0)) return 0;
+    for (var i = 0; i < Math.min(tk.length, 5); i++){
+      if (/^\d+\.?$/.test(tk[i].w)) return i + 1;
+    }
+    return 0;
+  }
+
   function build(lines){
     var map = {};
     lines.forEach(function(ln, li){
-      var words = ln.en.toLowerCase().match(/[a-z][a-z'\-]{3,14}/g) || [];
-      words.forEach(function(w){
-        w = w.replace(/^['\-]+|['\-]+$/g, '');
+      var tk = ln.tokens || [];
+      /* 同一句里好几个词挤在同一个时间戳上，说明这句没对齐上，整批跳过 */
+      var seen = {};
+      tk.forEach(function(t){
+        if (typeof t.s === 'number' && typeof t.e === 'number'){
+          var k = t.s.toFixed(2) + '/' + t.e.toFixed(2); seen[k] = (seen[k] || 0) + 1;
+        }
+      });
+      tk.forEach(function(t, ti){
+        if (ti < (ln.skip || 0)) return;       /* "News Report 1" 这种标题不算词 */
+        if (typeof t.s === 'number' && typeof t.e === 'number'
+            && seen[t.s.toFixed(2) + '/' + t.e.toFixed(2)] > 1) return;
+        var w = normTok(t.w);
         if (w.length < 5 || w.length > 14) return;
+        if (w.indexOf("'") >= 0) return;      /* that's / don't 这类缩写，做闪卡没意义 */
         if (STOP[w]) return;
-        if (/^(section|passage|question)$/.test(w)) return;
-        if (!map[w]) map[w] = { w:w, n:0, lis:[] };
+        if (typeof t.s !== 'number' || typeof t.e !== 'number') return;
+        if (t.q === 0) return;               /* 时间没对齐上，宁可不用 */
+        var d = t.e - t.s;
+        if (d <= 0.05) return;
+        if (!map[w]) map[w] = { w:w, n:0, occ:[] };
         map[w].n++;
-        if (map[w].lis.indexOf(li) < 0) map[w].lis.push(li);
+        map[w].occ.push({ s:t.s, e:t.e, li:li, d:d, ti:ti });
       });
     });
     var arr = Object.keys(map).map(function(k){
       var it = map[k];
-      var longest = 0;
-      it.lis.forEach(function(li){ longest = Math.max(longest, (lines[li].en.match(/\s+/g)||[]).length); });
-      it.score = it.n * 2.2 + Math.min(it.w.length, 10) * 0.55 + Math.min(longest, 30) * 0.06;
+      /* 挑最清楚的那一次出现：太短是含混带过，太长是裹了静音 */
+      var best = null, bd = 1e9;
+      it.occ.forEach(function(o){
+        if (o.d < WMIN || o.d > WMAX) return;
+        var sc = Math.abs(o.d - 0.45) + Math.min((lines[o.li].tokens || []).length, 40) * 0.004;
+        if (sc < bd){ bd = sc; best = o; }
+      });
+      if (!best){ it.occ.forEach(function(o){ if (!best || o.d > best.d) best = o; }); }
+      it.best = best;
+      it.li0 = best.li;
+      it.score = it.n * 2.2 + Math.min(it.w.length, 10) * 0.55
+               + Math.min((lines[best.li].tokens || []).length, 30) * 0.06
+               + (best.d >= WMIN ? 0 : -4);
       return it;
-    }).filter(function(x){ return x.lis.length > 0; });
+    }).filter(function(x){ return !!x.best; });
     arr.sort(function(a, b){ return b.score - a.score; });
 
     /* 分散取样：按句序分桶，避免 20 个词全挤在开头三段 */
     var picked = [], N = want, band = Math.max(1, Math.ceil(lines.length / N));
     var buckets = {};
-    arr.forEach(function(x){ x.li0 = x.lis[0]; });
     arr.forEach(function(x){
       var b = Math.floor(x.li0 / band);
       if (!buckets[b]) buckets[b] = [];
@@ -219,12 +353,16 @@ footer{font-size:11.5px;color:var(--sub);text-align:center;padding:0 18px 22px;m
       }
     }
     return picked.slice(0, N).map(function(x){
-      var li = x.lis[0];
-      return { w:x.w, en:lines[li].en, cn:lines[li].cn || '' };
+      var b = x.best, ln = lines[b.li], tk = ln.tokens || [];
+      var ns = tk.length ? tk[0].s : b.s;
+      var ne = tk.length ? tk[tk.length - 1].e : b.e;
+      return { w:x.w, en:ln.en, cn:ln.cn || '', s:b.s, e:b.e, ns:ns, ne:ne, tk:tk, ti:b.ti };
     });
   }
 
   function start(list){
+    if (!list.length) return;
+    unlock();
     deck = list.slice(); idx = 0; ok = 0; wrong = [];
     document.getElementById('done').classList.remove('on');
     document.getElementById('card').style.display = 'flex';
@@ -248,7 +386,7 @@ footer{font-size:11.5px;color:var(--sub);text-align:center;padding:0 18px 22px;m
     document.getElementById('cn').textContent = '';
     document.getElementById('sec').textContent = '3';
     document.getElementById('state').textContent = '听音 → 说中文';
-    speak(it.w);
+    playClip(it);
     countdown();
   }
 
@@ -273,10 +411,18 @@ footer{font-size:11.5px;color:var(--sub);text-align:center;padding:0 18px 22px;m
     if (good === true) ok++;
     else wrong.push(it);
 
-    var en = esc(it.en);
-    var rx = new RegExp('\\b(' + it.w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')\\b', 'ig');
+    var sentHTML;
+    if (it.tk && it.tk.length){
+      /* 只高亮真正播的那一处，不把同句里同样的词全标上 */
+      sentHTML = it.tk.map(function(t, i){
+        return i === it.ti ? '<b>' + esc(t.w) + '</b>' : esc(t.w);
+      }).join(' ');
+    } else {
+      var rx = new RegExp('\\b(' + it.w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')\\b', 'ig');
+      sentHTML = esc(it.en).replace(rx, '<b>$1</b>');
+    }
     document.getElementById('word').textContent = it.w;
-    document.getElementById('sent').innerHTML = en.replace(rx, '<b>$1</b>');
+    document.getElementById('sent').innerHTML = sentHTML;
     document.getElementById('cn').textContent = it.cn || '';
     document.getElementById('answer').classList.add('on');
     document.getElementById('acts').style.display = 'none';
@@ -301,8 +447,8 @@ footer{font-size:11.5px;color:var(--sub);text-align:center;padding:0 18px 22px;m
     if (!wrong.length){
       box.innerHTML = '<div style="text-align:center;color:var(--sub)">这一轮全过，换一段或明天再来。</div>';
     } else {
-      box.innerHTML = wrong.map(function(x){
-        return '<div>' + esc(x.w) + '<button data-w="' + esc(x.w) + '">听</button>'
+      box.innerHTML = wrong.map(function(x, i){
+        return '<div>' + esc(x.w) + '<button data-i="' + i + '">听原声</button>'
              + '<span>' + esc(x.cn || x.en) + '</span></div>';
       }).join('');
     }
@@ -335,17 +481,21 @@ footer{font-size:11.5px;color:var(--sub);text-align:center;padding:0 18px 22px;m
   document.getElementById('btnOk').addEventListener('click', function(){ reveal(true); });
   document.getElementById('btnNo').addEventListener('click', function(){ reveal(false); });
   document.getElementById('btnNext').addEventListener('click', next);
-  document.getElementById('play').addEventListener('click', function(){ if (running && deck[idx]) speak(deck[idx].w); });
-  document.getElementById('play2').addEventListener('click', function(){ if (deck[idx]) speak(deck[idx].w); });
-  document.getElementById('word').addEventListener('click', function(){ if (deck[idx]) speak(deck[idx].w); });
+  document.getElementById('play').addEventListener('click', function(){ if (running && deck[idx]) playClip(deck[idx]); });
+  document.getElementById('play2').addEventListener('click', function(){ if (deck[idx]) playClip(deck[idx]); });
+  document.getElementById('playSent').addEventListener('click', function(){ if (deck[idx]) playClip(deck[idx], true); });
+  document.getElementById('word').addEventListener('click', function(){ if (deck[idx]) playClip(deck[idx]); });
   document.getElementById('againAll').addEventListener('click', function(){ start(all); });
   document.getElementById('againWrong').addEventListener('click', function(){
     if (!wrong.length) return;
     start(wrong.slice());
   });
   document.getElementById('wrongList').addEventListener('click', function(e){
-    var b = e.target.closest('button[data-w]');
-    if (b) speak(b.getAttribute('data-w'));
+    var b = e.target.closest('button[data-i]');
+    if (b){
+      var it = wrong[+b.getAttribute('data-i')];
+      if (it) playClip(it);
+    }
   });
 
   document.getElementById('btnStart').addEventListener('click', function(){ start(all); });
@@ -354,19 +504,51 @@ footer{font-size:11.5px;color:var(--sub);text-align:center;padding:0 18px 22px;m
     if (!r.ok) throw new Error('HTTP ' + r.status);
     return r.text();
   }).then(function(html){
-    var doc = new DOMParser().parseFromString(html, 'text/html');
-    var lines = [].slice.call(doc.querySelectorAll('.line')).map(function(l){
-      var en = [].slice.call(l.querySelectorAll('.en .w')).map(function(w){ return w.textContent; }).join(' ').replace(/\s+/g, ' ').trim();
-      var cnEl = l.querySelector('.lh .cn') || l.querySelector('.cn');
-      return { en:en, cn:(cnEl ? cnEl.textContent : '').trim() };
-    }).filter(function(x){ return x.en.length > 12; });
-
+    var D = parseDATA(html);
+    var lines = [];
+    if (D && D.lines && D.lines.length){
+      DATA = D;
+      var r0 = (D.rates && D.rates[0]) || null;
+      SRC = (r0 && r0.src) ? r0.src : '';
+      D.lines.forEach(function(ln){
+        var tk = ln.tokens || [];
+        if (!tk.length) return;
+        var en = tk.map(function(t){ return t.w; }).join(' ').replace(/\s+/g, ' ').trim();
+        lines.push({ en:en, cn:(ln.zh || '').trim(), tokens:tk, skip:headSkip(tk) });
+      });
+      lines = lines.filter(function(x){ return x.en.length > 12; });
+    }
     if (!lines.length) throw new Error('没找到原文句子');
     all = build(lines);
     if (!all.length) throw new Error('这段没抽出可用词');
-    document.getElementById('btnStart').textContent = '开始（' + all.length + ' 个词）';
-    document.getElementById('btnStart').disabled = false;
+
     document.getElementById('page').textContent = '0 / ' + all.length;
+
+    var bs = document.getElementById('btnStart');
+    if (SRC){
+      AU.src = SRC;
+      try{ AU.load(); }catch(e){}
+      document.getElementById('src').textContent = page.replace(/\.html$/, '').replace(/_/g, ' ') + ' · 原声';
+      document.querySelector('.hint').innerHTML = '听真题原声，<b>3 秒内</b>说出中文。想不起来就点「没反应」，别硬想。';
+
+      /* 音频没缓冲好就先别让点，免得第一声是空的 */
+      var ready = function(){
+        bs.disabled = false;
+        bs.textContent = '开始（' + all.length + ' 个词）';
+      };
+      bs.textContent = '准备原声中…';
+      bs.disabled = true;
+      if (AU.readyState >= 3) ready();
+      else {
+        AU.addEventListener('canplay', ready, { once:true });
+        setTimeout(ready, 8000);
+      }
+    } else {
+      bs.disabled = false;
+      bs.textContent = '开始（' + all.length + ' 个词）';
+      document.getElementById('src').textContent = page.replace(/\.html$/, '').replace(/_/g, ' ') + ' · 系统语音';
+      document.querySelector('.hint').innerHTML = '听发音，<b>3 秒内</b>说出中文。想不起来就点「没反应」，别硬想。';
+    }
   }).catch(function(e){
     document.getElementById('src').textContent = '加载失败：' + e.message;
     document.getElementById('btnStart').disabled = true;
