@@ -2045,6 +2045,27 @@ var QUIZ = [{"id": "q1", "stem": "1. What event will take place in Glasgow?", "z
                   var _ls = JSON.parse(localStorage.getItem(_key)||'[]') || [];
                   if (_ls.indexOf(_lp) < 0){ _ls.push(_lp); localStorage.setItem(_key, JSON.stringify(_ls)); }
                 }
+                /* 今天做的就是这一篇：首页据此把卡片钉住，别交完卷就换成下一篇 */
+                var _kd = /_Section/i.test(_lp) ? 'listen'
+                        : /^matching-/.test(_lp) ? 'match'
+                        : /^read-/.test(_lp) ? 'read'
+                        : /^(write|trans)-/.test(_lp) ? 'write' : '';
+                if (_kd){
+                  var _dt = new Date();
+                  var _dy = _dt.getFullYear()+'-'+String(_dt.getMonth()+1).padStart(2,'0')+'-'+String(_dt.getDate()).padStart(2,'0');
+                  var _dd = JSON.parse(localStorage.getItem('cet4_dod')||'{}') || {};
+                  var _ks = Object.keys(_dd).sort();
+                  while (_ks.length > 14){ delete _dd[_ks.shift()]; }
+                  _dd[_dy] = _dd[_dy] || {};
+                  _dd[_dy][_kd] = _lp;
+                  localStorage.setItem('cet4_dod', JSON.stringify(_dd));
+                  var _sk = _kd === 'match' ? 'm1' : _kd === 'read' ? 'r1' : _kd === 'write' ? 'w1' : '';
+                  if (_sk){
+                    var _so = JSON.parse(localStorage.getItem('cet4_steps_'+_dy)||'{}') || {};
+                    _so[_sk] = 1;
+                    localStorage.setItem('cet4_steps_'+_dy, JSON.stringify(_so));
+                  }
+                }
                 /* 首页靠 cet4_curseg 记「本周这一段」。直接从训练页进来做、没经过首页时，
                    这一格是空的，首页下次就会以为没定段，把你换到下一套去。这里补上。 */
                 if (/_SectionC/.test(_lp)){

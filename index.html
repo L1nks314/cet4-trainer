@@ -683,23 +683,50 @@ function renderTasks(){
     try{ var o = JSON.parse(localStorage.getItem('cet4_ans_' + f) || 'null'); return !!(o && o.submitted); }
     catch(e){ return false; }
   }
-  var rdCur = null;
-  for (var _ri=0; _ri<RL.length; _ri++){ if (!_doneOf(RL[_ri].f)){ rdCur = RL[_ri]; break; } }
-  if (!rdCur) rdCur = RL[0];
+  /* 今天已经动手做过的那一篇：以它为准，别做完就换下一篇。
+     旧版只按「第一套没做过的」挑，交完卷刷新页面就换成另一篇，看着像任务被改掉了。 */
+  var _dod = {};
+  try{ _dod = (JSON.parse(localStorage.getItem('cet4_dod') || '{}') || {})[fmt(today)] || {}; }catch(e){ _dod = {}; }
+  function _byName(arr, f){
+    if (!f) return null;
+    for (var _bi = 0; _bi < arr.length; _bi++){ if (arr[_bi].f === f) return arr[_bi]; }
+    return null;
+  }
+  /* 今天交过卷的那套（老数据没有 cet4_dod，就靠提交时间认） */
+  function _doneToday(f){
+    try{
+      var o = JSON.parse(localStorage.getItem('cet4_ans_' + f) || 'null');
+      if (!o || !o.submitted || !o.at) return false;
+      var _t0 = new Date(); _t0.setHours(0,0,0,0);
+      return o.at >= _t0.getTime();
+    }catch(e){ return false; }
+  }
+  function _pickCur(arr, dodKey, segList){
+    var c = _byName(arr, _dod[dodKey]);
+    if (c) return c;
+    for (var i = 0; i < arr.length; i++){ if (_doneToday(arr[i].f)) return arr[i]; }
+    if (segList){
+      for (var j = 0; j < arr.length; j++){ if (segList.indexOf(arr[j].f) < 0) return arr[j]; }
+    } else {
+      for (var k = 0; k < arr.length; k++){ if (!_doneOf(arr[k].f)) return arr[k]; }
+    }
+    return arr[0];
+  }
   var _mseg = [];
   try{ _mseg = JSON.parse(localStorage.getItem('cet4_mseg')||'[]') || []; }catch(e){}
-  var mpCur = null;
-  for (var _mi=0; _mi<ML.length; _mi++){ if (_mseg.indexOf(ML[_mi].f) < 0){ mpCur = ML[_mi]; break; } }
-  if (!mpCur) mpCur = ML[0];
+  var rdCur = _pickCur(RL, 'read', null);
+  var mpCur = _pickCur(ML, 'match', _mseg);
+
   /* 写译：写作 / 翻译哪个做得少就补哪个，各挑第一套没做过的。
      旧版按 wk%2 轮换，会把 TL[0] 直接跳过。 */
   var _nW = 0, _nT = 0;
   WL.forEach(function(x){ if (_doneOf(x.f)) _nW++; });
   TL.forEach(function(x){ if (_doneOf(x.f)) _nT++; });
-  var wIsW = (_nW <= _nT);
+  var _wDone = _byName(WL, _dod.write) || _byName(TL, _dod.write);
+  var wIsW = _wDone ? !!_byName(WL, _dod.write) : (_nW <= _nT);
   var wArr = wIsW ? WL : TL;
-  var wpCur = null;
-  for (var _wi=0; _wi<wArr.length; _wi++){ if (!_doneOf(wArr[_wi].f)){ wpCur = wArr[_wi]; break; } }
+  var wpCur = _wDone || null;
+  for (var _wi=0; !wpCur && _wi<wArr.length; _wi++){ if (!_doneOf(wArr[_wi].f)){ wpCur = wArr[_wi]; break; } }
   if (!wpCur) wpCur = wArr[0];
 
   /* 听力篇章：只走 Section C，自动跳过已做过的段 */
@@ -783,6 +810,19 @@ function renderTasks(){
   lbtn = nextC.f;
 
   var tHtml = goalCard(kind);
+
+  /* 阅读 / 匹配 / 写译的步骤以前是死的（.static，没有 key），
+     做完也不会亮，看着像「该勾的没勾」。现在和听力一样可勾：
+     页面提交会回写第 ① 步，其余自己点。 */
+  var _ST0 = getSteps();
+  function _stepRow(k, x, href, forceOn, manual){
+    var on = !!_ST0[k] || !!forceOn;
+    return '<div class="step'+(on ? ' on' : '')+'" data-s="'+k+'" data-href="'+href+'"'
+      + (manual ? ' data-manual="1"' : '')+'>'
+      + '<div class="ck"></div>'
+      + '<div class="sx"><div class="st">'+x.n+' '+x.t+'</div><div class="sd">'+x.d+'</div></div>'
+      + '<div class="sm">'+x.m+'</div></div>';
+  }
 
   if (tier === 'min'){
     var minHref = (kind==='read')  ? RL[wk0 % RL.length].f
@@ -902,23 +942,20 @@ function renderTasks(){
       {n:'④', t:'收生词', d:'只收反复出现的词，最多 3 个。不抄整句、不背单词书。', m:'7′'}
     ];
     tHtml += '<div class="steps">'
-      + '<div class="shd"><div><b>今天 · 仔细阅读 1 套（两篇 10 题）</b><div class="sdt">'+rd.f.replace('read-','').replace('.html','')+'　·　第 '+(RL.indexOf(rd)+1)+'/'+RL.length+' 套'+(SHORT?'　·　35 分钟短版':'')+'</div></div>'
+      + '<div class="shd"><div><b>今天 · 仔细阅读 1 套（两篇 10 题）</b><div class="sdt">'+rd.f.replace('read-','').replace('.html','')+'　·　第 '+(RL.indexOf(rd)+1)+'/'+RL.length+' 套'+((_dod.read===rd.f||_doneToday(rd.f))?'　·　今天已提交':'')+(SHORT?'　·　35 分钟短版':'')+'</div></div>'
       + '<div class="smin">'+(SHORT?'约 31 分钟':'40 分钟')+'</div></div>'
-      + rsteps.map(function(x){
-          return '<div class="step static"><div class="ck dim"></div>'
-            + '<div class="sx"><div class="st">'+x.n+' '+x.t+'</div><div class="sd">'+x.d+'</div></div>'
-            + '<div class="sm">'+x.m+'</div></div>';
-        }).join('')
+      + rsteps.map(function(x, i){ return _stepRow('r'+(i+1), x, rd.f, i===0 && _doneToday(rd.f), _doneToday(rd.f)); }).join('')
       + '<div class="stepacts"><a class="btn" href="'+encodeURI(rd.f)+'">打开阅读页</a></div>'
       + '</div>'
       + '<div class="task'+(dn?" on":"")+'" data-k="o"><div class="box'+(dn?" on":"")+'"></div>'
-      + '<div class="tk"><div class="tt">做完点这里打勾</div>'
+      + '<div class="tk"><div class="tt">'+(dn?'今天这套做完了':'做完点这里打勾')+'</div>'
       + '<div class="td">阅读页提交后会自动打勾；没提交成就手动点。</div></div></div>';
   } else if (kind === 'match'){
     var mp = mpCur;
     var mdone = 0;
     try{ mdone = (JSON.parse(localStorage.getItem('cet4_mseg')||'[]')||[]).length; }catch(e){ mdone = 0; }
-    var mcnt = '第 ' + (mdone+1) + ' 次练 · 71 分';
+    var mToday = (_dod.match === mp.f) || _doneToday(mp.f);
+    var mcnt = mToday ? '今天已提交 · 第 ' + Math.max(1, mdone) + ' 次练' : ('第 ' + (mdone+1) + ' 次练 · 满分 71');
     var msteps = SHORT ? [
       {n:'①', t:'限时做', d:'15 分钟，10 道题找段落。不查词，凭关键词定位，做完立刻停表。', m:'15′'},
       {n:'②', t:'回原文找替换', d:'逐题回段落里划出对应句，把「题干的词 → 原文的词」写下来。来不及就只做没把握的题。', m:'8′'},
@@ -932,40 +969,42 @@ function renderTasks(){
        一周插一段，按周序取，6 周 6 段，不占 C 的档期。 */
     if (withAB){
       var ABL = LESSONS.filter(function(x){ return /Section[AB]\.html$/i.test(x.f); });
-      var abx = ABL[wk0 % ABL.length];
+      /* 今天做过就留在这一段，别交完卷刷新就跳到下一段；
+         今天没做过，取第一段没交过卷的（旧版按周序取，wk0 一直是 0~1，会反复推同一段） */
+      var abx = _byName(ABL, _dod.listen);
+      if (!abx){
+        for (var _aj = 0; _aj < ABL.length; _aj++){ if (_doneToday(ABL[_aj].f)){ abx = ABL[_aj]; break; } }
+      }
+      if (!abx){
+        for (var _ai = 0; _ai < ABL.length; _ai++){ if (!_doneOf(ABL[_ai].f)){ abx = ABL[_ai]; break; } }
+      }
+      if (!abx) abx = ABL[wk0 % ABL.length];
       var abSec = /SectionA/i.test(abx.f) ? 'A' : 'B';
+      /* 步骤要和听力页的吸底条一一对应（那边是 s1..s5，交卷并进「盲听」那步），
+         否则这边勾 ③ 交卷、那边写的是 s3 听写，全错位 */
       var abSteps = [
         {n:'①', t:'横看竖看选项', d:'这段只有 '+(abSec==='A'?'3':'4')+' 题。横看四选项找差异点，竖看串话题。', m:'3′'},
-        {n:'②', t:'盲听做题', d:'一遍放完，不暂停。'+(abSec==='A'?'新闻第一句就抛主题，开头别走神。':'对话先看是男问女答还是反过来，盯住后说话那个人。'), m:'7′'},
-        {n:'③', t:'交卷', d:'交卷后原文才解锁，听写要用原文对。', m:'1′'},
-        {n:'④', t:'听写 3 句', d:'只走标 ★ 的 3 句，听不出画「—」，不猜。', m:SHORT?'5′':'7′'},
-        {n:'⑤', t:'归因', d:'错题标一个原因：连读 / 生词 / 走神。', m:SHORT?'2′':'3′'}
+        {n:'②', t:'盲听做题 + 交卷', d:'一遍放完，不暂停、不回放。'+(abSec==='A'?'新闻第一句就抛主题，开头别走神。':'对话先看是男问女答还是反过来，盯住后说话那个人。')+'交卷后原文才解锁。', m:'8′'},
+        {n:'③', t:'听写 3 句', d:'只走标 ★ 的 3 句，听不出画「—」，不猜。', m:SHORT?'5′':'7′'},
+        {n:'④', t:'归因', d:'错题标一个原因：连读 / 生词 / 走神。', m:SHORT?'2′':'3′'}
       ];
-      if (!SHORT) abSteps.push({n:'⑥', t:'挑 1 句跟读', d:'选最长的那句，跟到不磕巴就停。不整段跟。', m:'2′'});
+      if (!SHORT) abSteps.push({n:'⑤', t:'挑 1 句跟读', d:'选最长的那句，跟到不磕巴就停。不整段跟。', m:'2′'});
       tHtml += '<div class="steps ab">'
         + '<div class="shd"><div><b>今天 · 先走一段 Section '+abSec+'</b>'
         + '<div class="sdt">'+abx.d+'　·　142 分主力是 C，这段接手感</div></div>'
         + '<div class="smin">'+(SHORT?'约 18 分钟':'约 23 分钟')+'</div></div>'
-        + abSteps.map(function(s){
-            return '<div class="step static"><div class="ck dim"></div>'
-              + '<div class="sx"><div class="st">'+s.n+' '+s.t+'</div><div class="sd">'+s.d+'</div></div>'
-              + '<div class="sm">'+s.m+'</div></div>';
-          }).join('')
+        + abSteps.map(function(s, i){ return _stepRow('s'+(i+1), s, abx.f, i===0 && _doneToday(abx.f), _doneToday(abx.f)); }).join('')
         + '<div class="stepacts"><a class="btn ghost" href="'+encodeURI(abx.f)+'">打开这一段</a></div>'
         + '</div>';
     }
     tHtml += '<div class="steps">'
       + '<div class="shd"><div><b>今天 · 长篇匹配 1 篇</b><div class="sdt">'+mp.d+'　'+mcnt+(SHORT?'　·　35 分钟短版':'')+'</div></div>'
       + '<div class="smin">'+(SHORT?'约 26 分钟':'32 分钟')+'</div></div>'
-      + msteps.map(function(s){
-          return '<div class="step static"><div class="ck dim"></div>'
-            + '<div class="sx"><div class="st">'+s.n+' '+s.t+'</div><div class="sd">'+s.d+'</div></div>'
-            + '<div class="sm">'+s.m+'</div></div>';
-        }).join('')
+      + msteps.map(function(s, i){ return _stepRow('m'+(i+1), s, mp.f, i===0 && _doneToday(mp.f), _doneToday(mp.f)); }).join('')
       + '<div class="stepacts"><a class="btn" href="'+encodeURI(mp.f)+'">打开匹配页</a></div>'
       + '</div>'
       + '<div class="task'+(dn?" on":"")+'" data-k="o"><div class="box'+(dn?" on":"")+'"></div>'
-      + '<div class="tk"><div class="tt">做完点这里打勾</div>'
+      + '<div class="tk"><div class="tt">'+(dn?'今天这篇做完了':'做完点这里打勾')+'</div>'
       + '<div class="td">匹配页提交后会自动打勾；没提交成就手动点。</div></div></div>';
   } else {
     var isW = wIsW;
@@ -983,15 +1022,11 @@ function renderTasks(){
     tHtml += '<div class="steps">'
       + '<div class="shd"><div><b>今天 · '+wlbl+' 1 篇</b><div class="sdt">'+wp.d+(SHORT?'　·　35 分钟短版':'')+'</div></div>'
       + '<div class="smin">'+(SHORT?'约 33 分钟':'38 分钟')+'</div></div>'
-      + wsteps.map(function(s){
-          return '<div class="step static"><div class="ck dim"></div>'
-            + '<div class="sx"><div class="st">'+s.n+' '+s.t+'</div><div class="sd">'+s.d+'</div></div>'
-            + '<div class="sm">'+s.m+'</div></div>';
-        }).join('')
+      + wsteps.map(function(s, i){ return _stepRow('w'+(i+1), s, wp.f, i===0 && _doneToday(wp.f), _doneToday(wp.f)); }).join('')
       + '<div class="stepacts"><a class="btn" href="'+encodeURI(wp.f)+'">打开'+wlbl+'页</a></div>'
       + '</div>'
       + '<div class="task'+(dn?" on":"")+'" data-k="o"><div class="box'+(dn?" on":"")+'"></div>'
-      + '<div class="tk"><div class="tt">做完点这里打勾</div>'
+      + '<div class="tk"><div class="tt">'+(dn?'今天这篇做完了':'做完点这里打勾')+'</div>'
       + '<div class="td">'+wlbl+'页提交后会自动打勾；没提交成就手动点。</div></div></div>';
   }
 
@@ -1098,6 +1133,9 @@ function renderTasks(){
     el.addEventListener('click', function(){
       var k = el.getAttribute('data-s');
       if (el.classList.contains('lock')){ flash('先做完前面那步，别跳'); return; }
+      /* 阅读/匹配/写译的 ②③ 是纸面动作，页面判不出来：
+         今天这套已经提交过，再点就是「我自己确认做完了」，直接勾 */
+      if (el.getAttribute('data-manual') === '1'){ toggleStep(k); return; }
       if (el.classList.contains('on')){ toggleStep(k); return; }
       var h = el.getAttribute('data-href');
       if (h) location.href = encodeURI(h); else toggleStep(k);
@@ -1196,6 +1234,15 @@ renderTasks();
 renderList();
 refreshStats();
 
+/* 从训练页按返回键回来时，页面是从缓存里恢复的，JS 不会重跑，
+   步骤和打勾还停在离开前的样子——这里补一次重画 */
+window.addEventListener('pageshow', function(ev){
+  if (ev.persisted){ renderTasks(); refreshStats(); }
+});
+document.addEventListener('visibilitychange', function(){
+  if (!document.hidden){ renderTasks(); refreshStats(); }
+});
+
 Promise.all([
   pull(),
   fetch("records.json?_="+Date.now(), {cache:"no-store"})
@@ -1265,6 +1312,27 @@ Promise.all([
                 if (_key){
                   var _ls = JSON.parse(localStorage.getItem(_key)||'[]') || [];
                   if (_ls.indexOf(_lp) < 0){ _ls.push(_lp); localStorage.setItem(_key, JSON.stringify(_ls)); }
+                }
+                /* 今天做的就是这一篇：首页据此把卡片钉住，别交完卷就换成下一篇 */
+                var _kd = /_Section/i.test(_lp) ? 'listen'
+                        : /^matching-/.test(_lp) ? 'match'
+                        : /^read-/.test(_lp) ? 'read'
+                        : /^(write|trans)-/.test(_lp) ? 'write' : '';
+                if (_kd){
+                  var _dt = new Date();
+                  var _dy = _dt.getFullYear()+'-'+String(_dt.getMonth()+1).padStart(2,'0')+'-'+String(_dt.getDate()).padStart(2,'0');
+                  var _dd = JSON.parse(localStorage.getItem('cet4_dod')||'{}') || {};
+                  var _ks = Object.keys(_dd).sort();
+                  while (_ks.length > 14){ delete _dd[_ks.shift()]; }
+                  _dd[_dy] = _dd[_dy] || {};
+                  _dd[_dy][_kd] = _lp;
+                  localStorage.setItem('cet4_dod', JSON.stringify(_dd));
+                  var _sk = _kd === 'match' ? 'm1' : _kd === 'read' ? 'r1' : _kd === 'write' ? 'w1' : '';
+                  if (_sk){
+                    var _so = JSON.parse(localStorage.getItem('cet4_steps_'+_dy)||'{}') || {};
+                    _so[_sk] = 1;
+                    localStorage.setItem('cet4_steps_'+_dy, JSON.stringify(_so));
+                  }
                 }
               }catch(e){}
             }
