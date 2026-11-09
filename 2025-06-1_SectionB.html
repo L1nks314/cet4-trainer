@@ -532,6 +532,10 @@ var QUIZ = [{"id": "q8", "stem": "8. Why is the woman complaining?", "zh": "", "
 
   function autoScroll(el){
     if (!follow || audio.paused) return;
+    /* 原文还没解锁时别跟读滚动：滚过去只有一片模糊，还会把题目甩出屏幕——
+       人就以为「题目没出来，一段就放完了」 */
+    var _tc = document.getElementById('transCard');
+    if (_tc && _tc.classList.contains('locked-sec')) return;
     var r = el.getBoundingClientRect();
     var vh = window.innerHeight;
     if (r.top > 70 && r.bottom < vh - 70) return;   /* 整句都在视野里就不动 */
@@ -1131,13 +1135,14 @@ var QUIZ = [{"id": "q8", "stem": "8. Why is the woman complaining?", "zh": "", "
   var stemBtn = document.createElement('button');
   stemBtn.className = 'btn btn-ghost';
   stemBtn.id = 'stemToggle';
-  stemBtn.textContent = '👁 看题干（交卷后解锁）';
-  stemBtn.disabled = true;
-  stemBtn.style.opacity = '.5';
+  /* 练习模式默认摊开题干：只给 A–D、问题在录音里念，等于让人对着四个选项猜。
+     想按考场来，点「🙈 收起题干」；全真模拟也会自动收起。 */
+  stemBtn.textContent = '🙈 收起题干';
   stemBtn.title = '四级卷面只有选项，问题在录音里念。交卷后才给看题干。';
   var submitBtn = document.getElementById('submitBtn');
   if (submitBtn && submitBtn.parentNode) submitBtn.parentNode.insertBefore(stemBtn, submitBtn);
-  var stemOpen = false;
+  var stemOpen = true;
+  document.body.classList.add('qshow');
   function unlockStem(){
     if (!stemBtn.disabled) return;
     stemBtn.disabled = false;
@@ -2887,7 +2892,7 @@ body.mock #quizCard{padding-top:14px}
   /* 1. 低频按钮收进「更多工具」 */
   var box = document.querySelector('#toolBox .tbin');
   if (box){
-    ['tpBack','tpFollow','tpMark','tpPlay','tpPause'].forEach(function(id){
+    ['tpBack','tpFollow','tpMark'].forEach(function(id){   /* 播放/暂停留在外面，别逼人翻「更多工具」 */
       var el = document.getElementById(id); if (el) box.appendChild(el);
     });
     var tip = document.querySelector('.card .tip.blue');
@@ -3235,13 +3240,10 @@ body.mock #quizCard{padding-top:14px}
     }
   })();
 
-  /* ── 2. 切篇：句首之间超过 25 秒 = 上一篇结束（中间是念问题与 15 秒作答） ── */
-  var ss = [];
-  LINES.forEach(function(x){ var tk = x.tokens || []; if (tk.length) ss.push(tk[0].s); });
-  ss.sort(function(a, b){ return a - b; });
-  var cand = [];
-  for (var i = 0; i < ss.length - 1; i++) if (ss[i+1] - ss[i] > 25) cand.push(ss[i+1]);
-
+  /* ── 2. 切篇：先认标头（"News report 2 / Passage 2 / Conversation 2" 就是新一篇的第一句），
+        标头不够再用「句首之间超过 25 秒」的静音兜底。
+        原来只认静音：碰上连续版录音（没有 15 秒答题空白）就整篇平均切，
+        会把「新闻 2」切在新闻 1 的正文中间——点进去听十几秒就没了，题都还没出来。 ── */
   var SEC  = (location.pathname.match(/Section([ABC])\.html/i) || [])[1] || 'A';
   var PLAN = { A: [2,2,3], B: [4,4], C: [3,3,4] }[SEC] || null;
   var NAME = { A: ['新闻 1','新闻 2','新闻 3'], B: ['对话 1','对话 2'],
@@ -3249,34 +3251,61 @@ body.mock #quizCard{padding-top:14px}
   var QS  = document.querySelectorAll('.q');
   var NQ  = QS.length;
   var n   = PLAN ? PLAN.length : 3;
+  var ss = [];
+  LINES.forEach(function(x){ var tk = x.tokens || []; if (tk.length) ss.push(tk[0].s); });
+  ss.sort(function(a, b){ return a - b; });
 
-  var bd = [0];
-  cand.forEach(function(v){ if (v > 30 && v < DUR - 30) bd.push(v); });
-  bd.push(DUR);
-  /* 边界多了：反复删掉让相邻某一段最短的那条，直到段数对 */
-  while (bd.length - 1 > n){
-    var wj = -1, wl = 1e9;
-    for (var j = 1; j < bd.length - 1; j++){
-      var len = Math.min(bd[j] - bd[j-1], bd[j+1] - bd[j]);
-      if (len < wl){ wl = len; wj = j; }
-    }
-    bd.splice(wj, 1);
-  }
-  /* 边界少了（整段无停顿的录音）：平均切 */
-  if (bd.length - 1 < n){
+  var MARK = /^\s*(news\s*reports?|passage|conversation|report)\s*(one|two|three|four|1|2|3|4)\b/i;
+  var marks = [];
+  LINES.forEach(function(x){
+    var tk = x.tokens || [];
+    if (!tk.length || !MARK.test((x.en || '').trim())) return;
+    var v = tk[0].s;
+    if (v > 1 && v < DUR - 8) marks.push(v);
+  });
+  marks.sort(function(a, b){ return a - b; });
+  var mk = [];                             /* 同一条标头被念两遍只留第一次 */
+  marks.forEach(function(v){ if (!mk.length || v - mk[mk.length - 1] > 20) mk.push(v); });
+
+  var bd;
+  if (mk.length >= n && mk[0] > 20){        /* 连第 1 篇标头都在 20 秒后：前面是开场说明，按标头切 */
+    bd = mk.slice(0, n).concat([DUR]);
+  } else {
     bd = [0];
-    for (var k = 1; k < n; k++) bd.push(+(DUR * k / n).toFixed(1));
-    bd.push(DUR);
-  }
+    /* 开头的「News Report 1」是第 1 篇自己的标头，不是分段点；先滤掉再取 n-1 个 */
+    mk.filter(function(v){ return v > 20; }).slice(0, n - 1).forEach(function(v){ bd.push(v); });
+    /* 静音兜底：看「上一句念完 → 下一句开口」的真空档，不是两个句首的差。
+       长句本身就能超过 25 秒，用句首差会把一句话劈成两篇。 */
+    var ee = [];
+    LINES.forEach(function(x){ var tk = x.tokens || []; if (tk.length) ee.push([tk[0].s, tk[tk.length-1].e]); });
+    ee.sort(function(a, b){ return a[0] - b[0]; });
+    var cand = [];
+    for (var i = 0; i < ee.length - 1; i++) if (ee[i+1][0] - ee[i][1] > 25) cand.push(ee[i+1][0]);
 
-  /* 边界贴到最近的句首：整段无停顿的录音只能平均切，但不能切在一句话中间 */
-  for (var jj = 1; jj < bd.length - 1; jj++){
-    var bestT = bd[jj], bestG = 20;
-    for (var qq = 0; qq < ss.length; qq++){
-      var dd = Math.abs(ss[qq] - bd[jj]);
-      if (dd < bestG){ bestG = dd; bestT = ss[qq]; }
+    /* 只补到够数就停：补过头会把标头那条真边界挤掉（2025-12-1 C 第三篇就这么偏了 34 秒） */
+    var need = n - bd.length;
+    cand.forEach(function(v){
+      if (need <= 0) return;
+      if (v < 20 || v > DUR - 20) return;
+      for (var j = 1; j < bd.length; j++) if (Math.abs(bd[j] - v) < 15) return;
+      bd.push(v); need--;
+    });
+    bd.sort(function(a, b){ return a - b; });
+    bd.push(DUR);
+    if (bd.length - 1 < n){                 /* 还差：平均切 */
+      bd = [0];
+      for (var k = 1; k < n; k++) bd.push(+(DUR * k / n).toFixed(1));
+      bd.push(DUR);
     }
-    bd[jj] = bestT;
+    /* 边界贴到最近的句首，别切在一句话中间 */
+    for (var jj = 1; jj < bd.length - 1; jj++){
+      var bestT = bd[jj], bestG = 8;
+      for (var qq = 0; qq < ss.length; qq++){
+        var dd = Math.abs(ss[qq] - bd[jj]);
+        if (dd < bestG){ bestG = dd; bestT = ss[qq]; }
+      }
+      bd[jj] = bestT;
+    }
   }
 
   var qc = PLAN ? PLAN.slice() : [];
@@ -3295,8 +3324,14 @@ body.mock #quizCard{padding-top:14px}
   if (!bar){
     bar = document.createElement('div');
     bar.id = 'segBar';
-    QS[0].parentNode.insertBefore(bar, QS[0]);
+    /* 放在播放器卡片底部：进页面先看见「新闻 1/2/3」，点一下只放这一段 */
+    var pc = document.querySelector('.card');
+    if (pc) pc.appendChild(bar); else QS[0].parentNode.insertBefore(bar, QS[0]);
   }
+  /* 挪到播放器卡片底部：进页面第一眼就能选「新闻 1/2/3」，点一下只放这一段，
+     不用先滚到做题区才发现分段按钮 */
+  var _pc = document.querySelector('.card');
+  if (_pc && bar.parentNode !== _pc) _pc.appendChild(bar);
   bar.className = 'segbar';
   bar.innerHTML = '<div class="segttl">分段听 <span>一段一听，听完自动停</span></div><div class="segrow" id="segRow"></div>';
 
@@ -3373,7 +3408,11 @@ body.mock #quizCard{padding-top:14px}
     cur = ii;
     row.children[ii].classList.add('on');
     dim(ii);
-    if (QS[qStart[ii]]) QS[qStart[ii]].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    /* 滚到「这一段的第一题」，不是做题区顶部：顶部还压着上一段的两道灰题，
+       看起来像没切过去。也不用 scrollIntoView——它会一路带滚到被锁的原文。 */
+    var _t = QS[qStart[ii]] || document.getElementById('quizCard');
+    var _tp = _t.getBoundingClientRect().top + window.pageYOffset - 64;
+    window.scrollTo({ top: Math.max(0, _tp), behavior: 'smooth' });
     if (skip || !PREREAD){ play(ii); return; }
     countdown(ii, PREREAD);
   }
@@ -3397,7 +3436,7 @@ body.mock #quizCard{padding-top:14px}
   function play(ii){
     var st = bd[ii], en = bd[ii + 1];
     clearWatcher();
-    seekTo(st + 0.05, function(){
+    seekTo(Math.max(0, st - 0.15), function(){
       var p = audio.play();
       if (p && p.catch) p.catch(function(){});
       watcher = function(){
@@ -3464,6 +3503,8 @@ body.mock #quizCard{padding-top:14px}
       return;
     }
     M.on = true; M.last = -1;
+    /* 全真模拟按考场来：题干收起来 */
+    document.body.classList.remove('qshow');
     document.body.classList.add('mock');
     hud.style.display = 'flex';
     a.removeAttribute('controls');
@@ -3498,6 +3539,7 @@ body.mock #quizCard{padding-top:14px}
 
   function finish(){
     if (!M.on) return;
+    document.body.classList.add('qshow');   /* 交完卷把题干放回来 */
     M.on = false;
     clearInterval(M.timer);
     try{ a.pause(); }catch(e){}

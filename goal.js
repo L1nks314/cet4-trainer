@@ -130,8 +130,8 @@
 
   var html = '<div id="goalBox">'
     + '<div class="ghd" id="goalHd">'
-    +   '<b>' + P.head + ' · ' + P.steps.length + ' 步</b>'
-    +   '<span>' + P.total + ' ▾</span>'
+    +   '<b>今天怎么做 · ' + P.steps.length + ' 步</b>'
+    +   '<span>' + P.head.replace(/^今天 · /,'') + '　' + P.total + ' ▾</span>'
     + '</div>'
     + '<div class="gbd">'
     +   rows
@@ -188,7 +188,10 @@
     var box = document.getElementById('goalBox');
     var _v = null;
     try{ _v = localStorage.getItem('cet4_goal_open'); }catch(e){}
-    var open = (_v === null) ? true : (_v === '1');   /* 第一次打开默认展开 */
+    /* 默认收起：一进来先看见播放器和题目，要看步骤再点开。
+       以前默认展开，一整块 5 步铺满首屏，把播放器推下去 900px，
+       人会以为「题还没出来」，直接点播放把整篇 6 分钟放完了。 */
+    var open = (_v === '1');
     if (open) box.classList.add('open');
     document.getElementById('goalHd').addEventListener('click', function(){
       box.classList.toggle('open');
