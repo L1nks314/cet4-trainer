@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>四级备考作战台</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/misans@5.0.0/lib/Normal/MiSansVF.min.css" crossorigin="anonymous">
 <style>
 :root{ --bg:#f4f5f7; --card:#ffffff; --soft:#fafbfc; --grey:#f2f3f5;
  --line:#e5e8ec; --line2:#eff1f4; --track:#e8ebef;
@@ -208,6 +210,57 @@ a.it.now .tx{font-weight:700;color:var(--green)}
  background:rgba(27,30,35,.92);color:#fff;padding:9px 16px;border-radius:999px;font-size:13px;
  max-width:78vw;text-align:center;line-height:1.5}
 #flash.on{display:block}
+
+  /* ═══ 视觉改版 v1（2026-11-12） ═══
+     三件事：头部从「蓝→紫」收进同一色系、卡片去边框只留呼吸感、正文和辅助文字拉开一档。
+     只改取值和留白，不动任何结构。 */
+  :root{
+    --bg:#f6f6f4; --soft:#fafaf9; --grey:#f1f1ef;
+    --line:#e8e8e5; --line2:#f1f1ee; --track:#e9e9e6;
+    --txt:#16161a; --txt2:#242429; --txt3:#3c3c44; --sub:#6d6d76; --sub2:#a3a3ac;
+    --blue:#3355d1; --blue-soft:#eef1fd;
+    --green:#0b6b41; --green-soft:#e9f6ee;
+    --red:#b8332a; --red-soft:#fceeec;
+    --amber:#9a5109; --amber-soft:#fdf5e7; --amber-line:#eedeba; --green-line:#bfe3cf;
+    --shadow:0 1px 2px rgba(22,22,26,.04);
+    --shadow-lg:0 20px 44px -24px rgba(22,22,26,.28);
+  }
+  body{font-family:"MiSans VF",-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    font-size:15px;line-height:1.72;padding:20px 14px 60px;}
+  .hero{background:linear-gradient(150deg,#3a5fe0 0%,#1f3a86 100%) !important;
+    border-radius:20px;padding:22px 20px;box-shadow:0 18px 40px -22px rgba(31,58,134,.5);}
+  .hero .days{font-size:34px;font-weight:700;letter-spacing:-.02em;}
+  .hero .stage{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);
+    color:#fff;border-radius:8px;font-weight:600;font-size:12px;padding:4px 10px;}
+  .hero .bar{height:6px;border-radius:3px;background:rgba(255,255,255,.18);}
+  .hero .bar i{border-radius:3px;}
+  .hero .note{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+    border-radius:10px;padding:12px 14px;font-size:13px;}
+  .card{border:0;border-radius:18px;padding:18px;margin-bottom:16px;
+    box-shadow:0 1px 2px rgba(22,22,26,.04),0 14px 34px -26px rgba(22,22,26,.35);}
+  .card h2{font-size:15px;font-weight:700;letter-spacing:.01em;}
+  .tt{font-size:15.5px;font-weight:650;letter-spacing:-.01em;}
+  .card{text-wrap:pretty;}
+  /* MiSans 比苹方宽约 4%，这一行会断在「C」后面。降 0.5px 刚好收回来 */
+  .goalcard .grow span{font-size:12px;}
+  .td{font-size:13px;line-height:1.62;margin-top:5px;}
+  .box{width:26px;height:26px;border-radius:7px;border-width:1.5px;margin-top:2px;}
+  .btn{border-radius:10px;font-weight:600;padding:10px 18px;font-size:14px;}
+  .bar{height:6px;border-radius:3px;}
+  .bar i{border-radius:3px;background:var(--blue);}
+  .task{padding:18px 0 18px 14px;}
+  .streak{border-top-color:var(--line2);}
+  @media (prefers-color-scheme: dark){
+    :root{--bg:#0f1115;--card:#171a1f;--soft:#1d2026;--grey:#20242a;
+      --line:#282d35;--line2:#22262d;--track:#272c34;
+      --txt:#e8eaee;--txt2:#d5d8dd;--txt3:#bfc4cb;--sub:#98a0aa;--sub2:#6b7280;
+      --blue:#7a97ff;--blue-soft:#1a2340;--green:#43cf92;--green-soft:#122e1f;
+      --red:#ef7a6b;--red-soft:#341d19;--amber:#e0a53f;--amber-soft:#302612;
+      --amber-line:#463619;--shadow:none;--shadow-lg:none;}
+    .hero{background:linear-gradient(150deg,#26386f 0%,#141a30 100%) !important;box-shadow:none;}
+    .hero .note{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1);}
+    .card{box-shadow:none;border:1px solid rgba(255,255,255,.055);}
+  }
 </style>
 </head>
 <body>

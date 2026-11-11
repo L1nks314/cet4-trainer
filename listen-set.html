@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>整套听力连做</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/misans@5.0.0/lib/Normal/MiSansVF.min.css" crossorigin="anonymous">
 <style>
   :root{ --bg:#f4f5f7; --card:#ffffff; --soft:#fafbfc; --grey:#f2f3f5;
    --line:#e5e8ec; --line2:#eff1f4; --track:#e8ebef;
@@ -132,6 +133,29 @@
   #resume .box{background:var(--card);border-radius:16px;padding:22px;max-width:340px;width:100%;box-shadow:0 16px 40px rgba(0,0,0,.3);text-align:center;}
   #resume h3{margin:0 0 8px;font-size:17px;}
   #resume p{margin:0 0 14px;font-size:13.5px;color:var(--sub);line-height:1.75;}
+
+  /* ═══ 视觉改版 v1：与首页、精听页同一套取值 ═══ */
+  :root{ --bg:#f6f6f4; --card:#ffffff; --soft:#fafaf9; --grey:#f1f1ef;
+   --line:#e8e8e5; --line2:#f1f1ee; --track:#e9e9e6;
+   --txt:#16161a; --txt2:#242429; --txt3:#3c3c44; --sub:#6d6d76; --sub2:#a3a3ac;
+   --blue:#3355d1; --blue-soft:#eef1fd; --green:#0b6b41; --green-soft:#e9f6ee;
+   --red:#b8332a; --red-soft:#fceeec; --amber:#9a5109; --amber-soft:#fdf5e7;
+   --shadow:0 1px 2px rgba(22,22,26,.04);}
+  body{font-family:"MiSans VF",-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;}
+  header{background:linear-gradient(150deg,#3a5fe0 0%,#1f3a86 100%);border-radius:18px;
+    box-shadow:0 18px 40px -22px rgba(31,58,134,.5);}
+  .card{border:0;border-radius:18px;
+    box-shadow:0 1px 2px rgba(22,22,26,.04),0 14px 34px -26px rgba(22,22,26,.35);}
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0f1115; --card:#171a1f; --soft:#1d2026; --grey:#20242a;
+     --line:#282d35; --line2:#22262d; --track:#272c34;
+     --txt:#e8eaee; --txt2:#d5d8dd; --txt3:#bfc4cb; --sub:#98a0aa; --sub2:#6b7280;
+     --blue:#7a97ff; --blue-soft:#1a2340; --green:#43cf92; --green-soft:#122e1f;
+     --red:#ef7a6b; --red-soft:#341d19; --amber:#e0a53f; --amber-soft:#302612;
+     --shadow:none;}
+    header{background:linear-gradient(150deg,#26386f 0%,#141a30 100%);box-shadow:none;}
+    .card{border:1px solid rgba(255,255,255,.055);box-shadow:none;}
+  }
 </style>
 </head>
 <body>
@@ -217,7 +241,7 @@ var AS = {};                  /* 三个 audio 元素 */
 var tickTimer = null, wakeLock = null, resumePending = false;
 /* 预读秒数：贴真考各段 direction 的长度，A 段最长 */
 var PREP = [30, 20, 20];
-var prepTimer = null, prepLeft = 0;
+var prepTimer = null, prepLeft = 0, prepping = false;
 
 function $(id){ return document.getElementById(id); }
 function fmt(t){
@@ -387,6 +411,7 @@ var PREPTIP = [
 function startPrep(i){
   var k = 'ABC'[i];
   prepLeft = PREP[i];
+  prepping = true;
   curSec = i;
   $('prepSec').textContent = 'Section ' + k + ' · ' + SECNAME[k];
   $('prepTip').textContent = PREPTIP[i];
@@ -406,6 +431,7 @@ function startPrep(i){
 
 function endPrep(i){
   if (prepTimer){ clearInterval(prepTimer); prepTimer = null; }
+  prepping = false;
   $('prep').classList.remove('on');
   $('foot').classList.add('on');
   $('fHint').textContent = '播放中，不能暂停';
@@ -473,6 +499,7 @@ function paintBar(){
 }
 
 function paintTime(){
+  if (prepping){ $('bTime').textContent = '预读'; return; }
   if (curSec >= 3){ $('bTime').textContent = fmt(totalDur); return; }
   var a = AS['ABC'[curSec]];
   $('bTime').textContent = fmt(before[curSec] + (a ? a.currentTime : 0));

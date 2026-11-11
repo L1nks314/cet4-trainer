@@ -462,3 +462,29 @@ h2 .num,.num{ color:var(--bg); }
 @media (prefers-color-scheme: dark){
   .hint span[style*="fff2a8"], .hint span[style*="ffd84d"]{ color:#4a3a00; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   视觉改版 v1（2026-11-12）
+   与首页同一套取值：色板、字体、卡片都对齐。
+   全部追加在末尾，不改上面任何一条原规则；要回退整块删掉即可。
+   ═══════════════════════════════════════════════════════════════ */
+:root{
+  --bg:#f6f6f4; --card:#ffffff; --soft:#fafaf9; --grey:#f1f1ef;
+  --line:#e8e8e5; --line2:#f1f1ee; --track:#e9e9e6;
+  --txt:#16161a; --txt2:#242429; --txt3:#3c3c44; --sub:#6d6d76; --sub2:#a3a3ac;
+  --blue:#3355d1; --blue-soft:#eef1fd;
+  --green:#0b6b41; --green-soft:#e9f6ee;
+  --red:#b8332a; --red-soft:#fceeec;
+  --amber:#9a5109; --amber-soft:#fdf5e7; --amber-line:#eedeba; --green-line:#bfe3cf;
+  --shadow:0 1px 2px rgba(22,22,26,.04);
+  --shadow-lg:0 20px 44px -24px rgba(22,22,26,.28);
+}
+body{font-family:"MiSans VF",-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;}
+@media (prefers-color-scheme: dark){
+  :root{--bg:#0f1115;--card:#171a1f;--soft:#1d2026;--grey:#20242a;
+    --line:#282d35;--line2:#22262d;--track:#272c34;
+    --txt:#e8eaee;--txt2:#d5d8dd;--txt3:#bfc4cb;--sub:#98a0aa;--sub2:#6b7280;
+    --blue:#7a97ff;--blue-soft:#1a2340;--green:#43cf92;--green-soft:#122e1f;
+    --red:#ef7a6b;--red-soft:#341d19;--amber:#e0a53f;--amber-soft:#302612;
+    --amber-line:#463619;--shadow:none;--shadow-lg:none;}
+}
