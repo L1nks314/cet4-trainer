@@ -3730,5 +3730,500 @@ body.mock #quizCard{padding-top:14px}
   setTimeout(paint, 400);
 })();
 </script>
+
+
+
+
+
+
+
+<script>
+/* ===== 精听模式（30 分钟 · 5 句）=====
+   设计原则：不接管页面播放器逻辑，只复用逐句 🔁 循环按钮；
+   所有判断标准写在代码里，用户不用自己决定挑哪句、什么时候算过。 */
+(function(){
+'use strict';
+if (window.__JTM) return;
+var A = document.getElementById('audio');
+var D = window.DATA;
+if (!A || !D) return;
+var L = (D.rates && D.rates[0] && D.rates[0].lines) || D.lines || [];
+if (!L || !L.length) return;
+window.__JTM = 1;
+
+var FILE = location.pathname.split('/').pop().replace(/\.html$/i, '');
+var KEY  = 'cet4_jt_' + FILE;
+var MARK = /^\s*(news\s*reports?|passage|conversation|report)\s*(one|two|three|four|\d+)\s*\.?$/i;
+
+/* ---------- 数据小工具 ---------- */
+function T(i){ return (L[i] && L[i].tokens) || []; }
+function EN(i){ return (L[i] && L[i].en) || ''; }
+function B(i){
+  var t = T(i);
+  if (!t.length) return [0, 1];
+  var s = t[0].s, e;
+  if (i + 1 < L.length && T(i + 1).length) e = T(i + 1)[0].s;
+  else e = (D.dur || s + 5);
+  var last = t[t.length - 1].e;
+  if (e > last + 1.2) e = last + 1.2;   /* 篇末别把题目播报算进来 */
+  return [Math.max(0, s - 0.12), Math.max(e, s + 0.8)];
+}
+/* 难度：词数 + 连读点数 + 语速，三个都是客观量，不是随手挑 */
+function diff(i){
+  var t = T(i), w = t.length;
+  var d = Math.max(0.25, t[w - 1].e - t[0].s);
+  var m = (D.marks && D.marks[i]) ? D.marks[i].length : 0;
+  return w * 0.5 + m * 1.2 + (w / d) * 4;
+}
+function okLine(i){
+  var t = T(i);
+  if (t.length < 6 || t.length > 34) return false;
+  if (MARK.test(EN(i).trim())) return false;
+  return (t[t.length - 1].e - t[0].s) >= 1.6;
+}
+
+/* ---------- 选 5 句：每篇取 1 句最难的，再按难度补满 ---------- */
+var groups = [], cur = null, i, j;
+for (i = 0; i < L.length; i++){
+  if (!T(i).length) continue;
+  if (MARK.test(EN(i).trim())){ cur = []; groups.push(cur); continue; }
+  if (!cur){ cur = []; groups.push(cur); }
+  cur.push(i);
+}
+if (groups.length < 2){
+  groups = [];
+  var per = Math.ceil(L.length / 3);
+  for (var g0 = 0; g0 < 3; g0++){
+    var gg = [];
+    for (j = g0 * per; j < Math.min((g0 + 1) * per, L.length); j++) if (T(j).length) gg.push(j);
+    if (gg.length) groups.push(gg);
+  }
+}
+var picked = [], used = {};
+/* 按篇轮流取：先每篇最难的一句，再每篇第二难的……保证 5 句覆盖到每一篇，
+   而不是全挤在同一篇里 */
+for (var rd = 0; rd < 4 && picked.length < 5; rd++){
+  groups.forEach(function(g){
+    if (picked.length >= 5) return;
+    var cand = g.filter(function(k){ return okLine(k) && !used[k]; });
+    if (!cand.length) return;
+    cand.sort(function(a, b){ return diff(b) - diff(a); });
+    picked.push(cand[0]);
+    used[cand[0]] = 1;
+  });
+}
+var pool = [];
+for (i = 0; i < L.length; i++) if (okLine(i)) pool.push(i);
+pool.sort(function(a, b){ return diff(b) - diff(a); });
+for (i = 0; i < pool.length && picked.length < 5; i++){
+  if (!used[pool[i]]){ picked.push(pool[i]); used[pool[i]] = 1; }
+}
+picked.sort(function(a, b){ return a - b; });
+if (!picked.length) return;
+window.__jtPick = picked.slice();
+
+/* ---------- 状态 ---------- */
+var st = { step: 1, k: 0, reps: 0, phase: 0, res: [], hit: 0 };
+var loopEl = null, lastT = 0, tickTimer = null;
+
+/* ---------- 样式 ---------- */
+var css = document.createElement('style');
+css.textContent = [
+'#jtW{position:fixed;inset:0;z-index:99999;background:var(--bg);display:none;flex-direction:column;color:var(--txt);font-family:inherit}',
+'#jtW.on{display:flex}',
+'#jtH{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line);background:var(--card);flex:0 0 auto}',
+'#jtH .jtno{font-size:11.5px;color:var(--sub);font-weight:700;letter-spacing:.04em;flex:0 0 auto}',
+'#jtH b{font-size:15px;flex:1;font-weight:800;letter-spacing:-.01em}',
+'#jtH #jtX{border:0;background:transparent;font-size:24px;color:var(--sub);cursor:pointer;line-height:1;padding:2px 6px}',
+'#jtB{flex:1 1 auto;overflow-y:auto;padding:16px 16px 28px;-webkit-overflow-scrolling:touch}',
+'#jtF{padding:10px 16px 14px;border-top:1px solid var(--line);background:var(--card);display:flex;gap:10px;flex:0 0 auto}',
+'#jtF button{flex:1;border:0;border-radius:11px;padding:13px;font-size:15px;font-weight:800;font-family:inherit;cursor:pointer}',
+'#jtPrev{background:var(--grey);color:var(--txt3)}',
+'#jtNext{background:var(--blue);color:#fff}',
+'#jtNext:disabled{opacity:.38}',
+'.jt-h{font-size:19px;font-weight:800;margin:0 0 8px;letter-spacing:-.01em;line-height:1.4}',
+'.jt-p{font-size:14.5px;color:var(--sub);line-height:1.75;margin:0 0 14px}',
+'.jt-big{display:block;width:100%;border:0;border-radius:13px;padding:17px;font-size:16.5px;font-weight:800;background:var(--blue);color:#fff;font-family:inherit;cursor:pointer;margin:0 0 10px}',
+'.jt-big.q{background:var(--grey);color:var(--txt2)}',
+'.jt-row{display:flex;gap:9px;margin-top:10px}',
+'.jt-row button{flex:1;border:1.5px solid var(--line);background:var(--card);border-radius:11px;padding:15px 6px;font-size:14.5px;font-weight:800;color:var(--txt2);font-family:inherit;cursor:pointer;line-height:1.3}',
+'.jt-row button.ok{border-color:var(--green);color:var(--green);background:var(--green-soft)}',
+'.jt-row button.no{border-color:var(--amber);color:var(--amber);background:var(--amber-soft)}',
+'.jt-dots{display:flex;gap:6px;margin:0 0 16px}',
+'.jt-dots i{flex:1;height:5px;border-radius:3px;background:var(--track)}',
+'.jt-dots i.done{background:var(--green)}',
+'.jt-dots i.cur{background:var(--blue)}',
+'.jt-dots i.bad{background:var(--amber)}',
+'.jt-rep{font-size:13px;color:var(--sub);text-align:center;margin:8px 0 0;font-variant-numeric:tabular-nums}',
+'.jt-tip{font-size:13px;line-height:1.7;color:var(--sub);background:var(--soft);border:1px solid var(--line);border-radius:11px;padding:11px 13px;margin:14px 0 0}',
+'.jt-tip b{color:var(--txt2)}',
+'.jt-en{font-size:15.5px;line-height:1.9;color:var(--txt);background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:13px;margin:12px 0 0}',
+'.jt-item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px;margin:0 0 10px}',
+'.jt-item .jt-en{margin:8px 0 0;background:transparent;border:0;padding:0;font-size:14.5px;line-height:1.8}',
+'.jt-item .jt-meta{font-size:12px;color:var(--sub);margin-top:6px}',
+'.jt-num{font-size:12px;font-weight:800;color:var(--blue);letter-spacing:.03em}',
+'.jt-hero{font-size:44px;line-height:1;margin:6px 0 10px}',
+'.jt-entry{display:block;width:100%;border:0;border-radius:12px;padding:15px 12px;margin:12px 0 10px;background:var(--blue);color:#fff;font-size:15px;font-weight:800;font-family:inherit;cursor:pointer;letter-spacing:-.005em;box-shadow:0 4px 14px rgba(37,99,235,.22)}'
+].join('');
+document.head.appendChild(css);
+
+/* ---------- 骨架 ---------- */
+var host = document.createElement('div');
+host.id = 'jtW';
+host.innerHTML = '<div id="jtH"><span class="jtno" id="jtNo"></span><b id="jtTitle"></b><button id="jtX" aria-label="关闭">×</button></div>' +
+  '<div id="jtB"></div>' +
+  '<div id="jtF"><button id="jtPrev">上一步</button><button id="jtNext">下一步</button></div>';
+document.body.appendChild(host);
+
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function fmt(t){
+  t = Math.max(0, Math.floor(t || 0));
+  return ('0' + Math.floor(t / 60)).slice(-2) + ':' + ('0' + (t % 60)).slice(-2);
+}
+function lineEl(k){ return document.querySelector('.line[data-li="' + k + '"]'); }
+function offLoop(){
+  var ons = document.querySelectorAll('.pbtn[data-act="loop"].on');
+  for (var i = 0; i < ons.length; i++) ons[i].click();
+  loopEl = null;
+}
+function submitted(){ return !!document.querySelector('.q .opt.right, .q .opt.wrong'); }
+
+/* ---------- 播放控制 ---------- */
+var segS = 0, segE = 0, autoResume = 0;
+
+/* 页面自带的 🔁 用的是内部 loopRange，会被别的操作清掉；精听自己控区间，行为可预测 */
+function killLoops(){
+  var ons = document.querySelectorAll('.pbtn[data-act="loop"].on');
+  for (var i = 0; i < ons.length; i++) ons[i].click();
+}
+function playSeg(){
+  var k = picked[st.k], b = B(k);
+  killLoops();
+  segS = b[0];
+  segE = b[1];
+  autoResume = 0;
+  A.playbackRate = (st.reps >= 2) ? 1 : 0.85;
+  A.currentTime = segS;
+  try{ A.play(); }catch(e){}
+  st.phase = 1;
+  lastT = segS;
+}
+function endSeg(){
+  try{ A.pause(); }catch(e){}
+  st.phase = 2;
+  render();
+}
+A.addEventListener('timeupdate', function(){
+  if (!host.classList.contains('on') || st.step !== 3 || st.phase !== 1) return;
+  var t = A.currentTime;
+  if (t >= segE - 0.05 || t < lastT - 0.6){    /* 到句尾 = 一遍放完 */
+    st.reps++;
+    if (st.reps >= 3){ endSeg(); return; }     /* 第 3 遍放完就停 */
+    A.playbackRate = (st.reps >= 2) ? 1 : 0.85;
+    A.currentTime = segS;
+    lastT = segS;
+    paintSeg();
+    return;
+  }
+  lastT = t;
+});
+/* 其它残留的 stopAt 可能在句中把音频掐停，这里兜一次 */
+A.addEventListener('pause', function(){
+  if (autoResume >= 2) return;
+  if (!host.classList.contains('on') || st.step !== 3 || st.phase !== 1) return;
+  if (A.currentTime >= segE - 0.12) return;
+  autoResume++;
+  setTimeout(function(){ if (st.phase === 1 && A.paused) A.play(); }, 150);
+});
+
+/* ---------- 各步骤文案 ---------- */
+function paintSeg(){
+  try{ host.setAttribute('data-li', String(picked[st.k])); }catch(e){}
+  var btn = $('jtSegBtn');
+  var rep = $('jtRep');
+  if (!btn) return;
+  btn.style.display = (st.phase === 3) ? 'none' : '';
+  if (st.phase === 1){
+    btn.className = 'jt-big q';
+    btn.textContent = '⏸ 停一下';
+    btn.setAttribute('data-act', 'segstop');
+  } else if (st.phase === 2){
+    btn.className = 'jt-big';
+    btn.textContent = '↻ 再来三遍';
+    btn.setAttribute('data-act', 'segplay');
+  } else {
+    btn.className = 'jt-big';
+    btn.textContent = '▶ 开始听这句';
+    btn.setAttribute('data-act', 'segplay');
+  }
+  if (rep){
+    var n = Math.min(3, st.reps + 1);
+    rep.textContent = st.phase === 2
+      ? '三遍放完了 · 刚才那次听懂了吗'
+      : '第 ' + n + ' / 3 遍 · ' + (st.reps >= 2 ? '原速 1.0×' : '慢速 0.85×');
+  }
+}
+
+function render(){
+  if (!host.classList.contains('on')) return;
+  var no = $('jtNo'), ti = $('jtTitle'), body = $('jtB'), nx = $('jtNext'), pv = $('jtPrev');
+  var names = ['', '盲听', '做题', '精听 5 句', '跟读', '回听自评', '结果'];
+  no.textContent = (st.step >= 6) ? '已完成' : ('第 ' + st.step + ' / 5 步');
+  ti.textContent = names[st.step] || '';
+  $('jtF').style.display = (st.step === 6) ? 'none' : '';
+  pv.style.display = st.step > 1 ? '' : 'none';
+  nx.style.display = (st.step === 6) ? 'none' : '';
+  nx.disabled = false;
+  nx.textContent = '下一步';
+
+  if (st.step === 1){
+    body.innerHTML =
+      '<h3 class="jt-h">先整段听一遍，什么都别做</h3>' +
+      '<p class="jt-p">不暂停、不回放、不看原文。听完能用一句中文说出「这段在讲什么」就够了；说不出来也很正常，这一步只是为了让你知道哪里卡住。</p>' +
+      '<button class="jt-big" data-act="all">▶ 播放整段</button>' +
+      '<p class="jt-rep" id="jtPos">' + fmt(A.currentTime) + ' / ' + fmt(D.dur) + '</p>' +
+      '<div class="jt-tip">这一步约 2 分钟。听完直接点「下一步」，不用在这里反复。</div>';
+    nx.textContent = '听完了，去做题';
+  }
+
+  if (st.step === 2){
+    var done = submitted();
+    body.innerHTML =
+      '<h3 class="jt-h">现在做题，按考场来</h3>' +
+      '<p class="jt-p">1.0× 整段放一遍，不许回放、不许暂停。做完点「交卷」。<br>这是体检：错多少都别管，后面会把听不懂的地方一句句拆开。</p>' +
+      '<button class="jt-big" data-act="gotoq">' + (done ? '已交卷 · 回到题目看看' : '去做题（约 6 分钟）') + '</button>' +
+      '<div class="jt-tip">' + (done ? '<b>已检测到交卷。</b>可以直接点「下一步」进入精听。' : '交卷完成后回来，这里会自动亮起。') + '</div>';
+    nx.disabled = !done;
+  }
+
+  if (st.step === 3){
+    var k = picked[st.k];
+    var dots = '';
+    for (var d = 0; d < picked.length; d++){
+      var cls = d < st.k ? (st.res[d] ? 'done' : 'bad') : (d === st.k ? 'cur' : '');
+      dots += '<i class="' + cls + '"></i>';
+    }
+    var html = '<div class="jt-dots">' + dots + '</div>' +
+      '<h3 class="jt-h">第 ' + (st.k + 1) + ' 句 · 共 ' + picked.length + ' 句</h3>' +
+      '<p class="jt-p">连放 3 遍：慢速两遍，原速一遍。三遍都放完再判断，中途别停。</p>' +
+      '<button class="jt-big" id="jtSegBtn" data-act="segplay">▶ 开始听这句</button>' +
+      '<p class="jt-rep" id="jtRep">第 1 / 3 遍 · 慢速 0.85×</p>';
+    if (st.phase === 2){
+      html += '<div class="jt-row">' +
+        '<button class="ok" data-act="ok">听出来了</button>' +
+        '<button class="no" data-act="no">还是不行</button></div>';
+    }
+    if (st.phase === 3){
+      html += '<div class="jt-en">' + esc(EN(k)) + '</div>' +
+        '<div class="jt-tip"><b>标记为难句。</b>先看清是哪个词或哪处连读没听出来，再去跟读。这句明天还会出现。</div>' +
+        '<button class="jt-big" data-act="nextseg">下一句</button>';
+    }
+    body.innerHTML = html;
+    paintSeg();
+    nx.style.display = 'none';
+  }
+
+  if (st.step === 4){
+    var bad = [];
+    picked.forEach(function(k, idx){ if (!st.res[idx]) bad.push(k); });
+    if (!bad.length){
+      body.innerHTML =
+        '<h3 class="jt-h">5 句都听出来了</h3>' +
+        '<p class="jt-p">这一轮没有难句，可以直接进最后一步回听。跟读是可选加分项，想练口音就做，不想做也不影响过关。</p>' +
+        '<a class="jt-big" style="display:block;text-align:center;text-decoration:none" href="shadow-free.html?p=' + encodeURIComponent(location.pathname.split('/').pop()) + '" target="_blank" rel="noopener">🎤 顺手跟读这一段（可选）</a>';
+    } else {
+      var list = '';
+      bad.forEach(function(k, n){
+        list += '<div class="jt-item"><div class="jt-num">难句 ' + (n + 1) + '</div>' +
+          '<div class="jt-en">' + esc(EN(k)) + '</div>' +
+          '<div class="jt-meta">' + fmt(B(k)[0]) + ' 起 · 约 ' + Math.round(B(k)[1] - B(k)[0]) + ' 秒</div>' +
+          '<div class="jt-row"><button data-act="replay" data-li="' + k + '">▶ 再听一遍</button></div></div>';
+      });
+      body.innerHTML =
+        '<h3 class="jt-h">跟读这 ' + bad.length + ' 句</h3>' +
+        '<p class="jt-p">影子跟读：比原声晚 1–2 个词开口，声音跟上去，不要等它念完再复述。每句 3 遍。<br>这一步治的是连读——嘴能跟上，耳朵才切得开。</p>' +
+        list +
+        '<a class="jt-big" style="display:block;text-align:center;text-decoration:none;margin-top:6px" href="shadow-free.html?p=' + encodeURIComponent(location.pathname.split('/').pop()) + '" target="_blank" rel="noopener">🎤 打开跟读页（这一段）</a>';
+    }
+    nx.textContent = '去回听';
+  }
+
+  if (st.step === 5){
+    body.innerHTML =
+      '<h3 class="jt-h">最后回听整段，原速</h3>' +
+      '<p class="jt-p">还是 1.0×，从头到尾一遍。这次留意：刚才那几句难句，现在能不能直接听出词。</p>' +
+      '<button class="jt-big" data-act="all">▶ 播放整段</button>' +
+      '<p class="jt-rep" id="jtPos">' + fmt(A.currentTime) + ' / ' + fmt(D.dur) + '</p>' +
+      '<h3 class="jt-h" style="margin-top:22px;font-size:16px">这一遍你能跟上几成词？</h3>' +
+      '<div class="jt-row"><button data-act="hit" data-v="9">8–10 成</button><button data-act="hit" data-v="7">6–7 成</button></div>' +
+      '<div class="jt-row"><button data-act="hit" data-v="5">4–5 成</button><button data-act="hit" data-v="3">3 成以下</button></div>' +
+      '<div class="jt-tip"><b>标准是 8 成。</b>不到 8 成，明天同一段重做，不要换新的——换新材料等于把今天跳过的地方再跳一遍。</div>';
+    nx.disabled = true;
+    if (st.hit) nx.disabled = false;
+  }
+
+  if (st.step === 6){
+    var pass = st.hit >= 8;
+    var okN = st.res.filter(function(x){ return x; }).length;
+    body.innerHTML =
+      '<div class="jt-hero" style="color:' + (pass ? 'var(--green)' : 'var(--amber)') + '">' + (pass ? '✓' : '↻') + '</div>' +
+      '<h3 class="jt-h">' + (pass ? '这一段过了' : '这一段明天再来') + '</h3>' +
+      '<p class="jt-p">' + (pass
+        ? '回听能跟上 ' + st.hit + ' 成，' + okN + '/' + picked.length + ' 句一遍听懂。明天换下一篇，不用回头。'
+        : '回听只跟上 ' + st.hit + ' 成，' + okN + '/' + picked.length + ' 句过关。明天同一段重做，重点还是这几句——它们会排在最前面。') + '</p>' +
+      (st.res.some(function(x){ return !x; })
+        ? '<div class="jt-tip"><b>难句清单</b><br>' + picked.map(function(k, idx){
+            return st.res[idx] ? '' : '· ' + esc(EN(k).slice(0, 90)) + (EN(k).length > 90 ? '…' : '');
+          }).filter(Boolean).join('<br>') + '</div>'
+        : '') +
+      '<div class="jt-tip">今天听力到此为止。别再加新段落——听力的进步来自「把难句一首一首啃下来」，不是「听过多少分钟」。</div>';
+    pv.style.display = 'none';
+    nx.style.display = 'none';
+  }
+}
+
+/* ---------- 交互 ---------- */
+host.addEventListener('click', function(e){
+  var t = e.target.closest ? e.target.closest('[data-act]') : null;
+  if (!t) return;
+  var act = t.getAttribute('data-act');
+
+  if (act === 'all'){
+    if (!A.paused){ A.pause(); t.textContent = '▶ 继续播放'; return; }
+    if (A.currentTime >= (D.dur || 1e9) - 1) A.currentTime = 0;
+    A.playbackRate = 1;
+    A.play();
+    t.textContent = '⏸ 暂停';
+    return;
+  }
+  if (act === 'gotoq'){
+    closeJt();
+    var q = document.getElementById('quizCard');
+    if (q){
+      var top = q.getBoundingClientRect().top + window.pageYOffset - 60;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    }
+    return;
+  }
+  if (act === 'segplay'){ playSeg(); paintSeg(); return; }
+  if (act === 'segstop'){ st.phase = 0; try{ A.pause(); }catch(e){} render(); return; }
+  if (act === 'ok'){
+    st.res[st.k] = 1; st.phase = 0; st.reps = 0;
+    nextSeg();
+    return;
+  }
+  if (act === 'no'){
+    st.res[st.k] = 0; st.phase = 3; st.reps = 0;
+    render();
+    return;
+  }
+  if (act === 'nextseg'){ nextSeg(); return; }
+  if (act === 'replay'){
+    var li = +t.getAttribute('data-li');
+    offLoop();
+    A.playbackRate = 1;
+    A.currentTime = B(li)[0];
+    A.play();
+    return;
+  }
+  if (act === 'hit'){
+    st.hit = +t.getAttribute('data-v');
+    var ok = st.hit >= 8;
+    try{
+      localStorage.setItem(KEY, JSON.stringify({
+        d: (function(){ var n = new Date(); return n.getFullYear() + '-' + ('0' + (n.getMonth() + 1)).slice(-2) + '-' + ('0' + n.getDate()).slice(-2); })(), ok: ok ? 1 : 0,
+        hit: st.hit, n: picked.length, ts: Date.now()
+      }));
+    }catch(err){}
+    st.step = 6;
+    render();
+    return;
+  }
+});
+
+function nextSeg(){
+  st.k++;
+  st.phase = 0;
+  st.reps = 0;
+  if (st.k >= picked.length){ st.k = picked.length - 1; st.step = 4; }
+  render();
+}
+
+$('jtNext').addEventListener('click', function(){
+  if (st.step >= 6) return;
+  if (st.step === 1 || st.step === 5){ try{ A.pause(); }catch(e){} }
+  st.step++;
+  render();
+});
+$('jtPrev').addEventListener('click', function(){
+  if (st.step > 1){
+    if (st.step === 3 && st.phase === 1){ offLoop(); A.pause(); }
+    st.step--;
+    render();
+  }
+});
+$('jtX').addEventListener('click', closeJt);
+
+function openJt(){
+  /* 中途关掉再进来要接着做，不能从第一步重来（去交卷一定会关一次） */
+  if (!(st.step > 1 && st.step < 6)){
+    st.step = 1; st.k = 0; st.reps = 0; st.phase = 0; st.res = []; st.hit = 0;
+  }
+  host.classList.add('on');
+  document.body.style.overflow = 'hidden';
+  var f = document.getElementById('tpFollow');
+  if (f && f.classList.contains('act')) f.click();   /* 精听时别让页面跟着滚 */
+  offLoop();
+  try{ A.pause(); }catch(e){}
+  render();
+}
+function closeJt(){
+  offLoop();
+  try{ A.pause(); A.playbackRate = 1; }catch(e){}
+  host.classList.remove('on');
+  document.body.style.overflow = '';
+  if (tickTimer){ clearInterval(tickTimer); tickTimer = null; }
+}
+window.__jtOpen = openJt;
+
+/* ---------- 入口按钮 ---------- */
+function mount(){
+  var tp = document.getElementById('tpPlay');
+  if (!tp || !tp.parentNode) return;
+  if (document.getElementById('jtOpen')) return;
+  var tr = tp.parentNode;
+  var b = document.createElement('button');
+  b.className = 'jt-entry';
+  b.id = 'jtOpen';
+  b.type = 'button';
+  b.textContent = '🎧 精听模式 · 按 5 步走完这一段';
+  b.addEventListener('click', openJt);
+  /* 单独占一行，不挤原来那排播放按钮 */
+  if (tr && tr.parentNode) tr.parentNode.insertBefore(b, tr);
+  else tp.parentNode.insertBefore(b, tp);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
+else mount();
+
+/* 位置/按钮文字随播放刷新 */
+tickTimer = setInterval(function(){
+  if (!host.classList.contains('on')) return;
+  /* 交卷发生在 overlay 之外，这里补一次检测，把「下一步」放出来 */
+  if (st.step === 2){
+    var nb = document.getElementById('jtNext');
+    if (nb && nb.disabled && submitted()){ render(); return; }
+  }
+  var p = document.getElementById('jtPos');
+  if (p) p.textContent = fmt(A.currentTime) + ' / ' + fmt(D.dur);
+  var all = host.querySelector('[data-act="all"]');
+  if (all && st.step !== 3){
+    all.textContent = A.paused ? (A.currentTime > 0.5 ? '▶ 继续播放' : '▶ 播放整段') : '⏸ 暂停';
+  }
+}, 400);
+
+})();
+</script>
+
 </body>
 </html>
