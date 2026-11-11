@@ -290,17 +290,21 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
  -webkit-tap-highlight-color:transparent;white-space:nowrap}
 .dprow .dpx.on{background:#fdecec;color:#c0392b;border-color:#f0c4c4}
 /* 云状态条：右下角固定 · 照片上传 + 教练已读 */
-#cloudBar{position:fixed;right:14px;bottom:14px;z-index:70;display:flex;flex-direction:column;align-items:flex-end;gap:8px;font-family:inherit}
+#cloudBar{position:relative;z-index:70;display:flex;flex-direction:column;align-items:center;gap:8px;
+ margin:20px auto 12px;padding:0 14px;font-family:inherit}
 #cloudBar button{border:0;border-radius:12px;padding:11px 15px;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(15,23,42,.14);font-family:inherit}
 #cloudBar button:active{transform:scale(.97)}
-#cloudPhoto{background:var(--blue);color:#fff}
+#cloudPhoto{background:var(--blue);color:#fff;border-radius:50%;width:40px;height:40px;padding:0;
+ font-size:0;line-height:38px;text-align:center;opacity:.78;box-shadow:0 3px 10px rgba(15,23,42,.18)}
+#cloudPhoto::before{content:'📷';font-size:20px;line-height:1}
+#cloudPhoto:active{opacity:1}
 #cloudPhoto:disabled{background:#c9d4e4;cursor:default}
 #cloudSt{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:12.5px;color:var(--sub);box-shadow:0 4px 14px rgba(15,23,42,.10);max-width:220px;line-height:1.45}
 #cloudSt.read{color:var(--green);border-color:#b8e6c8;background:#f2fbf5}
 #cloudSt.err{color:var(--red);border-color:#f3c6c6;background:#fff5f5}
 #cloudBar.hide-photo #cloudPhoto{display:none}
 @media (max-width:640px){
-  #cloudBar{right:8px;bottom:8px;gap:6px}
+  #cloudBar{gap:6px;margin:14px auto 8px}
   #cloudBar button{padding:10px 12px;font-size:12.5px}
   #cloudSt{max-width:180px;padding:7px 10px;font-size:11.5px}
 }
@@ -396,7 +400,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 .segttl{font-size:12.5px;font-weight:700;color:var(--txt2);display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .segttl span{font-weight:400;color:var(--sub)}
 .segsel{margin-left:auto;font-size:12px;border:1px solid var(--line);border-radius:7px;background:var(--card);color:var(--txt2);padding:2px 4px}
-.segrow{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px}
+.segrow{display:flex;gap:8px;flex-wrap:wrap}
 .segchip{flex:0 0 auto;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 12px;text-align:left;cursor:pointer;color:var(--txt);font-family:inherit}
 .segchip b{display:block;font-size:13px}
 .segchip i{display:block;font-size:11px;color:var(--sub);font-style:normal;margin-top:2px}
@@ -684,7 +688,10 @@ var QUIZ = [{"id": "q1", "stem": "1. How did Tariq make corn taste better?", "zh
       var R = DATA.rates[rate], LS = R.lines || DATA.lines;
       var s = LS[li].tokens[0].s;
       var e = (li + 1 < LS.length) ? LS[li+1].tokens[0].s : (R.dur || DATA.dur);
-      return [Math.max(0, s - 0.12), e];
+      /* 篇末最后一句后面跟着本篇题目播报和作答空白：只放到本句念完，别把 60 秒题目一起放进来 */
+      var last = LS[li].tokens[LS[li].tokens.length - 1].e;
+      if (e > last + 1.2) e = last + 1.2;
+      return [Math.max(0, s - 0.12), Math.max(e, s + 0.8)];
     }
     z.addEventListener('click', function(){ audio.pause(); });
     p.addEventListener('click', function(){
@@ -1139,14 +1146,11 @@ var QUIZ = [{"id": "q1", "stem": "1. How did Tariq make corn taste better?", "zh
   var stemBtn = document.createElement('button');
   stemBtn.className = 'btn btn-ghost';
   stemBtn.id = 'stemToggle';
-  /* 练习模式默认摊开题干：只给 A–D、问题在录音里念，等于让人对着四个选项猜。
-     想按考场来，点「🙈 收起题干」；全真模拟也会自动收起。 */
-  stemBtn.textContent = '🙈 收起题干';
-  stemBtn.title = '四级卷面只有选项，问题在录音里念。交卷后才给看题干。';
+  stemBtn.textContent = '👁 看题干';
+  stemBtn.title = '四级卷面只有选项，问题在录音里念。想确认问什么，点这里查看。';
   var submitBtn = document.getElementById('submitBtn');
   if (submitBtn && submitBtn.parentNode) submitBtn.parentNode.insertBefore(stemBtn, submitBtn);
-  var stemOpen = true;
-  document.body.classList.add('qshow');
+  var stemOpen = false;
   function unlockStem(){
     if (!stemBtn.disabled) return;
     stemBtn.disabled = false;
@@ -1994,7 +1998,9 @@ for (var qid in AL){
   try{ st = JSON.parse(localStorage.getItem(KEY) || 'null'); }catch(e){}
   if (st && st.o) bar.classList.add('open');
   if (st && st.l != null){ place(st.l, st.t); clamp(st.l, st.t); }
-  else { place(10, window.innerHeight - 44 - 96); }   /* 默认贴左下，别压在正文中间 */
+  /* 第一次打开：贴左下边，躲开分段按钮和底部步骤条；拖过一次就按记忆位置 */
+  else { bar.style.right='6px'; bar.style.left='auto';
+         bar.style.bottom='calc(88px + env(safe-area-inset-bottom))'; bar.style.top='auto'; }
 
   function setOpen(o){
     bar.classList.toggle('open', o);
@@ -2071,10 +2077,9 @@ for (var qid in AL){
         var _b = (init && init.body) ? String(init.body) : '';
         var _isRep = /["']t["']\s*:\s*["']rep["']/.test(_b);
         if (_isRep){
-          p.then(function(r){
-            if (r && r.ok){
-              window.__markDone(/_Section/.test(location.pathname) ? 'listen' : 'other');
-              window.__markDone('receipt');
+          /* 本地先落地：不等网络回执。ntfy 不通时也要记住今天做的哪一篇，否则刷新就换篇 */
+          window.__markDone(/_Section/.test(location.pathname) ? 'listen' : 'other');
+          window.__markDone('receipt');
               /* 记下这段已做过，首页据此自动跳到下一个没做过的篇章 */
               try{
                 var _lp = location.pathname.split('/').pop();
@@ -2117,8 +2122,7 @@ for (var qid in AL){
                   }catch(e){}
                 }
               }catch(e){}
-            }
-          }).catch(function(){});
+          p.catch(function(){});
         }
       }
     }catch(e){}
@@ -2209,7 +2213,9 @@ for (var qid in AL){
     for (var i = 0; i < L.length; i++){
       var s = L[i].tokens[0].s;
       var e = (i + 1 < L.length) ? L[i + 1].tokens[0].s : (DATA.dur || 1e9);
-      out.push([Math.max(0, s - 0.10), e]);
+      var last = L[i].tokens[L[i].tokens.length - 1].e;
+      if (e > last + 1.2) e = last + 1.2;   /* 篇末：到本句念完为止 */
+      out.push([Math.max(0, s - 0.10), Math.max(e, s + 0.8)]);
     }
     B = out; return B;
   }
@@ -2471,6 +2477,8 @@ for (var qid in AL){
 (function(){
   if (window.__cloudDone) return;
   window.__cloudDone = true;
+  /* 原来 fixed 钉在右下角，会压住「全部 / 不分段」这些按钮：挪到页面最底部 */
+  try{ var _cb = document.getElementById('cloudBar'); if (_cb && _cb.parentNode) document.body.appendChild(_cb); }catch(e){}
   var TOPIC = "cet4-718beb5773e8edd9ef48eb651cb1439dd362eb4a8d28f449";        /* 学生 → 教练 */
   var COACH = "cet4-coach-ef2b445bf27eb11c2c231ec43c27fca10796a49c4676351e"; /* 教练 → 学生 */
   var PAGE = location.pathname.split('/').pop() || document.title;
