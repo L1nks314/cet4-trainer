@@ -3745,6 +3745,7 @@ body.mock #quizCard{padding-top:14px}
 
 
 
+
 <script>
 /* ===== 精听模式（30 分钟 · 5 句）=====
    设计原则：不接管页面播放器逻辑，只复用逐句 🔁 循环按钮；
@@ -3783,10 +3784,12 @@ function diff(i){
   var m = (D.marks && D.marks[i]) ? D.marks[i].length : 0;
   return w * 0.5 + m * 1.2 + (w / d) * 4;
 }
+var HEAD = /^\s*(news\s*reports?|passage|conversation|report)\s*(one|two|three|four|\d+)\b/i;
 function okLine(i){
   var t = T(i);
   if (t.length < 6 || t.length > 34) return false;
-  if (MARK.test(EN(i).trim())) return false;
+  /* 带「News Report 1」这类标头的句子时间轴是拼接的，不当精听句 */
+  if (HEAD.test(EN(i).trim())) return false;
   return (t[t.length - 1].e - t[0].s) >= 1.6;
 }
 
