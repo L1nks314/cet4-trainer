@@ -3924,6 +3924,8 @@ function submitted(){ return !!document.querySelector('.q .opt.right, .q .opt.wr
 
 /* ---------- 播放控制 ---------- */
 var segS = 0, segE = 0, autoResume = 0;
+/* 从整套连做页进来（?st=3）：精听走完要回写首页第 ③ 步 */
+var FROM_SET = /[?&]st=3\b/.test(location.search);
 
 /* 页面自带的 🔁 用的是内部 loopRange，会被别的操作清掉；精听自己控区间，行为可预测 */
 function killLoops(){
@@ -4228,6 +4230,17 @@ host.addEventListener('click', function(e){
         hit: st.hit, n: picked.length, n1: n1, n2: n2, ts: Date.now()
       }));
     }catch(err){}
+    /* 从整套来的：首页第 ③ 步（l3）自动打勾，不用再手动点 */
+    if (FROM_SET){
+      try{
+        var _n9 = new Date();
+        var _dk9 = 'cet4_steps_' + _n9.getFullYear() + '-' + ('0' + (_n9.getMonth() + 1)).slice(-2)
+                   + '-' + ('0' + _n9.getDate()).slice(-2);
+        var _o9 = JSON.parse(localStorage.getItem(_dk9) || '{}');
+        _o9.l3 = 1;
+        localStorage.setItem(_dk9, JSON.stringify(_o9));
+      }catch(e){}
+    }
     st.step = 5;
     render();
     /* 首页第 ③ 步就是精听：走完这一步把进度条一起打上，别让首页还停在「去做第 3 步」 */
@@ -4267,7 +4280,7 @@ function openJt(){
        直接从「精听 3 句」开始，省掉重复的 10 分钟。
        整套连做页交卷时带的 ?st=3 也走这条——那边交的是 cet4_set_，
        这里的 submitted() 只认 cet4_ans_，光靠它判断会退回第 1 步重听整段。 */
-    var _f3 = /[?&]st=3\b/.test(location.search);
+    var _f3 = FROM_SET;
     st.step = (_f3 || submitted()) ? 3 : 1;
     st.k = 0; st.reps = 0; st.phase = 0; st.res = []; st.hit = 0;
     /* 从整套连做页过来（st=3）：本段的看选项、盲听交卷已经在那页做完了，

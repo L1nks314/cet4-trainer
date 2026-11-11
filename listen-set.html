@@ -125,7 +125,7 @@
       <li>手抖、走神、第 2 段崩——这一项练的就这些，不是练听懂每个词。</li>
     </ul>
     <p class="dim" id="preNote" style="margin-top:12px"></p>
-    <button class="btn" id="go" style="margin-top:12px">▶ 开始整套连做</button>
+    <button class="btn" id="go" style="margin-top:12px" disabled>正在读取题目…</button>
     <a class="golink" id="backLink" href="index.html">← 回首页</a>
   </div>
 
@@ -209,16 +209,28 @@ function boot(){
   SID = q ? decodeURIComponent(q[1]) : '';
   if (!SID) SID = ls('cet4_set_next') || '';
   $('backLink').href = 'index.html';
+  /* 87KB 的题目数据，GitHub Pages 冷启动可能要几秒：期间按钮不能点，避免点了没反应 */
+  var _slow = setTimeout(function(){
+    if (!SETS) $('go').textContent = '还在下载题目…（首次约 90KB）';
+  }, 4000);
   fetch('listen-sets.json?v=1')
     .then(function(r){ return r.json(); })
     .then(function(d){
+      clearTimeout(_slow);
       SETS = d;
       if (!SID || !SETS[SID]) SID = pickNext();
       S = SETS[SID];
       build();
+      var _g = $('go');
+      _g.disabled = false;
+      _g.textContent = '▶ 开始整套连做';
     })
     .catch(function(e){
+      clearTimeout(_slow);
       $('hMeta').textContent = '数据没读到：' + (e && e.message ? e.message : '未知错误');
+      $('go').textContent = '刷新页面重试';
+      $('go').disabled = false;
+      $('go').onclick = function(){ location.reload(); };
     });
 }
 /* 没指定就从最早没做过的开始；全做过就取今天离得最久的那套 */
