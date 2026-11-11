@@ -243,7 +243,8 @@ a.it.now .tx{font-weight:700;color:var(--green)}
 </details>
 
 <div class="hint">
- <b>顺序：</b>点卡片上的「去做第 N 步」直接进训练页。听力篇章：①看选项 ②盲听做题交卷 ③精听 5 句 ④归因；Section A/B 的 ③ 是「听写 3 句」。<br>
+ <b>顺序：</b>点卡片上的「去做第 N 步」直接进训练页。听力篇章：①看选项 ②盲听做题交卷 ③精听 3 句 ④归因；Section A/B 的 ③ 是「听写 3 句」。<br>
+ <b>回炉卡：</b>昨天（或前几天）听过的那一篇，会单独出现一次，让你不看原文再整篇听一遍。它不占上面的步骤，也不要求做完——但<b>这是唯一能让你听见自己进步的动作</b>，别跳。<br>
  步骤勾选只是进度条，<b>不会自动算完成</b>——只有交卷判分，或你自己点「今天这段做完了」才算。<br>
  勾选存在本机；换设备不同步，但交卷记录会上云。
 </div>
@@ -837,32 +838,32 @@ function renderTasks(){
     /* 听力时长按真实音频长度分档（13 套真题中位数：A 6′19″ / B 6′04″ / C 9′14″） */
     var SEC = /sectionc\.html$/i.test(lbtn) ? 'C' : (/sectionb\.html$/i.test(lbtn) ? 'B' : 'A');
     /* 完整版按「做完这一段的真实耗时」算，不再凑整：
-       C   4 看选项 + 11 盲听做题交卷 + 20 精听 5 句 + 5 归因 = 40′（跟读/自评在精听浮层里）
+       C   4 看选项 + 11 盲听做题交卷 + 10 精听 3 句 + 5 归因 = 30′
+           ＋ 12′ 回炉上一篇 = 42′（回炉单独一张卡，不占这 4 步）
        A/B 3 看选项 + 8 盲听做题交卷 + 7 听写 3 句 + 3 归因 + 2 挑一句跟读 = 23′ */
     var LE = {
       A:{p:'3′', b:'8′', d:'7′',  w:'3′', s:'2′', tot:'约 23 分钟', n:'3 句',
          sp:'3′', sb:'8′', sw:'2′', sd:'5′', sn:'2 句', stot:'约 18 分钟'},
       B:{p:'3′', b:'8′', d:'7′',  w:'3′', s:'2′', tot:'约 23 分钟', n:'3 句',
          sp:'3′', sb:'8′', sw:'2′', sd:'5′', sn:'2 句', stot:'约 18 分钟'},
-      C:{p:'4′', b:'11′', j:'20′', w:'5′', tot:'约 40 分钟',
-         sp:'3′', sb:'10′', sj:'20′', sw:'3′', stot:'约 35 分钟'}
+      C:{p:'4′', b:'11′', j:'10′', w:'5′', tot:'约 30 分钟',
+         sp:'3′', sb:'10′', sj:'10′', sw:'3′', stot:'约 26 分钟'}
     }[SEC];
     /* ── 新段精听：一周两个新段，没有「复听」这条路 ── */
     head = _subbed ? ('今天 · 接着做 · Section ' + SEC) : ('今天 · 听力新段 · Section ' + SEC);
     sub  = lessonTxt + (_subbed ? '　·　已交卷，接着往下' : '');
 
-    /* 篇章（C）：第 ③ 步换成「精听 5 句」。
-       以前是 听写 3 句 + 闪卡 + 跟读，三件事各做各的，都是过一遍就完；
-       精听把这三件并成一条有标准的线：每句连放 3 遍 → 必须判断听懂没 → 难句当场跟读。
-       听写/闪卡不删，挪到精听结果页当「选做」，想练还能点。 */
+    /* 篇章（C）：第 ③ 步是「精听 3 句」。
+       5 句的结果是每句都浅尝；3 句要求每句都走到「跟读 → 脱稿复述」。
+       听不出来的句子没有「下一句」这条路，只能原地跟读再复述。 */
     if (SEC === 'C'){
       steps = [
         {k:'s1', n:'①', t:'横看竖看选项', m:LE.p,
          d:'四级卷面只有 A–D 选项，问题在录音最后才念，不印在卷上。横看：同一题四个选项比一遍，相同部分划掉、不同的那一两个词圈出来，那就是要等的点。竖看：把本段所有选项串一遍，猜这段讲什么。不查词、不看原文。'},
         {k:'s2', n:'②', t:'盲听做题 + 交卷', m:LE.b,
          d:'一遍放完，不暂停、不回放。答案在放音过程中就定，别等问题念完再回想——念完只有 5 秒涂卡。做完立刻点交卷，交卷后原文才解锁。'},
-        {k:'s3', n:'③', t:'精听 5 句', m:(SHORT ? LE.sj : LE.j),
-         d:'点进来会直接弹出精听浮层：系统固定挑 5 句，每句连放 3 遍（0.85× 两遍、1.0× 一遍），三遍放完才让你判断「听出来了 / 还是不行」。卡住的句子当场跟读，最后整段回听自评。'},
+        {k:'s3', n:'③', t:'精听 3 句', m:(SHORT ? LE.sj : LE.j),
+         d:'点进来直接弹精听浮层：系统固定挑 3 句，每句连放 3 遍（0.85× 两遍、1.0× 一遍）。听不出来不能跳过——先跟读，再盖住原文用中文说意思，说得出才算过。最后整段回听自评。'},
         {k:'s5', n:'④', t:'对照归因', m:LE.w,
          d:'只看画「—」的句子，只分两类：没反应过来 / 根本没听见。写不出第三类。'}
       ];
@@ -894,7 +895,7 @@ function renderTasks(){
     /* 后面做了，前面必然做过（比如直接交卷没点「看选项」）——按最靠后的那步算，别让进度倒退 */
     for (si = 0; si < steps.length; si++){ if (!ST[steps[si].k] && si > _maxOn){ curI = si; break; } }
     var _hrefOf = function(s){
-      /* 第 ③ 步直接进这一页并自动打开精听浮层；已交卷的话浮层从「精听 5 句」开始 */
+      /* 第 ③ 步直接进这一页并自动打开精听浮层；已交卷的话浮层从「精听 3 句」开始 */
       if (SEC === 'C' && s.k === 's3') return lbtn + '?jt=1';
       if (/音义闪卡/.test(s.t)) return 'soundcard.html?p=' + encodeURIComponent(lbtn) + '&n=' + (SHORT ? 12 : 20) + '&k=' + s.k;
       if (/跟读/.test(s.t)) return 'shadow.html?p=' + encodeURIComponent(lbtn) + '&k=' + s.k;
@@ -914,11 +915,13 @@ function renderTasks(){
     var curS = (curI >= 0) ? steps[curI] : null;
     var nowTxt = curS ? ('现在：第 ' + (curI + 1) + ' 步 · ' + curS.t + '　·　' + curS.m)
                       : '今天这 ' + steps.length + ' 步都做完了';
+    /* 回炉卡：只有 C 段、非短版才出现。它不占这 4 步，但要算进当天总时长 */
+    var reH = (SEC === 'C' && !SHORT) ? reCard(lbtn) : '';
 
     tHtml += '<div class="steps">'
       + '<div class="shd">'
       +   '<div><b>'+head+'</b><div class="sdt">'+nowTxt+(SHORT?'　·　35 分钟短版':'')+'</div></div>'
-      +   '<div class="smin">'+(SHORT ? LE.stot : LE.tot)+'</div>'
+      +   '<div class="smin">'+(SHORT ? LE.stot : (reH ? '约 42 分钟' : LE.tot))+'</div>'
       + '</div>'
       + rows
       + '<div class="stepacts">'
@@ -927,6 +930,7 @@ function renderTasks(){
       +   (curS ? '<button class="skip" data-skip="'+curS.k+'">卡住了？跳过这一步（自己确认）</button>' : '')
       + '</div>'
       + '</div>';
+    tHtml += reH;
     tHtml += blankHtml();
     tHtml += '<div class="task'+(dn?" on":"")+'" data-k="l"><div class="box'+(dn?" on":"")+'"></div>'
       + '<div class="tk"><div class="tt">今天这段做完了</div>'
@@ -1170,6 +1174,34 @@ function setBlank(v){
   }catch(e){}
   renderTasks();
 }
+/* 回炉卡：把「最近一次做过、但不是今天这段」的听力篇再整篇听一遍。
+   每天换新篇 = 永远只听第一遍 = 永远只体验「糊」；
+   回炉是这套里唯一能让人听见自己进步的环节，所以它不是可选项。 */
+function reCard(curF){
+  var o = null;
+  try{ o = JSON.parse(localStorage.getItem('cet4_lastseg') || 'null'); }catch(e){ return ''; }
+  if (!o || !o.f || !o.d) return '';
+  if (o.f === curF) return '';
+  if (!/Section[ABC]\.html$/i.test(o.f)) return '';
+  var today = fmt(new Date());
+  var t0 = new Date(today + 'T00:00:00').getTime();
+  var t1 = new Date(o.d + 'T00:00:00').getTime();
+  if (isNaN(t0) || isNaN(t1)) return '';
+  var gap = Math.round((t0 - t1) / 86400000);
+  if (gap < 1 || gap > 4) return '';
+  try{
+    var r = JSON.parse(localStorage.getItem('cet4_re_' + o.f) || 'null');
+    if (r && r.d === today) return '';          /* 今天已经回炉过，不再催 */
+  }catch(e){}
+  var when = gap === 1 ? '昨天' : (gap === 2 ? '前天' : gap + ' 天前');
+  var nm = o.f.replace(/\.html$/i, '').replace(/_Section([ABC])$/i, ' · Section $1');
+  return '<div class="task" data-k="re"><div class="box"></div>'
+    + '<div class="tk"><div class="tt">回炉 · ' + when + '那篇再听一遍</div>'
+    + '<div class="td"><b>' + nm + '</b>　·　不看原文整篇放一遍，<b>约 12 分钟</b>。<br>'
+    + '这一遍只留意：上次标过的难句，现在还糊不糊。听得出来，就是进步；还是糊，明天再来。</div>'
+    + '<a class="btn ghost" href="' + encodeURI(o.f) + '?re=1">去回炉 →</a></div></div>';
+}
+
 function blankHtml(){
   var b = getBlank();
   var items = [['low','0–2 句'],['mid','3–5 句'],['high','6 句以上']];
