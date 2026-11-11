@@ -1389,7 +1389,6 @@ var QUIZ = [{"id": "q8", "stem": "8. How does the man often feel on his birthday
 
   var VW = 0, VH = 0, DPR = 1, OX = 0, OY = 0, rzT = 0;
   var rafId = 0, needFull = false, needLive = false, hasEra = false, pendFull = false;
-  var lastPenTap = { t:0, x:0, y:0 };
 
   /* ── 画布只覆盖视口：平板不会因超大画布丧失硬件加速 ── */
   function setSize(){
@@ -1730,57 +1729,10 @@ var QUIZ = [{"id": "q8", "stem": "8. How does the man often feel on his birthday
     clearTimeout(b._t);
     b._t = setTimeout(function(){ if (mode !== 'erase') b.classList.remove('on'); }, 180);
   }
-  function dropTapDots(n){
-    for (var k = 0; k < n; k++){
-      var s = strokes[strokes.length - 1];
-      if (!s) break;
-      var p = s.pts, x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
-      for (var i = 0; i < p.length; i++){
-        if (p[i][0] < x0) x0 = p[i][0];
-        if (p[i][0] > x1) x1 = p[i][0];
-        if (p[i][1] < y0) y0 = p[i][1];
-        if (p[i][1] > y1) y1 = p[i][1];
-      }
-      /* 位移极小 = 双击留下的无效字迹（正常书写绝不会这么短） */
-      if ((x1 - x0) < 26 && (y1 - y0) < 26) strokes.pop(); else break;
-    }
-    hasEra = false;
-    for (var j = 0; j < strokes.length; j++) if (strokes[j].era){ hasEra = true; break; }
-  }
-  /* 双击检测走独立手势（见文件末尾的 penTapDown/Move/Up），这里保持空实现 */
+  /* 笔尖双击切橡皮已停用（误触率太高）。checkPenTap 保留为空实现：
+     笔迹层每笔结束都会调它一次，删调用要改三处，不值当。 */
   function checkPenTap(){}
 
-  /* ── 独立手势：笔尖双击 → 切换橡皮（不依赖是否开启涂写） ── */
-  var penTapRec = null;
-  function penTapDown(e){
-    if (e.pointerType !== 'pen') return;
-    if (skipPen(e.target)){ penTapRec = null; return; }
-    diag(e, 'down', true);           /* 诊断：未开涂写时也能看到事件 */
-    penTapRec = { t: performance.now(), x: e.pageX, y: e.pageY, moved: false };
-  }
-  function penTapMove(e){
-    if (e.pointerType !== 'pen' || !penTapRec) return;
-    if (Math.abs(e.pageX - penTapRec.x) > 26 || Math.abs(e.pageY - penTapRec.y) > 26) penTapRec.moved = true;
-  }
-  function penTapUp(e){
-    if (e.pointerType !== 'pen' || !penTapRec) return;
-    diag(e, 'up', true);
-    var was = penTapRec; penTapRec = null;
-    var now = performance.now();
-    var tap = !was.moved;
-    var fast = lastPenTap.t && (now - lastPenTap.t) < 900;
-    var near = Math.abs(was.x - lastPenTap.x) < 90 && Math.abs(was.y - lastPenTap.y) < 90;
-    if (tap && fast && near){
-      lastPenTap = { t:0, x:0, y:0 };
-      dropTapDots(2);
-      if (mode === 'erase'){ setMode('draw'); toast('🖊 双击笔尖 → 已切回画笔'); }
-      else { setMode('erase'); toast('✍️ 双击笔尖 → 已切到橡皮'); }
-      schedule(true);
-    } else {
-      lastPenTap = { t: now, x: was.x, y: was.y };
-    }
-  }
-  /* 双击笔尖切换橡皮：按用户要求已停用（误触率太高） */
 
   var EXCLUDE = 'input,textarea,select,#markBar';
   var PEN_SKIP = '.dpwrap';        /* 听写本自带笔迹，全局画笔让位 */
@@ -4109,7 +4061,7 @@ function render(){
       '<p class="jt-p">' + (pass
         ? '回听跟上 ' + st.hit + ' 成。' + n1 + ' 句一遍听懂，' + n2 + ' 句跟读之后才通' + tail + '。'
         : '回听只跟上 ' + st.hit + ' 成（标准 8 成）。' + n1 + ' 句一遍听懂，' + n2 + ' 句靠跟读补上' + tail + '。明天同一段重做，这 ' + picked.length + ' 句还是排在最前面。') + '</p>' +
-      '<div class="jt-tip"><b>明天第一件事：回炉这一段。</b>不看原文整篇再听一遍（约 12 分钟）。你会发现自己标过的那几句已经能直接听出词了——这个对比本身就是进步。</div>' +
+      '<div class="jt-tip"><b>明天换下一套，别在原地重复。</b>这一段的 3 句已经记在上面。13 套走完进第二轮，同一个音频会再放一次——那时再对比今天，才知道是真听懂了还是记住了。想现在多听，用播放器整段放，别再拆句。</div>' +
       (st.res.some(function(x){ return x !== 1; })
         ? '<div class="jt-tip"><b>难句清单</b><br>' + picked.map(function(k, idx){
             if (st.res[idx] === 1) return '';
@@ -4298,91 +4250,6 @@ function closeJt(){
 }
 window.__jtOpen = openJt;
 
-/* ---------- 回炉（?re=1）----------
-   同一篇隔天再整篇听一遍，是这一套里唯一能让人「感觉到」进步的环节：
-   第一遍糊的那几句，第二遍直接听出词，这个对比比任何分数都管用。 */
-var RE_KEY = 'cet4_re_' + FILE;
-var reSel = {};
-function todayStr(){
-  var n = new Date();
-  return n.getFullYear() + '-' + ('0' + (n.getMonth() + 1)).slice(-2) + '-' + ('0' + n.getDate()).slice(-2);
-}
-function gotoLines(){
-  var el = document.querySelector('.line[data-li="0"]') || document.querySelector('.line');
-  if (!el) return;
-  var top = el.getBoundingClientRect().top + window.pageYOffset - 70;
-  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
-}
-function openRe(){
-  if (document.getElementById('reW')){ document.getElementById('reW').classList.add('on'); document.body.style.overflow = 'hidden'; return; }
-  var w = document.createElement('div');
-  w.id = 'reW';
-  w.innerHTML =
-    '<div id="reH"><span class="jtno">回炉 · 第 2 遍</span><b>' + esc(FILE.replace(/_/g, ' ')) + '</b><button id="reX" aria-label="关闭">×</button></div>' +
-    '<div id="reB">' +
-      '<h3 class="jt-h">先别学新的，这一篇再听一遍</h3>' +
-      '<p class="jt-p">这一篇你之前做过。现在<b>不看原文</b>，1.0× 整篇放一遍。只留意一件事：上次标过的难句，现在还糊不糊。</p>' +
-      '<button class="jt-big" id="rePlay">▶ 播放整段</button>' +
-      '<p class="jt-rep" id="rePos">00:00 / ' + fmt(D.dur) + '</p>' +
-      '<h3 class="jt-h" style="margin-top:22px;font-size:16px">这一遍多听出了什么？</h3>' +
-      '<div class="jt-row" style="flex-wrap:wrap">' +
-        '<button data-re="num">数字 / 时间</button>' +
-        '<button data-re="turn">转折（but / so）</button>' +
-        '<button data-re="name">人名地名</button>' +
-      '</div>' +
-      '<div class="jt-tip">勾不勾都行，勾了就是留个证据：<b>同一段材料，第二遍确实比第一遍清楚。</b></div>' +
-      '<div class="jt-tip"><b>回炉只放一遍，不暂停、不回放。</b>这是模拟考场，不是精听。要拆句子，用下面的精听模式。</div>' +
-    '</div>' +
-    '<div id="reF"><button id="reText">看原文核对</button><button id="reDone">听完了，记一笔</button></div>';
-  document.body.appendChild(w);
-  w.classList.add('on');
-  document.body.style.overflow = 'hidden';
-  w.addEventListener('click', function(e){
-    var t = e.target.closest ? e.target.closest('button') : null;
-    if (!t) return;
-    if (t.id === 'reX'){ closeRe(); return; }
-    if (t.id === 'rePlay'){
-      if (!A.paused){ A.pause(); t.textContent = '▶ 继续播放'; return; }
-      if (A.currentTime >= (D.dur || 1e9) - 1) A.currentTime = 0;
-      A.playbackRate = 1;
-      try{ A.play(); }catch(err){}
-      t.textContent = '⏸ 暂停';
-      return;
-    }
-    if (t.id === 'reText'){ closeRe(); gotoLines(); return; }
-    if (t.id === 'reDone'){
-      var on = [];
-      for (var kk in reSel) if (reSel[kk]) on.push(kk);
-      try{ localStorage.setItem(RE_KEY, JSON.stringify({ d: todayStr(), k: on, ts: Date.now() })); }catch(err){}
-      closeRe();
-      return;
-    }
-    var rk = t.getAttribute('data-re');
-    if (rk){ reSel[rk] = reSel[rk] ? 0 : 1; t.className = reSel[rk] ? 'ok' : ''; }
-  });
-}
-function closeRe(){
-  var w = document.getElementById('reW');
-  if (w) w.classList.remove('on');
-  try{ A.pause(); A.playbackRate = 1; }catch(e){}
-  document.body.style.overflow = '';
-}
-window.__reOpen = openRe;
-
-/* 交过卷就记下「这一篇听过」，首页据此排回炉 */
-var _lsDone = 0;
-setInterval(function(){
-  if (_lsDone || !submitted()) return;
-  _lsDone = 1;
-  try{
-    var prev = JSON.parse(localStorage.getItem('cet4_lastseg') || 'null');
-    var ts = todayStr();
-    if (!prev || prev.f !== FILE || prev.d !== ts){
-      localStorage.setItem('cet4_lastseg', JSON.stringify({ f: FILE, d: ts, ts: Date.now() }));
-    }
-  }catch(e){}
-}, 2500);
-
 /* ---------- 入口按钮 ---------- */
 function mount(){
   var tp = document.getElementById('tpPlay');
@@ -4409,15 +4276,9 @@ if (/[?&]jt=1\b/.test(location.search)){
   }, 150);
   setTimeout(function(){ clearInterval(_jtT); }, 5000);
 }
-/* 首页「回炉」入口带 ?re=1 进来 */
-if (/[?&]re=1\b/.test(location.search)){
-  setTimeout(openRe, 80);
-}
 
 /* 位置/按钮文字随播放刷新 */
 tickTimer = setInterval(function(){
-  var rp = document.getElementById('rePos');
-  if (rp) rp.textContent = fmt(A.currentTime) + ' / ' + fmt(D.dur);
   if (!host.classList.contains('on')) return;
   /* 交卷发生在 overlay 之外，这里补一次检测，把「下一步」放出来 */
   if (st.step === 2){

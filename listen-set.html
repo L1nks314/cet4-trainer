@@ -264,8 +264,15 @@ function build(){
   if (last){
     try{
       var r = JSON.parse(last);
-      lastTxt = '上次做这套：' + r.d + '，' + r.score + ' / 25（A ' + r.a[0] + ' · B ' + r.a[1] + ' · C ' + r.a[2] + '）。今天算第二轮，分数只跟上次比。';
-    }catch(e){}
+      if (!r || !r.a) throw 0;
+      var _head = (r.d === todayStr())
+        ? '今天已经交过这套：'
+        : '上次做这套：';
+      var _tail = (r.d === todayStr())
+        ? '再听一遍就是第二遍，分数只跟这一次比。'
+        : '今天算第二轮，分数只跟上次比。';
+      lastTxt = _head + r.d + '，' + r.score + ' / 25（A ' + r.a[0] + ' · B ' + r.a[1] + ' · C ' + r.a[2] + '）。' + _tail;
+    }catch(e){ lastTxt = ''; }
   }
   $('preNote').textContent = lastTxt;
 
@@ -500,9 +507,11 @@ function submit(){
 
   var m = Math.round(score / 25 * 100);
   var level = score >= 20 ? 'green' : (score >= 15 ? 'amber' : 'red');
-  var tip = score >= 20 ? '这一套稳了。不用回头，明天换下一套。'
-          : score >= 15 ? '中档。做错的题按段归因：是没听见，还是听见了没反应过来。'
-          : '这一套偏难，或者今天状态不对。<b>明天不要换新的</b>，同一套再听一遍——第二遍的分数才是真水平。';
+  /* 三档都说「明天换下一套」：排期是 13 套轮流走完再进第二轮，
+     结果页原来说「明天同一套再听一遍」，首页却会换成下一套——两边打架。 */
+  var tip = score >= 20 ? '这一套稳了。明天换下一套。'
+          : score >= 15 ? '中档。做错的题按段归因：是没听见，还是听见了没反应过来。明天换下一套。'
+          : '这一套偏难，或者今天状态不对。<b>别在这一套上耗</b>——按顺序做下一套，13 套走完第二轮再回来，前后两次的分数差才是真进步。';
 
   var h = '<div class="card">'
     + '<div class="score"><div class="big" style="color:var(--' + level + ')">' + score + '</div>'
@@ -525,7 +534,10 @@ function submit(){
   } else {
     h += '<p class="dim" style="margin:16px 0 0">接下来做这一步，只做这一步：错得最多的是 <b>Section ' + worst
       + '</b>（' + per[wi] + '/' + [7, 8, 10][wi] + '）。</p>'
-      + '<a class="golink" href="' + SID + '_Section' + worst + '.html?jt=1" style="border-color:var(--blue);background:var(--blue-soft)">🎧 精听 Section ' + worst + ' 的 3 句（约 10 分钟）</a>'
+      /* st=3 必须带：精听页靠它判断「本段已经在整套里听过、交过卷了」，
+         直接跳到第 3 步。少了它，用户会被要求再盲听一遍、再做一遍题，
+         而且第 2 步的「下一步」要本段自己的交卷记录才解锁——那边永远点不动。 */
+      + '<a class="golink" href="' + SID + '_Section' + worst + '.html?jt=1&st=3" style="border-color:var(--blue);background:var(--blue-soft)">🎧 精听 Section ' + worst + ' 的 3 句（约 10 分钟）</a>'
       + '<a class="golink" href="' + SID + '_Section' + worst + '.html">看这一段原文与逐句解析</a>';
 
     var row = function(d){
@@ -554,7 +566,7 @@ function submit(){
 
   ls('cet4_set_' + SID, JSON.stringify({
     d: todayStr(), score: score, a: per, ts: Date.now(),
-    used: Math.round((Date.now() - T0) / 1000)
+    used: T0 ? Math.round((Date.now() - T0) / 1000) : 0
   }));
   /* 首页据此判断「今天整套做完了」，并把 ①② 两步自动勾上 */
   try{
