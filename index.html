@@ -126,23 +126,11 @@ a.it.now .tx{font-weight:700;color:var(--green)}
 .tier.on{background:var(--blue,#2563eb);border-color:var(--blue,#2563eb);color:#fff}
 .tier.on i{opacity:.88}
 
-/* ── 单线日：留白登记 / 档位切换 ── */
+/* ── 档位切换 ── */
 .tierlink{margin:8px 0 2px;text-align:center}
 .tierlink a{font-size:12px;color:var(--sub2,#8b93a1);text-decoration:none;
  border-bottom:1px dashed rgba(0,0,0,.18);padding-bottom:1px}
 .tiphint{margin:8px 2px 0;font-size:11.5px;line-height:1.6;color:var(--sub2,#8b93a1)}
-.blankbox{margin-top:10px;padding:12px 13px;border-radius:12px;background:#fff;
- border:1px solid var(--line,#e5e8ec)}
-.blankbox .bl{font-size:12.5px;font-weight:600;color:var(--ink,#1f2937)}
-.blankbox .bl i{display:block;font-style:normal;font-weight:400;font-size:11px;
- color:var(--sub2,#8b93a1);margin-top:2px}
-.blankbox .chips{display:flex;gap:6px;margin-top:9px}
-.bchip{flex:1;padding:7px 4px;border-radius:9px;border:1.5px solid var(--line,#e5e8ec);
- background:#fff;font:600 12px/1.3 inherit;color:var(--sub,#6b7280);cursor:pointer;
- -webkit-tap-highlight-color:transparent}
-.bchip.on{background:#eff6ff;border-color:#93b4fd;color:#1d4ed8}
-.bok{margin-top:8px;font-size:11.5px;line-height:1.55;color:#15803d}
-.bok.warn{color:#b45309}
 
 /* ── 折叠区 ── */
 .fold{background:var(--card);border:1px solid var(--line);border-radius:14px;
@@ -335,7 +323,6 @@ var ML = [{f:"matching-2025-12-1.html",d:"2025年12月 第1套"},{f:"matching-20
           {f:"matching-2025-06-1.html",d:"2025年6月 第1套"},{f:"matching-2024-06-1.html",d:"2024年6月 第1套"},
           {f:"matching-2023-12-1.html",d:"2023年12月 第1套"},{f:"matching-2023-06-1.html",d:"2023年6月 第1套"},
           {f:"matching-2023-06-2.html",d:"2023年6月 第2套"},{f:"matching-2022-12-1.html",d:"2022年12月 第1套"}];
-function seq(date,days){var n=0,d=new Date(START.getFullYear(),START.getMonth(),START.getDate());while(d<=date){if(days.indexOf(d.getDay())>=0)n++;d.setDate(d.getDate()+1);}return n;}
 
 /* 三段式：校准（11/2–11/8）→ 打底（11/9–11/22）→ 上考场（11/23–12/11）
    与 goal.js、GOALS 三处必须一致，改一处改三处 */
@@ -533,44 +520,8 @@ function flash(t){
   flash._t = setTimeout(function(){ el.classList.remove('on'); }, 2000);
 }
 
-/* 把「✗ 听不清」的句子同步进回炉队列（幂等，和 review.html 共用一份数据） */
-function syncReviewQueue(){
-  try{
-    var useless = function(en){
-      en = String(en || '').trim();
-      if (!en) return true;
-      if (/[\u4e00-\u9fa5]/.test(en)) return true;
-      if (/^(news report|passage|conversation|section|directions)\b/i.test(en)) return true;
-      if (en.split(/\s+/).length <= 2 && en.length < 16) return true;
-      return false;
-    };
-    var KEY='cet4_review_v1';
-    var q=JSON.parse(localStorage.getItem(KEY)||'[]')||[];
-    var wb=JSON.parse(localStorage.getItem('cet4_wrongbook')||'[]')||[];
-    var idx={}, added=0, d=new Date();
-    q.forEach(function(x){ idx[x.id]=1; });
-    var t=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-    wb.forEach(function(w){
-      if(w.type!=='listen-dict'||!w.page) return;
-      (w.lines||[]).forEach(function(l){
-        var id=w.page+'#'+l.li;
-        if(idx[id] || useless(l.en)) return;
-        q.push({id:id,page:w.page,title:w.title||w.page,li:l.li,en:l.en||'',zh:l.zh||'',
-                stage:0,due:t,last:'',stuck:0,done:0});
-        idx[id]=1; added++;
-      });
-    });
-    if(added) localStorage.setItem(KEY, JSON.stringify(q));
-  }catch(e){}
-}
-
-function reviewDueCount(){
-  try{
-    var q=JSON.parse(localStorage.getItem('cet4_review_v1')||'[]')||[];
-    var t=fmt(today);
-    return q.filter(function(x){ return (x.due||t) <= t; }).length;
-  }catch(e){ return 0; }
-}
+/* 回炉队列的同步与「到期数」已删：首页不再推回炉卡（整套模式本身就有第二遍），
+   review.html 保留为「休息日随手听」的入口，它自己会从错题本导入。 */
 
 /* 本周完成情况 + 当前阶段目标（每天打开第一眼看到的就是这个） */
 function weekStat(){
@@ -628,14 +579,9 @@ function renderTasks(){
   function pick(k, auv){ return (k in man) ? !!man[k] : !!auv; }
   done = { l: pick('l', au.listen), o: pick('o', au.other), r: pick('r', au.receipt) };
 
+  /* lessonTxt / lbtn 在下面「整套听力」那段里按 SLIST 算，
+     这里不再按 LESSONS[gap] 先算一遍——那段赋值从来没被读到，只是把旧排期又抄了一遍。 */
   var lessonTxt, lbtn;
-  if (gap<0){ lessonTxt="集训 10/17 开始 · 今天先歇着，明天从这里起步"; lbtn=LESSONS[0].f; }
-  else if (gap<LESSONS.length){ lessonTxt=LESSONS[idx].d; lbtn=LESSONS[idx].f; }
-  else {
-    var r2=LESSONS[gap-LESSONS.length];
-    if(r2){ lessonTxt="第2轮精听 · "+r2.d+"（重点听第一遍没听清的句子）"; lbtn=r2.f; }
-    else { lessonTxt="两轮已完成 · 保温：重听错句、跟读"; lbtn=LESSONS[0].f; }
-  }
 
   var streak='<div class="streak"><div><b id="sk">0</b><div class="lb">连续打卡（天）</div></div>'
      +'<div><b id="td">0</b><div class="lb">累计完成（天）</div></div></div>';
@@ -657,17 +603,12 @@ function renderTasks(){
        周五、周六休息。
        旧版一天一段 C（30′）+ 回炉 12′，一周只走 2 段；现在一天一套，13 套两周半走完第一轮，
        第二轮从第 1 套重做——同一个音频听第二遍，这才是「整篇重复」。 */
-  var W0x = d0(new Date(2026,10,2));
-  var wk0 = Math.max(0, Math.floor((today - W0x) / 604800000));
   var kind = 'listen';                              /* 听力每天都有，不再按星期切 */
   var side = (wd === 2) ? 'read' : (wd === 4) ? 'match' : (wd === 0) ? 'write' : '';
-  var CALIB = (today.getTime() <= d0(new Date(2026,10,8)).getTime());   /* 11/2–11/8 校准期 */
   var tier = getTier();
   /* 27 分钟短版：只做整套连做 + 交卷，砍掉精听和副项 */
   var SHORT = (tier === 'std' || tier === 'min');
   var dnL = !!done.l, dnO = !!done.o;
-  var dn = dnL;
-  var wk = wk0;                                           /* 方案 A 起点 11/2 */
 
   /* 阅读 / 匹配也按「第一套没做过的」挑，不按周序硬算。
      周序推算会漏：11/2 是周日写译日，2025-12-1 那套阅读永远轮不到。 */
@@ -751,8 +692,12 @@ function renderTasks(){
   if (!setid) setid = SLIST[0];
   setIdx = SLIST.indexOf(setid);
   setRec = _setRec(setid);
-  /* 轮次：这套的记录是以前某天写的，才算第二轮；今天刚交的仍算第一轮 */
-  var _round = (setRec && setRec.d && setRec.d !== fmt(today)) ? 2 : 1;
+  /* 轮次：13 套全做过才算第二轮。
+     旧版看「这套的记录是不是今天写的」——第二轮当天交完卷再刷新，就退回「第 1 轮」，
+     显示和实际对不上。轮次是全局状态，不看单套的日期。 */
+  var _allDone = true;
+  for (var _ra = 0; _ra < SLIST.length; _ra++){ if (!_setRec(SLIST[_ra])){ _allDone = false; break; } }
+  var _round = _allDone ? 2 : 1;
   /* 这套今天交过卷没有 */
   var _setSubToday = !!(setRec && setRec.d === fmt(today));
   /* 错得最多的那一段：交过卷才有意义，没交卷默认 C（分值最高） */
@@ -922,8 +867,6 @@ function renderTasks(){
       + '<br><a href="javascript:void(0)" data-tier="min">切最小档 10 分钟</a></div>';
   }
 
-  /* 回炉已于 v7 并入每日副项：这里不再提示，队列不再自动增长。review.html 保留备查。 */
-
   tHtml += streak;
   document.getElementById("tasks").innerHTML = tHtml;
   /* 最小档只留「做 10 分钟就关」那一张卡，步骤表收起来，免得看着像还有一堆要干 */
@@ -934,9 +877,6 @@ function renderTasks(){
 
   document.querySelectorAll('.tierlink a').forEach(function(b){
     b.addEventListener('click', function(){ setTier(b.getAttribute('data-tier')); });
-  });
-  document.querySelectorAll('.bchip').forEach(function(b){
-    b.addEventListener('click', function(){ setBlank(b.getAttribute('data-b')); });
   });
   /* 步骤：已完成的点一下可撤销；当前步点一下直接去做；锁住的点不动 */
   document.querySelectorAll('.step[data-s]').forEach(function(el){
@@ -961,60 +901,8 @@ function renderTasks(){
   bindBoxes();
 }
 
-/* ── 留白登记：每天只记这一个数 ── */
-function getBlank(){
-  try{
-    var o = JSON.parse(localStorage.getItem('cet4_blank_v1') || '{}') || {};
-    return o[fmt(today)] || '';
-  }catch(e){ return ''; }
-}
-function setBlank(v){
-  try{
-    var o = JSON.parse(localStorage.getItem('cet4_blank_v1') || '{}') || {};
-    o[fmt(today)] = (o[fmt(today)] === v) ? '' : v;
-    localStorage.setItem('cet4_blank_v1', JSON.stringify(o));
-  }catch(e){}
-  renderTasks();
-}
-/* 回炉卡：把「最近一次做过、但不是今天这段」的听力篇再整篇听一遍。
-   每天换新篇 = 永远只听第一遍 = 永远只体验「糊」；
-   回炉是这套里唯一能让人听见自己进步的环节，所以它不是可选项。 */
-function reCard(curF){
-  var o = null;
-  try{ o = JSON.parse(localStorage.getItem('cet4_lastseg') || 'null'); }catch(e){ return ''; }
-  if (!o || !o.f || !o.d) return '';
-  if (o.f === curF) return '';
-  if (!/Section[ABC]\.html$/i.test(o.f)) return '';
-  var today = fmt(new Date());
-  var t0 = new Date(today + 'T00:00:00').getTime();
-  var t1 = new Date(o.d + 'T00:00:00').getTime();
-  if (isNaN(t0) || isNaN(t1)) return '';
-  var gap = Math.round((t0 - t1) / 86400000);
-  if (gap < 1 || gap > 4) return '';
-  try{
-    var r = JSON.parse(localStorage.getItem('cet4_re_' + o.f) || 'null');
-    if (r && r.d === today) return '';          /* 今天已经回炉过，不再催 */
-  }catch(e){}
-  var when = gap === 1 ? '昨天' : (gap === 2 ? '前天' : gap + ' 天前');
-  var nm = o.f.replace(/\.html$/i, '').replace(/_Section([ABC])$/i, ' · Section $1');
-  return '<div class="task" data-k="re"><div class="box"></div>'
-    + '<div class="tk"><div class="tt">回炉 · ' + when + '那篇再听一遍</div>'
-    + '<div class="td"><b>' + nm + '</b>　·　不看原文整篇放一遍，<b>约 12 分钟</b>。<br>'
-    + '这一遍只留意：上次标过的难句，现在还糊不糊。听得出来，就是进步；还是糊，明天再来。</div>'
-    + '<a class="btn ghost" href="' + encodeURI(o.f) + '?re=1">去回炉 →</a></div></div>';
-}
-
-function blankHtml(){
-  var b = getBlank();
-  var items = [['low','0–2 句'],['mid','3–5 句'],['high','6 句以上']];
-  var tip = '';
-  if (b === 'low' || b === 'mid') tip = '<div class="bok">留白这一关过了（还要这段做题 ≥5/10，两条都满足才进强化期）。</div>';
-  else if (b === 'high') tip = '<div class="bok warn">还没达标：这一段再听一遍，别急着换新的。</div>';
-  return '<div class="blankbox"><div class="bl">这段没听清的句子有几处？<i>只记这一个数，别的都不用填</i></div>'
-    + '<div class="chips">'
-    + items.map(function(x){ return '<button class="bchip'+(b===x[0]?' on':'')+'" data-b="'+x[0]+'">'+x[1]+'</button>'; }).join('')
-    + '</div>' + tip + '</div>';
-}
+/* 留白登记（cet4_blank_v1）与回炉卡（reCard）已删：两个都没接进渲染，
+   写进去的数据没人读，留着只会让下一个人以为这两个功能还活着。 */
 
 function bindBoxes(){
   document.querySelectorAll(".task").forEach(function(el){
@@ -1077,7 +965,8 @@ function renderList(){
 }
 
 /* ── 启动 ── */
-/* v7：回炉队列不再自动导入（并入每日副项），syncReviewQueue 保留但停用 */
+/* 回炉卡已于 v9 删除：整套模式本身保证「同一套听第二遍」，首页不再额外催。
+   review.html 保留为休息日的随手听入口，进去会自己从错题本导句子。 */
 renderHead();
 renderTasks();
 renderList();

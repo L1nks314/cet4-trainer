@@ -2,7 +2,7 @@ name: 照片转存 + 记录归档
 
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '17 3 * * *'      # 每天 03:17 UTC = 11:17 北京，只跑一次
   workflow_dispatch:
 
 permissions:

@@ -480,7 +480,10 @@
   function boot(){
     queue = load();
     var trimmed = trimToRecent(2);
-    var added = 0;                      /* v7：停止自动导入，队列只减不增 */
+    /* v7 曾停用自动导入，结果队列只减不增，这一页永远显示「今天没有要回炉的」，
+       importFromWrongbook 写好了却没人调。现在恢复：进来先把错题本里「✗ 听不清」
+       的句子并进队列（幂等，已有的不会重复加）。 */
+    var added = importFromWrongbook();
     var oid = oneId();
     if (oid){
       today = queue.filter(function(x){ return x.id === oid; });

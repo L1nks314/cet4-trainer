@@ -454,7 +454,9 @@ function renderWrongbook(cloudWb){
       var k = localStorage.key(i);
       if (!/^cet4_set_/.test(k)) continue;
       var o = JSON.parse(localStorage.getItem(k) || 'null');
-      if (!o || !o.d) continue;
+      /* a 必须存在：老版本、或存储被浏览器裁剪时可能只有 score 没有分段，
+         那样下面 r.a[0] 会抛错，整张卡连带后面几块一起不渲染 */
+      if (!o || !o.d || !o.a || o.a.length !== 3) continue;
       rows.push({ id: k.replace(/^cet4_set_/, ''), d: o.d, s: o.score, a: o.a, ts: o.ts || 0 });
     }
   }catch(e){}
