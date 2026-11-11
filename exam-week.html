@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>考前七天 · 12/5–12/11</title>
+<style>
+:root{ --bg:#f4f5f7; --card:#ffffff; --soft:#fafbfc; --grey:#f2f3f5;
+ --line:#e5e8ec; --line2:#eff1f4; --track:#e8ebef;
+ --txt:#1b1e23; --txt2:#2b303a; --txt3:#3d434e; --sub:#6b7280; --sub2:#a8b0bb;
+ --blue:#2563eb; --blue-soft:#eef3ff; --green:#0d8a52; --green-soft:#e8f7ef;
+ --red:#c0392b; --red-soft:#fdecea; --amber:#b45309; --amber-soft:#fef6e7;
+ --amber-line:#f0dfb8; --green-line:#bfe3cf;
+ --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05);
+ --shadow-lg:0 2px 4px rgba(16,24,40,.05), 0 8px 20px rgba(16,24,40,.07);
+ --blue-ink:#123a75; --green-ink:#0d5232; --amber-ink:#7a5b00; --red-ink:#8a2318;}
+@media (prefers-color-scheme: dark){ :root{ --bg:#101216; --card:#191c21; --soft:#20242a; --grey:#22262c;
+ --line:#2c313a; --line2:#242930; --track:#2a2f38;
+ --txt:#e9ebee; --txt2:#d7dade; --txt3:#c3c8cf; --sub:#98a0aa; --sub2:#6b7280;
+ --blue:#6b96fb; --blue-soft:#1a2742; --green:#41d18f; --green-soft:#14301f;
+ --red:#ef7261; --red-soft:#371d19; --amber:#e0a53f; --amber-soft:#312713;
+ --amber-line:#4a3a1c; --green-line:#1f4530;
+ --shadow:0 1px 2px rgba(0,0,0,.35), 0 2px 8px rgba(0,0,0,.28);
+ --shadow-lg:0 2px 6px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.45);
+ color-scheme:dark; --blue-ink:#a9c6ff; --green-ink:#7fe0b0; --amber-ink:#f0c469; --red-ink:#ffa79a;} }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+ font:15px/1.72 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+ padding:16px 14px 48px;max-width:760px;margin:0 auto;}
+h1{font-size:20px;margin:2px 0 6px;font-weight:800;letter-spacing:.2px;
+ padding-left:12px;border-left:4px solid var(--blue);line-height:1.25}
+h2{font-size:16.4px;margin:0 0 13px;font-weight:700;letter-spacing:.2px}
+.lead{font-size:13px;color:var(--sub);margin:0 0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow);}
+.back{display:inline-block;font-size:13px;color:var(--blue);text-decoration:none;margin-bottom:10px}
+.count{display:flex;gap:10px;text-align:center;margin:2px 0 14px}
+.count div{flex:1;background:var(--blue-soft);border-radius:11px;padding:12px 6px}
+.count b{display:block;font-size:24px;font-weight:800;letter-spacing:-.5px;color:var(--blue);line-height:1.2}
+.count span{font-size:11.5px;color:var(--sub)}
+.day{display:flex;gap:12px;padding:13px 0;border-top:1px solid var(--line)}
+.day:first-of-type{border-top:0}
+.day.today{background:var(--amber-soft);border-radius:12px;padding:13px 12px;margin:0 -12px;
+ box-shadow:inset 0 0 0 1.5px var(--amber-line)}
+.day .dt{flex:0 0 62px;font-weight:800;font-size:13.5px;color:var(--txt2);line-height:1.35}
+.day .dt small{display:block;font-weight:600;font-size:11px;color:var(--sub2)}
+.day .dc{flex:1;min-width:0}
+.day .t1{font-weight:700;font-size:14.2px}
+.day .t2{font-size:13px;color:var(--sub);margin-top:2px}
+.day .t3{font-size:12.5px;color:var(--blue);margin-top:5px}
+.day.today .t3{color:var(--amber);font-weight:600}
+.day a{color:var(--blue);text-decoration:none;border-bottom:1px solid rgba(37,99,235,.3);font-weight:600}
+.day a:hover{border-bottom-color:var(--blue)}
+.mins{display:inline-block;font-size:11px;font-weight:700;color:var(--sub);
+ background:var(--grey);border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:1px}
+.tl{list-style:none;margin:0;padding:0}
+.tl li{position:relative;padding:0 0 15px 20px;border-left:2px solid var(--line2);margin-left:4px}
+.tl li:last-child{border-left-color:transparent;padding-bottom:0}
+.tl li::before{content:'';position:absolute;left:-5px;top:6px;width:8px;height:8px;border-radius:50%;
+ background:var(--blue);box-shadow:0 0 0 3px var(--card)}
+.tl .tm{font-weight:800;font-size:13px;color:var(--blue);font-variant-numeric:tabular-nums}
+.tl .tt{font-weight:700;font-size:14px;margin-top:1px}
+.tl .tx{font-size:13px;color:var(--sub)}
+.tl li.key::before{background:var(--red);box-shadow:0 0 0 3px var(--card)}
+.tl li.key .tm{color:var(--red)}
+.tip{border-radius:10px;padding:11px 13px;font-size:13.2px;line-height:1.7;margin-top:11px}
+.tip.b{background:var(--blue-soft);color:var(--blue-ink)}
+.tip.g{background:var(--green-soft);color:var(--green-ink)}
+.tip.a{background:var(--amber-soft);color:var(--amber-ink)}
+.tip.r{background:var(--red-soft);color:var(--red-ink)}
+.tip b{font-weight:800}
+ul.plain{margin:8px 0 0;padding-left:19px;font-size:13.5px;line-height:1.85}
+ul.plain li{margin:3px 0}
+ul.plain b{font-weight:700}
+.foot{text-align:center;font-size:12px;color:var(--sub2);margin-top:22px}
+@media (max-width:380px){ .day .dt{flex:0 0 54px} .count b{font-size:21px} }
+</style>
+</head>
+<body>
+
+<a class="back" href="index.html">← 回首页</a>
+<h1>考前七天</h1>
+<p class="lead">12/5 – 12/11。这七天不做新题，只把已经练过的东西收口。</p>
+
+<div id="hd"></div>
+
+<div class="card">
+  <h2>这七天只做三件事</h2>
+  <ul class="plain">
+    <li><b>不做新套。</b>13 套听力、8 套阅读、18 套写译，材料够多了。新题这七天只会增加焦虑，不会提分。</li>
+    <li><b>不背新词。</b>现在背的词考场上想不起来，还挤掉已经认识的那些。只回头看法上过错的词。</li>
+    <li><b>只做：错题重做、写译模板、两次全真模考。</b>提分全部来自这三件。</li>
+  </ul>
+  <div class="tip a">七天的目标不是「再多学一点」，是<b>把会做的题在考场上做对</b>。你现在缺的不是知识量，是稳定度。</div>
+</div>
+
+<div class="card">
+  <h2>七天安排</h2>
+  <div id="days"></div>
+  <div class="tip b">模考两天必须<b>按真实时间走</b>：9:00 坐下，作文 30 分钟，然后听力，然后阅读翻译。中间不喝水、不看手机、不暂停。模考的意义是让身体记住这套节奏，不是做题。</div>
+</div>
+
+<div class="card">
+  <h2>12/12 考场流程</h2>
+  <ul class="tl">
+    <li><span class="tm">9:00</span><div class="tt">进场，发答题卡 1、2 和试题册</div><div class="tx">禁止翻阅试题册。趁这几分钟把姓名、准考证号填好，别留到后面。</div></li>
+    <li><span class="tm">9:10 – 9:40</span><div class="tt">写作（答题卡 1）</div><div class="tx">30 分钟。先花 2 分钟列三段提纲，再写。留 2 分钟扫一遍时态和单复数。</div></li>
+    <li><span class="tm">9:40 – 10:05</span><div class="tt">听力（还是答题卡 1）</div><div class="tx">25 分钟。放音前用试音时间扫 Section A 的选项，圈出人名、数字、地点。</div></li>
+    <li class="key"><span class="tm">10:05</span><div class="tt">立刻收答题卡 1</div><div class="tx"><b>作文和听力在同一张卡上，听力一结束就收走，没有补涂的时间。</b>听力边听边涂，不要等到最后统一涂。</div></li>
+    <li><span class="tm">10:10 – 11:20</span><div class="tt">阅读 + 翻译（答题卡 2）</div><div class="tx">70 分钟。顺序按下面来，不要从头做到尾。</div></li>
+    <li><span class="tm">11:20</span><div class="tt">收卷</div></li>
+  </ul>
+  <div class="tip r"><b>10:05 这一条每年都有人栽。</b>听力放完会有一段「请监考老师收答题卡」的提示音，那时候笔就得停下。你练整套听力时是边听边选的，考场上保持这个习惯。</div>
+</div>
+
+<div class="card">
+  <h2>阅读 + 翻译 70 分钟怎么分</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:13.5px">
+    <tr><th style="text-align:left;font-size:12.5px;color:var(--sub);font-weight:600;background:var(--soft);padding:9px 8px">顺序</th>
+        <th style="text-align:left;font-size:12.5px;color:var(--sub);font-weight:600;background:var(--soft);padding:9px 8px">做什么</th>
+        <th style="text-align:center;font-size:12.5px;color:var(--sub);font-weight:600;background:var(--soft);padding:9px 8px">时间</th>
+        <th style="text-align:center;font-size:12.5px;color:var(--sub);font-weight:600;background:var(--soft);padding:9px 8px">分值</th></tr>
+    <tr><td style="padding:9px 8px;border-bottom:1px solid var(--line)">1</td><td style="padding:9px 8px;border-bottom:1px solid var(--line)">长篇匹配</td><td style="padding:9px 8px;border-bottom:1px solid var(--line);text-align:center">15′</td><td style="padding:9px 8px;border-bottom:1px solid var(--line);text-align:center">71</td></tr>
+    <tr><td style="padding:9px 8px;border-bottom:1px solid var(--line)">2</td><td style="padding:9px 8px;border-bottom:1px solid var(--line)"><b>仔细阅读 两篇</b></td><td style="padding:9px 8px;border-bottom:1px solid var(--line);text-align:center">25′</td><td style="padding:9px 8px;border-bottom:1px solid var(--line);text-align:center">142</td></tr>
+    <tr><td style="padding:9px 8px;border-bottom:1px solid var(--line)">3</td><td style="padding:9px 8px;border-bottom:1px solid var(--line)">翻译</td><td style="padding:9px 8px;border-bottom:1px solid var(--line);text-align:center">25′</td><td style="padding:9px 8px;border-bottom:1px solid var(--line);text-align:center">106.5</td></tr>
+    <tr><td style="padding:9px 8px;border-bottom:1px solid var(--line)">4</td><td style="padding:9px 8px;border-bottom:1px solid var(--line)">涂卡 + 检查</td><td style="padding:9px 8px;border-bottom:1px solid var(--line);text-align:center">5′</td><td style="padding:9px 8px;border-bottom:1px solid var(--line);text-align:center">—</td></tr>
+    <tr><td style="padding:9px 8px">—</td><td style="padding:9px 8px">选词填空 <span style="color:var(--sub2)">（直接蒙）</span></td><td style="padding:9px 8px;text-align:center">0′</td><td style="padding:9px 8px;text-align:center">35.5</td></tr>
+  </table>
+  <div class="tip b">仔细阅读 142 分是<b>单块分值最高的</b>，比匹配多一倍。时间紧的时候先保仔细阅读，匹配放后面。选词填空 35.5 分，10 道题全靠蒙也能对两三道，<b>不要为它花时间</b>——这 35 分不值得挤掉仔细阅读的任何一分钟。</div>
+</div>
+
+<div class="card">
+  <h2>三条不能破的</h2>
+  <ul class="plain">
+    <li><b>听力没听清就过，不回头想。</b>想上一题的三秒，会连丢下一题的两个信息点。整套训练里你已经在练这个节奏，考场上别改。</li>
+    <li><b>作文写完立刻看听力选项。</b>9:40 前有两分钟空档，那是唯一能预读 Section A 的时间。</li>
+    <li><b>翻译不会的词用简单词换掉，不空着。</b>「促进经济发展」想不起 promote，写 help the economy grow 也有分。空着是 0。</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>前一天晚上收拾好</h2>
+  <ul class="plain">
+    <li>准考证、身份证（缺一样进不去）</li>
+    <li>2B 铅笔 2 支（削好）、橡皮、黑色签字笔 2 支</li>
+    <li>耳机 + 备用电池（部分考场用调频耳机，部分是广播，按学校通知）</li>
+    <li>手表（考场可能没有钟，手机不能带进座位）</li>
+  </ul>
+  <div class="tip g">12/11 晚上只看错题本和模板句，<b>22:30 前睡</b>。熬夜一晚，第二天听力前 10 分钟的反应速度会明显掉——这比少背十个词亏得多。</div>
+</div>
+
+<div class="foot">考前七天 · 与首页同一口径（11/2 起 40 天，12/12 考试）</div>
+
+<script>
+(function(){
+  var START = new Date(2026, 10, 2);      /* 与 index.html / plan.html 一致 */
+  var EXAMD = new Date(2026, 11, 12);
+  function d0(d){ return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  function fmt(d){
+    return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+  }
+  var today = d0(new Date());
+  var toExam = Math.round((d0(EXAMD) - today) / 86400000);
+  var WD = '日一二三四五六';
+
+  /* 头部：距考试天数 */
+  var hd = document.getElementById('hd');
+  if (toExam > 7){
+    hd.innerHTML = '<div class="count"><div style="flex:1;background:var(--grey)">'
+      + '<b style="color:var(--sub)">' + toExam + '</b><span>天后考试</span></div></div>'
+      + '<div class="tip b">还没到收口的时候。12/5 起再按这张表走，现在照首页每天一套继续做。</div>';
+  } else if (toExam > 0){
+    /* 12/5 是收口第 1 天：toExam = 7 那天。所以第 N 天 = 7 - toExam + 1 */
+    hd.innerHTML = '<div class="count"><div><b>' + toExam + '</b><span>天后考试</span></div>'
+      + '<div><b>' + (7 - toExam + 1) + '</b><span>收口第几天 / 共 7 天</span></div></div>';
+  } else if (toExam === 0){
+    hd.innerHTML = '<div class="count"><div><b>今天</b><span>考试</span></div></div>'
+      + '<div class="tip g">这页不用看了。按考场流程走：9:10 写作，9:40 听力，<b>10:05 收答题卡 1</b>，10:10 阅读翻译。</div>';
+  } else {
+    hd.innerHTML = '<div class="tip g"><b>考试已经过了。</b>这页留着存档；回首页看看记录。</div>';
+  }
+
+  /* 七天表：日期由 START 推算，不写死，换年份也不会错 */
+  var PLAN = [
+    {d:'12-05', t1:'听力错题重做', mins:'60′',
+     t2:'打开记录页，把「错题本」里所有听力错题过一遍。每道题回到那一句音频听 2 遍，能听清就下一个，听不清才看原文。',
+     link:'records.html', linkTxt:'记录页 · 错题本'},
+    {d:'12-06', t1:'全真模考 #1', mins:'130′',
+     t2:'9:00 开始，用 2024-06-1 这套：作文 30′ → 听力 25′ → 匹配 15′ → 仔细阅读 25′ → 翻译 25′。中间不暂停。',
+     link:'write-2024-06-1.html', linkTxt:'从作文开始'},
+    {d:'12-07', t1:'模考对答案 + 归因', mins:'60′',
+     t2:'先对答案，只统计三块各错几道。然后把每道错题归一个因：没听清 / 生词 / 听懂了选错 / 走神。这一步决定你后面四天补什么。',
+     link:'records.html', linkTxt:'记录页 · 错因分布'},
+    {d:'12-08', t1:'写作模板 + 阅读错题', mins:'60′',
+     t2:'40′ 写作：三段式骨架（观点-两个理由-结论）+ 5 个万能句，用 3 套不同题目各写一遍开头段。20′ 阅读：只看错题。',
+     link:'writing.html', linkTxt:'写作材料'},
+    {d:'12-09', t1:'翻译固定表达 + 精听', mins:'70′',
+     t2:'40′ 翻译：5 个高频话题（文化、教育、经济、环境、科技）各背 3 个固定说法。30′ 精听：挑错最多的两段，各精听 3 句。',
+     link:'trans-2025-06-1.html', linkTxt:'翻译材料'},
+    {d:'12-10', t1:'全真模考 #2', mins:'130′',
+     t2:'9:00 开始，用 2025-12-1（最新真题，最接近考场）。流程同第一次。这次重点看：时间够不够，哪一块超时。',
+     link:'write-2025-12-1.html', linkTxt:'从作文开始'},
+    {d:'12-11', t1:'只看错题本和模板句', mins:'30′',
+     t2:'不做新题。错题本翻一遍，模板句读一遍，22:30 前睡。',
+     link:'records.html', linkTxt:'记录页'}
+  ];
+
+  var box = document.getElementById('days'), html = '';
+  for (var i = 0; i < PLAN.length; i++){
+    var p = PLAN[i];
+    var mmdd = p.d.split('-');
+    var dt = new Date(2026, +mmdd[0] - 1, +mmdd[1]);
+    var isToday = fmt(dt) === fmt(today);
+    html += '<div class="day' + (isToday ? ' today' : '') + '">'
+      + '<div class="dt">' + (+mmdd[0]) + '/' + (+mmdd[1])
+      +   '<small>周' + WD[dt.getDay()] + (isToday ? ' · 今天' : '') + '</small></div>'
+      + '<div class="dc"><div class="t1">' + p.t1 + '<span class="mins">' + p.mins + '</span></div>'
+      +   '<div class="t2">' + p.t2 + '</div>'
+      +   '<div class="t3"><a href="' + p.link + '">' + p.linkTxt + ' ›</a></div>'
+      + '</div></div>';
+  }
+  box.innerHTML = html;
+
+  /* 模考提醒：模考日的链接只到作文页，后面几段要顺着走 */
+  var mt = PLAN[1], mt2 = PLAN[5];
+  try{
+    var done1 = localStorage.getItem('cet4_set_2024-06-1');
+    var done2 = localStorage.getItem('cet4_set_2025-12-1');
+    if (done1 && /"d":"\d{4}-\d{2}-\d{2}"/.test(done1) && !done2){
+      box.insertAdjacentHTML('afterend',
+        '<div class="tip g" style="margin-top:12px">模考 #1 已经交过卷了。第二次（12/10）用 2025-12-1，别重复做同一套。</div>');
+    }
+  }catch(e){}
+})();
+</script>
+</body>
+</html>

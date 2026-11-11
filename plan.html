@@ -212,6 +212,12 @@ var toExam = Math.round((d0(EXAMD) - today) / 86400000);
 if (dayNo >= 1 && dayNo <= 40 && toExam >= 0){
   h += '<div style="font-size:12.5px;color:var(--sub);margin:-4px 0 10px">今天是集训第 <b>' + dayNo + '</b> 天 / 共 40 天 · 距考试 ' + toExam + ' 天</div>';
 }
+/* 考前七天：40 天的日课到这里停，换成收口表。两套安排不能同时挂着。 */
+if (toExam <= 7 && toExam >= 0){
+  h += '<div style="font-size:12.5px;color:var(--amber-ink);background:var(--amber-soft);'
+     + 'border-radius:9px;padding:9px 11px;margin:0 0 12px;line-height:1.6">'
+     + '收口期，<b>不再按下面的日课走</b>。用 <a href="exam-week.html" style="color:inherit;text-decoration:underline">考前七天表</a>：错题重做、模板、两次全真模考。</div>';
+}
 ST.forEach(function(s){
  var on = today>=d0(s.a) && today<=d0(s.b);
  h += '<div class="stage'+(on?" on":"")+'"><div class="dot"></div><div class="sc">'

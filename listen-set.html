@@ -95,6 +95,13 @@
   .wd .t{flex:1;color:var(--txt3);line-height:1.65;}
   .wd .a{font-size:12px;color:var(--sub);margin-top:3px;}
   .wd .a b{color:var(--green);}
+  /* 错因：点一下记一次，不点也不影响（错题本身已经存进错题本了）。
+     四个按钮对应 records 页「错因分布」的四层：speech / word / logic / state。 */
+  .whys{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap;}
+  .wy{font:600 11.5px/1 inherit;padding:6px 9px;border-radius:8px;border:1.5px solid var(--line2);
+      background:#fff;color:var(--sub);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .wy.on{background:#fff7ed;border-color:#fdba74;color:#c2410c;}
+  .wy.done{border-style:solid;}
   .golink{display:block;text-align:center;border:1.5px solid var(--line);border-radius:10px;padding:11px;
     font-size:14px;font-weight:700;color:var(--blue);text-decoration:none;margin-top:8px;}
   .warn{background:var(--amber-soft);border:1px solid #f0dfb8;border-radius:10px;padding:11px 12px;font-size:13px;color:var(--amber);line-height:1.7;}
@@ -490,7 +497,9 @@ function submit(){
       var mine = ans[k][n] || '', ok = (mine === q.a);
       if (ok) c++;
       if (!ok){
-        detail.push({no: k === 'A' ? n + 1 : (k === 'B' ? n + 8 : n + 16), stem: q.stem, mine: mine, right: q.a});
+        detail.push({no: k === 'A' ? n + 1 : (k === 'B' ? n + 8 : n + 16), stem: q.stem, mine: mine, right: q.a,
+                     sec: k, qid: k + (n + 1), opts: q.opts || [],
+                     page: SID + '_Section' + k + '.html'});
       }
       var btns = document.querySelectorAll('.opt[data-sec="' + k + '"][data-n="' + n + '"]');
       for (var i = 0; i < btns.length; i++){
@@ -540,14 +549,23 @@ function submit(){
       + '<a class="golink" href="' + SID + '_Section' + worst + '.html?jt=1&st=3" style="border-color:var(--blue);background:var(--blue-soft)">🎧 精听 Section ' + worst + ' 的 3 句（约 10 分钟）</a>'
       + '<a class="golink" href="' + SID + '_Section' + worst + '.html">看这一段原文与逐句解析</a>';
 
+    /* 每道错题下面四个按钮：点一下记一次错因，records 页的「错因分布」靠它。
+       只记一次的题不再重复记，连点两次等于取消。 */
+    var WHY = [['连读', '没听清'], ['生词', '生词'], ['技巧', '听懂了选错'], ['走神', '走神']];
     var row = function(d){
       return '<div class="wd"><div class="n">' + d.no + '</div><div class="t">' + esc(d.stem.replace(/^\d+\.\s*/, ''))
-        + '<div class="a">你选 ' + (d.mine || '空') + ' · 正确 <b>' + d.right + '</b></div></div></div>';
+        + '<div class="a">你选 ' + (d.mine || '空') + ' · 正确 <b>' + d.right + '</b></div>'
+        + '<div class="whys">' + WHY.map(function(w){
+            return '<button class="wy" data-qid="' + d.qid + '" data-page="' + d.page
+              + '" data-w="' + w[0] + '">' + w[1] + '</button>';
+          }).join('') + '</div>'
+        + '</div></div>';
     };
     var head = detail.slice(0, 8).map(row).join('');
     var rest = detail.slice(8).map(row).join('');
     h += '<p class="dim" style="margin:18px 0 4px">错的 ' + detail.length + ' 题'
-      + (detail.length > 8 ? '（先看前 8 道）' : '') + '</p>'
+      + (detail.length > 8 ? '（先看前 8 道）' : '')
+      + '　·　顺手点一下每道的原因，比多刷一套有用</p>'
       + '<div class="wrongs">' + head + '</div>';
     if (rest){
       h += '<div class="wrongs hide" id="wMore">' + rest + '</div>'
@@ -562,6 +580,61 @@ function submit(){
   if (mw) mw.addEventListener('click', function(){
     $('wMore').classList.remove('hide');
     mw.classList.add('hide');
+  });
+
+  /* 错题本：交卷这一刻就落盘，不等用户点任何东西。
+     单段页一直是「判分后写 cet4_wrongbook」，整套页从来没写，
+     于是每天 25 题错 7-10 道、一条都进不了记录页——记录页的「错题本」
+     一直是空的。现在按 Section 拆三条，page 指向对应单段页，
+     记录页的「回炉 ›」能直接跳过去。 */
+  try{
+    var K = 'cet4_wrongbook', arr = JSON.parse(localStorage.getItem(K) || '[]') || [];
+    var byPage = {};
+    detail.forEach(function(d){ (byPage[d.page] = byPage[d.page] || []).push(d); });
+    Object.keys(byPage).forEach(function(pg){
+      arr = arr.filter(function(x){ return !(x.type === 'listen-quiz' && x.page === pg); });
+      arr.push({
+        type: 'listen-quiz', date: todayStr(), page: pg,
+        title: SID + ' · Section ' + pg.replace(/^.*_Section/, '').replace('.html', ''),
+        items: byPage[pg].map(function(d){
+          return { qid: d.qid, stem: d.stem.replace(/^\d+\.\s*/, ''), zh: '',
+                   user: d.mine, right: d.right, opts: d.opts };
+        })
+      });
+    });
+    localStorage.setItem(K, JSON.stringify(arr));
+  }catch(e){}
+
+  /* 错因：点一下记一次，再点一次取消。records 页「错因分布」读 cet4_why_v1。 */
+  var whyPick = {};
+  try{
+    var _wb = JSON.parse(localStorage.getItem('cet4_why_v1') || '');
+    (_wb && _wb.items || []).forEach(function(x){ whyPick[x.page + '|' + x.qid] = (x.why || []).slice(); });
+  }catch(e){}
+  function saveWhy(page, qid, words){
+    try{
+      var db = null;
+      try{ db = JSON.parse(localStorage.getItem('cet4_why_v1') || ''); }catch(e){ db = null; }
+      if (!db || !db.items) db = { v: 1, items: [] };
+      db.items = db.items.filter(function(x){ return !(x.page === page && x.qid === qid); });
+      if (words.length){
+        db.items.push({ page: page, kind: 'listen', qid: qid, why: words.slice(), picked: '', answer: '',
+                        title: page.replace('.html', '').replace('_Section', ' · Section '), ts: Date.now() });
+      }
+      localStorage.setItem('cet4_why_v1', JSON.stringify(db));
+    }catch(e){}
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('#res .wy'), function(b){
+    var key = b.getAttribute('data-page') + '|' + b.getAttribute('data-qid');
+    if ((whyPick[key] || []).indexOf(b.getAttribute('data-w')) >= 0) b.classList.add('on');
+    b.addEventListener('click', function(){
+      var w = b.getAttribute('data-w'), cur = whyPick[key] || [];
+      var i = cur.indexOf(w);
+      if (i >= 0) cur.splice(i, 1); else cur.push(w);
+      whyPick[key] = cur;
+      b.classList.toggle('on');
+      saveWhy(b.getAttribute('data-page'), b.getAttribute('data-qid'), cur);
+    });
   });
 
   ls('cet4_set_' + SID, JSON.stringify({

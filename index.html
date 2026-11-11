@@ -220,12 +220,13 @@ a.it.now .tx{font-weight:700;color:var(--green)}
 </details>
 
 <details class="fold">
-  <summary><span>更多入口</span><span class="cnt">8 个</span></summary>
+  <summary><span>更多入口</span><span class="cnt">9 个</span></summary>
   <a class="it" href="listen-set.html"><span class="no">L</span><span class="tx">整套听力连做<span class="tag">13 套 · A→B→C 不暂停</span></span><span class="ar">›</span></a>
   <a class="it" href="writing.html"><span class="no">W</span><span class="tx">写作与翻译<span class="tag">18 套写作 · 18 套翻译</span></span><span class="ar">›</span></a>
   <a class="it" href="reading.html"><span class="no">R</span><span class="tx">仔细阅读<span class="tag">8 套 16 篇 · 逐题解析</span></span><span class="ar">›</span></a>
   <a class="it" href="records.html"><span class="no">R</span><span class="tx">我的记录<span class="tag">回执 · 归因 · 云端</span></span><span class="ar">›</span></a>
   <a class="it" href="plan.html"><span class="no">0</span><span class="tx">备考计划<span class="tag">三阶段 · 每日模板</span></span><span class="ar">›</span></a>
+  <a class="it" href="exam-week.html"><span class="no">考</span><span class="tx">考前七天<span class="tag">12/5–12/11 收口表</span></span><span class="ar">›</span></a>
   <a class="it" href="method-5steps.html"><span class="no">1</span><span class="tx">连读弱读专项<span class="tag">专项素材 · 不是日课</span></span><span class="ar">›</span></a>
   <a class="it" href="method-l1.html"><span class="no">2</span><span class="tx">三档语速辨音<span class="tag">慢速 / 原速 / 提速</span></span><span class="ar">›</span></a>
   <a class="it" href="review.html"><span class="no">↻</span><span class="tx">旧音频复习<span class="tag">周末随手听 · 不算日课</span></span><span class="ar">›</span></a>
@@ -474,7 +475,10 @@ function renderHead(){
    +'<div class="bar"><i style="width:'+Math.max(pct,3)+'%"></i></div>'
    +'<div class="sub">集训第 '+dayNo+' 天 / 共 '+totalDays+' 天 · '+(today.getMonth()+1)+'月'+today.getDate()+'日 周'+'日一二三四五六'[wd]
    +' &nbsp;·&nbsp; <span id="syncTag" style="font-size:12px;opacity:.9">☁ 同步中…</span></div>'
-   +'<div class="note">一天一套听力 + 一个副项 · 一小时上下（目标见下方卡片）</div>';
+   +(toExam <= 7 && toExam >= 0
+     ? '<div class="note" style="background:#fef6e7;color:#7a5b00;border-radius:9px;padding:8px 11px;margin-top:9px">'
+       + '考前收口期，<b>不再做新套</b>。按 <a href="exam-week.html" style="color:#7a5b00;text-decoration:underline">考前七天表</a> 走。</div>'
+     : '<div class="note">一天一套听力 + 一个副项 · 一小时上下（目标见下方卡片）</div>');
 }
 
 var TIER_KEY = 'cet4_tier_';
@@ -799,7 +803,10 @@ function renderTasks(){
     var rd = rdCur;
     /* 材料是 46–55 两篇 10 题（一整套），不是「1 篇」。考场给 15 分钟做这两篇，
        旧版写 12 分钟偏紧、60 分钟总量又虚高，两头都不对。 */
-    var rsteps = [
+    var rsteps = SHORT ? [
+      {n:'①', t:'限时做两篇', d:'15 分钟做完 10 题（46–55），不查词、不回看。考场给两篇就是这个时间，做完立刻停表。', m:'15′'},
+      {n:'②', t:'只对错题', d:'错的题回原文找出那一句，对的题直接跳过。短版不逐题划句、不收生词。', m:'5′'}
+    ] : [
       {n:'①', t:'限时做两篇', d:'15 分钟做完 10 题（46–55），不查词、不回看。考场给两篇就是这个时间，做完立刻停表。', m:'15′'},
       {n:'②', t:'划答案句 + 对替换', d:'每题回原文划出答案句，只找那一句；再记「定位词 → 原文替换词」这一对。全对的题跳过，别重读。', m:'8′'},
       {n:'③', t:'收生词', d:'只收反复出现的词，最多 3 个。不抄整句、不背单词书。', m:'2′'}
@@ -819,13 +826,16 @@ function renderTasks(){
     try{ mdone = (JSON.parse(localStorage.getItem('cet4_mseg')||'[]')||[]).length; }catch(e){ mdone = 0; }
     var mToday = (_dod.match === mp.f) || _doneToday(mp.f);
     var mcnt = mToday ? '今天已提交 · 第 ' + Math.max(1, mdone) + ' 次练' : ('第 ' + (mdone+1) + ' 次练 · 满分 71');
-    var msteps = [
+    var msteps = SHORT ? [
+      {n:'①', t:'限时做', d:'15 分钟，10 道题找段落。不查词，凭关键词定位，做完立刻停表。', m:'15′'},
+      {n:'②', t:'只写错题归因', d:'每道错题写一句：没找到定位，还是替换没认出来。对的题不看。', m:'3′'}
+    ] : [
       {n:'①', t:'限时做', d:'15 分钟，10 道题找段落。不查词，凭关键词定位，做完立刻停表。', m:'15′'},
       {n:'②', t:'找替换 + 归因', d:'逐题回段落划出对应句，记「题干的词 → 原文的词」；错题只写一句：没找到定位，还是替换没认出来。', m:'5′'}
     ];
     tHtml += '<div class="steps">'
       + '<div class="shd"><div><b>今天 · 长篇匹配 1 篇</b><div class="sdt">'+mp.d+'　'+mcnt+(SHORT?'　·　短版':'')+'</div></div>'
-      + '<div class="smin">'+(SHORT?'约 16 分钟':'20 分钟')+'</div></div>'
+      + '<div class="smin">'+(SHORT?'约 18 分钟':'20 分钟')+'</div></div>'
       + msteps.map(function(s, i){ return _stepRow('m'+(i+1), s, mp.f, i===0 && _doneToday(mp.f), _doneToday(mp.f)); }).join('')
       + '<div class="stepacts"><a class="btn" href="'+encodeURI(mp.f)+'">打开匹配页</a></div>'
       + '</div>'
@@ -836,13 +846,16 @@ function renderTasks(){
     var isW = wIsW;
     var arr = wArr, wp = wpCur;
     var wlbl = isW ? '写作' : '翻译';
-    var wsteps = [
+    var wsteps = SHORT ? [
+      {n:'①', t:'写', d:'20 分钟写完，不看范文、不查词。卡住就换一句简单的话说完。', m:'20′'},
+      {n:'②', t:'只查三处', d:'时态、单复数、连接词，各扫一遍就停。短版不对参考改句、不抄句式。', m:'3′'}
+    ] : [
       {n:'①', t:'写', d:'20 分钟写完，不看范文、不查词。卡住就换一句简单的话说完。', m:'20′'},
       {n:'②', t:'自查 + 对参考改 3 句', d:'只看时态、单复数、连接词；对完参考只改 3 句，不重写全篇，把那个句式抄下来。', m:'5′'}
     ];
     tHtml += '<div class="steps">'
       + '<div class="shd"><div><b>今天 · '+wlbl+' 1 篇</b><div class="sdt">'+wp.d+(SHORT?'　·　短版':'')+'</div></div>'
-      + '<div class="smin">'+(SHORT?'约 20 分钟':'25 分钟')+'</div></div>'
+      + '<div class="smin">'+(SHORT?'约 23 分钟':'25 分钟')+'</div></div>'
       + wsteps.map(function(s, i){ return _stepRow('w'+(i+1), s, wp.f, i===0 && _doneToday(wp.f), _doneToday(wp.f)); }).join('')
       + '<div class="stepacts"><a class="btn" href="'+encodeURI(wp.f)+'">打开'+wlbl+'页</a></div>'
       + '</div>'
@@ -855,7 +868,7 @@ function renderTasks(){
      是固定的删减规则：砍跟读、砍默写、砍收生词，核心链一步不少。 */
   if (tier === 'min'){
     tHtml += '<div class="tierlink">'
-      + '<a href="javascript:void(0)" data-tier="std">状态回来了？切 35 分钟版 →</a>'
+      + '<a href="javascript:void(0)" data-tier="std">状态回来了？切 27 分钟版 →</a>'
       + '<br><a href="javascript:void(0)" data-tier="full">切回完整版</a></div>';
   } else if (tier === 'std'){
     tHtml += '<div class="tierlink">'

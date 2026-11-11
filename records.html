@@ -98,6 +98,23 @@ h1{font-size:22px;margin:0 0 16px;letter-spacing:-.3px}
 </div>
 
 <div class="card">
+  <div class="chead"><h2>进度备份</h2><span class="cmeta" id="bkMeta">读取中…</span></div>
+  <div id="bkBody">
+    <p style="font-size:13px;color:var(--sub);margin:0 0 11px;line-height:1.7">
+      40 天的进度（步骤、整套分数、错题、归因、笔迹登记）只存在这台设备上。
+      换手机、清浏览器数据、用无痕模式，都会归零。考前导一份出来，存在微信文件传输助手里。
+    </p>
+    <div style="display:flex;gap:9px">
+      <button id="expBtn" style="flex:1;padding:11px 8px;border-radius:10px;border:1.5px solid var(--blue);
+        background:var(--blue-soft);color:var(--blue);font:700 13px/1 inherit;cursor:pointer">导出进度</button>
+      <button id="impBtn" style="flex:1;padding:11px 8px;border-radius:10px;border:1.5px solid var(--line);
+        background:#fff;color:var(--sub);font:700 13px/1 inherit;cursor:pointer">导入进度</button>
+    </div>
+    <input type="file" id="impFile" accept="application/json,.json" style="display:none">
+  </div>
+</div>
+
+<div class="card">
   <div class="chead"><h2>回执与批改</h2><span class="cmeta" id="cnt">加载中…</span></div>
   <div id="list"><div class="empty">正在拉取云端记录…</div></div>
 </div>
@@ -330,7 +347,11 @@ function renderWrongbook(cloudWb){
     for (i = 0; i < arr.length; i++){
       var w = arr[i];
       total += (w.items||[]).length + (w.lines||[]).length;
-      html += '<div class="day">' + wbEsc(w.date) + ' · ' + wbEsc(w.title || w.page || '') + '</div>';
+      /* 题目类错题给一个回原页的入口：原来只能看，不能回去重听那一段 */
+      var back = (w.page && w.type !== 'listen-dict')
+        ? ' <a href="' + wbEsc(w.page) + '" style="font-size:12px;color:var(--blue);'
+          + 'text-decoration:none;font-weight:600;white-space:nowrap">重做这段 ›</a>' : '';
+      html += '<div class="day">' + wbEsc(w.date) + ' · ' + wbEsc(w.title || w.page || '') + back + '</div>';
       if (w.type === 'listen-dict'){
         html += '<div class="it"><div class="hd"><span class="pill a">听写没听清</span></div>';
         for (j = 0; j < (w.lines||[]).length; j++){
@@ -479,6 +500,101 @@ function renderWrongbook(cloudWb){
   document.getElementById('setCard').style.display = 'block';
 })();
 
+</script>
+<script>
+/* 进度导出 / 导入：只碰 cet4_ 前缀的键，ntfy、别的站点数据不动。
+   导入前二次确认，因为会覆盖同名的本地记录。 */
+(function(){
+  var meta = document.getElementById('bkMeta');
+  var expBtn = document.getElementById('expBtn');
+  var impBtn = document.getElementById('impBtn');
+  var impFile = document.getElementById('impFile');
+  if (!meta || !expBtn || !impBtn || !impFile) return;
+
+  function collect(){
+    var d = {};
+    for (var i = 0; i < localStorage.length; i++){
+      var k = localStorage.key(i);
+      if (k.indexOf('cet4_') === 0) d[k] = localStorage.getItem(k);
+    }
+    return d;
+  }
+
+  function stamp(){
+    var t = new Date();
+    return t.getFullYear() + ('0' + (t.getMonth() + 1)).slice(-2) + ('0' + t.getDate()).slice(-2);
+  }
+
+  var data = collect();
+  var keys = Object.keys(data);
+  if (!keys.length){
+    meta.textContent = '本机还没有记录';
+    expBtn.disabled = true;
+    expBtn.style.opacity = '.45';
+    expBtn.style.cursor = 'default';
+  } else {
+    var size = new Blob([JSON.stringify({ v: 1, d: data })]).size;
+    meta.textContent = keys.length + ' 项 · ' + (size / 1024).toFixed(1) + ' KB';
+  }
+
+  expBtn.addEventListener('click', function(){
+    var payload = { v: 1, ts: Date.now(), app: 'cet4-trainer', d: collect() };
+    var blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'cet4-progress-' + stamp() + '.json';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1200);
+    meta.textContent = '已导出 ' + Object.keys(payload.d).length + ' 项';
+  });
+
+  impBtn.addEventListener('click', function(){ impFile.click(); });
+
+  impFile.addEventListener('change', function(){
+    var f = this.files && this.files[0];
+    if (!f) return;
+    var box = document.getElementById('bkBody');
+    Array.prototype.forEach.call(box.querySelectorAll('.impmsg'), function(e){ e.remove(); });
+    var r = new FileReader();
+    r.onload = function(){
+      var o = null;
+      try{ o = JSON.parse(r.result); }catch(e){ o = null; }
+      if (!o || !o.d || typeof o.d !== 'object'){
+        box.insertAdjacentHTML('beforeend',
+          '<p class="impmsg" style="font-size:12.5px;color:var(--red);margin:10px 0 0">这个文件读不出来。要选导出的 .json 原文件，不要改名或转存成 txt。</p>');
+        return;
+      }
+      var ks = Object.keys(o.d).filter(function(k){ return k.indexOf('cet4_') === 0; });
+      if (!ks.length){
+        box.insertAdjacentHTML('beforeend',
+          '<p class="impmsg" style="font-size:12.5px;color:var(--red);margin:10px 0 0">文件里没有可导入的记录。</p>');
+        return;
+      }
+      var mine = Object.keys(collect()).length;
+      var ok = confirm('这个文件里有 ' + ks.length + ' 项记录。\n本机现在有 ' + mine + ' 项，同名的会被覆盖。\n'
+        + (o.ts ? '导出时间：' + new Date(o.ts).toLocaleString() + '\n' : '')
+        + '继续导入？');
+      if (!ok) return;
+      try{
+        ks.forEach(function(k){ localStorage.setItem(k, o.d[k]); });
+      }catch(e){
+        box.insertAdjacentHTML('beforeend',
+          '<p class="impmsg" style="font-size:12.5px;color:var(--red);margin:10px 0 0">写入失败：浏览器存储空间不够，先清一些别的站点数据再试。</p>');
+        return;
+      }
+      box.insertAdjacentHTML('beforeend',
+        '<p class="impmsg" style="font-size:12.5px;color:var(--green);margin:10px 0 0">已导入 '
+        + ks.length + ' 项，正在刷新…</p>');
+      setTimeout(function(){ location.reload(); }, 900);
+    };
+    r.onerror = function(){
+      box.insertAdjacentHTML('beforeend',
+        '<p class="impmsg" style="font-size:12.5px;color:var(--red);margin:10px 0 0">读取文件失败，可能是文件损坏。</p>');
+    };
+    r.readAsText(f);
+  });
+})();
 </script>
 </body>
 </html>
