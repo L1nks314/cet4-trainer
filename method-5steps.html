@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>精听五步法专项包 · 点读版</title>
+<title>连读弱读专项 · 点读版</title>
 <style>
   :root{ --bg:#f4f5f7; --card:#ffffff; --soft:#fafbfc; --grey:#f2f3f5;
  --line:#e5e8ec; --line2:#eff1f4; --track:#e8ebef;
@@ -300,8 +300,8 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 <div class="wrap">
 
 <header>
-  <h1>精听五步法专项包 · 点读版</h1>
-  <div class="meta">今日语音点：<b>连读与弱读</b> ｜ 素材：VOA Learning English（公开学习资源）｜ 全程 25 分钟 ｜ <b>额外补充，不计入 1 小时</b></div>
+  <h1>连读弱读专项 · 点读版</h1>
+  <div class="meta">今日语音点：<b>连读与弱读</b> ｜ 素材：VOA Learning English（公开学习资源）｜ 全程 25 分钟 ｜ <b>专项补充，不计入当天的 50 分钟</b>；日课的精听 5 句在每套听力页里</div>
   <div><span class="badge">点单词即可播放</span><span class="badge">双档语速可切换</span><span class="badge">19 处连读弱读标注</span></div>
 </header>
 
@@ -359,7 +359,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 
 <div class="card locked-sec" id="explainCard"><h2><span class="num">6</span>五步法操作卡（照着做，25 分钟）</h2><p><b>第 ① 步 · 盲听抓大意</b>　2 分钟 ｜ 用原速。完整听一遍，<b>不暂停、不看原文</b>。听完只做一件事：用中文写一句「这段在讲什么」。</p><div class="why">这一步不要求听懂细节。目的是先给大脑一个整体画面，避免后面逐句听写时「只见树木不见森林」。</div><p><b>第 ② 步 · 逐句听写</b>　10 分钟 ｜ 用慢速。一句一暂停，把听到的<b>全部写下来</b>。听不出的地方画一条横线，<b>不要留空、不要猜</b>。</p><div class="warn"><b>全流程最关键的一步。</b>横线的多少就是你这周唯一的进步指标——第一周 20 条很正常，第三周降到 8 条你就赢了。写完在回执里填上这个数字。</div><p><b>第 ③ 步 · 对照原文归因</b>　5 分钟 ｜ 拿听写稿对照原文，用红笔标出每处错误，然后<b>强制给每处错误贴一个标签</b>：连读 / 弱读 / 失爆 / 生词 / 熟词僻义 / 语法 / 走神。</p><div class="why">归因比改错重要。你听到的到底是 <code>hardatwork</code> 还是 <code>hard at work</code>，决定了下周该练什么。</div><p><b>第 ④ 步 · 跟读模仿</b>　5 分钟 ｜ 用慢速。看着原文跟读 3 遍，优先读标黄的连读弱读处。</p><div class="purple"><b>你读不出来的声音，就永远听不懂。</b>重点不是读得标准，是读得<b>连贯</b>——把 <code>much more than</code> 读成一串，而不是三个词。</div><p><b>第 ⑤ 步 · 脱稿复听</b>　3 分钟 ｜ 用原速，遮住原文再听一遍。<b>能听懂大意 + 听清关键细节 = 本段过关。</b></p><div class="green">还有卡住的句子，用每句左边的 🔁 循环五遍，明天第①步先复习它。</div></div>
 
-<footer>精听五步法专项包 · 点读版 ｜ 素材来源：VOA Learning English（公开学习资源，仅供个人学习使用）</footer>
+<footer>连读弱读专项 · 点读版 ｜ 素材来源：VOA Learning English（公开学习资源，仅供个人学习使用）</footer>
 </div>
 <div class="toast" id="toast">已复制</div>
 
@@ -555,7 +555,7 @@ var QUIZ = [];
   function buildReceipt(){
     var d = new Date();
     var ds = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-    var L = ['【四级训练回执】', '日期：' + ds, '训练包：精听五步法专项包 · 点读版'];
+    var L = ['【四级训练回执】', '日期：' + ds, '训练包：连读弱读专项 · 点读版'];
     if (typeof quizLines === 'function'){ L = L.concat(quizLines()); }
     L.push('听写：逐句清单（没听清的句已进错题本，截图发我批改）');
     L.push('最难的一句：' + (document.getElementById('hardest').value || '（未填）'));

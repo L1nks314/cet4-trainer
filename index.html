@@ -211,8 +211,8 @@ a.it.now .tx{font-weight:700;color:var(--green)}
 .steps.replay .shd b{color:#0f766e}
 .steps.replay .step.on .ck{background:#0f766e;border-color:#0f766e}
 .steps.replay .step.on .st{color:#0f766e}
-.stepacts{display:flex;gap:8px;margin-top:14px}
-.stepacts .btn{margin-top:0;flex:1;text-align:center;padding:12px 10px}
+.stepacts{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.stepacts .btn{margin-top:0;flex:1 0 100%;text-align:center;padding:12px 10px}
 
 /* 训练列表 */
 #list a.it .st-done{color:var(--green);font-size:12px;font-weight:700}
@@ -237,19 +237,19 @@ a.it.now .tx{font-weight:700;color:var(--green)}
   <a class="it" href="reading.html"><span class="no">R</span><span class="tx">仔细阅读<span class="tag">8 套 16 篇 · 逐题解析</span></span><span class="ar">›</span></a>
   <a class="it" href="records.html"><span class="no">R</span><span class="tx">我的记录<span class="tag">回执 · 归因 · 云端</span></span><span class="ar">›</span></a>
   <a class="it" href="plan.html"><span class="no">0</span><span class="tx">备考计划<span class="tag">三阶段 · 每日模板</span></span><span class="ar">›</span></a>
-  <a class="it" href="method-5steps.html"><span class="no">1</span><span class="tx">精听五步法<span class="tag">连读 / 弱读 / 失爆</span></span><span class="ar">›</span></a>
+  <a class="it" href="method-5steps.html"><span class="no">1</span><span class="tx">连读弱读专项<span class="tag">专项素材 · 不是日课</span></span><span class="ar">›</span></a>
   <a class="it" href="method-l1.html"><span class="no">2</span><span class="tx">三档语速辨音<span class="tag">慢速 / 原速 / 提速</span></span><span class="ar">›</span></a>
   <a class="it" href="review.html"><span class="no">↻</span><span class="tx">回炉（旧）<span class="tag">已并入每日副项 · 备查</span></span><span class="ar">›</span></a>
 </details>
 
 <div class="hint">
- <b>顺序：</b>①–④ 在训练页做完（②做完就交卷，解析自动解锁），⑤ 点「去跟读」。<br>
+ <b>顺序：</b>点卡片上的「去做第 N 步」直接进训练页。听力篇章：①看选项 ②盲听做题交卷 ③精听 5 句 ④归因；Section A/B 的 ③ 是「听写 3 句」。<br>
  步骤勾选只是进度条，<b>不会自动算完成</b>——只有交卷判分，或你自己点「今天这段做完了」才算。<br>
  勾选存在本机；换设备不同步，但交卷记录会上云。
 </div>
 
 <script>
-var START = new Date(2026,9,17);        // 集训起点（第 1 天）
+var START = new Date(2026,10,2);        // 集训起点（第 1 天）· 与 plan.html 的「11/2 起 40 天」同一口径
 var EXAMD = new Date(2026,11,12);       // 考试日
 var LESSONS = [
   {f:"2025-12-1_SectionA.html",d:"2025年12月 第1套 · Section A 短篇新闻"},
@@ -485,7 +485,7 @@ function renderHead(){
    +'<div class="bar"><i style="width:'+Math.max(pct,3)+'%"></i></div>'
    +'<div class="sub">集训第 '+dayNo+' 天 / 共 '+totalDays+' 天 · '+(today.getMonth()+1)+'月'+today.getDate()+'日 周'+'日一二三四五六'[wd]
    +' &nbsp;·&nbsp; <span id="syncTag" style="font-size:12px;opacity:.9">☁ 同步中…</span></div>'
-   +'<div class="note">一天只做一件事 · 做完就结束（目标见下方卡片）</div>';
+   +'<div class="note">一天一长一短 · 50 分钟上下（目标见下方卡片）</div>';
 }
 
 var TIER_KEY = 'cet4_tier_';
@@ -598,15 +598,6 @@ function goalCard(cur){
     + row('match','匹配', g.match)
     + row('write','写译', g.write)
     + (_cb ? '<div class="gfoot">这周<b>不追进度，只测数据</b>。11/8 用真实数字定后 5 周，现在这张排期是草案。<br>唯一指标：这一周你打开了几次页面。对几题不重要。</div>' : '')
-    + '</div>';
-}
-
-function calibBar(){
-  return '<div class="calib">'
-    + '<div class="cbt"><b>校准期 · 11/2 – 11/8</b><span>还剩 7 天</span></div>'
-    + '<div class="cbd">这周<b>不追进度，只测数据</b>：能连续做几天、听力再走 1 段、匹配做 1 篇。'
-    + '11/8 用真实数据定后 5 周，现在这张排期表只是草案。<br>'
-    + '<b>唯一指标：这一周你打开了几次。</b>对几题不重要。</div>'
     + '</div>';
 }
 
@@ -836,7 +827,7 @@ function renderTasks(){
   } else if (kind === 'listen'){
     var ST = getSteps();
     var steps, head, sub;
-    /* 今天这一段是不是已经交过卷。交卷只算走完 ②，后面还有听写 / 归因 / 跟读，
+    /* 今天这一段是不是已经交过卷。交卷只算走完 ②，后面还有精听 / 归因，
        所以卡片要说「接着做」，不能因为交过卷就当成今天这段做完了。 */
     var _subbed = false;
     try{
@@ -846,52 +837,65 @@ function renderTasks(){
     /* 听力时长按真实音频长度分档（13 套真题中位数：A 6′19″ / B 6′04″ / C 9′14″） */
     var SEC = /sectionc\.html$/i.test(lbtn) ? 'C' : (/sectionb\.html$/i.test(lbtn) ? 'B' : 'A');
     /* 完整版按「做完这一段的真实耗时」算，不再凑整：
-       C 4 看选项 + 10 盲听 + 1 交卷 + 12 听写 8 句 + 5 归因 + 10 跟读 2 遍 = 42′
-       A/B 3 + 7 + 1 + 7 听写 3 句 + 3 归因 + 2 挑一句跟读 = 23′ */
+       C   4 看选项 + 11 盲听做题交卷 + 20 精听 5 句 + 5 归因 = 40′（跟读/自评在精听浮层里）
+       A/B 3 看选项 + 8 盲听做题交卷 + 7 听写 3 句 + 3 归因 + 2 挑一句跟读 = 23′ */
     var LE = {
-      A:{p:'3′', b:'7′', d:'7′',  w:'3′', s:'2′', tot:'约 23 分钟', n:'3 句', aud:'6 分 19 秒', note:'挑 1 句跟到顺就行',
-         sp:'3′', sb:'7′', sw:'2′', sd:'5′', sn:'2 句', stot:'约 18 分钟'},
-      B:{p:'3′', b:'7′', d:'7′',  w:'3′', s:'2′', tot:'约 23 分钟', n:'3 句', aud:'6 分 04 秒', note:'挑 1 句跟到顺就行',
-         sp:'3′', sb:'7′', sw:'2′', sd:'5′', sn:'2 句', stot:'约 18 分钟'},
-      C:{p:'4′', b:'10′', d:'6′', w:'5′', s:'10′', c:'6′', tot:'约 42 分钟', n:'3 句', aud:'9 分 14 秒', note:'跟 2 遍刚好到点',
-         sp:'3′', sb:'10′', sw:'4′', sd:'4′', sc:'4′', sn:'2 句', stot:'约 25 分钟'}
+      A:{p:'3′', b:'8′', d:'7′',  w:'3′', s:'2′', tot:'约 23 分钟', n:'3 句',
+         sp:'3′', sb:'8′', sw:'2′', sd:'5′', sn:'2 句', stot:'约 18 分钟'},
+      B:{p:'3′', b:'8′', d:'7′',  w:'3′', s:'2′', tot:'约 23 分钟', n:'3 句',
+         sp:'3′', sb:'8′', sw:'2′', sd:'5′', sn:'2 句', stot:'约 18 分钟'},
+      C:{p:'4′', b:'11′', j:'20′', w:'5′', tot:'约 40 分钟',
+         sp:'3′', sb:'10′', sj:'20′', sw:'3′', stot:'约 35 分钟'}
     }[SEC];
     /* ── 新段精听：一周两个新段，没有「复听」这条路 ── */
     head = _subbed ? ('今天 · 接着做 · Section ' + SEC) : ('今天 · 听力新段 · Section ' + SEC);
     sub  = lessonTxt + (_subbed ? '　·　已交卷，接着往下' : '');
-    /* 完整版 C：4 看选项 + 10 盲听 + 6 听写 3 句 + 6 闪卡 + 5 归因 + 10 跟读/复述 = 41′（含交卷 1′）
-       短版 C：3 + 10 + 4 听写 2 句 + 4 闪卡 12 词 + 4 归因 = 25′
-       听写只写实词骨架：这个阶段练的是提取速度，不是默写全文 */
-    var _mk = function(list){
-      return list.map(function(x, i){
-        x.k = 's' + (i + 1);
-        x.n = '①②③④⑤⑥'[i];
-        return x;
-      });
-    };
-    var _base = SHORT ? [
-      {t:'横看竖看选项', d:'四级卷面只有 A–D 选项，问题在录音最后才念。横看找差异点，竖看串话题。不查词、不看原文。', m:LE.sp},
-      {t:'盲听做题', d:'一遍放完，不暂停、不回放。做完立刻交卷——交卷后原文才解锁。', m:LE.sb},
-      {t:'听写 '+LE.sn, d:'只写实词骨架：名词、动词、数字。虚词留空，听不出画「—」，不猜。', m:LE.sd},
-      {t:'对照归因', d:'只分两类：没反应过来 / 根本没听见。不写第三种。', m:LE.sw}
-    ] : [
-      {t:'横看竖看选项', d:'四级卷面只有 A–D 选项，问题在录音最后才念，不印在卷上。横看：同一题四个选项比一遍，相同部分划掉、不同的那一两个词圈出来，那就是要等的点。竖看：把本段所有选项串一遍，猜这段讲什么。不查词、不看原文。', m:LE.p},
-      {t:'盲听做题', d:'一遍放完，不暂停、不回放。答案在放音过程中就定，别等问题念完再回想——念完只有 5 秒涂卡。做完立刻点交卷。', m:LE.b},
-      {t:'听写 '+LE.n, d:'只写实词骨架：名词、动词、数字。虚词留空，听不出画「—」，绝不猜。这是采样，不是默写。', m:LE.d},
-      {t:'对照归因', d:'只看画「—」的句子，只分两类：没反应过来 / 根本没听见。', m:LE.w},
-      {t:'影子跟读 + 复述', d:'不看文本跟 30 秒，落后半句、跟丢就等下一句；再挑 2 句用中文说大意。', m:LE.s}
-    ];
+
+    /* 篇章（C）：第 ③ 步换成「精听 5 句」。
+       以前是 听写 3 句 + 闪卡 + 跟读，三件事各做各的，都是过一遍就完；
+       精听把这三件并成一条有标准的线：每句连放 3 遍 → 必须判断听懂没 → 难句当场跟读。
+       听写/闪卡不删，挪到精听结果页当「选做」，想练还能点。 */
     if (SEC === 'C'){
-      _base.splice(3, 0,
-        {t:'音义闪卡', d:'听真题原声（从这段录音里切出来的词），3 秒内说中文。想不起来点「没反应」，翻面看原句——练的是提取速度，不是背单词。', m:(SHORT ? LE.sc : LE.c)});
+      steps = [
+        {k:'s1', n:'①', t:'横看竖看选项', m:LE.p,
+         d:'四级卷面只有 A–D 选项，问题在录音最后才念，不印在卷上。横看：同一题四个选项比一遍，相同部分划掉、不同的那一两个词圈出来，那就是要等的点。竖看：把本段所有选项串一遍，猜这段讲什么。不查词、不看原文。'},
+        {k:'s2', n:'②', t:'盲听做题 + 交卷', m:LE.b,
+         d:'一遍放完，不暂停、不回放。答案在放音过程中就定，别等问题念完再回想——念完只有 5 秒涂卡。做完立刻点交卷，交卷后原文才解锁。'},
+        {k:'s3', n:'③', t:'精听 5 句', m:(SHORT ? LE.sj : LE.j),
+         d:'点进来会直接弹出精听浮层：系统固定挑 5 句，每句连放 3 遍（0.85× 两遍、1.0× 一遍），三遍放完才让你判断「听出来了 / 还是不行」。卡住的句子当场跟读，最后整段回听自评。'},
+        {k:'s5', n:'④', t:'对照归因', m:LE.w,
+         d:'只看画「—」的句子，只分两类：没反应过来 / 根本没听见。写不出第三类。'}
+      ];
+    } else {
+      var _mk = function(list){
+        return list.map(function(x, i){
+          x.k = 's' + (i + 1);
+          x.n = '①②③④⑤⑥'[i];
+          return x;
+        });
+      };
+      var _base = SHORT ? [
+        {t:'横看竖看选项', d:'四级卷面只有 A–D 选项，问题在录音最后才念。横看找差异点，竖看串话题。不查词、不看原文。', m:LE.sp},
+        {t:'盲听做题', d:'一遍放完，不暂停、不回放。做完立刻交卷——交卷后原文才解锁。', m:LE.sb},
+        {t:'听写 '+LE.sn, d:'只写实词骨架：名词、动词、数字。虚词留空，听不出画「—」，不猜。', m:LE.sd},
+        {t:'对照归因', d:'只分两类：没反应过来 / 根本没听见。不写第三种。', m:LE.sw}
+      ] : [
+        {t:'横看竖看选项', d:'四级卷面只有 A–D 选项，问题在录音最后才念，不印在卷上。横看：同一题四个选项比一遍，相同部分划掉、不同的那一两个词圈出来，那就是要等的点。竖看：把本段所有选项串一遍，猜这段讲什么。不查词、不看原文。', m:LE.p},
+        {t:'盲听做题', d:'一遍放完，不暂停、不回放。答案在放音过程中就定，别等问题念完再回想——念完只有 5 秒涂卡。做完立刻点交卷。', m:LE.b},
+        {t:'听写 '+LE.n, d:'只写实词骨架：名词、动词、数字。虚词留空，听不出画「—」，绝不猜。这是采样，不是默写。', m:LE.d},
+        {t:'对照归因', d:'只看画「—」的句子，只分两类：没反应过来 / 根本没听见。', m:LE.w},
+        {t:'挑 1 句跟读', d:'选最长的那句，跟到不磕巴就停。不整段跟。', m:LE.s}
+      ];
+      steps = _mk(_base);
     }
-    steps = _mk(_base);
     /* ── 单线推进：只有第一个没完成的步骤能点，后面的锁住 ── */
     var curI = -1, si, _maxOn = -1;
     for (si = 0; si < steps.length; si++){ if (ST[steps[si].k]) _maxOn = si; }
     /* 后面做了，前面必然做过（比如直接交卷没点「看选项」）——按最靠后的那步算，别让进度倒退 */
     for (si = 0; si < steps.length; si++){ if (!ST[steps[si].k] && si > _maxOn){ curI = si; break; } }
     var _hrefOf = function(s){
+      /* 第 ③ 步直接进这一页并自动打开精听浮层；已交卷的话浮层从「精听 5 句」开始 */
+      if (SEC === 'C' && s.k === 's3') return lbtn + '?jt=1';
       if (/音义闪卡/.test(s.t)) return 'soundcard.html?p=' + encodeURIComponent(lbtn) + '&n=' + (SHORT ? 12 : 20) + '&k=' + s.k;
       if (/跟读/.test(s.t)) return 'shadow.html?p=' + encodeURIComponent(lbtn) + '&k=' + s.k;
       return lbtn;
