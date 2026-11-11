@@ -62,7 +62,11 @@
   .q{padding:11px 0;border-top:1px dashed var(--line2);scroll-margin-top:80px;}
   .sect{scroll-margin-top:76px;}
   .q:first-of-type{border-top:none;}
-  .stem{font-size:14.5px;line-height:1.75;color:var(--txt2);margin-bottom:8px;}
+  /* 四级卷面只有选项，问题在录音里念：题干默认收起，交卷后才展开。
+     题号必须留在外面，否则收起题干后连第几题都看不见。 */
+  .qhd{margin-bottom:2px;}
+  .stem{display:none;font-size:14.5px;line-height:1.75;color:var(--txt2);margin-bottom:8px;}
+  body.qshow .stem{display:block;}
   .qno{display:inline-block;min-width:22px;font-weight:800;color:var(--txt);}
   .opt{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:var(--soft);color:var(--txt3);
     border-radius:9px;padding:9px 11px;margin-bottom:6px;font-family:inherit;font-size:14px;line-height:1.6;cursor:pointer;}
@@ -80,6 +84,21 @@
   #foot .inner{max-width:760px;margin:0 auto;}
   #foot .hintbar{display:flex;justify-content:space-between;font-size:12.5px;color:var(--sub);margin-bottom:6px;}
   #foot .hintbar b{color:var(--txt);}
+  /* 预读条：固定在底部，盖住交卷条。不遮题目，用户要边看选项边等 */
+  #prep{position:fixed;left:0;right:0;bottom:0;z-index:45;display:none;
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+    background:var(--card);border-top:1px solid var(--line);
+    box-shadow:0 -6px 20px rgba(16,24,40,.10);}
+  #prep.on{display:block;}
+  #prep .pin{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+  #prep .pl{flex:1;min-width:0;}
+  #prep .pl b{display:block;font-size:14px;line-height:1.4;}
+  #prep .pl span{display:block;font-size:12px;color:var(--sub);margin-top:2px;line-height:1.45;}
+  #prepNum{font-size:28px;font-weight:900;line-height:1;min-width:46px;text-align:center;
+    color:var(--blue);font-variant-numeric:tabular-nums;}
+  #prepSkip{flex:0 0 auto;border:1px solid var(--line);background:var(--soft);color:var(--txt3);
+    border-radius:9px;padding:9px 14px;font-size:13px;font-family:inherit;cursor:pointer;}
+  #prepSkip:active{background:var(--grey);}
   /* 结果 */
   .score{display:flex;align-items:flex-end;gap:8px;margin:2px 0 10px;}
   .score .big{font-size:38px;font-weight:900;line-height:1;letter-spacing:-.02em;}
@@ -127,7 +146,8 @@
     <h2>开始之前，只看这一屏</h2>
     <ul class="rule">
       <li><b>一次播完 A→B→C，约 22 分钟</b>，中途不能暂停、不能回放、不能拖进度。</li>
-      <li>题目可以边听边点，也可以在开播前先看选项。考场也是这个顺序。</li>
+      <li><b>卷面只有选项，问题在录音里念</b>——题干默认收起，交卷后才展开。</li>
+      <li><b>每段开播前给预读时间</b>：A 30 秒、B 20 秒、C 20 秒，归零自动开播，可跳过。</li>
       <li>播完自动停，<b>点一次交卷</b>，之后才出答案和解析。</li>
       <li>手抖、走神、第 2 段崩——这一项练的就这些，不是练听懂每个词。</li>
     </ul>
@@ -155,6 +175,14 @@
         <span><b id="fAns">0</b> / 25 已选</span>
       </div>
       <button class="btn green" id="submit" disabled>交卷 · 看分段得分</button>
+    </div>
+  </div>
+
+  <div id="prep">
+    <div class="pin">
+      <div class="pl"><b id="prepSec">Section A · 短篇新闻</b><span id="prepTip">扫选项里的名词、数字、人名</span></div>
+      <div id="prepNum">30</div>
+      <button id="prepSkip">跳过</button>
     </div>
   </div>
 
@@ -187,6 +215,9 @@ var T0 = 0;                   /* 本次开始的时间戳 */
 var totalDur = 0, before = [0, 0, 0];   /* before[i] = 前面各段总时长 */
 var AS = {};                  /* 三个 audio 元素 */
 var tickTimer = null, wakeLock = null, resumePending = false;
+/* 预读秒数：贴真考各段 direction 的长度，A 段最长 */
+var PREP = [30, 20, 20];
+var prepTimer = null, prepLeft = 0;
 
 function $(id){ return document.getElementById(id); }
 function fmt(t){
@@ -265,7 +296,7 @@ function build(){
   });
 
   $('hTitle').textContent = setTitleOf(SID) + ' · 整套听力';
-  $('hMeta').textContent = '25 题 · 约 ' + Math.round(totalDur / 60) + ' 分钟 · A→B→C 一次播完，不暂停不回放';
+  $('hMeta').textContent = '25 题 · 预读 70 秒 + 放音 ' + Math.round(totalDur / 60) + ' 分钟 · A→B→C 一次播完，不暂停不回放';
 
   var last = ls('cet4_set_' + SID), lastTxt = '';
   if (last){
@@ -296,9 +327,10 @@ function render(){
       + '<div class="shd"><h3>Section ' + k + ' · ' + names[k] + '</h3>'
       + '<span class="tag">' + S[k].q + ' 题 · ' + fmt(S[k].dur) + '</span></div>';
     S[k].quiz.forEach(function(q, n){
+      var no = n + 1 + (k === 'A' ? 0 : k === 'B' ? 7 : 15);
       html += '<div class="q" data-q="' + k + n + '">'
-        + '<div class="stem"><span class="qno">' + (n + 1 + (k === 'A' ? 0 : k === 'B' ? 7 : 15)) + '</span>'
-        + esc(q.stem.replace(/^\d+\.\s*/, '')) + '</div>';
+        + '<div class="qhd"><span class="qno">' + no + '</span></div>'
+        + '<div class="stem">' + esc(q.stem.replace(/^\d+\.\s*/, '')) + '</div>';
       'ABCD'.split('').forEach(function(L, j){
         html += '<button class="opt" data-sec="' + k + '" data-n="' + n + '" data-k="' + L + '">'
           + '<span class="k">' + L + ')</span><span>' + esc(q.opts[j]) + '</span></button>';
@@ -342,6 +374,44 @@ function buildAudio(){
   });
 }
 
+/* ---------- 预读 ----------
+   真考不是点开就响：每题前有 direction，那段时间就是给考生扫选项的。
+   原版点「开始」立刻播第一句，7 个选项还没看就进新闻了。 */
+var SECNAME = {A:'短篇新闻', B:'长对话', C:'听力篇章'};
+var PREPTIP = [
+  '现在只做一件事：扫 7 道题的选项，圈出每题里不一样的名词',
+  '扫 8 道题的选项，先分清对话里两个人的身份',
+  '扫 10 道题的选项，先看每题问的是原因、数字还是态度'
+];
+
+function startPrep(i){
+  var k = 'ABC'[i];
+  prepLeft = PREP[i];
+  curSec = i;
+  $('prepSec').textContent = 'Section ' + k + ' · ' + SECNAME[k];
+  $('prepTip').textContent = PREPTIP[i];
+  $('prepNum').textContent = prepLeft;
+  $('prep').classList.add('on');
+  $('bar').classList.add('on');
+  $('foot').classList.remove('on');   /* 别和预读条叠在同一条底部 */
+  paintBar();
+  scrollToSec(i);
+  if (prepTimer) clearInterval(prepTimer);
+  prepTimer = setInterval(function(){
+    prepLeft--;
+    if (prepLeft <= 0){ endPrep(i); return; }
+    $('prepNum').textContent = prepLeft;
+  }, 1000);
+}
+
+function endPrep(i){
+  if (prepTimer){ clearInterval(prepTimer); prepTimer = null; }
+  $('prep').classList.remove('on');
+  $('foot').classList.add('on');
+  $('fHint').textContent = '播放中，不能暂停';
+  playSec(i);
+}
+
 function playSec(i){
   var k = 'ABC'[i];
   curSec = i;
@@ -366,7 +436,7 @@ function nextSec(from){
   var a = AS['ABC'[from]];
   try{ a.pause(); }catch(e){}
   if (from >= 2){ endAll(); return; }
-  playSec(from + 1);
+  startPrep(from + 1);
 }
 
 function endAll(){
@@ -440,14 +510,17 @@ $('go').addEventListener('click', function(){
   playing = true;
   T0 = Date.now();
   $('pre').classList.add('hide');
-  $('bar').classList.add('on');
-  $('foot').classList.add('on');
   $('submit').disabled = true;
-  $('fHint').textContent = '播放中，不能暂停';
   if (tickTimer) clearInterval(tickTimer);
   tickTimer = setInterval(paintTime, 500);
   requestWake();
-  playSec(0);
+  startPrep(0);
+});
+
+/* 预读倒计时可以跳过，但不跳过音频：只是把这一段提前 */
+$('prepSkip').addEventListener('click', function(){
+  if (!playing || curSec >= 3) return;
+  endPrep(curSec);
 });
 
 $('resumeBtn').addEventListener('click', function(){
@@ -484,7 +557,10 @@ $('submit').addEventListener('click', function(){
 function submit(){
   submitted = true;
   playing = false;
+  document.body.classList.add('qshow');   /* 交卷后才把题干放出来，做的时候看不见 */
   if (tickTimer){ clearInterval(tickTimer); tickTimer = null; }
+  if (prepTimer){ clearInterval(prepTimer); prepTimer = null; }
+  $('prep').classList.remove('on');
   releaseWake();
   $('foot').classList.remove('on');
   $('bar').classList.remove('on');

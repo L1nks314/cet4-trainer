@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>2025-06-1 · Section A 短篇新闻</title>
-<link rel="stylesheet" href="section.css?v=1">
+<link rel="stylesheet" href="section.css?v=2">
 <noscript><style>
   .locked-sec{filter:none !important;opacity:1 !important;pointer-events:auto !important;user-select:auto !important;}
   #resultCard,#receiptCard{display:block !important;}
@@ -718,17 +718,8 @@ var QUIZ = [{"id": "q1", "stem": "1. How did Tariq make corn taste better?", "zh
 })();
 </script>
 
-<div id="prepOverlay">
-  <div class="pt">🎧 请先读题，倒计时结束自动播放</div>
-  <div id="prepCount">__PREP__</div>
-  <div class="ps">真实考试没有这个提示 —— 这里帮你留出读选项的时间</div>
-  <button id="prepSkip">跳过，立即播放</button>
-</div>
 <script>
 (function(){
-  var PREP = 15;
-  var prepDone = false;
-
   /* 1) 题干默认隐藏：四级卷面只有选项、问题由录音念出；交卷后自动展开供复盘 */
   var stemBtn = document.createElement('button');
   stemBtn.className = 'btn btn-ghost';
@@ -759,29 +750,17 @@ var QUIZ = [{"id": "q1", "stem": "1. How did Tariq make corn taste better?", "zh
     if (document.querySelector('.opt.right, .opt.wrong')) unlockStem();
   }, 1500);
 
-  /* 2) 首次播放前读题倒计时 */
-  function startPrep(){
-    var ov = document.getElementById('prepOverlay');
-    var audio = document.getElementById('audio');
-    if (!ov || !audio) return;
-    var n = PREP, c = document.getElementById('prepCount');
-    ov.classList.add('on');
-    c.textContent = n;
-    var t = setInterval(function(){
-      n--;
-      if (n <= 0){ clearInterval(t); ov.classList.remove('on'); prepDone = true; audio.play(); }
-      else c.textContent = n;
-    }, 1000);
-    document.getElementById('prepSkip').onclick = function(){
-      clearInterval(t); ov.classList.remove('on'); prepDone = true; audio.play();
-    };
-  }
+  /* 播放键：还没开始听就点，等同于点第一段（分段按钮里有预读倒计时）；
+     已经在某段里，就是继续播当前段。
+     原来这里还挂着一套独立的 15 秒预读浮层，和分段那条 20 秒胶囊并存——
+     同一个页面两个预读倒计时、两种长相、两个秒数。删掉，只留分段那套。 */
   var tpPlay = document.getElementById('tpPlay');
   if (tpPlay && tpPlay.parentNode){
     var np = tpPlay.cloneNode(true);
     tpPlay.parentNode.replaceChild(np, tpPlay);
     np.addEventListener('click', function(){
-      if (!prepDone && PREP > 0){ startPrep(); return; }
+      var r = document.getElementById('segRow');
+      if (r && r.children.length && !r.querySelector('.on')){ r.children[0].click(); return; }
       document.getElementById('audio').play();
     });
   }
@@ -2868,7 +2847,9 @@ body.mock #quizCard{padding-top:14px}
   qc.forEach(function(c){ qStart.push(acc); acc += c; });
 
   /* ── 3. 界面 ── */
-  var PREREAD = +(localStorage.getItem('cet4_preread') || 20);
+  /* 默认秒数按 Section 走，贴真考：A 段前的 direction 最长，B/C 短一些 */
+  var _sd = (location.pathname.match(/Section([ABC])\.html/i) || [])[1] || 'A';
+  var PREREAD = +(localStorage.getItem('cet4_preread') || ({A:30,B:20,C:20})[_sd] || 20);
   function fmt(s){ s = Math.max(0, s || 0); return Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0'); }
 
   var bar = document.getElementById('segBar');
