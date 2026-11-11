@@ -23,6 +23,7 @@
 body{margin:0;padding:20px 16px 60px;background:var(--bg);color:var(--txt);
  font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif;
  max-width:820px;margin-left:auto;margin-right:auto}
+.lede{font-size:12.5px;line-height:1.6;color:var(--sub);margin:-6px 0 14px}
 .back{display:inline-block;margin-bottom:12px;color:var(--blue);text-decoration:none;font-size:14px;font-weight:600}
 h1{font-size:22px;margin:0 0 16px;letter-spacing:-.3px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
@@ -34,18 +35,44 @@ h1{font-size:22px;margin:0 0 16px;letter-spacing:-.3px}
 .day:first-child{margin-top:0}
 .it{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:9px;background:var(--soft)}
 .it .hd{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
-.pill{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:7px;background:var(--blue-soft);color:var(--blue)}
+.pill{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:7px;white-space:nowrap;flex:0 0 auto;background:var(--blue-soft);color:var(--blue)}
 .pill.g{background:var(--green-soft);color:var(--green)}
 .pill.a{background:var(--amber-soft);color:var(--amber)}
 .it .tt{font-size:13.5px;font-weight:700;color:var(--txt2)}
-.it .bd{font-size:13.5px;line-height:1.8;white-space:pre-wrap;word-break:break-word;color:var(--txt2)}
+.it .bd{font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;color:var(--txt2);
+ font-variant-numeric:tabular-nums;margin-top:9px}
+/* 回执默认折叠：20 条整段文本会把页面撑到 12 屏，摘要一行就够扫 */
+.it>summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;margin:0}
+.it>summary::-webkit-details-marker{display:none}
+.it>summary .tt{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.it>summary .res{flex:0 0 auto;font-size:12.5px;font-weight:700;color:var(--sub);
+ font-variant-numeric:tabular-nums;white-space:nowrap}
+.it>summary .res.bad{color:var(--red)} .it>summary .res.ok{color:var(--green)}
+.it>summary::after{content:'▾';flex:0 0 auto;color:var(--sub2);font-size:11px;transition:.15s}
+.it[open]>summary::after{content:'▴'}
+.it[open]>summary{margin-bottom:2px}
+.it .bd .ln{display:block}
+.it .bd .ln.bad{color:var(--red);font-weight:600}
+.it .bd .ln.ok{color:var(--sub2)}
 .coach{border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 10px 10px 0;
  padding:11px 13px;margin-top:9px;font-size:13.5px;line-height:1.8;white-space:pre-wrap;
  color:var(--txt2);word-break:break-word}
 .coach b{color:var(--green)}
-.empty{color:var(--sub);font-size:13.5px;text-align:center;padding:26px 0}
+.empty{color:var(--sub);font-size:12.5px;text-align:center;padding:14px 0;line-height:1.6}
 .tip{background:var(--blue-soft);color:var(--blue);border-radius:11px;padding:11px 14px;
  font-size:13px;line-height:1.75;margin-bottom:14px}
+.kb{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:5px}
+.kb-l{display:flex;align-items:baseline;gap:8px;min-width:0}
+.kb-l b{font-size:13.5px;color:var(--txt)}
+.kb-sub{font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap}
+.kb-r{display:flex;align-items:baseline;gap:7px;flex:0 0 auto}
+.kb-pct{font-size:18px;font-variant-numeric:tabular-nums;letter-spacing:-.4px;line-height:1}
+.kb-pct.ok{color:var(--green)} .kb-pct.mid{color:var(--amber)} .kb-pct.bad{color:var(--red)}
+.kb-last{font-size:11.5px;color:var(--sub2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.kb-up{font-style:normal;color:var(--green)} .kb-dn{font-style:normal;color:var(--red)}
+.kb-bar{height:8px;border-radius:6px;background:var(--track);overflow:hidden;margin-bottom:15px}
+.kb-bar i{display:block;height:100%;border-radius:5px}
+.kb-bar i.ok{background:var(--green)} .kb-bar i.mid{background:var(--amber)} .kb-bar i.bad{background:var(--red)}
 .wbar{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:13.5px}
 .wbar .nm{flex:0 0 76px;color:var(--txt2);font-weight:600}
 .wbar .tr{flex:1;height:9px;border-radius:5px;background:var(--line2);overflow:hidden}
@@ -60,11 +87,7 @@ h1{font-size:22px;margin:0 0 16px;letter-spacing:-.3px}
 <a class="back" href="index.html">← 返回作战台</a>
 <h1>我的记录</h1>
 
-<div class="tip">
-  <b>这里能看到你交过的每一份回执。</b><br>
-  听力 / 阅读判分后自动上云；写作、翻译点「把文字发给我批改」后上云。<br>
-  教练的归因与批改会追加在对应回执下面（晚间复盘后更新）。
-</div>
+<p class="lede">听力 / 阅读判分后自动上云，写译点「发给我批改」后上云。教练的批改追加在回执里。</p>
 
 
 <div class="card" id="setCard" style="display:none">
@@ -101,8 +124,7 @@ h1{font-size:22px;margin:0 0 16px;letter-spacing:-.3px}
   <div class="chead"><h2>进度备份</h2><span class="cmeta" id="bkMeta">读取中…</span></div>
   <div id="bkBody">
     <p style="font-size:13px;color:var(--sub);margin:0 0 11px;line-height:1.7">
-      40 天的进度（步骤、整套分数、错题、归因、笔迹登记）只存在这台设备上。
-      换手机、清浏览器数据、用无痕模式，都会归零。考前导一份出来，存在微信文件传输助手里。
+      进度只存在这台设备上。换手机、清浏览器数据、用无痕模式都会归零——考前导一份存微信里。
     </p>
     <div style="display:flex;gap:9px">
       <button id="expBtn" style="flex:1;padding:11px 8px;border-radius:10px;border:1.5px solid var(--blue);
@@ -226,17 +248,19 @@ function renderKinds(recs){
   var exN = recs.filter(function(x){ return x.excluded; }).length;
   document.getElementById('kindMeta').textContent = total + ' 次判分' + (exN ? '（另 ' + exN + ' 条存疑未计入）' : '');
   document.getElementById('kindBars').innerHTML = rows.map(function(x){
-    var color = x.pct >= 60 ? '#16a34a' : (x.pct >= 40 ? '#d97706' : '#dc2626');
-    var arrow = x.n > 1 ? (x.lp >= x.fp ? ' <span style="color:#16a34a">↑</span>' : ' <span style="color:#dc2626">↓</span>') : '';
-    return '<div style="margin-bottom:14px">'
-      + '<div style="display:flex;justify-content:space-between;gap:10px;font-size:13px;margin-bottom:6px">'
-      +   '<b>' + x.label + '</b>'
-      +   '<span style="color:#6b7280">' + x.n + ' 次 · ' + x.R + '/' + x.T + ' · <b style="color:' + color + '">' + x.pct + '%</b>'
-      +   '<span style="opacity:.75"> 最近 ' + x.lp + '%' + arrow + '</span></span>'
+    var tone = x.pct >= 60 ? 'ok' : (x.pct >= 40 ? 'mid' : 'bad');
+    /* 以前 22% 只加粗，夹在「14 次 · 27/123 · ... 最近 30% ↓」里读不出重点。
+       现在拆成左「科目 + 次数/题数」右「大号百分比 + 变化」，百分比单独占视觉重量。 */
+    var arrow = x.n > 1
+      ? (x.lp >= x.fp ? '<i class="kb-up">↑</i>' : '<i class="kb-dn">↓</i>')
+      : '';
+    return '<div class="kb">'
+      +   '<div class="kb-l"><b>' + x.label + '</b>'
+      +     '<span class="kb-sub">' + x.n + ' 次 · ' + x.R + '/' + x.T + '</span></div>'
+      +   '<div class="kb-r"><b class="kb-pct ' + tone + '">' + x.pct + '%</b>'
+      +     '<span class="kb-last">最近 ' + x.lp + '%' + arrow + '</span></div>'
       + '</div>'
-      + '<div style="height:8px;border-radius:6px;background:#eef1f5;overflow:hidden">'
-      +   '<i style="display:block;height:100%;width:' + Math.max(x.pct,2) + '%;background:' + color + '"></i>'
-      + '</div></div>';
+      + '<div class="kb-bar"><i class="' + tone + '" style="width:' + Math.max(x.pct,2) + '%"></i></div>';
   }).join('');
   var l = rows.filter(function(x){ return x.k === 'listening'; })[0];
   var rd = rows.filter(function(x){ return x.k === 'reading' || x.k === 'matching'; });
@@ -296,12 +320,16 @@ function render(recs, coaches, photos){
         if (r.score) meta += ' · ' + esc(r.score);
         if (r.pct != null) meta += ' · ' + r.pct + '%';
         if (r.excluded) meta += ' · <b style="color:#b45309">存疑·' + esc(r.excl_reason || '') + '，未计入</b>';
-        html += '<div class="it">'
-          + '<div class="hd"><span class="pill ' + pillCls + '">' + (KIND[k] || '回执') + '</span>'
-          + '<span class="tt">' + meta + '</span></div>'
-          + '<div class="bd">' + esc(r.text || '') + '</div>'
+        var sm = repSummary(r.text);
+        var smCls = (!sm || sm.pct == null) ? '' : (sm.pct >= 60 ? ' ok' : ' bad');
+        html += '<details class="it">'
+          + '<summary><span class="pill ' + pillCls + '">' + (KIND[k] || '回执') + '</span>'
+          + '<span class="tt">' + meta + '</span>'
+          + (sm ? '<span class="res' + smCls + '">' + esc(sm.t) + '</span>' : '')
+          + '</summary>'
+          + '<div class="bd">' + repBody(r.text) + '</div>'
           + coachFor(d, k, coaches)
-          + '</div>';
+          + '</details>';
       } else {
         /* 有文本回执时，批改已挂在回执下，照片条不再重复挂 */
         var dup = hasRep[(d || '') + '|' + k];
@@ -316,6 +344,30 @@ function render(recs, coaches, photos){
   });
   document.getElementById('cnt').textContent = items.length + ' 条';
   document.getElementById('list').innerHTML = html;
+}
+
+/* 展开后的正文：含「第N题：」的回执按行渲染，错题标红，正确题压灰。
+   不含逐题的（写作/翻译的长段落）保持原来的 pre-wrap 整段。 */
+function repBody(t){
+  var raw = String(t || '');
+  if (!/第\s*\d+\s*题\s*[:：]/.test(raw)) return esc(raw);
+  return raw.split('\n').filter(function(line){
+    /* 尾行「—— 请据此给我出错因归因和改善方法」是发给批改用的指令，对本人无意义 */
+    return !/请据此|请据此给/.test(line) && !/^\s*——\s*$/.test(line);
+  }).map(function(line){
+    var l = esc(line);
+    if (/^\s*第\s*\d+\s*题\s*[:：]\s*[✘✗✕]/.test(line)) return '<span class="ln bad">' + l + '</span>';
+    if (/^\s*第\s*\d+\s*题\s*[:：]\s*[✔✓]/.test(line)) return '<span class="ln ok">' + l + '</span>';
+    return '<span class="ln">' + l + '</span>';
+  }).join('');
+}
+/* 从回执正文里抽出「结果：1/7 · 正确率 14%」当摘要，抽不到就返回空 */
+function repSummary(t){
+  var m = /结果[:：]\s*([^\n]{1,40})/.exec(t || '');
+  if (!m) return '';
+  var txt = m[1].trim().replace(/正确率\s*/, '');   /* 「1/7 · 14%」比「1/7 · 正确率 14%」省 4 个字，标题才不被挤没 */
+  var p = /(\d+)\s*%/.exec(txt);
+  return { t: txt, pct: p ? Number(p[1]) : null };
 }
 
 function coachFor(date, kind, coaches){
