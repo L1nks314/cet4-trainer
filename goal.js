@@ -116,7 +116,7 @@
   /* 阶段达标线（与 index.html 的 GOALS 一致） */
   var line;
   if (today <= d0(new Date(2026, 10, 8))) line = '校准期：只测数据，不设线';
-  else if (today < d0(new Date(2026, 10, 23))) line = '打底期：听力篇章 ≥5/10 且留白≤5；仔细阅读 ≥82%；匹配 ≥85%；写作进 9 分档';
+  else if (today < d0(new Date(2026, 10, 23))) line = '打底期：整套听力 ≥15/25；仔细阅读 ≥82%；匹配 ≥85%；写作进 9 分档';
   else line = '上考场期：整套听力连做 ≥45%；阅读 ≥85%；匹配 ≥90%；模板能默写';
 
   var examDay = d0(new Date(2026, 11, 12));

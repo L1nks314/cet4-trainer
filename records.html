@@ -67,6 +67,14 @@ h1{font-size:22px;margin:0 0 16px;letter-spacing:-.3px}
 </div>
 
 
+<div class="card" id="setCard" style="display:none">
+  <div class="chead"><h2>整套听力</h2><span class="cmeta" id="setMeta"></span></div>
+  <div id="setList"></div>
+  <p style="font-size:12.5px;color:var(--sub);margin:10px 0 0;line-height:1.7">
+    整套连做在本机记分，和单段回执分开算。第二轮同一个音频再听一遍，<b>分数差</b>才是长进。
+  </p>
+</div>
+
 <div class="card" id="wordCard" style="display:none">
   <div class="chead"><h2>听词卡壳</h2><span class="cmeta" id="wordMeta"></span></div>
   <div id="wordList"></div>
@@ -435,6 +443,38 @@ function renderWrongbook(cloudWb){
 
   document.getElementById('wordMeta').textContent = items.length + ' 个词 · 点页名重练';
   card.style.display = 'block';
+})();
+
+
+/* ── 整套听力记录（cet4_set_*）── */
+(function(){
+  var rows = [];
+  try{
+    for (var i = 0; i < localStorage.length; i++){
+      var k = localStorage.key(i);
+      if (!/^cet4_set_/.test(k)) continue;
+      var o = JSON.parse(localStorage.getItem(k) || 'null');
+      if (!o || !o.d) continue;
+      rows.push({ id: k.replace(/^cet4_set_/, ''), d: o.d, s: o.score, a: o.a, ts: o.ts || 0 });
+    }
+  }catch(e){}
+  if (!rows.length) return;
+  rows.sort(function(x, y){ return (y.ts || 0) - (x.ts || 0); });
+  var el = document.getElementById('setList'), meta = document.getElementById('setMeta');
+  el.innerHTML = rows.map(function(r, i){
+    var nm = r.id.replace(/^(\d{4})-(\d{2})-(\d{2})$/, function(m, y, mo, d){
+      return y + ' 年 ' + (+mo) + ' 月第 ' + (+d) + ' 套';
+    });
+    var cls = r.s >= 20 ? 'var(--green)' : (r.s >= 15 ? 'var(--amber)' : 'var(--red)');
+    return '<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line2)">'
+      + '<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:700">' + nm + '</div>'
+      + '<div style="font-size:12px;color:var(--sub);margin-top:2px">' + r.d
+      + '　A ' + r.a[0] + '/7 · B ' + r.a[1] + '/8 · C ' + r.a[2] + '/10</div></div>'
+      + '<div style="font-size:15px;font-weight:800;color:' + cls + '">' + r.s + '<span style="font-size:11px;color:var(--sub)">/25</span></div>'
+      + '</div>';
+  }).join('');
+  meta.textContent = rows.length + ' 套 · 最近一次 ' + rows[0].d;
+  document.getElementById('setCard').style.display = 'block';
 })();
 
 </script>

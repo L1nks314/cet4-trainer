@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>整套听力连做</title>
+<style>
+  :root{ --bg:#f4f5f7; --card:#ffffff; --soft:#fafbfc; --grey:#f2f3f5;
+   --line:#e5e8ec; --line2:#eff1f4; --track:#e8ebef;
+   --txt:#1b1e23; --txt2:#2b303a; --txt3:#3d434e; --sub:#6b7280; --sub2:#a8b0bb;
+   --blue:#2563eb; --blue-soft:#eef3ff; --green:#0d8a52; --green-soft:#e8f7ef;
+   --red:#c0392b; --red-soft:#fdecea; --amber:#b45309; --amber-soft:#fef6e7;
+   --shadow:0 1px 2px rgba(16,24,40,.04), 0 2px 6px rgba(16,24,40,.05);}
+  @media (prefers-color-scheme: dark){ :root{ --bg:#101216; --card:#191c21; --soft:#20242a;
+   --line:#2c313a; --line2:#242930; --track:#2a2f38;
+   --txt:#e9ebee; --txt2:#d7dade; --txt3:#c3c8cf; --sub:#98a0aa; --sub2:#6b7280;
+   --blue:#6b96fb; --blue-soft:#1a2742; --green:#41d18f; --green-soft:#14301f;
+   --red:#ef7261; --red-soft:#371d19; --amber:#e0a53f; --amber-soft:#312713;
+   --shadow:0 1px 2px rgba(0,0,0,.35), 0 2px 8px rgba(0,0,0,.28); color-scheme:dark;} }
+  *{box-sizing:border-box;}
+  body{margin:0;padding:14px 14px 120px;background:var(--bg);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.7;font-size:16px;-webkit-text-size-adjust:100%;}
+  .wrap{max-width:760px;margin:0 auto;}
+  header{background:linear-gradient(135deg,#1f3a5f,#43606f);color:#fff;border-radius:15px;padding:20px 18px;margin-bottom:14px;}
+  header h1{margin:0 0 6px;font-size:19px;line-height:1.35;}
+  header .meta{font-size:13px;opacity:.92;line-height:1.75;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow);}
+  .card h2{font-size:16px;margin:0 0 8px;}
+  .lead{font-size:14.5px;color:var(--txt2);line-height:1.8;margin:0;}
+  .dim{font-size:13px;color:var(--sub);}
+  .rule{font-size:13.5px;color:var(--txt3);line-height:1.9;margin:10px 0 0;padding-left:0;list-style:none;}
+  .rule li{padding:5px 0 5px 22px;position:relative;border-bottom:1px dashed var(--line2);}
+  .rule li:last-child{border-bottom:none;}
+  .rule li::before{content:"·";position:absolute;left:8px;color:var(--sub2);font-weight:800;}
+  .rule b{color:var(--txt);}
+  .btn{display:block;width:100%;border:0;border-radius:12px;padding:15px 12px;background:var(--blue);color:#fff;
+    font-size:16px;font-weight:800;font-family:inherit;cursor:pointer;box-shadow:0 4px 14px rgba(37,99,235,.2);}
+  .btn:active{transform:scale(.99);}
+  .btn.ghost{background:transparent;color:var(--blue);border:1.5px solid var(--blue);box-shadow:none;font-weight:700;}
+  .btn.green{background:var(--green);box-shadow:0 4px 14px rgba(13,138,82,.2);}
+  .btn:disabled{background:var(--track);color:var(--sub2);box-shadow:none;cursor:default;}
+  /* 顶部固定条 */
+  #bar{position:sticky;top:0;z-index:30;background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:10px 12px;margin-bottom:12px;box-shadow:var(--shadow);display:none;}
+  #bar.on{display:block;}
+  .brow{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--sub);}
+  .brow b{color:var(--txt);font-size:13.5px;}
+  .segs{display:flex;gap:5px;flex:1;margin:0 4px;}
+  .segs i{flex:1;height:6px;border-radius:4px;background:var(--track);position:relative;overflow:hidden;}
+  .segs i.on{background:var(--blue);}
+  .segs i.done{background:var(--green);}
+  .tnum{font-variant-numeric:tabular-nums;font-weight:700;color:var(--txt);}
+  /* 题目 */
+  .sect{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:var(--shadow);}
+  .sect.cur{border-color:var(--blue);}
+  .sect.past{opacity:.85;}
+  .shd{display:flex;align-items:baseline;gap:8px;margin-bottom:10px;}
+  .shd h3{margin:0;font-size:15px;}
+  .shd .tag{font-size:11.5px;background:var(--grey);color:var(--sub);border-radius:20px;padding:1px 8px;}
+  .sect.cur .shd .tag{background:var(--blue-soft);color:var(--blue);}
+  .q{padding:11px 0;border-top:1px dashed var(--line2);scroll-margin-top:80px;}
+  .sect{scroll-margin-top:76px;}
+  .q:first-of-type{border-top:none;}
+  .stem{font-size:14.5px;line-height:1.75;color:var(--txt2);margin-bottom:8px;}
+  .qno{display:inline-block;min-width:22px;font-weight:800;color:var(--txt);}
+  .opt{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:var(--soft);color:var(--txt3);
+    border-radius:9px;padding:9px 11px;margin-bottom:6px;font-family:inherit;font-size:14px;line-height:1.6;cursor:pointer;}
+  .opt .k{font-weight:800;color:var(--sub);margin-right:5px;}
+  .opt.sel{border-color:var(--blue);background:var(--blue-soft);color:var(--txt);}
+  .opt.sel .k{color:var(--blue);}
+  .opt.right{border-color:var(--green);background:var(--green-soft);color:var(--txt);}
+  .opt.right .k{color:var(--green);}
+  .opt.wrong{border-color:var(--red);background:var(--red-soft);color:var(--txt);}
+  .opt.wrong .k{color:var(--red);}
+  /* 底部交卷 */
+  #foot{position:fixed;left:0;right:0;bottom:0;padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+    background:linear-gradient(to top,var(--bg) 55%,transparent);z-index:40;display:none;}
+  #foot.on{display:block;}
+  #foot .inner{max-width:760px;margin:0 auto;}
+  #foot .hintbar{display:flex;justify-content:space-between;font-size:12.5px;color:var(--sub);margin-bottom:6px;}
+  #foot .hintbar b{color:var(--txt);}
+  /* 结果 */
+  .score{display:flex;align-items:flex-end;gap:8px;margin:2px 0 10px;}
+  .score .big{font-size:38px;font-weight:900;line-height:1;letter-spacing:-.02em;}
+  .score .of{font-size:14px;color:var(--sub);padding-bottom:5px;}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0;}
+  .cell{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 8px;text-align:center;}
+  .cell .l{font-size:11.5px;color:var(--sub);}
+  .cell .v{font-size:17px;font-weight:800;margin-top:2px;}
+  .wrongs{margin-top:6px;}
+  .wd{display:flex;gap:9px;padding:9px 0;border-top:1px dashed var(--line2);font-size:13.5px;}
+  .wd:first-child{border-top:none;}
+  .wd .n{font-weight:800;color:var(--red);min-width:26px;}
+  .wd .t{flex:1;color:var(--txt3);line-height:1.65;}
+  .wd .a{font-size:12px;color:var(--sub);margin-top:3px;}
+  .wd .a b{color:var(--green);}
+  .golink{display:block;text-align:center;border:1.5px solid var(--line);border-radius:10px;padding:11px;
+    font-size:14px;font-weight:700;color:var(--blue);text-decoration:none;margin-top:8px;}
+  .warn{background:var(--amber-soft);border:1px solid #f0dfb8;border-radius:10px;padding:11px 12px;font-size:13px;color:var(--amber);line-height:1.7;}
+  .hide{display:none !important;}
+  #res{scroll-margin-top:14px;}
+  /* 续播浮层 */
+  #resume{position:fixed;inset:0;z-index:60;background:rgba(15,20,28,.55);display:none;align-items:center;justify-content:center;padding:22px;}
+  #resume.on{display:flex;}
+  #resume .box{background:var(--card);border-radius:16px;padding:22px;max-width:340px;width:100%;box-shadow:0 16px 40px rgba(0,0,0,.3);text-align:center;}
+  #resume h3{margin:0 0 8px;font-size:17px;}
+  #resume p{margin:0 0 14px;font-size:13.5px;color:var(--sub);line-height:1.75;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1 id="hTitle">整套听力连做</h1>
+    <div class="meta" id="hMeta">正在读取…</div>
+  </header>
+
+  <div class="card" id="pre">
+    <h2>开始之前，只看这一屏</h2>
+    <ul class="rule">
+      <li><b>一次播完 A→B→C，约 22 分钟</b>，中途不能暂停、不能回放、不能拖进度。</li>
+      <li>题目可以边听边点，也可以在开播前先看选项。考场也是这个顺序。</li>
+      <li>播完自动停，<b>点一次交卷</b>，之后才出答案和解析。</li>
+      <li>手抖、走神、第 2 段崩——这一项练的就这些，不是练听懂每个词。</li>
+    </ul>
+    <p class="dim" id="preNote" style="margin-top:12px"></p>
+    <button class="btn" id="go" style="margin-top:12px">▶ 开始整套连做</button>
+    <a class="golink" id="backLink" href="index.html">← 回首页</a>
+  </div>
+
+  <div id="bar">
+    <div class="brow">
+      <b id="bSec">Section A</b>
+      <div class="segs" id="bSegs"><i></i><i></i><i></i></div>
+      <span class="tnum" id="bTime">0:00</span>
+      <span style="color:var(--sub2)">/</span>
+      <span class="tnum" id="bTot" style="color:var(--sub)">0:00</span>
+    </div>
+  </div>
+
+  <div id="qs"></div>
+
+  <div id="foot">
+    <div class="inner">
+      <div class="hintbar">
+        <span id="fHint">播完才能交卷</span>
+        <span><b id="fAns">0</b> / 25 已选</span>
+      </div>
+      <button class="btn green" id="submit" disabled>交卷 · 看分段得分</button>
+    </div>
+  </div>
+
+  <div id="res" class="hide"></div>
+
+</div>
+
+<div id="resume">
+  <div class="box">
+    <h3>播放被中断了</h3>
+    <p>手机来电、切到别的 App、锁屏都会停。这一段还没放完，点下面接着放——计时不会重置。</p>
+    <button class="btn" id="resumeBtn">继续播放</button>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ===== 整套听力连做 =====
+   设计：A→B→C 顺序播完，题目全在一屏，一次交卷。
+   数据来自 listen-sets.json（由 39 个 Section 页的 DATA/QUIZ 抽出，只留题目和音频）。
+   不用页面里那套播放器：那套是单段用的，有暂停/循环，这里必须一次到底。 */
+
+var SETS = null, SID = '', S = null;
+var ans = {};                 /* {A:[...], B:[...], C:[...]} 选中的字母 */
+var curSec = 0;               /* 0=A 1=B 2=C 3=播完 */
+var playing = false, finished = false, submitted = false;
+var T0 = 0;                   /* 本次开始的时间戳 */
+var totalDur = 0, before = [0, 0, 0];   /* before[i] = 前面各段总时长 */
+var AS = {};                  /* 三个 audio 元素 */
+var tickTimer = null, wakeLock = null, resumePending = false;
+
+function $(id){ return document.getElementById(id); }
+function fmt(t){
+  if (!isFinite(t) || t < 0) t = 0;
+  var m = Math.floor(t / 60), s = Math.floor(t % 60);
+  return m + ':' + ('0' + s).slice(-2);
+}
+function todayStr(){
+  var d = new Date();
+  return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+}
+function ls(k, v){
+  try{
+    if (v === undefined) return localStorage.getItem(k);
+    localStorage.setItem(k, v);
+  }catch(e){ return null; }
+}
+function setTitleOf(id){
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(id);
+  if (!m) return id;
+  return m[1] + ' 年 ' + (+m[2]) + ' 月第 ' + (+m[3]) + ' 套';
+}
+
+/* ---------- 加载 ---------- */
+function boot(){
+  var q = location.search.match(/[?&]set=([^&]+)/);
+  SID = q ? decodeURIComponent(q[1]) : '';
+  if (!SID) SID = ls('cet4_set_next') || '';
+  $('backLink').href = 'index.html';
+  fetch('listen-sets.json?v=1')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      SETS = d;
+      if (!SID || !SETS[SID]) SID = pickNext();
+      S = SETS[SID];
+      build();
+    })
+    .catch(function(e){
+      $('hMeta').textContent = '数据没读到：' + (e && e.message ? e.message : '未知错误');
+    });
+}
+/* 没指定就从最早没做过的开始；全做过就取今天离得最久的那套 */
+function pickNext(){
+  var ids = Object.keys(SETS).sort(), best = ids[0], bestT = Infinity, i, r;
+  for (i = 0; i < ids.length; i++){
+    r = ls('cet4_set_' + ids[i]);
+    if (!r) return ids[i];
+    try{ r = JSON.parse(r); }catch(e){ r = null; }
+    if (!r || !r.ts) return ids[i];
+    if (r.ts < bestT){ bestT = r.ts; best = ids[i]; }
+  }
+  return best;
+}
+
+/* ---------- 建页面 ---------- */
+function build(){
+  var secs = ['A', 'B', 'C'];
+  totalDur = 0;
+  secs.forEach(function(k, i){
+    before[i] = totalDur;
+    totalDur += S[k].dur;
+    ans[k] = [];
+    for (var n = 0; n < S[k].q; n++) ans[k].push('');
+  });
+
+  $('hTitle').textContent = setTitleOf(SID) + ' · 整套听力';
+  $('hMeta').textContent = '25 题 · 约 ' + Math.round(totalDur / 60) + ' 分钟 · A→B→C 一次播完，不暂停不回放';
+
+  var last = ls('cet4_set_' + SID), lastTxt = '';
+  if (last){
+    try{
+      var r = JSON.parse(last);
+      lastTxt = '上次做这套：' + r.d + '，' + r.score + ' / 25（A ' + r.a[0] + ' · B ' + r.a[1] + ' · C ' + r.a[2] + '）。今天算第二轮，分数只跟上次比。';
+    }catch(e){}
+  }
+  $('preNote').textContent = lastTxt;
+
+  render();
+  buildAudio();
+}
+
+function render(){
+  var html = '';
+  ['A', 'B', 'C'].forEach(function(k, i){
+    var names = {A:'短篇新闻', B:'长对话', C:'听力篇章'};
+    var cls = (curSec === i) ? 'sect cur' : (curSec > i ? 'sect past' : 'sect');
+    html += '<div class="' + cls + '" data-sec="' + k + '" id="sec' + k + '">'
+      + '<div class="shd"><h3>Section ' + k + ' · ' + names[k] + '</h3>'
+      + '<span class="tag">' + S[k].q + ' 题 · ' + fmt(S[k].dur) + '</span></div>';
+    S[k].quiz.forEach(function(q, n){
+      html += '<div class="q" data-q="' + k + n + '">'
+        + '<div class="stem"><span class="qno">' + (n + 1 + (k === 'A' ? 0 : k === 'B' ? 7 : 15)) + '</span>'
+        + esc(q.stem.replace(/^\d+\.\s*/, '')) + '</div>';
+      'ABCD'.split('').forEach(function(L, j){
+        html += '<button class="opt" data-sec="' + k + '" data-n="' + n + '" data-k="' + L + '">'
+          + '<span class="k">' + L + ')</span><span>' + esc(q.opts[j]) + '</span></button>';
+      });
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+  $('qs').innerHTML = html;
+  paintAns();
+}
+
+function esc(s){
+  return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/* ---------- 音频 ---------- */
+function buildAudio(){
+  ['A', 'B', 'C'].forEach(function(k, i){
+    var a = document.createElement('audio');
+    a.preload = 'none';
+    a.src = S[k].src;
+    a.setAttribute('playsinline', '');
+    document.body.appendChild(a);
+    AS[k] = a;
+
+    a.addEventListener('ended', function(){ nextSec(i); });
+    /* 到最后一帧就切段，不等 ended（iOS 上 ended 有时不触发） */
+    a.addEventListener('timeupdate', function(){
+      if (finished || submitted) return;
+      if (curSec !== i) return;
+      if (a.duration && a.currentTime >= a.duration - 0.06) nextSec(i);
+      paintTime();
+    });
+    a.addEventListener('pause', function(){
+      if (finished || submitted || !playing) return;
+      if (a.ended || curSec !== i) return;
+      resumePending = true;
+      $('resume').classList.add('on');
+    });
+  });
+}
+
+function playSec(i){
+  var k = 'ABC'[i];
+  curSec = i;
+  paintBar();
+  var a = AS[k];
+  if (a.preload !== 'auto'){ a.preload = 'auto'; a.load(); }
+  a.playbackRate = 1;
+  var p = a.play();
+  if (p && p.catch){
+    p.catch(function(){ resumePending = true; $('resume').classList.add('on'); });
+  }
+  /* 下一段提前缓冲 */
+  if (i + 1 < 3){
+    var b = AS['ABC'[i + 1]];
+    if (b.preload !== 'auto'){ b.preload = 'auto'; b.load(); }
+  }
+  scrollToSec(i);
+}
+
+function nextSec(from){
+  if (finished || submitted) return;
+  var a = AS['ABC'[from]];
+  try{ a.pause(); }catch(e){}
+  if (from >= 2){ endAll(); return; }
+  playSec(from + 1);
+}
+
+function endAll(){
+  finished = true;
+  curSec = 3;
+  ['A', 'B', 'C'].forEach(function(k){ try{ AS[k].pause(); }catch(e){} });
+  paintBar();
+  $('fHint').textContent = '播放结束，现在交卷';
+  $('submit').disabled = false;
+  $('submit').textContent = '交卷 · 看分段得分';
+  $('foot').scrollIntoView({behavior:'smooth', block:'end'});
+  releaseWake();
+}
+
+function scrollToSec(i){
+  var el = $('sec' + 'ABC'[i]);
+  if (!el) return;
+  var y = el.getBoundingClientRect().top + window.pageYOffset - 76;
+  window.scrollTo({top: y, behavior: 'smooth'});
+}
+
+function paintBar(){
+  if (curSec < 3){
+    $('bSec').textContent = 'Section ' + 'ABC'[curSec] + ' · ' + ({A:'短篇新闻',B:'长对话',C:'听力篇章'})['ABC'[curSec]];
+  } else {
+    $('bSec').textContent = '播放结束';
+  }
+  var segs = $('bSegs').children;
+  for (var i = 0; i < 3; i++){
+    segs[i].className = (i < curSec) ? 'done' : (i === curSec ? 'on' : '');
+  }
+  $('bTot').textContent = fmt(totalDur);
+  paintTime();
+}
+
+function paintTime(){
+  if (curSec >= 3){ $('bTime').textContent = fmt(totalDur); return; }
+  var a = AS['ABC'[curSec]];
+  $('bTime').textContent = fmt(before[curSec] + (a ? a.currentTime : 0));
+}
+
+/* ---------- 选项 ---------- */
+$('qs').addEventListener('click', function(e){
+  var b = e.target.closest ? e.target.closest('.opt') : null;
+  if (!b || submitted) return;
+  var k = b.getAttribute('data-sec'), n = +b.getAttribute('data-n'), L = b.getAttribute('data-k');
+  ans[k][n] = L;
+  var box = b.parentNode;
+  var ops = box.querySelectorAll('.opt');
+  for (var i = 0; i < ops.length; i++) ops[i].className = 'opt';
+  b.className = 'opt sel';
+  paintAns();
+  /* 点完自动滚到下一题，手指不用来回找 */
+  var next = box.nextElementSibling;
+  if (next && next.classList.contains('q')){
+    var r = next.getBoundingClientRect();
+    if (r.bottom > window.innerHeight - 110) next.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+});
+
+function paintAns(){
+  var n = 0;
+  ['A', 'B', 'C'].forEach(function(k){ ans[k].forEach(function(v){ if (v) n++; }); });
+  $('fAns').textContent = n;
+  if (finished && n < 25) $('fHint').textContent = '还有 ' + (25 - n) + ' 题没选';
+}
+
+/* ---------- 开始 ---------- */
+$('go').addEventListener('click', function(){
+  if (playing) return;
+  playing = true;
+  T0 = Date.now();
+  $('pre').classList.add('hide');
+  $('bar').classList.add('on');
+  $('foot').classList.add('on');
+  $('submit').disabled = true;
+  $('fHint').textContent = '播放中，不能暂停';
+  if (tickTimer) clearInterval(tickTimer);
+  tickTimer = setInterval(paintTime, 500);
+  requestWake();
+  playSec(0);
+});
+
+$('resumeBtn').addEventListener('click', function(){
+  $('resume').classList.remove('on');
+  if (curSec >= 3){ return; }
+  var a = AS['ABC'[curSec]];
+  a.play().catch(function(){});
+});
+
+function requestWake(){
+  try{
+    if (navigator.wakeLock && navigator.wakeLock.request){
+      navigator.wakeLock.request('screen').then(function(w){
+        wakeLock = w;
+        w.addEventListener('release', function(){ wakeLock = null; });
+      }).catch(function(){});
+    }
+  }catch(e){}
+}
+function releaseWake(){ try{ if (wakeLock) wakeLock.release(); }catch(e){} }
+document.addEventListener('visibilitychange', function(){
+  if (!document.hidden && playing && !finished && !submitted) requestWake();
+});
+
+/* ---------- 交卷 ---------- */
+$('submit').addEventListener('click', function(){
+  if (submitted) return;
+  var left = 0;
+  ['A','B','C'].forEach(function(k){ ans[k].forEach(function(v){ if (!v) left++; }); });
+  if (left > 0 && !confirm('还有 ' + left + ' 题没选，空题按 0 分算。确定交卷？')) return;
+  submit();
+});
+
+function submit(){
+  submitted = true;
+  playing = false;
+  if (tickTimer){ clearInterval(tickTimer); tickTimer = null; }
+  releaseWake();
+  $('foot').classList.remove('on');
+  $('bar').classList.remove('on');
+  $('resume').classList.remove('on');
+
+  var per = [], detail = [], score = 0, no = 1;
+  ['A','B','C'].forEach(function(k){
+    var c = 0;
+    S[k].quiz.forEach(function(q, n){
+      var mine = ans[k][n] || '', ok = (mine === q.a);
+      if (ok) c++;
+      if (!ok){
+        detail.push({no: k === 'A' ? n + 1 : (k === 'B' ? n + 8 : n + 16), stem: q.stem, mine: mine, right: q.a});
+      }
+      var btns = document.querySelectorAll('.opt[data-sec="' + k + '"][data-n="' + n + '"]');
+      for (var i = 0; i < btns.length; i++){
+        var L = btns[i].getAttribute('data-k');
+        var cls = 'opt';
+        if (L === q.a) cls += ' right';
+        else if (L === mine) cls += ' wrong';
+        btns[i].className = cls;
+      }
+    });
+    per.push(c);
+    score += c;
+  });
+
+  var m = Math.round(score / 25 * 100);
+  var level = score >= 20 ? 'green' : (score >= 15 ? 'amber' : 'red');
+  var tip = score >= 20 ? '这一套稳了。不用回头，明天换下一套。'
+          : score >= 15 ? '中档。做错的题按段归因：是没听见，还是听见了没反应过来。'
+          : '这一套偏难，或者今天状态不对。<b>明天不要换新的</b>，同一套再听一遍——第二遍的分数才是真水平。';
+
+  var h = '<div class="card">'
+    + '<div class="score"><div class="big" style="color:var(--' + level + ')">' + score + '</div>'
+    + '<div class="of">/ 25 题 · ' + m + '%</div></div>'
+    + '<div class="grid">'
+    + '<div class="cell"><div class="l">Section A</div><div class="v">' + per[0] + '/7</div></div>'
+    + '<div class="cell"><div class="l">Section B</div><div class="v">' + per[1] + '/8</div></div>'
+    + '<div class="cell"><div class="l">Section C</div><div class="v">' + per[2] + '/10</div></div>'
+    + '</div>'
+    + '<p class="lead">' + tip + '</p>';
+
+  /* 错得最多的那一段，优先精听。按错题数算，不按正确率——
+     0/8 和 0/10 正确率一样，但 C 错 10 道，更该精听。 */
+  var wn = [7 - per[0], 8 - per[1], 10 - per[2]];
+  var wi = (wn[2] >= wn[1] && wn[2] >= wn[0]) ? 2 : (wn[0] >= wn[1] ? 0 : 1);
+  var worst = 'ABC'[wi];
+
+  if (!detail.length){
+    h += '<p class="lead" style="margin-top:16px;color:var(--green);font-weight:700">25 题全对。这一套不用精听，明天换下一套，直接进第二轮。</p>';
+  } else {
+    h += '<p class="dim" style="margin:16px 0 0">接下来做这一步，只做这一步：错得最多的是 <b>Section ' + worst
+      + '</b>（' + per[wi] + '/' + [7, 8, 10][wi] + '）。</p>'
+      + '<a class="golink" href="' + SID + '_Section' + worst + '.html?jt=1" style="border-color:var(--blue);background:var(--blue-soft)">🎧 精听 Section ' + worst + ' 的 3 句（约 10 分钟）</a>'
+      + '<a class="golink" href="' + SID + '_Section' + worst + '.html">看这一段原文与逐句解析</a>';
+
+    var row = function(d){
+      return '<div class="wd"><div class="n">' + d.no + '</div><div class="t">' + esc(d.stem.replace(/^\d+\.\s*/, ''))
+        + '<div class="a">你选 ' + (d.mine || '空') + ' · 正确 <b>' + d.right + '</b></div></div></div>';
+    };
+    var head = detail.slice(0, 8).map(row).join('');
+    var rest = detail.slice(8).map(row).join('');
+    h += '<p class="dim" style="margin:18px 0 4px">错的 ' + detail.length + ' 题'
+      + (detail.length > 8 ? '（先看前 8 道）' : '') + '</p>'
+      + '<div class="wrongs">' + head + '</div>';
+    if (rest){
+      h += '<div class="wrongs hide" id="wMore">' + rest + '</div>'
+        + '<button class="btn ghost" id="moreW" style="margin-top:10px">展开其余 ' + (detail.length - 8) + ' 道</button>';
+    }
+  }
+  h += '<a class="golink" href="index.html">← 回首页</a></div>';
+  $('res').innerHTML = h;
+  $('res').classList.remove('hide');
+
+  var mw = $('moreW');
+  if (mw) mw.addEventListener('click', function(){
+    $('wMore').classList.remove('hide');
+    mw.classList.add('hide');
+  });
+
+  ls('cet4_set_' + SID, JSON.stringify({
+    d: todayStr(), score: score, a: per, ts: Date.now(),
+    used: Math.round((Date.now() - T0) / 1000)
+  }));
+  /* 首页据此判断「今天整套做完了」，并把 ①② 两步自动勾上 */
+  try{
+    var dn = JSON.parse(localStorage.getItem('cet4_done') || '{}');
+    dn[todayStr()] = dn[todayStr()] || {};
+    dn[todayStr()].listen = 1;
+    localStorage.setItem('cet4_done', JSON.stringify(dn));
+
+    var sk = 'cet4_steps_' + todayStr();
+    var so = JSON.parse(localStorage.getItem(sk) || '{}');
+    so.l1 = 1; so.l2 = 1;
+    localStorage.setItem(sk, JSON.stringify(so));
+  }catch(e){}
+  /* 下一次没指定套时，取下一套 */
+  ls('cet4_set_next', nextId(SID));
+
+  $('res').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function nextId(id){
+  var ids = Object.keys(SETS).sort();
+  var i = ids.indexOf(id);
+  return ids[(i + 1) % ids.length];
+}
+
+boot();
+})();
+</script>
+</body>
+</html>

@@ -175,8 +175,8 @@ a.it.now .tx{font-weight:700;color:var(--green)}
 .step .st{font-size:14.5px;font-weight:700;line-height:1.4}
 .step .sd{font-size:12.5px;color:var(--sub);margin-top:3px;line-height:1.55}
 .step.on .st{color:var(--sub2);text-decoration:line-through;text-decoration-color:#c3c8d0}
-.step .sm{font-size:11.5px;color:var(--sub2);font-variant-numeric:tabular-nums;
- margin-top:2px;flex:0 0 auto}
+.step .sm{font-size:11.5px;color:var(--sub);font-variant-numeric:tabular-nums;
+ margin-top:2px;flex:0 0 auto;white-space:nowrap;min-width:24px;text-align:right}
 .step.static{cursor:default}
 .step .ck.dim{background:transparent;border-style:dashed;border-color:#d3d8df}
 /* 单线推进：当前步亮，后面的锁住 */
@@ -232,20 +232,21 @@ a.it.now .tx{font-weight:700;color:var(--green)}
 </details>
 
 <details class="fold">
-  <summary><span>更多入口</span><span class="cnt">7 个</span></summary>
+  <summary><span>更多入口</span><span class="cnt">8 个</span></summary>
+  <a class="it" href="listen-set.html"><span class="no">L</span><span class="tx">整套听力连做<span class="tag">13 套 · A→B→C 不暂停</span></span><span class="ar">›</span></a>
   <a class="it" href="writing.html"><span class="no">W</span><span class="tx">写作与翻译<span class="tag">18 套写作 · 18 套翻译</span></span><span class="ar">›</span></a>
   <a class="it" href="reading.html"><span class="no">R</span><span class="tx">仔细阅读<span class="tag">8 套 16 篇 · 逐题解析</span></span><span class="ar">›</span></a>
   <a class="it" href="records.html"><span class="no">R</span><span class="tx">我的记录<span class="tag">回执 · 归因 · 云端</span></span><span class="ar">›</span></a>
   <a class="it" href="plan.html"><span class="no">0</span><span class="tx">备考计划<span class="tag">三阶段 · 每日模板</span></span><span class="ar">›</span></a>
   <a class="it" href="method-5steps.html"><span class="no">1</span><span class="tx">连读弱读专项<span class="tag">专项素材 · 不是日课</span></span><span class="ar">›</span></a>
   <a class="it" href="method-l1.html"><span class="no">2</span><span class="tx">三档语速辨音<span class="tag">慢速 / 原速 / 提速</span></span><span class="ar">›</span></a>
-  <a class="it" href="review.html"><span class="no">↻</span><span class="tx">回炉（旧）<span class="tag">已并入每日副项 · 备查</span></span><span class="ar">›</span></a>
+  <a class="it" href="review.html"><span class="no">↻</span><span class="tx">旧音频复习<span class="tag">周末随手听 · 不算日课</span></span><span class="ar">›</span></a>
 </details>
 
 <div class="hint">
- <b>顺序：</b>点卡片上的「去做第 N 步」直接进训练页。听力篇章：①看选项 ②盲听做题交卷 ③精听 3 句 ④归因；Section A/B 的 ③ 是「听写 3 句」。<br>
- <b>回炉卡：</b>昨天（或前几天）听过的那一篇，会单独出现一次，让你不看原文再整篇听一遍。它不占上面的步骤，也不要求做完——但<b>这是唯一能让你听见自己进步的动作</b>，别跳。<br>
- 步骤勾选只是进度条，<b>不会自动算完成</b>——只有交卷判分，或你自己点「今天这段做完了」才算。<br>
+ <b>顺序：</b>点卡片上的「去做第 N 步」直接进整卷页。听力每天一整套：①A→B→C 连做 22′ ②交卷看分段得分 ③精听错最多那段 3 句。副项按星期排：周二仔细阅读、周四长篇匹配、周日写译，周一和周三只做听力。<br>
+ <b>为什么要整套：</b>一天一段，每段都是第一遍，永远是糊的；一整套 13 天走完，第 14 天从第 1 套重做——<b>同一段听第二遍，才知道上次没听出来的这次听出来没有</b>。<br>
+ 步骤勾选只是进度条，<b>不会自动算完成</b>——只有交卷判分，或你自己点「今天这套做完了」才算。<br>
  勾选存在本机；换设备不同步，但交卷记录会上云。
 </div>
 
@@ -341,21 +342,21 @@ function seq(date,days){var n=0,d=new Date(START.getFullYear(),START.getMonth(),
 var STAGES = [
   [new Date(2026,10,2), new Date(2026,10,8), "校准期 · 只测数据",
    "阶段目标：听力篇章 / 仔细阅读 / 长篇匹配各测一次，只记录、不设目标"],
-  [new Date(2026,10,9), new Date(2026,10,22), "打底期 · 听力篇章 + 仔细阅读",
-   "阶段目标：听力篇章≥5/10 且留白≤5 句；仔细阅读≥82%；长篇匹配≥85%"],
+  [new Date(2026,10,9), new Date(2026,10,22), "打底期 · 整套听力 + 仔细阅读",
+   "阶段目标：整套听力≥15/25；仔细阅读≥82%；长篇匹配≥85%"],
   [new Date(2026,10,23), new Date(2026,11,11), "上考场期 · 连做与保温",
    "阶段目标：整套听力 40 分钟连做≥45%；写作模板能默写；模拟总分≥420"]
 ];
 /* 阶段目标（供训练页顶部展示，字段：名称/目标/达标线） */
 var GOALS = {
   calib: { name:"校准期", range:"11/2 – 11/8",
-    listen:"先测真实水平：这段听懂了百分之几（别管目标）", read:"11/10 那周补 1 套（两篇 10 题），把 7/10 的样本凑够",
+    listen:"先测一次整套，看 25 题对几题（别管目标）", read:"11/10 那周补 1 套（两篇 10 题），把 7/10 的样本凑够",
     match:"做 1 篇，「最多错一两个」需要变成数字", write:"写 1 篇，看模板基础在哪一档" },
   base: { name:"打底期", range:"11/9 – 11/22",
-    listen:"听力篇章 ≥5/10，且留白 ≤5 句", read:"仔细阅读 ≥82%",
+    listen:"整套听力 ≥15/25（A 5/7 · B 5/8 · C 5/10）", read:"仔细阅读 ≥82%",
     match:"长篇匹配 ≥85%", write:"写作进 9 分档：三段式 + 2 套模板" },
   exam: { name:"上考场期", range:"11/23 – 12/11",
-    listen:"整套听力 Section C 连做 3 段不停", read:"仔细阅读 ≥85%，两篇 15 分钟做完",
+    listen:"整套听力 ≥18/25，第 3 段不掉链子", read:"仔细阅读 ≥85%，两篇 15 分钟做完",
     match:"长篇匹配 ≥90%，15 分钟做完", write:"模板默写 + 翻译 20 条句式" }
 };
 
@@ -486,7 +487,7 @@ function renderHead(){
    +'<div class="bar"><i style="width:'+Math.max(pct,3)+'%"></i></div>'
    +'<div class="sub">集训第 '+dayNo+' 天 / 共 '+totalDays+' 天 · '+(today.getMonth()+1)+'月'+today.getDate()+'日 周'+'日一二三四五六'[wd]
    +' &nbsp;·&nbsp; <span id="syncTag" style="font-size:12px;opacity:.9">☁ 同步中…</span></div>'
-   +'<div class="note">一天一长一短 · 50 分钟上下（目标见下方卡片）</div>';
+   +'<div class="note">一天一套听力 + 一个副项 · 一小时上下（目标见下方卡片）</div>';
 }
 
 var TIER_KEY = 'cet4_tier_';
@@ -495,7 +496,7 @@ function getTier(){
     var t = localStorage.getItem(TIER_KEY + fmt(today));
     if (t === 'full' || t === 'std' || t === 'min') return t;
   }catch(e){}
-  return 'full';   /* 默认完整版；35 分钟短版是应急档，由你自己切，不替你决定 */
+  return 'full';   /* 默认完整版；27 分钟短版是应急档，由你自己切，不替你决定 */
 }
 function setTier(t){
   try{ localStorage.setItem(TIER_KEY + fmt(today), t); }catch(e){}
@@ -650,23 +651,22 @@ function renderTasks(){
     return;
   }
 
-  /* ── 一长一短（v7）──
-       一 听力 C 新段 42′ + 回炉 10′ · 二 仔细阅读 1 套 40′ + 盲听 12′
-       三 听力 C 新段 42′ + 回炉 10′ · 四 A/B 段 23′ + 长篇匹配 32′
-       日 写译 38′ + 本周错题 12′。周五、周六休息。
-       一项一段（旧版）6 周只能做 6 个 Section C；现在一周 2 段，13 段排得下。 */
+  /* ── 每天一套听力 + 副项按星期（v8）──
+       听 力：A→B→C 整套连做 22′ + 交卷看分段 5′ + 精听错最多那段 3 句 10′ = 37′
+       副 项：二 仔细阅读 25′ · 四 长篇匹配 20′ · 日 写译 25′；周一、周三只做听力
+       周五、周六休息。
+       旧版一天一段 C（30′）+ 回炉 12′，一周只走 2 段；现在一天一套，13 套两周半走完第一轮，
+       第二轮从第 1 套重做——同一个音频听第二遍，这才是「整篇重复」。 */
   var W0x = d0(new Date(2026,10,2));
   var wk0 = Math.max(0, Math.floor((today - W0x) / 604800000));
-  var kind = (wd===1||wd===3) ? 'listen'
-           : (wd===2) ? 'read'
-           : (wd===4) ? 'match' : 'write';
-  var withAB = (wd === 4);                         /* 周四：匹配之前先走一段 A/B */
+  var kind = 'listen';                              /* 听力每天都有，不再按星期切 */
+  var side = (wd === 2) ? 'read' : (wd === 4) ? 'match' : (wd === 0) ? 'write' : '';
   var CALIB = (today.getTime() <= d0(new Date(2026,10,8)).getTime());   /* 11/2–11/8 校准期 */
   var tier = getTier();
-  /* 35 分钟短版：跟读/默写/收生词这类可延后的动作砍掉，只保核心链 */
+  /* 27 分钟短版：只做整套连做 + 交卷，砍掉精听和副项 */
   var SHORT = (tier === 'std' || tier === 'min');
-  var doneKey = (tier==='min' || kind==='listen') ? 'l' : 'o';
-  var dn = !!done[doneKey];
+  var dnL = !!done.l, dnO = !!done.o;
+  var dn = dnL;
   var wk = wk0;                                           /* 方案 A 起点 11/2 */
 
   /* 阅读 / 匹配也按「第一套没做过的」挑，不按周序硬算。
@@ -721,85 +721,55 @@ function renderTasks(){
   for (var _wi=0; !wpCur && _wi<wArr.length; _wi++){ if (!_doneOf(wArr[_wi].f)){ wpCur = wArr[_wi]; break; } }
   if (!wpCur) wpCur = wArr[0];
 
-  /* 听力篇章：只走 Section C，自动跳过已做过的段 */
-  var CLIST = LESSONS.filter(function(x){ return /SectionC/.test(x.f); });
-  /* 历史上已做过的篇章（10-19 / 10-22 的记录），先跳过，别让你重做已做过的 */
-  var SEED = ['2025-12-1_SectionC.html', '2025-06-2_SectionC.html'];
-  var cdone = SEED.concat(HIST_DONE);
-  try{
-    var _sv = JSON.parse(localStorage.getItem('cet4_lseg')||'[]') || [];
-    cdone = cdone.concat(_sv);
-  }catch(e){}
-  /* 只要交过卷就算做过，不管哪天交的。
-     一周两段以后，光靠 cet4_lseg 会漏掉本周刚做的那段，下周一又推一遍。 */
-  try{
-    for (var _j=0; _j<localStorage.length; _j++){
-      var _kk = localStorage.key(_j);
-      if (!/^cet4_ans_/.test(_kk)) continue;
-      var _ss = JSON.parse(localStorage.getItem(_kk) || 'null');
-      if (_ss && _ss.submitted){
-        var _fn = _kk.replace(/^cet4_ans_/, '');
-        if (cdone.indexOf(_fn) < 0) cdone.push(_fn);
-      }
-    }
-  }catch(e){}
-  var nextC = null, cpos = 0;
-  var _cur = null;
-  try{ _cur = JSON.parse(localStorage.getItem('cet4_curseg')||'null'); }catch(e){ _cur = null; }
-
-  /* 周三：本周周一段已经交过卷，就该往下走第二段。
-     把 curseg 指着的那段先算进 cdone，否则「取第一个没做过的」又取回同一段。 */
-  if (wd === 3 && _cur && _cur.f) cdone = cdone.concat([_cur.f]);
-
-  /* 今天真交过卷的那一段，优先级最高，压过 curseg 和「跳过已做」。
-     旧 bug 在交卷后会把 curseg 覆盖成下一套，光看 curseg 纠正不回来；
-     交卷卡在 localStorage 里，是唯一硬证据。 */
-  var _todaySub = '';
-  try{
-    var _t0 = new Date(); _t0.setHours(0,0,0,0);
-    var _bestAt = 0;
-    for (var _i=0; _i<localStorage.length; _i++){
-      var _k = localStorage.key(_i);
-      if (!/^cet4_ans_/.test(_k)) continue;
-      var _sn = JSON.parse(localStorage.getItem(_k) || 'null');
-      if (_sn && _sn.submitted && _sn.at && _sn.at >= _t0.getTime() && _sn.at > _bestAt){
-        _bestAt = _sn.at; _todaySub = _k.replace(/^cet4_ans_/, '');
-      }
-    }
-  }catch(e){ _todaySub = ''; }
-  if (_todaySub){
-    for (var ct=0; ct<CLIST.length; ct++){
-      if (CLIST[ct].f === _todaySub){ nextC = CLIST[ct]; cpos = ct; break; }
-    }
-    if (nextC){
-      try{ localStorage.setItem('cet4_curseg', JSON.stringify({f:nextC.f, d:nextC.d, wk:wk0})); }catch(e){}
+  /* ── 整套听力：13 套真题，A+B+C 一次连做 ──
+     以前是一天一段 Section C，一周只走 2 段，等于每套全新、从不回头。
+     现在一天一整套：13 套两周半走完第一轮，第 14 天从第 1 套重做第二轮——
+     同一个音频听第二遍，才知道「上次没听出来的，这次听出来了没有」。 */
+  var SLIST = ['2022-12-1','2022-12-2','2023-06-1','2023-06-2','2023-12-1','2023-12-2',
+               '2024-06-1','2024-06-2','2024-12-1','2024-12-2','2025-06-1','2025-06-2','2025-12-1'];
+  function _setRec(id){
+    try{ return JSON.parse(localStorage.getItem('cet4_set_' + id) || 'null'); }catch(e){ return null; }
+  }
+  var setid = '', setRec = null, setIdx = 0;
+  /* 今天已经交过卷的这套优先，做完刷新不会被换成下一套 */
+  for (var _si = 0; _si < SLIST.length && !setid; _si++){
+    var _r0 = _setRec(SLIST[_si]);
+    if (_r0 && _r0.d === fmt(today)) setid = SLIST[_si];
+  }
+  /* 再取第一套没做过的 */
+  for (var _sj = 0; _sj < SLIST.length && !setid; _sj++){
+    if (!_setRec(SLIST[_sj])) setid = SLIST[_sj];
+  }
+  /* 13 套全做过 → 第二轮，从最久没做的那套开始 */
+  if (!setid){
+    var _old = Infinity;
+    for (var _sk = 0; _sk < SLIST.length; _sk++){
+      var _r1 = _setRec(SLIST[_sk]);
+      if (_r1 && _r1.ts && _r1.ts < _old){ _old = _r1.ts; setid = SLIST[_sk]; }
     }
   }
+  if (!setid) setid = SLIST[0];
+  setIdx = SLIST.indexOf(setid);
+  setRec = _setRec(setid);
+  /* 轮次：这套的记录是以前某天写的，才算第二轮；今天刚交的仍算第一轮 */
+  var _round = (setRec && setRec.d && setRec.d !== fmt(today)) ? 2 : 1;
+  /* 这套今天交过卷没有 */
+  var _setSubToday = !!(setRec && setRec.d === fmt(today));
+  /* 错得最多的那一段：交过卷才有意义，没交卷默认 C（分值最高） */
+  var _worst = 'C';
+  if (setRec && setRec.a && setRec.a.length === 3){
+    var _wn = [7 - setRec.a[0], 8 - setRec.a[1], 10 - setRec.a[2]];
+    var _wi = (_wn[2] >= _wn[1] && _wn[2] >= _wn[0]) ? 2 : (_wn[0] >= _wn[1] ? 0 : 1);
+    _worst = 'ABC'[_wi];
+  }
+  var jtFile = setid + '_Section' + _worst + '.html';
+  var setUrl = 'listen-set.html?set=' + encodeURIComponent(setid);
+  /* lbtn 保留给「打开材料」类按钮：默认指错得最多的那段 */
+  var lbtn = jtFile;
+  lessonTxt = setid.replace(/^(\d{4})-(\d{2})-(\d{2})$/, function(m, y, mo, d){
+    return y + ' 年 ' + (+mo) + ' 月第 ' + (+d) + ' 套';
+  }) + '　（第 ' + (setIdx + 1) + '/' + SLIST.length + ' 套 · 第 ' + _round + ' 轮）';
 
-  /* 本周已经定过段就沿用它，哪怕今天已经交过卷（周一交卷后还要听写/归因/跟读）。
-     周三例外：那是本周第二个新段，必须换下一段，不能沿用周一那段。 */
-  var _curStay = !!(_cur && _cur.f && (_cur.wk === undefined || _cur.wk === wk0)
-                    && HIST_DONE.indexOf(_cur.f) < 0 && wd !== 3);
-  if (!nextC && _curStay){
-    for (var cm=0; cm<CLIST.length; cm++){
-      if (CLIST[cm].f === _cur.f){ nextC = CLIST[cm]; cpos = cm; break; }
-    }
-  }
-  if (!nextC){
-    /* 取第一个没做过的段 */
-    for (var ci=0; ci<CLIST.length; ci++){
-      if (cdone.indexOf(CLIST[ci].f) < 0){ nextC = CLIST[ci]; cpos = ci; break; }
-    }
-    if (!nextC){ nextC = CLIST[0]; cpos = 0; }
-    /* 只在「本周还没定段」「周一跨周开新段」或「当前段其实是历史已做过的」时才写；
-       否则周二~周日、或周一做完再打开，会把本周那段覆盖掉，周三就换不到第二段 */
-    if (!_cur || !_cur.f || (wd === 1 && _cur.wk !== wk0)
-        || (HIST_DONE.indexOf(_cur.f) >= 0 && _cur.f !== nextC.f)){
-      try{ localStorage.setItem('cet4_curseg', JSON.stringify({f:nextC.f, d:nextC.d, wk:wk0})); }catch(e){}
-    }
-  }
-  lessonTxt = nextC.d + '　（第 ' + (cpos+1) + '/' + CLIST.length + ' 个篇章）';
-  lbtn = nextC.f;
 
   var tHtml = goalCard(kind);
 
@@ -817,294 +787,126 @@ function renderTasks(){
   }
 
   if (tier === 'min'){
-    var minHref = (kind==='read')  ? RL[wk0 % RL.length].f
-                : (kind==='match') ? ML[wk0 % ML.length].f
-                : (kind==='write') ? wpCur.f
-                : lbtn;
-    tHtml += '<div class="task'+(dn?" on":"")+'" data-k="'+doneKey+'"><div class="box'+(dn?" on":"")+'"></div>'
-     +'<div class="tk"><div class="tt">最小档 · 10 分钟</div>'
-     +'<div class="td">打开今天的页面，做 10 分钟就关。做几题算几题，不要求质量、不要求做完。<b>点一下就算今天没断。</b></div>'
-     +'<a class="btn" href="'+encodeURI(minHref)+'">做 10 分钟 →</a></div></div>';
-  } else if (kind === 'listen'){
+    tHtml += '<div class="task' + (dnL ? " on" : "") + '" data-k="l"><div class="box' + (dnL ? " on" : "") + '"></div>'
+     + '<div class="tk"><div class="tt">最小档 · 10 分钟</div>'
+     + '<div class="td">打开整套听力，做 10 分钟就关。听到哪算哪，不要求做完、不要求交卷。<b>点一下就算今天没断。</b></div>'
+     + '<a class="btn" href="' + encodeURI(setUrl) + '">做 10 分钟 →</a></div></div>';
+  } else {
+    /* ═══ 听力：整套连做（每天都做）═══
+       A→B→C 一次播完 22′，25 题一屏，交卷后看分段得分，
+       再只精听错得最多的那一段 3 句。三步，不再拆成六步。 */
     var ST = getSteps();
-    var steps, head, sub;
-    /* 今天这一段是不是已经交过卷。交卷只算走完 ②，后面还有精听 / 归因，
-       所以卡片要说「接着做」，不能因为交过卷就当成今天这段做完了。 */
-    var _subbed = false;
-    try{
-      var _s0 = JSON.parse(localStorage.getItem('cet4_ans_' + lbtn) || 'null');
-      _subbed = !!(_s0 && _s0.submitted);
-    }catch(e){ _subbed = false; }
-    /* 听力时长按真实音频长度分档（13 套真题中位数：A 6′19″ / B 6′04″ / C 9′14″） */
-    var SEC = /sectionc\.html$/i.test(lbtn) ? 'C' : (/sectionb\.html$/i.test(lbtn) ? 'B' : 'A');
-    /* 完整版按「做完这一段的真实耗时」算，不再凑整：
-       C   4 看选项 + 11 盲听做题交卷 + 10 精听 3 句 + 5 归因 = 30′
-           ＋ 12′ 回炉上一篇 = 42′（回炉单独一张卡，不占这 4 步）
-       A/B 3 看选项 + 8 盲听做题交卷 + 7 听写 3 句 + 3 归因 + 2 挑一句跟读 = 23′ */
-    var LE = {
-      A:{p:'3′', b:'8′', d:'7′',  w:'3′', s:'2′', tot:'约 23 分钟', n:'3 句',
-         sp:'3′', sb:'8′', sw:'2′', sd:'5′', sn:'2 句', stot:'约 18 分钟'},
-      B:{p:'3′', b:'8′', d:'7′',  w:'3′', s:'2′', tot:'约 23 分钟', n:'3 句',
-         sp:'3′', sb:'8′', sw:'2′', sd:'5′', sn:'2 句', stot:'约 18 分钟'},
-      C:{p:'4′', b:'11′', j:'10′', w:'5′', tot:'约 30 分钟',
-         sp:'3′', sb:'10′', sj:'10′', sw:'3′', stot:'约 26 分钟'}
-    }[SEC];
-    /* ── 新段精听：一周两个新段，没有「复听」这条路 ── */
-    head = _subbed ? ('今天 · 接着做 · Section ' + SEC) : ('今天 · 听力新段 · Section ' + SEC);
-    sub  = lessonTxt + (_subbed ? '　·　已交卷，接着往下' : '');
-
-    /* 篇章（C）：第 ③ 步是「精听 3 句」。
-       5 句的结果是每句都浅尝；3 句要求每句都走到「跟读 → 脱稿复述」。
-       听不出来的句子没有「下一句」这条路，只能原地跟读再复述。 */
-    if (SEC === 'C'){
-      steps = [
-        {k:'s1', n:'①', t:'横看竖看选项', m:LE.p,
-         d:'四级卷面只有 A–D 选项，问题在录音最后才念，不印在卷上。横看：同一题四个选项比一遍，相同部分划掉、不同的那一两个词圈出来，那就是要等的点。竖看：把本段所有选项串一遍，猜这段讲什么。不查词、不看原文。'},
-        {k:'s2', n:'②', t:'盲听做题 + 交卷', m:LE.b,
-         d:'一遍放完，不暂停、不回放。答案在放音过程中就定，别等问题念完再回想——念完只有 5 秒涂卡。做完立刻点交卷，交卷后原文才解锁。'},
-        {k:'s3', n:'③', t:'精听 3 句', m:(SHORT ? LE.sj : LE.j),
-         d:'点进来直接弹精听浮层：系统固定挑 3 句，每句连放 3 遍（0.85× 两遍、1.0× 一遍）。听不出来不能跳过——先跟读，再盖住原文用中文说意思，说得出才算过。最后整段回听自评。'},
-        {k:'s5', n:'④', t:'对照归因', m:LE.w,
-         d:'只看画「—」的句子，只分两类：没反应过来 / 根本没听见。写不出第三类。'}
-      ];
-    } else {
-      var _mk = function(list){
-        return list.map(function(x, i){
-          x.k = 's' + (i + 1);
-          x.n = '①②③④⑤⑥'[i];
-          return x;
-        });
-      };
-      var _base = SHORT ? [
-        {t:'横看竖看选项', d:'四级卷面只有 A–D 选项，问题在录音最后才念。横看找差异点，竖看串话题。不查词、不看原文。', m:LE.sp},
-        {t:'盲听做题', d:'一遍放完，不暂停、不回放。做完立刻交卷——交卷后原文才解锁。', m:LE.sb},
-        {t:'听写 '+LE.sn, d:'只写实词骨架：名词、动词、数字。虚词留空，听不出画「—」，不猜。', m:LE.sd},
-        {t:'对照归因', d:'只分两类：没反应过来 / 根本没听见。不写第三种。', m:LE.sw}
-      ] : [
-        {t:'横看竖看选项', d:'四级卷面只有 A–D 选项，问题在录音最后才念，不印在卷上。横看：同一题四个选项比一遍，相同部分划掉、不同的那一两个词圈出来，那就是要等的点。竖看：把本段所有选项串一遍，猜这段讲什么。不查词、不看原文。', m:LE.p},
-        {t:'盲听做题', d:'一遍放完，不暂停、不回放。答案在放音过程中就定，别等问题念完再回想——念完只有 5 秒涂卡。做完立刻点交卷。', m:LE.b},
-        {t:'听写 '+LE.n, d:'只写实词骨架：名词、动词、数字。虚词留空，听不出画「—」，绝不猜。这是采样，不是默写。', m:LE.d},
-        {t:'对照归因', d:'只看画「—」的句子，只分两类：没反应过来 / 根本没听见。', m:LE.w},
-        {t:'挑 1 句跟读', d:'选最长的那句，跟到不磕巴就停。不整段跟。', m:LE.s}
-      ];
-      steps = _mk(_base);
-    }
-    /* ── 单线推进：只有第一个没完成的步骤能点，后面的锁住 ── */
-    var curI = -1, si, _maxOn = -1;
-    for (si = 0; si < steps.length; si++){ if (ST[steps[si].k]) _maxOn = si; }
-    /* 后面做了，前面必然做过（比如直接交卷没点「看选项」）——按最靠后的那步算，别让进度倒退 */
-    for (si = 0; si < steps.length; si++){ if (!ST[steps[si].k] && si > _maxOn){ curI = si; break; } }
-    var _hrefOf = function(s){
-      /* 第 ③ 步直接进这一页并自动打开精听浮层；已交卷的话浮层从「精听 3 句」开始 */
-      if (SEC === 'C' && s.k === 's3') return lbtn + '?jt=1';
-      if (/音义闪卡/.test(s.t)) return 'soundcard.html?p=' + encodeURIComponent(lbtn) + '&n=' + (SHORT ? 12 : 20) + '&k=' + s.k;
-      if (/跟读/.test(s.t)) return 'shadow.html?p=' + encodeURIComponent(lbtn) + '&k=' + s.k;
-      return lbtn;
+    var setSteps = [
+      {k:'l1', n:'①', t:'整套连做 A→B→C', m:'22′',
+       d:'一次播完，不暂停、不回放、不拖进度。25 题全在一屏，边听边点；开播前可以先把三段选项扫一遍。'},
+      {k:'l2', n:'②', t:'交卷看分段得分', m:'5′',
+       d:'交卷后才出答案。先看 A/B/C 各错几题、错在哪几道，别盯总分——总分只跟上一轮比。'},
+      {k:'l3', n:'③', t:'精听错最多那段 3 句', m:'10′',
+       d:'只做错得最多的那一段，3 句。每句连放 3 遍；听不出来就跟读 + 脱稿复述，说得出才算过。'}
+    ];
+    if (SHORT) setSteps = setSteps.slice(0, 2);
+    var _hrefOf = function(x){
+      if (x.k === 'l3') return jtFile + '?jt=1&st=3';
+      return setUrl;
     };
-    var rows = steps.map(function(s, i){
-      var on = !!ST[s.k] || (i < _maxOn);
+    var curI = -1, si, _maxOn = -1;
+    for (si = 0; si < setSteps.length; si++){ if (ST[setSteps[si].k]) _maxOn = si; }
+    for (si = 0; si < setSteps.length; si++){ if (!ST[setSteps[si].k] && si > _maxOn){ curI = si; break; } }
+    var rows = setSteps.map(function(x, i){
+      var on = !!ST[x.k] || (i < _maxOn);
       var lock = (curI >= 0 && i > curI);
       var cls = 'step' + (on ? ' on' : '') + (i === curI ? ' cur' : '') + (lock ? ' lock' : '');
-      return '<div class="' + cls + '" data-s="' + s.k + '" data-href="' + _hrefOf(s) + '">'
+      return '<div class="' + cls + '" data-s="' + x.k + '" data-href="' + _hrefOf(x) + '">'
         + '<div class="ck' + (lock ? ' dim' : '') + '"></div>'
-        + '<div class="sx"><div class="st">' + s.n + ' ' + s.t
+        + '<div class="sx"><div class="st">' + x.n + ' ' + x.t
         +   (i === curI ? '<em class="now">现在做这步</em>' : '') + '</div>'
-        + '<div class="sd">' + s.d + '</div></div>'
-        + '<div class="sm">' + s.m + '</div></div>';
+        + '<div class="sd">' + x.d + '</div></div>'
+        + '<div class="sm">' + x.m + '</div></div>';
     }).join('');
-    var curS = (curI >= 0) ? steps[curI] : null;
+    var curS = (curI >= 0) ? setSteps[curI] : null;
     var nowTxt = curS ? ('现在：第 ' + (curI + 1) + ' 步 · ' + curS.t + '　·　' + curS.m)
-                      : '今天这 ' + steps.length + ' 步都做完了';
-    /* 回炉卡：只有 C 段、非短版才出现。它不占这 4 步，但要算进当天总时长 */
-    var reH = (SEC === 'C' && !SHORT) ? reCard(lbtn) : '';
+                      : '今天这套走完了';
 
     tHtml += '<div class="steps">'
       + '<div class="shd">'
-      +   '<div><b>'+head+'</b><div class="sdt">'+nowTxt+(SHORT?'　·　35 分钟短版':'')+'</div></div>'
-      +   '<div class="smin">'+(SHORT ? LE.stot : (reH ? '约 42 分钟' : LE.tot))+'</div>'
+      +   '<div><b>今天 · 整套听力</b><div class="sdt">' + lessonTxt + '　·　' + nowTxt + '</div></div>'
+      +   '<div class="smin">' + (SHORT ? '约 27 分钟' : '约 37 分钟') + '</div>'
       + '</div>'
       + rows
       + '<div class="stepacts">'
-      +   '<a class="btn" href="'+encodeURI(curS ? _hrefOf(curS) : lbtn)+'">'
-      +     (curS ? ('去做第 ' + (curI + 1) + ' 步 →') : '今天这段做完了')+'</a>'
-      +   (curS ? '<button class="skip" data-skip="'+curS.k+'">卡住了？跳过这一步（自己确认）</button>' : '')
+      +   '<a class="btn" href="' + encodeURI(curS ? _hrefOf(curS) : setUrl) + '">'
+      +     (curS ? ('去做第 ' + (curI + 1) + ' 步 →') : '今天这套做完了') + '</a>'
+      +   (curS ? '<button class="skip" data-skip="' + curS.k + '">卡住了？跳过这一步（自己确认）</button>' : '')
       + '</div>'
       + '</div>';
-    tHtml += reH;
-    tHtml += blankHtml();
-    tHtml += '<div class="task'+(dn?" on":"")+'" data-k="l"><div class="box'+(dn?" on":"")+'"></div>'
-      + '<div class="tk"><div class="tt">今天这段做完了</div>'
-      + '<div class="td">判分提交后会自动勾上；没提交成、或者只听了没做题，就手动点这里。</div></div></div>';
-  } else if (kind === 'read'){
+    /* 上一轮的分数：第二轮唯一该看的东西 */
+    if (setRec && setRec.score !== undefined && setRec.a && setRec.d !== fmt(today)){
+      tHtml += '<div class="steps" style="padding-top:11px;padding-bottom:13px">'
+        + '<div class="sdt">上一轮这套 <b>' + setRec.score + ' / 25</b>（A ' + setRec.a[0] + ' · B ' + setRec.a[1]
+        + ' · C ' + setRec.a[2] + '），' + setRec.d + '。今天只看一件事：上次错的题，这次对了没有。</div></div>';
+    }
+    tHtml += '<div class="task' + (dnL ? " on" : "") + '" data-k="l"><div class="box' + (dnL ? " on" : "") + '"></div>'
+      + '<div class="tk"><div class="tt">今天这套做完了</div>'
+      + '<div class="td">交卷后会自动勾上；没交成、或者只听了没做题，就手动点这里。</div></div></div>';
+  }
+
+  if (side === 'read'){
     var rd = rdCur;
     /* 材料是 46–55 两篇 10 题（一整套），不是「1 篇」。考场给 15 分钟做这两篇，
        旧版写 12 分钟偏紧、60 分钟总量又虚高，两头都不对。 */
-    var rsteps = SHORT ? [
-      {n:'①', t:'限时做两篇', d:'15 分钟做完 10 题（46–55），不查词、不回看。考场就是这个时间，做完立刻停表。', m:'15′'},
-      {n:'②', t:'划答案句', d:'每题回原文划出答案句，别整段翻译，只找那一句。', m:'8′'},
-      {n:'③', t:'对替换', d:'只看错的题：「定位词 → 原文替换词」，记这一对，不抄解析。', m:'8′'}
-    ] : [
+    var rsteps = [
       {n:'①', t:'限时做两篇', d:'15 分钟做完 10 题（46–55），不查词、不回看。考场给两篇就是这个时间，做完立刻停表。', m:'15′'},
-      {n:'②', t:'划答案句', d:'每题回原文划出答案句，别整段翻译，只找那一句。五题一段，两段分开划。', m:'8′'},
-      {n:'③', t:'对替换', d:'逐题看「定位词 → 原文替换词」，只记这一对。全对的题跳过，别重读。', m:'10′'},
-      {n:'④', t:'收生词', d:'只收反复出现的词，最多 3 个。不抄整句、不背单词书。', m:'7′'}
+      {n:'②', t:'划答案句 + 对替换', d:'每题回原文划出答案句，只找那一句；再记「定位词 → 原文替换词」这一对。全对的题跳过，别重读。', m:'8′'},
+      {n:'③', t:'收生词', d:'只收反复出现的词，最多 3 个。不抄整句、不背单词书。', m:'2′'}
     ];
     tHtml += '<div class="steps">'
-      + '<div class="shd"><div><b>今天 · 仔细阅读 1 套（两篇 10 题）</b><div class="sdt">'+rd.f.replace('read-','').replace('.html','')+'　·　第 '+(RL.indexOf(rd)+1)+'/'+RL.length+' 套'+((_dod.read===rd.f||_doneToday(rd.f))?'　·　今天已提交':'')+(SHORT?'　·　35 分钟短版':'')+'</div></div>'
-      + '<div class="smin">'+(SHORT?'约 31 分钟':'40 分钟')+'</div></div>'
+      + '<div class="shd"><div><b>今天 · 仔细阅读 1 套（两篇 10 题）</b><div class="sdt">'+rd.f.replace('read-','').replace('.html','')+'　·　第 '+(RL.indexOf(rd)+1)+'/'+RL.length+' 套'+((_dod.read===rd.f||_doneToday(rd.f))?'　·　今天已提交':'')+(SHORT?'　·　短版':'')+'</div></div>'
+      + '<div class="smin">'+(SHORT?'约 20 分钟':'25 分钟')+'</div></div>'
       + rsteps.map(function(x, i){ return _stepRow('r'+(i+1), x, rd.f, i===0 && _doneToday(rd.f), _doneToday(rd.f)); }).join('')
       + '<div class="stepacts"><a class="btn" href="'+encodeURI(rd.f)+'">打开阅读页</a></div>'
       + '</div>'
-      + '<div class="task'+(dn?" on":"")+'" data-k="o"><div class="box'+(dn?" on":"")+'"></div>'
-      + '<div class="tk"><div class="tt">'+(dn?'今天这套做完了':'做完点这里打勾')+'</div>'
+      + '<div class="task'+(dnO?" on":"")+'" data-k="o"><div class="box'+(dnO?" on":"")+'"></div>'
+      + '<div class="tk"><div class="tt">'+(dnO?'今天这套做完了':'做完点这里打勾')+'</div>'
       + '<div class="td">阅读页提交后会自动打勾；没提交成就手动点。</div></div></div>';
-  } else if (kind === 'match'){
+  } else if (side === 'match'){
     var mp = mpCur;
     var mdone = 0;
     try{ mdone = (JSON.parse(localStorage.getItem('cet4_mseg')||'[]')||[]).length; }catch(e){ mdone = 0; }
     var mToday = (_dod.match === mp.f) || _doneToday(mp.f);
     var mcnt = mToday ? '今天已提交 · 第 ' + Math.max(1, mdone) + ' 次练' : ('第 ' + (mdone+1) + ' 次练 · 满分 71');
-    var msteps = SHORT ? [
+    var msteps = [
       {n:'①', t:'限时做', d:'15 分钟，10 道题找段落。不查词，凭关键词定位，做完立刻停表。', m:'15′'},
-      {n:'②', t:'回原文找替换', d:'逐题回段落里划出对应句，把「题干的词 → 原文的词」写下来。来不及就只做没把握的题。', m:'8′'},
-      {n:'③', t:'归因', d:'错题只写一句：是没找到定位，还是替换没认出来。二选一。', m:'3′'}
-    ] : [
-      {n:'①', t:'限时做', d:'15 分钟，10 道题找段落。不查词，凭关键词定位，做完立刻停表。', m:'15′'},
-      {n:'②', t:'回原文找替换', d:'逐题回段落里划出对应句，把「题干的词 → 原文的词」这一对写下来。', m:'12′'},
-      {n:'③', t:'归因', d:'错题只写一句：是没找到定位，还是替换没认出来。二选一，不写第三条。', m:'5′'}
+      {n:'②', t:'找替换 + 归因', d:'逐题回段落划出对应句，记「题干的词 → 原文的词」；错题只写一句：没找到定位，还是替换没认出来。', m:'5′'}
     ];
-    /* 周四先走一段 A/B 再上匹配：A/B 共 106 分，C 只覆盖 142，剩下这块一直没人碰。
-       一周插一段，按周序取，6 周 6 段，不占 C 的档期。 */
-    if (withAB){
-      var ABL = LESSONS.filter(function(x){ return /Section[AB]\.html$/i.test(x.f); });
-      /* 今天做过就留在这一段，别交完卷刷新就跳到下一段；
-         今天没做过，取第一段没交过卷的（旧版按周序取，wk0 一直是 0~1，会反复推同一段） */
-      var abx = _byName(ABL, _dod.listen);
-      if (!abx){
-        for (var _aj = 0; _aj < ABL.length; _aj++){ if (_doneToday(ABL[_aj].f)){ abx = ABL[_aj]; break; } }
-      }
-      if (!abx){
-        for (var _ai = 0; _ai < ABL.length; _ai++){ if (!_doneOf(ABL[_ai].f)){ abx = ABL[_ai]; break; } }
-      }
-      if (!abx) abx = ABL[wk0 % ABL.length];
-      var abSec = /SectionA/i.test(abx.f) ? 'A' : 'B';
-      /* 步骤要和听力页的吸底条一一对应（那边是 s1..s5，交卷并进「盲听」那步），
-         否则这边勾 ③ 交卷、那边写的是 s3 听写，全错位 */
-      var abSteps = [
-        {n:'①', t:'横看竖看选项', d:'这段只有 '+(abSec==='A'?'3':'4')+' 题。横看四选项找差异点，竖看串话题。', m:'3′'},
-        {n:'②', t:'盲听做题 + 交卷', d:'一遍放完，不暂停、不回放。'+(abSec==='A'?'新闻第一句就抛主题，开头别走神。':'对话先看是男问女答还是反过来，盯住后说话那个人。')+'交卷后原文才解锁。', m:'8′'},
-        {n:'③', t:'听写 3 句', d:'只走标 ★ 的 3 句，听不出画「—」，不猜。', m:SHORT?'5′':'7′'},
-        {n:'④', t:'归因', d:'错题标一个原因：连读 / 生词 / 走神。', m:SHORT?'2′':'3′'}
-      ];
-      if (!SHORT) abSteps.push({n:'⑤', t:'挑 1 句跟读', d:'选最长的那句，跟到不磕巴就停。不整段跟。', m:'2′'});
-      tHtml += '<div class="steps ab">'
-        + '<div class="shd"><div><b>今天 · 先走一段 Section '+abSec+'</b>'
-        + '<div class="sdt">'+abx.d+'　·　142 分主力是 C，这段接手感</div></div>'
-        + '<div class="smin">'+(SHORT?'约 18 分钟':'约 23 分钟')+'</div></div>'
-        + abSteps.map(function(s, i){ return _stepRow('s'+(i+1), s, abx.f, i===0 && _doneToday(abx.f), _doneToday(abx.f)); }).join('')
-        + '<div class="stepacts"><a class="btn ghost" href="'+encodeURI(abx.f)+'">打开这一段</a></div>'
-        + '</div>';
-    }
     tHtml += '<div class="steps">'
-      + '<div class="shd"><div><b>今天 · 长篇匹配 1 篇</b><div class="sdt">'+mp.d+'　'+mcnt+(SHORT?'　·　35 分钟短版':'')+'</div></div>'
-      + '<div class="smin">'+(SHORT?'约 26 分钟':'32 分钟')+'</div></div>'
+      + '<div class="shd"><div><b>今天 · 长篇匹配 1 篇</b><div class="sdt">'+mp.d+'　'+mcnt+(SHORT?'　·　短版':'')+'</div></div>'
+      + '<div class="smin">'+(SHORT?'约 16 分钟':'20 分钟')+'</div></div>'
       + msteps.map(function(s, i){ return _stepRow('m'+(i+1), s, mp.f, i===0 && _doneToday(mp.f), _doneToday(mp.f)); }).join('')
       + '<div class="stepacts"><a class="btn" href="'+encodeURI(mp.f)+'">打开匹配页</a></div>'
       + '</div>'
-      + '<div class="task'+(dn?" on":"")+'" data-k="o"><div class="box'+(dn?" on":"")+'"></div>'
-      + '<div class="tk"><div class="tt">'+(dn?'今天这篇做完了':'做完点这里打勾')+'</div>'
+      + '<div class="task'+(dnO?" on":"")+'" data-k="o"><div class="box'+(dnO?" on":"")+'"></div>'
+      + '<div class="tk"><div class="tt">'+(dnO?'今天这篇做完了':'做完点这里打勾')+'</div>'
       + '<div class="td">匹配页提交后会自动打勾；没提交成就手动点。</div></div></div>';
-  } else {
+  } else if (side === 'write'){
     var isW = wIsW;
     var arr = wArr, wp = wpCur;
     var wlbl = isW ? '写作' : '翻译';
-    var wsteps = SHORT ? [
-      {n:'①', t:'写', d:'25 分钟写完，不看范文、不查词。卡住就换一句简单的话说完。', m:'25′'},
-      {n:'②', t:'自查 3 处', d:'只看时态、单复数、连接词。三样各挑一处改，不改别的。', m:'5′'},
-      {n:'③', t:'对参考改 3 句', d:'对完只改 3 句，不重写全篇。把参考里那个句式抄下来。', m:'3′'}
-    ] : [
-      {n:'①', t:'写', d:'25 分钟写完，不看范文、不查词。卡住就换一句简单的话说完。', m:'25′'},
-      {n:'②', t:'自查 3 处', d:'只看时态、单复数、连接词。三样各挑一处改，不改别的。', m:'5′'},
-      {n:'③', t:'对参考改 3 句', d:'对完只改 3 句，不重写全篇。把参考里那个句式抄下来。', m:'8′'}
+    var wsteps = [
+      {n:'①', t:'写', d:'20 分钟写完，不看范文、不查词。卡住就换一句简单的话说完。', m:'20′'},
+      {n:'②', t:'自查 + 对参考改 3 句', d:'只看时态、单复数、连接词；对完参考只改 3 句，不重写全篇，把那个句式抄下来。', m:'5′'}
     ];
     tHtml += '<div class="steps">'
-      + '<div class="shd"><div><b>今天 · '+wlbl+' 1 篇</b><div class="sdt">'+wp.d+(SHORT?'　·　35 分钟短版':'')+'</div></div>'
-      + '<div class="smin">'+(SHORT?'约 33 分钟':'38 分钟')+'</div></div>'
+      + '<div class="shd"><div><b>今天 · '+wlbl+' 1 篇</b><div class="sdt">'+wp.d+(SHORT?'　·　短版':'')+'</div></div>'
+      + '<div class="smin">'+(SHORT?'约 20 分钟':'25 分钟')+'</div></div>'
       + wsteps.map(function(s, i){ return _stepRow('w'+(i+1), s, wp.f, i===0 && _doneToday(wp.f), _doneToday(wp.f)); }).join('')
       + '<div class="stepacts"><a class="btn" href="'+encodeURI(wp.f)+'">打开'+wlbl+'页</a></div>'
       + '</div>'
-      + '<div class="task'+(dn?" on":"")+'" data-k="o"><div class="box'+(dn?" on":"")+'"></div>'
-      + '<div class="tk"><div class="tt">'+(dn?'今天这篇做完了':'做完点这里打勾')+'</div>'
+      + '<div class="task'+(dnO?" on":"")+'" data-k="o"><div class="box'+(dnO?" on":"")+'"></div>'
+      + '<div class="tk"><div class="tt">'+(dnO?'今天这篇做完了':'做完点这里打勾')+'</div>'
       + '<div class="td">'+wlbl+'页提交后会自动打勾；没提交成就手动点。</div></div></div>';
   }
 
-  /* ── 副项：一天一长一短里的那块「短」──
-     主项按真实耗时算（听力 42′ / 阅读 40′ / 匹配 32′ / 写译 38′），
-     省下的十几分钟不空着，用来回炉昨天/上周的东西——这才是单靠主项拿不到的分。
-     副项不单独打卡，做完算今天完成，别为它再点一次。 */
-  if (tier === 'full'){
-    var subCard = null;
-    if (kind === 'listen'){
-      /* 「再听上一段」必须是真交过卷的段。之前直接取 CLIST 里前一个，
-         第一周会把从没打开过的段说成「上一段」，看着像无故让你复读。 */
-      var _pv = null;
-      for (var _pi = 1; _pi < CLIST.length; _pi++){
-        var _c2 = CLIST[(cpos - _pi + CLIST.length) % CLIST.length];
-        if (_c2.f !== lbtn && _doneOf(_c2.f)){ _pv = _c2; break; }
-      }
-      if (_pv){
-        subCard = {t:'顺手 · 不看书再听一遍 10′',
-               d:'放你交过卷的那段（'+_pv.d+'）：题做过，这次不做题、不看文本，只练耳朵，看跟不跟得上语速。',
-               f:_pv.f, b:'去听 →'};
-      }   /* 一段做过的都没有，就没有可回炉的：今天只做主项，不拿副项凑时长 */
-    } else if (kind === 'read'){
-      /* 副项是「听一段 C」，但这段做没做过必须说清：
-         交过卷的叫再听，没交过卷的就是第一次盲听，不能写成「再放一遍」 */
-      var _lastC = null;
-      for (var _li = CLIST.length - 1; _li >= 0; _li--){
-        if (_doneOf(CLIST[_li].f)){ _lastC = CLIST[_li]; break; }
-      }
-      if (_lastC){
-        subCard = {t:'顺手 · 不看书再听一遍 12′',
-               d:'放你交过卷的那段（'+_lastC.d+'）：题做过，这次不做题、不看文本，只听语速和断句，比继续盯字有用。',
-               f:_lastC.f, b:'打开这段 →'};
-      } else {
-        subCard = {t:'顺手 · 先盲听一段 C 12′',
-               d:'这段你还没正式做过：整段放一遍，不做题、不看文本，只听语速和话题。明天正式做时会顺很多。',
-               f:lbtn, b:'打开这段 →'};
-      }
-    } else if (kind === 'match'){
-      /* 「回看周二那套」必须真做过：rdCur 是「下一套没做的」，
-         周二交卷后它会跳到下一套，周四就会带你去看还没做的阅读 */
-      var _lastR = null, _rt = 0;
-      for (var _rj = 0; _rj < RL.length; _rj++){
-        try{
-          var _ro = JSON.parse(localStorage.getItem('cet4_ans_' + RL[_rj].f) || 'null');
-          if (_ro && _ro.submitted){
-            var _at = _ro.at || 0;
-            if (_at >= _rt){ _rt = _at; _lastR = RL[_rj]; }
-          }
-        }catch(e){}
-      }
-      if (_lastR){
-        subCard = {t:'顺手 · 回看上一套阅读的错题 12′',
-               d:'只看错的题：当时划的答案句、记的替换对，重念一遍。不重做、不抄解析。',
-               f:_lastR.f, b:'打开阅读页 →'};
-      }   /* 还没交过任何一套阅读，就没有错题可看 */
-    } else {
-      subCard = {t:'顺手 · 本周错题回看 12′',
-             d:'翻这一周的账：听力画「—」的句子、阅读没认出的替换。只看，不做新题。',
-             f:'review.html', b:'打开复盘 →'};
-    }
-    if (subCard){
-      tHtml += '<div class="task sub"><div class="box vd"></div>'
-        + '<div class="tk"><div class="tt">'+subCard.t+'</div>'
-        + '<div class="td">'+subCard.d+'</div>'
-        + '<a class="btn ghost" href="'+encodeURI(subCard.f)+'">'+subCard.b+'</a></div></div>';
-    }
-  }
-
-  /* 三档：完整版 / 35 分钟短版 / 最小档 10 分钟。短版不是「随便少做点」，
+  /* 三档：完整版 / 27 分钟短版 / 最小档 10 分钟。短版不是「随便少做点」，
      是固定的删减规则：砍跟读、砍默写、砍收生词，核心链一步不少。 */
   if (tier === 'min'){
     tHtml += '<div class="tierlink">'
@@ -1116,7 +918,7 @@ function renderTasks(){
       + '<br><a href="javascript:void(0)" data-tier="min">切最小档 10 分钟</a></div>';
   } else {
     tHtml += '<div class="tierlink">'
-      + '<a href="javascript:void(0)" data-tier="std">今天只有半小时？切 35 分钟短版 →</a>'
+      + '<a href="javascript:void(0)" data-tier="std">今天只有半小时？切 27 分钟短版 →</a>'
       + '<br><a href="javascript:void(0)" data-tier="min">切最小档 10 分钟</a></div>';
   }
 
@@ -1252,10 +1054,21 @@ function refreshStats(){
 function renderList(){
   var el = document.getElementById('list'); if (!el) return;
   var t = document.getElementById('tot'); if (t) t.textContent = LESSONS.length;
+  /* 今天做的是哪一套：从 cet4_set_ 记录里找 d = 今天的那条，高亮它的 A/B/C 三段 */
+  var _ts = '';
+  try{
+    for (var _i = 0; _i < localStorage.length; _i++){
+      var _k = localStorage.key(_i);
+      if (!/^cet4_set_/.test(_k)) continue;
+      var _o = JSON.parse(localStorage.getItem(_k) || 'null');
+      if (_o && _o.d === fmt(today)){ _ts = _k.replace(/^cet4_set_/, ''); break; }
+    }
+  }catch(e){}
   el.innerHTML = LESSONS.map(function(x, i){
     var no = (i < 9 ? '0' : '') + (i + 1);
-    var now = (i === idx) ? ' now' : '';
-    var tail = (i === idx) ? '<span class="tag">今天</span>' : '';
+    var isNow = _ts ? (x.f.indexOf(_ts + '_') === 0) : (i === idx);
+    var now = isNow ? ' now' : '';
+    var tail = isNow ? '<span class="tag">今天</span>' : '';
     return '<a class="it' + now + '" href="' + encodeURI(x.f) + '">'
       + '<span class="no">' + no + '</span>'
       + '<span class="tx">' + x.d.replace(' · ', ' · ') + tail + '</span>'

@@ -4265,9 +4265,24 @@ function openJt(){
   /* 中途关掉再进来要接着做，不能从第一步重来（去交卷一定会关一次） */
   if (!(st.step > 1 && st.step < 5)){
     /* 已经交过卷（首页排的第 ③ 步进来），就不用再盲听、再做题：
-       直接从「精听 3 句」开始，省掉重复的 10 分钟 */
-    st.step = submitted() ? 3 : 1;
+       直接从「精听 3 句」开始，省掉重复的 10 分钟。
+       整套连做页交卷时带的 ?st=3 也走这条——那边交的是 cet4_set_，
+       这里的 submitted() 只认 cet4_ans_，光靠它判断会退回第 1 步重听整段。 */
+    var _f3 = /[?&]st=3\b/.test(location.search);
+    st.step = (_f3 || submitted()) ? 3 : 1;
     st.k = 0; st.reps = 0; st.phase = 0; st.res = []; st.hit = 0;
+    /* 从整套连做页过来（st=3）：本段的看选项、盲听交卷已经在那页做完了，
+       这里把 s1/s2 补上，否则本页底部那条进度还是「第 1 步」看着像没做 */
+    if (_f3){
+      try{
+        var _n0 = new Date();
+        var _dk = 'cet4_steps_' + _n0.getFullYear() + '-' + ('0' + (_n0.getMonth() + 1)).slice(-2)
+                  + '-' + ('0' + _n0.getDate()).slice(-2);
+        var _o0 = JSON.parse(localStorage.getItem(_dk) || '{}');
+        _o0.s1 = 1; _o0.s2 = 1;
+        localStorage.setItem(_dk, JSON.stringify(_o0));
+      }catch(e){}
+    }
   }
   host.classList.add('on');
   document.body.style.overflow = 'hidden';

@@ -493,7 +493,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 
 <details class="fold locked-sec" id="tableCard"><summary>怎么用这份包</summary><div class="fbody"><h2><span class="num">5</span>这份包怎么用</h2><p class="hint">真人原声和 TTS 最大的差别在语速变化和吞音，这里体现得最明显。</p><table><tr><th>步骤</th><th>做法</th></tr><tr><td>① 盲听</td><td>不暂停听一遍，凭印象做完并交卷——原文和题干交卷后才解锁</td></tr><tr><td>② 精听 3 句</td><td>点「🎧 精听模式」，系统固定挑 3 句：每句连放 3 遍（0.85× 两遍、1.0× 一遍）。<b>听不出来不能跳过</b>——先慢速跟读，再盖住原文用中文说意思，说得出才算过</td></tr><tr><td>③ 点读</td><td>标黄处逐词点开，🔁 循环到听清（黄底按词粗标，词与词之间的连读见跟读页）</td></tr><tr><td>④ 跟读</td><td>卡住的句子 0.85× 跟，跟到能一口气说出来；听出来的句子不用跟</td></tr><tr><td>⑤ 回听</td><td>原速整段再听一遍，能跟上 8 成才算这段过了；不到 8 成明天同一段重做</td></tr></table><div class="tip amber"><b>标黄的是什么：</b>按语言学规则自动标注——<b>辅音结尾 + 虚词</b>（如 <code>turned to</code>）必然连读弱读。点控制条「🏷 连读点」可开关该图层。</div></div></details>
 
-<details class="fold locked-sec" id="explainCard"><summary>本段题目与答案</summary><div class="fbody"><h2><span class="num">6</span>使用建议</h2><p><b>先做哪一段</b>　按 A → B → C 顺序。新闻最短、语速最稳，先建立信心；篇章最长、信息密度最高，放最后。</p><div class="why">不要一次做完整个 Section。一天一段，做完就复盘。</div><p><b>关于识别错字</b>　如果比对把你明明写对的词标红，先别怀疑自己——多半是识别错误。对照真题书原文确认。</p><div class="warn">把官方原文发我，可以把整份包的文字换成 100% 准确版。</div></div></details>
+<details class="fold locked-sec" id="explainCard"><summary>本段题目与答案</summary><div class="fbody"><h2><span class="num">6</span>使用建议</h2><p><b>先做哪一段</b>　按 A → B → C 顺序。新闻最短、语速最稳，先建立信心；篇章最长、信息密度最高，放最后。</p><div class="why">尽量整天做一套：A→B→C 连做不停，练的是手不抖。今天状态差，只做这一段也不算断。</div><p><b>关于识别错字</b>　如果比对把你明明写对的词标红，先别怀疑自己——多半是识别错误。对照真题书原文确认。</p><div class="warn">把官方原文发我，可以把整份包的文字换成 100% 准确版。</div></div></details>
 
 <footer>音频：2022-12-2 ｜ 文本由 Vosk 语音识别生成（时间戳平均误差 0.06 秒），文字可能有少量识别错字</footer>
 </div>
@@ -4250,9 +4250,24 @@ function openJt(){
   /* 中途关掉再进来要接着做，不能从第一步重来（去交卷一定会关一次） */
   if (!(st.step > 1 && st.step < 5)){
     /* 已经交过卷（首页排的第 ③ 步进来），就不用再盲听、再做题：
-       直接从「精听 3 句」开始，省掉重复的 10 分钟 */
-    st.step = submitted() ? 3 : 1;
+       直接从「精听 3 句」开始，省掉重复的 10 分钟。
+       整套连做页交卷时带的 ?st=3 也走这条——那边交的是 cet4_set_，
+       这里的 submitted() 只认 cet4_ans_，光靠它判断会退回第 1 步重听整段。 */
+    var _f3 = /[?&]st=3\b/.test(location.search);
+    st.step = (_f3 || submitted()) ? 3 : 1;
     st.k = 0; st.reps = 0; st.phase = 0; st.res = []; st.hit = 0;
+    /* 从整套连做页过来（st=3）：本段的看选项、盲听交卷已经在那页做完了，
+       这里把 s1/s2 补上，否则本页底部那条进度还是「第 1 步」看着像没做 */
+    if (_f3){
+      try{
+        var _n0 = new Date();
+        var _dk = 'cet4_steps_' + _n0.getFullYear() + '-' + ('0' + (_n0.getMonth() + 1)).slice(-2)
+                  + '-' + ('0' + _n0.getDate()).slice(-2);
+        var _o0 = JSON.parse(localStorage.getItem(_dk) || '{}');
+        _o0.s1 = 1; _o0.s2 = 1;
+        localStorage.setItem(_dk, JSON.stringify(_o0));
+      }catch(e){}
+    }
   }
   host.classList.add('on');
   document.body.style.overflow = 'hidden';
