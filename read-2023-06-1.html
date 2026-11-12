@@ -1807,6 +1807,8 @@ header.ph>p b,header.ph>p strong{color:rgba(255,255,255,.95);font-weight:600;}
 <style>
 /* READ_ANA_V1 阅读解析联动 */
 .rmark{font-size:12px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap}
+.anainline .lpara{cursor:pointer;text-decoration:underline dotted;text-underline-offset:2px}
+.anainline .lpara::after{content:' ↗';font-size:10px;opacity:.7}
 .rmark.ok{background:var(--green-soft);color:var(--green)}
 .rmark.bad{background:var(--red-soft);color:var(--red)}
 .anainline{margin:-4px 0 14px}
@@ -1913,6 +1915,18 @@ header.ph>p b,header.ph>p strong{color:rgba(255,255,255,.95);font-weight:600;}
         mb.appendChild(ms);
         mrows[0].parentNode.insertBefore(mb, mrows[0]);
         mrows.forEach(function(r){ mb.appendChild(r); });
+      }
+
+      // 定位标签做成可点：跳到原文并高亮那一句（复用答题区那个 .jump 的逻辑）
+      var lp = d.querySelector('.lpara');
+      if (lp){
+        lp.setAttribute('role','button');
+        lp.style.cursor = 'pointer';
+        lp.title = '在原文里看这一句';
+        lp.addEventListener('click', function(){
+          var j = document.querySelector('.jump[data-qnum="' + q + '"]');
+          if (j) j.click();
+        });
       }
 
       var sum = d.querySelector('summary');
