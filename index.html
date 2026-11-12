@@ -177,8 +177,8 @@ a.it.now .tx{font-weight:700;color:var(--green)}
 .step.lock .st{color:var(--sub)}
 .step .now{display:inline-block;font-style:normal;font-size:10.5px;font-weight:700;
  color:#fff;background:var(--blue);border-radius:5px;padding:1px 5px;margin-left:4px;vertical-align:1.5px}
-.stepacts .skip{display:block;width:100%;margin-top:7px;border:0;background:transparent;
- color:var(--sub2);font:500 11.5px/1.6 inherit;padding:5px}
+.stepacts .skip{display:block;width:auto;margin-top:0;border:0;background:transparent;
+ color:var(--sub2);font:500 11.5px/1.6 inherit;padding:4px 2px;text-align:right}
 /* 阶段目标卡 */
 .goalcard{margin:0 0 14px;padding:12px 14px;border-radius:13px;background:var(--soft,#fafbfc);
  border:1px solid var(--line,#e5e8ec)}
@@ -204,8 +204,7 @@ a.it.now .tx{font-weight:700;color:var(--green)}
 .steps.replay .shd b{color:#0f766e}
 .steps.replay .step.on .ck{background:#0f766e;border-color:#0f766e}
 .steps.replay .step.on .st{color:#0f766e}
-.stepacts{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.stepacts .btn{margin-top:0;flex:1 0 100%;text-align:center;padding:12px 10px}
+.stepacts{display:flex;justify-content:flex-end;margin-top:0}
 
 /* 训练列表 */
 #list a.it .st-done{color:var(--green);font-size:12px;font-weight:700}
@@ -825,12 +824,12 @@ function renderTasks(){
      做完也不会亮，看着像「该勾的没勾」。现在和听力一样可勾：
      页面提交会回写第 ① 步，其余自己点。 */
   var _ST0 = getSteps();
-  function _stepRow(k, x, href, forceOn, manual){
+  function _stepRow(k, x, href, forceOn, manual, cur){
     var on = !!_ST0[k] || !!forceOn;
-    return '<div class="step'+(on ? ' on' : '')+'" data-s="'+k+'" data-href="'+href+'"'
+    return '<div class="step'+(on ? ' on' : '')+(cur ? ' cur' : '')+'" data-s="'+k+'" data-href="'+href+'"'
       + (manual ? ' data-manual="1"' : '')+'>'
       + '<div class="ck"></div>'
-      + '<div class="sx"><div class="st">'+x.n+' '+x.t+'</div><div class="sd">'+x.d+'</div></div>'
+      + '<div class="sx"><div class="st">'+x.n+' '+x.t+(cur ? '<em class="now">现在开始 →</em>' : '')+'</div><div class="sd">'+x.d+'</div></div>'
       + '<div class="sm">'+x.m+'</div></div>';
   }
 
@@ -869,7 +868,7 @@ function renderTasks(){
       return '<div class="' + cls + '" data-s="' + x.k + '" data-href="' + _hrefOf(x) + '">'
         + '<div class="ck' + (lock ? ' dim' : '') + '"></div>'
         + '<div class="sx"><div class="st">' + x.n + ' ' + x.t
-        +   (i === curI ? '<em class="now">现在做这步</em>' : '') + '</div>'
+        +   (i === curI ? '<em class="now">现在开始 →</em>' : '') + '</div>'
         + '<div class="sd">' + x.d + '</div></div>'
         + '<div class="sm">' + x.m + '</div></div>';
     }).join('');
@@ -888,11 +887,9 @@ function renderTasks(){
       +   '<div class="smin">' + (SHORT ? '约 27 分钟' : '约 37 分钟') + '</div>'
       + '</div>'
       + rows
-      + '<div class="stepacts">'
-      +   '<a class="btn" href="' + encodeURI(curS ? _hrefOf(curS) : setUrl) + '">'
-      +     (curS ? ('去做第 ' + (curI + 1) + ' 步 →') : '今天这套做完了') + '</a>'
-      +   (curS ? '<button class="skip" data-skip="' + curS.k + '">卡住了？跳过这一步（自己确认）</button>' : '')
-      + '</div>'
+      /* 底部不再放主按钮：hero 那个已经指同一步，步骤行本身也能点。
+         三个入口指同一个地址，只会让人在「点哪个」上多花一秒。 */
+      + (curS ? '<div class="stepacts"><button class="skip" data-skip="' + curS.k + '">卡住了？跳过这一步</button></div>' : '')
       + '</div>';
     /* 上一轮的分数：第二轮唯一该看的东西 */
     if (setRec && setRec.score !== undefined && setRec.a && setRec.d !== fmt(today)){
@@ -933,8 +930,7 @@ function renderTasks(){
     tHtml += '<div class="steps">'
       + '<div class="shd"><div><b>今天 · 仔细阅读 1 套（两篇 10 题）</b><div class="sdt">'+rd.f.replace('read-','').replace('.html','')+'　·　第 '+(RL.indexOf(rd)+1)+'/'+RL.length+' 套'+((_dod.read===rd.f||_doneToday(rd.f))?'　·　今天已提交':'')+(SHORT?'　·　短版':'')+'</div></div>'
       + '<div class="smin">'+(SHORT?'约 20 分钟':'25 分钟')+'</div></div>'
-      + rsteps.map(function(x, i){ return _stepRow('r'+(i+1), x, rd.f, i===0 && _doneToday(rd.f), _doneToday(rd.f)); }).join('')
-      + '<div class="stepacts"><a class="btn" href="'+encodeURI(rd.f)+'">打开阅读页</a></div>'
+      + rsteps.map(function(x, i){ return _stepRow('r'+(i+1), x, rd.f, i===0 && _doneToday(rd.f), _doneToday(rd.f), i===0 && !_doneToday(rd.f)); }).join('')
       + '</div>'
       + '<div class="task'+(dnO?" on":"")+'" data-k="o"><div class="box'+(dnO?" on":"")+'"></div>'
       + '<div class="tk"><div class="tt">'+(dnO?'今天这套做完了':'做完点这里打勾')+'</div>'
@@ -955,8 +951,7 @@ function renderTasks(){
     tHtml += '<div class="steps">'
       + '<div class="shd"><div><b>今天 · 长篇匹配 1 篇</b><div class="sdt">'+mp.d+'　'+mcnt+(SHORT?'　·　短版':'')+'</div></div>'
       + '<div class="smin">'+(SHORT?'约 18 分钟':'20 分钟')+'</div></div>'
-      + msteps.map(function(s, i){ return _stepRow('m'+(i+1), s, mp.f, i===0 && _doneToday(mp.f), _doneToday(mp.f)); }).join('')
-      + '<div class="stepacts"><a class="btn" href="'+encodeURI(mp.f)+'">打开匹配页</a></div>'
+      + msteps.map(function(s, i){ return _stepRow('m'+(i+1), s, mp.f, i===0 && _doneToday(mp.f), _doneToday(mp.f), i===0 && !mToday); }).join('')
       + '</div>'
       + '<div class="task'+(dnO?" on":"")+'" data-k="o"><div class="box'+(dnO?" on":"")+'"></div>'
       + '<div class="tk"><div class="tt">'+(dnO?'今天这篇做完了':'做完点这里打勾')+'</div>'
@@ -975,8 +970,7 @@ function renderTasks(){
     tHtml += '<div class="steps">'
       + '<div class="shd"><div><b>今天 · '+wlbl+' 1 篇</b><div class="sdt">'+wp.d+(SHORT?'　·　短版':'')+'</div></div>'
       + '<div class="smin">'+(SHORT?'约 23 分钟':'25 分钟')+'</div></div>'
-      + wsteps.map(function(s, i){ return _stepRow('w'+(i+1), s, wp.f, i===0 && _doneToday(wp.f), _doneToday(wp.f)); }).join('')
-      + '<div class="stepacts"><a class="btn" href="'+encodeURI(wp.f)+'">打开'+wlbl+'页</a></div>'
+      + wsteps.map(function(s, i){ return _stepRow('w'+(i+1), s, wp.f, i===0 && _doneToday(wp.f), _doneToday(wp.f), i===0 && !_doneToday(wp.f)); }).join('')
       + '</div>'
       + '<div class="task'+(dnO?" on":"")+'" data-k="o"><div class="box'+(dnO?" on":"")+'"></div>'
       + '<div class="tk"><div class="tt">'+(dnO?'今天这篇做完了':'做完点这里打勾')+'</div>'
