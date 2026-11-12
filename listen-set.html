@@ -158,6 +158,53 @@
     /* 亮蓝底配白字只有 2.7:1，加深底色保留白字 */
     .btn,.now,.step .now,.lnk,.go,.btn-primary,.btn-copy{background:#2f4f9e;border-color:#2f4f9e;color:#fff;}
   }
+
+/* ===== 画笔（与精听页同一套：笔/鼠标绘制，手指滚动） ===== */
+#markBar{position:fixed;z-index:8990;background:var(--card,#fff);border:1px solid var(--line,#e5e8ec);
+ border-radius:50%;width:54px;height:54px;overflow:hidden;touch-action:none;
+ box-shadow:0 6px 20px rgba(0,0,0,.18);
+ transition:width .26s cubic-bezier(.4,0,.2,1),height .26s cubic-bezier(.4,0,.2,1),
+            border-radius .26s cubic-bezier(.4,0,.2,1)}
+#markBar.open{width:306px;height:124px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+#mkFab{position:absolute;top:0;left:0;width:100%;height:100%;border:0;background:transparent;
+ font-size:23px;line-height:1;cursor:pointer;color:var(--blue,#2563eb);font-family:inherit;
+ transition:opacity .16s ease}
+#markBar.open #mkFab{opacity:0;pointer-events:none}
+#markBar .panel{position:absolute;top:0;left:0;width:100%;height:100%;
+ display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .22s ease .06s}
+#markBar.open .panel{opacity:1;pointer-events:auto}
+#markBar .grip{flex:0 0 16px;display:flex;align-items:center;justify-content:center;
+ position:relative;cursor:grab;touch-action:none}
+#markBar .grip i{display:block;width:30px;height:3px;border-radius:2px;background:var(--line,#dfe3e8)}
+#markBar .grip .cls{position:absolute;right:3px;top:0;border:0;background:transparent;
+ color:var(--sub,#6b7280);font-size:12px;line-height:1;cursor:pointer;padding:3px 6px;
+ border-radius:7px;font-family:inherit}
+#markBar .grip .cls:hover{background:var(--soft,#f4f6f8)}
+#markBar .bd{flex:1;padding:1px 10px 8px;display:flex;flex-direction:column;gap:3px;overflow:hidden}
+#markBar .row{display:flex;gap:3px;align-items:center;justify-content:center;flex-wrap:nowrap}
+#markBar button{border:0;background:transparent;padding:6px 10px;border-radius:12px;font-size:13px;
+ cursor:pointer;color:var(--txt,#333);font-family:inherit;white-space:nowrap;line-height:1.25}
+#markBar button.on{background:var(--blue,#2563eb);color:#fff}
+#markBar .sep{width:1px;height:16px;background:var(--line,#e5e8ec);margin:0 3px;flex:0 0 auto}
+#markBar .wd{min-width:26px;text-align:center;padding:6px 6px}
+#markBar .wd i{display:inline-block;border-radius:50%;background:currentColor;vertical-align:middle}
+#markBar .sw{width:21px;height:21px;border-radius:50%;border:2px solid var(--line,#e5e8ec);
+ padding:0;cursor:pointer;flex:0 0 auto}
+#markBar .sw.on{border-color:var(--blue,#2563eb);box-shadow:0 0 0 2px rgba(37,99,235,.22)}
+#markCanvas{position:fixed;top:0;left:0;z-index:8980;pointer-events:none}
+html.penon,body.penon{touch-action:none !important;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;overscroll-behavior:none}
+html.penon body,body.penon *,:host{touch-action:none !important}
+body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;touch-action:auto !important}
+#markCanvas.act{cursor:crosshair}
+#penToast{position:fixed;left:50%;bottom:112px;transform:translateX(-50%) translateY(10px);
+ background:rgba(20,22,26,.92);color:#fff;font-size:13px;font-weight:600;padding:9px 17px;
+ border-radius:22px;z-index:8990;opacity:0;pointer-events:none;
+ transition:opacity .18s ease,transform .18s ease}
+#penToast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+/* 尺寸与精听页一致：54px 会压住右侧选项文字的尾部 */
+#markBar{width:44px;height:44px}
+#mkFab{font-size:19px}
+/* INK_V1_START */
 </style>
 </head>
 <body>
@@ -772,6 +819,836 @@ function nextId(id){
 
 boot();
 })();
+</script>
+
+<!-- 画笔：整套听力页原本没有，与精听页共用同一套实现 -->
+<canvas id="markCanvas"></canvas>
+<div id="markBar">
+  <button id="mkFab" title="画笔">🖊</button>
+  <div class="panel">
+    <div class="grip"><i></i><button class="cls" id="mkMini" title="收起">⌄</button></div>
+    <div class="bd">
+      <div class="row">
+        <button id="mkPen">🖊 涂写</button>
+        <button id="mkErase">🧽 橡皮</button>
+        <button id="mkClear">🗑 清空</button>
+      </div>
+      <div class="row">
+        <button class="wd" data-w="1.6" title="细"><i style="width:2px;height:2px"></i></button>
+        <button class="wd" data-w="3" title="中"><i style="width:4px;height:4px"></i></button>
+        <button class="wd" data-w="6" title="粗"><i style="width:7px;height:7px"></i></button>
+        <span class="sep"></span>
+        <button class="sw" data-c="#1b1e23" title="黑" style="background:#1b1e23"></button>
+        <button class="sw" data-c="#c0392b" title="红" style="background:#c0392b"></button>
+        <button class="sw" data-c="#2563eb" title="蓝" style="background:#2563eb"></button>
+        <button class="sw" data-c="#0f9d58" title="绿" style="background:#0f9d58"></button>
+        <button class="sw" data-c="#d97706" title="橙" style="background:#d97706"></button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+
+(function(){
+  /* penv11 */
+  var cv = document.getElementById('markCanvas');
+  if (!cv) return;
+  var ctx = cv.getContext('2d');
+  var strokes = [], cur = null, SC = [];
+  /* ── 笔迹随页保存：同一页当天有效，刷新/重开不丢 ── */
+  /* 带上 ?set=：本页是同一文件装 13 套题，只按文件名存会让上一套的笔记串到下一套 */
+  var INK_KEY = 'cet4ink:v1:' + (location.pathname.split('/').pop() || 'x')
+              + (location.search || '');
+  var INK_DAY = (function(){ var t = new Date();
+    return t.getFullYear() + '-' + ('0'+(t.getMonth()+1)).slice(-2) + '-' + ('0'+t.getDate()).slice(-2); })();
+  var INK_COL = ['#1b1e23', '#c0392b', '#2563eb', '#0f9d58', '#d97706'];
+  var inkT = 0;
+
+  /* 顶层 body 的子节点会被脚本插入/挪动，纯结构路径会串到别的面板去；
+     改成「最近的有 id 祖先 + 相对路径」，只要段落 id 在，路径就稳 */
+  function pathOf(el){
+    var seg = [], cur = el;
+    while (cur && cur !== document.body){
+      if (cur.id && /^[A-Za-z]/.test(cur.id)) return '#' + cur.id + (seg.length ? '/' + seg.join('/') : '');
+      var i = 0, c = cur;
+      while ((c = c.previousElementSibling)) if (c.tagName === cur.tagName) i++;
+      seg.unshift(cur.tagName.toLowerCase() + ':' + i);
+      cur = cur.parentElement;
+    }
+    return seg.join('/');
+  }
+  function byPath(p){
+    if (!p) return null;
+    var el = document.body, parts = p.split('/');
+    if (p.charAt(0) === '#'){
+      var k = p.indexOf('/'), id = k < 0 ? p.slice(1) : p.slice(1, k);
+      el = document.getElementById(id);
+      parts = k < 0 ? [] : p.slice(k + 1).split('/');
+      if (!el) return null;
+    }
+    for (var i = 0; i < parts.length; i++){
+      var m = /^([a-z0-9]+):(\d+)$/.exec(parts[i]);
+      if (!m || !el) return null;
+      var tag = m[1].toUpperCase(), idx = +m[2], n = 0, f = null, kids = el.children;
+      for (var k2 = 0; k2 < kids.length; k2++) if (kids[k2].tagName === tag){ if (n === idx){ f = kids[k2]; break; } n++; }
+      if (!f) return null;
+      el = f;
+    }
+    return el;
+  }
+  function inkText(el){
+    var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+    return t.slice(0, 18);
+  }
+  function inkFind(r){
+    var el = byPath(r.a);
+    var okTxt = el && (!r.f || inkText(el).indexOf(r.f) === 0);
+    if (el && okTxt && anchVis(el)) return el;
+    if (r.f){          /* 路径失效：按文本找回，只认可见元素，取文本最短（最细）的那个 */
+      var cand = document.querySelectorAll(ANCH_SEL), best = null, bl = 1e9;
+      for (var i = 0; i < cand.length; i++){
+        var c = cand[i];
+        if (!anchVis(c) || inkText(c).indexOf(r.f) !== 0) continue;
+        var L = (c.textContent || '').length;
+        if (L < bl){ bl = L; best = c; }
+      }
+      if (best) return best;
+    }
+    return el || null;
+  }
+  function b64(buf){
+    var s = '', CH = 0x8000;
+    for (var i = 0; i < buf.length; i += CH) s += String.fromCharCode.apply(null, buf.subarray(i, i + CH));
+    return btoa(s);
+  }
+  function unb64(str){
+    var bin = atob(str), n = bin.length, u = new Uint8Array(n);
+    for (var i = 0; i < n; i++) u[i] = bin.charCodeAt(i);
+    return u;
+  }
+  /* 点串：首点 x(uint16) y(int16，相对锚顶) w(uint8)；其后 dx,dy(int8) w(uint8)
+     相邻点先按 80px 插值补点，保证 delta 落在 int8 内不漂移 */
+  function encPts(s){
+    var pts = s.pts, y0 = s.anch ? s.anch.y0 : 0, raw = [], prev = null;
+    for (var i = 0; i < pts.length; i++){
+      var p = pts[i];
+      if (prev){
+        var ddx = p[0] - prev[0], ddy = p[1] - prev[1];
+        var st = Math.ceil(Math.max(Math.abs(ddx), Math.abs(ddy)) / 80);
+        for (var k = 1; k < st; k++) raw.push([prev[0] + ddx*k/st, prev[1] + ddy*k/st, p[2]]);
+      }
+      raw.push([p[0], p[1], p[2]]); prev = p;
+    }
+    var out = [], px = 0, py = 0;
+    for (var j = 0; j < raw.length; j++){
+      var q = raw[j];
+      var x = Math.max(0, Math.min(65535, Math.round(q[0])));
+      /* 存「相对锚顶的纯内容偏移」：把落笔时的容器滚动折掉，换布局才不串位 */
+      var y = Math.max(-32768, Math.min(32767, Math.round(q[1] - y0 + (s.c0 || 0))));
+      var w = Math.max(1, Math.min(15, Math.round(q[2] * 2)));
+      if (j === 0){ out.push(x & 255, (x >> 8) & 255, y & 255, (y >> 8) & 255, w); px = x; py = y; }
+      else {
+        var dx = Math.max(-127, Math.min(127, x - px)), dy = Math.max(-127, Math.min(127, y - py));
+        out.push(dx & 255, dy & 255, w); px += dx; py += dy;
+      }
+    }
+    return b64(new Uint8Array(out));
+  }
+  function decPts(str, y0){
+    var u, n, pts = [];
+    try{ u = unb64(str); }catch(e){ return pts; }
+    n = u.length; if (n < 5) return pts;
+    var x = (u[1] << 8) | u[0];
+    var y = (u[3] << 8) | u[2]; if (y & 0x8000) y -= 0x10000;
+    pts.push([x, y + y0, u[4] / 2]);
+    var i = 5;
+    while (i + 2 < n){
+      var dx = u[i], dy = u[i+1];
+      if (dx > 127) dx -= 256; if (dy > 127) dy -= 256;
+      x += dx; y += dy;
+      pts.push([x, y + y0, u[i+2] / 2]);
+      i += 3;
+    }
+    return pts;
+  }
+  function inkSave(){
+    if (!strokes.length){ try{ localStorage.removeItem(INK_KEY); }catch(e){} return; }
+    var arr = [];
+    for (var i = 0; i < strokes.length; i++){
+      var s = strokes[i];
+      if (!s || !s.pts || !s.pts.length) continue;
+      var el = (s.anch && s.anch.el) || s.host;
+      if (!el) continue;
+      arr.push({ a: pathOf(el), f: inkText(el), d: Math.round(s.pts[0][1] - (s.anch ? s.anch.y0 : 0)),
+                 e: s.era ? 1 : 0, c: Math.max(0, INK_COL.indexOf(s.color)),
+                 cp: s.c ? pathOf(s.c) : '', k: s.c0 || 0,
+                 d0: Math.round(s.pts[0][1] - (s.anch ? s.anch.y0 : 0) + (s.c0 || 0)), p: encPts(s) });
+    }
+    if (!arr.length) return;
+    var payload = JSON.stringify({ v: 1, day: INK_DAY, n: arr.length, s: arr });
+    try{ localStorage.setItem(INK_KEY, payload); }catch(e){}
+  }
+  function inkQueue(){ if (inkT) clearTimeout(inkT); inkT = setTimeout(function(){ inkT = 0; inkSave(); }, 250); }
+  function inkFlush(){ if (inkT){ clearTimeout(inkT); inkT = 0; } inkSave(); }
+  function inkLoad(){
+    var raw = null;
+    try{ raw = localStorage.getItem(INK_KEY); }catch(e){}
+    if (!raw) return;
+    var d = null;
+    try{ d = JSON.parse(raw); }catch(e){}
+    if (!d || d.v !== 1 || !d.s || !d.s.length) return;
+    if (d.day !== INK_DAY){ try{ localStorage.removeItem(INK_KEY); }catch(e){} return; }  /* 只留当天 */
+    var got = 0;
+    for (var i = 0; i < d.s.length; i++){
+      var r = d.s[i], el = inkFind(r);
+      if (!el) continue;
+      var vis = anchVis(el);
+      var y0 = vis ? docTopOf(el) : 0;
+      var pts = decPts(r.p, y0);
+      if (!pts.length) continue;
+      var c = r.cp ? byPath(r.cp) : null;
+      if (c && !c.contains(el)) c = null;      /* 路径漂移的旧数据：宁可不用容器 */
+      var ck = 0;
+      if (c) ck = c.scrollTop;
+      else {                                    /* 没容器时按当前祖先滚动折一次，避免整条偏一屏 */
+        var pa = el.parentElement;
+        while (pa && pa !== document.documentElement){ if (pa.scrollTop){ ck = pa.scrollTop; break; } pa = pa.parentElement; }
+      }
+      if (ck) for (var q = 0; q < pts.length; q++) pts[q][1] -= ck;
+      var s = { pts: pts, color: INK_COL[r.c] || '#1b1e23', era: !!r.e,
+                c: c, c0: ck,
+                host: el.closest('.panel') || el.closest('.card'),
+                n: pts.length, mid: [0, 0], bb: null,
+                anch: { el: el, y0: y0 } };
+      if (!vis) s.needBase = true;
+      if (s.era) hasEra = true;
+      s.bb = bboxOf(s);
+      strokes.push(s); got++;
+    }
+    if (got) schedule(true);
+  }
+
+  var VW = 0, VH = 0, DPR = 1, OX = 0, OY = 0, rzT = 0;
+  var rafId = 0, needFull = false, needLive = false, hasEra = false, pendFull = false;
+  var lastPenTap = { t:0, x:0, y:0 };
+
+  /* ── 画布只覆盖视口：平板不会因超大画布丧失硬件加速 ── */
+  function setSize(){
+    var w = window.innerWidth, h = window.innerHeight;
+    var d = Math.min(2, window.devicePixelRatio || 1);
+    if (w === VW && h === VH && d === DPR) return false;
+    VW = w; VH = h; DPR = d;
+    cv.width = Math.round(w * d); cv.height = Math.round(h * d);
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    return true;
+  }
+  function syncScroll(){ OX = window.pageXOffset || 0; OY = window.pageYOffset || 0; }
+  /* 滚动容器状态按帧缓存：切 tab / 切单栏后容器可能不再滚动，scrollTop 归 0，
+     仍用落笔时的 c0 相减，笔画会凭空上移一大截 */
+  var SCOFF = { t:0, m:null };
+  function scOf(c){
+    var now = (window.performance && performance.now) ? performance.now() : Date.now();
+    if (!SCOFF.m || now - SCOFF.t > 8){ SCOFF.m = new Map(); SCOFF.t = now; }
+    var v = SCOFF.m.get(c);
+    if (v === undefined){
+      var st = window.getComputedStyle(c);
+      v = { ok: c.isConnected && (st.overflowY === 'auto' || st.overflowY === 'scroll'), top: c.scrollTop };
+      SCOFF.m.set(c, v);
+    }
+    return v;
+  }
+  function offOf(s){
+    if (!s.c) return 0;
+    var v = scOf(s.c);
+    /* 容器一旦不再滚动，scrollTop 自然回 0，这里就用 0 抵掉落笔时的滚动量；
+       与 shiftOf 的 docTopOf 口径配起来，两者相加才等于内容的真实位移 */
+    return s.c0 - v.top;
+  }
+  function clipC(c){
+    if (!c) return;
+    var r = c.getBoundingClientRect();
+    if (r.width > 0 && r.height > 0){ ctx.beginPath(); ctx.rect(r.left, r.top, r.width, r.height); ctx.clip(); }
+  }  function visEl(e){ return !!e && e.getClientRects().length > 0 && e.offsetWidth > 0; }
+
+  function bboxOf(s){
+    var p = s.pts, n = p.length, x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (var i = 0; i < n; i++){
+      var x = p[i][0], y = p[i][1], w = p[i][2];
+      if (x - w < x0) x0 = x - w;
+      if (x + w > x1) x1 = x + w;
+      if (y - w < y0) y0 = y - w;
+      if (y + w > y1) y1 = y + w;
+    }
+    s.bb = [x0, y0, x1, y1];
+    return s.bb;
+  }
+
+  /* ── 笔迹锚定：记录落笔处的内容块，重排后按内容位移整体平移 ── */
+  var ANCH_SEL = '.line, .q, .card, .tip, p, li, h2, h3, .ptx, .para';
+  /* 锚元素的「文档坐标」必须把祖先滚动容器的 scrollTop 一起算进去：
+     split 模式下原文栏自己会滚，只加 pageYOffset 会漏掉容器滚动，
+     和笔画绘制时的 off 修正是两套口径，一滚容器或一开中译，字迹就偏了 */
+  function docTopOf(el){
+    var y = el.getBoundingClientRect().top + (window.pageYOffset || 0);
+    var p = el.parentElement;
+    while (p && p !== document.documentElement){
+      if (p.scrollTop) y += p.scrollTop;
+      p = p.parentElement;
+    }
+    return y;
+  }
+  function anchorOf(clientX, clientY){
+    var el = document.elementFromPoint(clientX, clientY);
+    if (!el || !el.closest) return null;
+    var a = el.closest(ANCH_SEL) || el;
+    /* 命中块容器（.ptx/.para/.card）时锚太粗：改用光标所在的文本元素，
+       否则中译一收一放、段高变化，刷新后整条笔迹会偏好几百像素 */
+    try{
+      var rng = document.caretRangeFromPoint ? document.caretRangeFromPoint(clientX, clientY) : null;
+      if (rng && rng.startContainer && rng.startContainer.nodeType === 3){
+        var t = rng.startContainer.parentElement;
+        if (t && t.nodeType === 1 && (!a || a === t || a.contains(t))) a = t;
+      }
+    }catch(e){}
+    if (!a || a.nodeType !== 1) return null;
+    return { el: a, y0: docTopOf(a) };
+  }
+  /* 锚元素在隐藏的 tab 里时 rect 全 0，差值等于「负一整个页面高度」，
+     笔画会整条飞到页面顶部——这种帧一律不位移 */
+  function anchVis(el){
+    if (!el || !el.isConnected) return false;
+    var r = el.getBoundingClientRect();
+    return (r.width > 0 || r.height > 0);
+  }
+  function anchorShift(s){
+    /* 恢复时锚在隐藏 tab 里定不了基准，等它可见再一次性补正 */
+    if (s.needBase){
+      if (!anchVis(s.anch.el)) return 0;
+      var t0 = docTopOf(s.anch.el);
+      for (var i = 0; i < s.pts.length; i++) s.pts[i][1] += t0 - s.anch.y0;
+      s.anch.y0 = t0; s.needBase = false; s.bb = bboxOf(s);
+    }
+    if (!anchVis(s.anch.el)) return 0;
+    return docTopOf(s.anch.el) - s.anch.y0;
+  }
+  function shiftOf(s, cache){
+    if (!s || !s.anch || !s.anch.el) return 0;
+    if (cache){
+      var v = cache.get(s.anch.el);
+      if (v === undefined){ v = anchorShift(s); cache.set(s.anch.el, v); }
+      return v;
+    }
+    return anchorShift(s);
+  }
+
+  function scanSC(){
+    SC = [];
+    var all = document.querySelectorAll('div,section,article,aside');
+    for (var i = 0; i < all.length; i++){
+      var el = all[i];
+      if (el.offsetHeight < 90) continue;
+      var st = getComputedStyle(el);
+      if ((st.overflowY === 'auto' || st.overflowY === 'scroll') && el.scrollHeight > el.clientHeight + 4){
+        SC.push(el);
+        if (!el.__mkh){ el.__mkh = 1;
+          el.addEventListener('scroll', function(){ schedule(true); }, {passive:true}); }
+      }
+    }
+  }
+  function ownerOf(x, y){
+    var best = null, bestA = Infinity;
+    for (var i = 0; i < SC.length; i++){
+      var c = SC[i], r = c.getBoundingClientRect();
+      if (r.width < 40 || r.height < 40) continue;   /* 隐藏/零尺寸面板不参与归属判定 */
+      var l = r.left + (window.pageXOffset || 0), t = r.top + (window.pageYOffset || 0);
+      if (x >= l && x <= l + r.width && y >= t && y <= t + r.height){
+        var a = r.width * r.height;
+        if (a < bestA){ bestA = a; best = c; }
+      }
+    }
+    return best ? {c:best, c0:best.scrollTop} : {c:null, c0:0};
+  }
+
+  function drawStroke(s, sparse, acache){
+    if (s.host && !visEl(s.host)) return;
+    var pts = s.pts, n = pts.length;
+    if (!n) return;
+    var off = offOf(s), bx = -OX, by = off - OY + shiftOf(s, acache);
+    ctx.save();
+    clipC(s.c);
+    ctx.globalCompositeOperation = s.era ? 'destination-out' : 'source-over';
+    if (!s.era) ctx.strokeStyle = s.color;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    if (n === 1){
+      ctx.fillStyle = s.era ? '#000' : s.color;
+      ctx.beginPath(); ctx.arc(pts[0][0]+bx, pts[0][1]+by, Math.max(.6, pts[0][2]/2), 0, 6.2832); ctx.fill();
+      ctx.restore(); return;
+    }
+    if (sparse && n > 240){
+      var st = n > 900 ? 3 : 2, q = [];
+      for (var i = 0; i < n; i += st) q.push(pts[i]);
+      if (q[q.length-1] !== pts[n-1]) q.push(pts[n-1]);
+      pts = q; n = pts.length;
+    }
+    var lx = pts[0][0]+bx, ly = pts[0][1]+by;
+    for (var j = 1; j < n; j++){
+      var p = pts[j], q2 = pts[j-1];
+      var mx = (q2[0]+p[0])/2 + bx, my = (q2[1]+p[1])/2 + by;
+      ctx.lineWidth = p[2];
+      ctx.beginPath(); ctx.moveTo(lx, ly);
+      ctx.quadraticCurveTo(q2[0]+bx, q2[1]+by, mx, my);
+      ctx.stroke();
+      lx = mx; ly = my;
+    }
+    ctx.restore();
+  }
+
+  function redraw(){
+    if (!VW) setSize();
+    syncScroll();
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.clearRect(0, 0, VW, VH);
+    var vx0 = OX, vy0 = OY, vx1 = OX + VW, vy1 = OY + VH;
+    var acache = new Map();
+    for (var i = 0; i < strokes.length; i++){
+      var s = strokes[i], sh = shiftOf(s, acache);
+      if (!hasEra && !s.era){
+        var bb = s.bb || bboxOf(s), off = offOf(s);
+        if (bb[3] + off + sh < vy0 - 80 || bb[1] + off + sh > vy1 + 80 ||
+            bb[2] < vx0 - 80 || bb[0] > vx1 + 80) continue;
+      }
+      drawStroke(s, true, acache);
+    }
+    if (cur){
+      cur.n = cur.pts.length;
+      var lp = cur.pts[cur.pts.length-1];
+      cur.mid = [lp[0] - OX, lp[1] + offOf(cur) + shiftOf(cur, acache) - OY];
+    }
+  }
+
+  function live(){
+    if (!cur) return;
+    if (cur.host && !visEl(cur.host)) return;
+    var pts = cur.pts, n = pts.length;
+    var off = offOf(cur), bx = -OX, by = off - OY + shiftOf(cur, null);
+    ctx.save();
+    clipC(cur.c);
+    ctx.globalCompositeOperation = cur.era ? 'destination-out' : 'source-over';
+    if (!cur.era) ctx.strokeStyle = cur.color;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    for (var i = cur.n; i < n; i++){
+      var p = pts[i], q = pts[i-1];
+      var mx = (q[0]+p[0])/2 + bx, my = (q[1]+p[1])/2 + by;
+      ctx.lineWidth = p[2];
+      ctx.beginPath(); ctx.moveTo(cur.mid[0], cur.mid[1]);
+      ctx.quadraticCurveTo(q[0]+bx, q[1]+by, mx, my);
+      ctx.stroke();
+      cur.mid = [mx, my];
+    }
+    cur.n = n;
+    ctx.restore();
+  }
+
+  function schedule(full){
+    /* 书写中不打断：全量重绘延后到收笔之后 */
+    if (full && drawing){ pendFull = true; return; }
+    if (full){ needFull = true; needLive = false; } else needLive = true;
+    if (!rafId) rafId = requestAnimationFrame(function(){
+      rafId = 0;
+      if (needFull){ needFull = false; needLive = false; redraw(); return; }
+      if (needLive){ needLive = false; live(); }
+    });
+  }
+
+  setSize(); syncScroll();
+  /* 分页切换（tab / 分栏）后重绘：隐藏分页的笔迹不再残留在画布上 */
+  var moT = 0;
+  try{
+    var mo = new MutationObserver(function(){ clearTimeout(moT); moT = setTimeout(function(){ schedule(true); }, 80); });
+    var pv = document.querySelectorAll('.panel, .card');
+    for (var pi = 0; pi < pv.length; pi++) mo.observe(pv[pi], {attributes:true, attributeFilter:['class']});
+  }catch(e){}
+  window.addEventListener('scroll', function(){ schedule(true); }, {passive:true});
+  window.addEventListener('resize', function(){
+    clearTimeout(rzT);
+    rzT = setTimeout(function(){ if (setSize()) schedule(true); }, 180);
+  }, {passive:true});
+  setTimeout(function(){ scanSC(); schedule(true); }, 500);
+  window.addEventListener('load', function(){ scanSC(); schedule(true); });
+
+  var pen = document.getElementById('mkPen'), era = document.getElementById('mkErase'),
+      clr = document.getElementById('mkClear');
+  var mode = 'off',
+      /* 默认笔色跟随主题：深墨在暗底上等于看不见 */
+      color = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? '#e6e9ef' : '#1b1e23',
+      baseW = 3, drawing = false;
+
+  function setMode(m){
+    mode = m;
+    cv.classList.toggle('act', m !== 'off');
+    document.documentElement.classList.toggle('penon', m !== 'off');
+    document.body.classList.toggle('penon', m !== 'off');
+    if (pen) pen.classList.toggle('on', m === 'draw');
+    if (era) era.classList.toggle('on', m === 'erase');
+    if (m !== 'off'){ scanSC(); syncScroll(); }
+    if (m === 'draw' && !window.__penHint){ window.__penHint = 1;
+      /* 双击提示已移除 */ }
+    schedule(true);
+  }
+  if (pen) pen.addEventListener('click', function(){ setMode(mode === 'draw' ? 'off' : 'draw'); });
+  if (era) era.addEventListener('click', function(){ setMode(mode === 'erase' ? 'off' : 'erase'); });
+  if (clr) clr.addEventListener('click', function(){
+    if (strokes.length && !confirm('清空本页全部笔迹？')) return;
+    strokes = []; hasEra = false; cur = null; drawing = false;
+    try{ localStorage.removeItem(INK_KEY); }catch(e){}
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.clearRect(0, 0, VW, VH);
+  });
+
+  var wds = document.querySelectorAll('#markBar .wd');
+  Array.prototype.forEach.call(wds, function(b){
+    b.addEventListener('click', function(){
+      baseW = parseFloat(b.dataset.w);
+      Array.prototype.forEach.call(wds, function(x){ x.classList.remove('on'); });
+      b.classList.add('on');
+      if (mode === 'erase') setMode('draw');
+    });
+  });
+  var sws = document.querySelectorAll('#markBar .sw');
+  Array.prototype.forEach.call(sws, function(b){
+    b.addEventListener('click', function(){
+      color = b.dataset.c;
+      Array.prototype.forEach.call(sws, function(x){ x.classList.remove('on'); });
+      b.classList.add('on');
+      if (mode === 'erase') setMode('draw');
+    });
+  });
+  var wdM = document.querySelector('#markBar .wd[data-w="3"]');
+  var swK = document.querySelector('#markBar .sw[data-c="#1b1e23"]');
+  if (wdM) wdM.classList.add('on');
+  if (swK) swK.classList.add('on');
+
+
+  function pressure(e){ return (e.pointerType === 'pen' && typeof e.pressure === 'number' && e.pressure > 0) ? e.pressure : 0.5; }
+  function widthOf(e, era){
+    if (era || mode === 'erase') return Math.max(14, baseW * 5);
+    return Math.max(1.1, baseW * (0.4 + pressure(e)));   /* 下限提高，避免过快显得断断续续 */
+  }
+
+  /* ── 笔事件诊断（默认关闭）：确认设备实际发出的事件 ── */
+  var diagOn = false, diagLines = [], diagLast = 0;
+  function diagBox(){
+    var el = document.getElementById('penDiag');
+    if (!el){ el = document.createElement('div'); el.id = 'penDiag'; document.body.appendChild(el); }
+    return el;
+  }
+  function diag(e, phase, force){
+    if (!diagOn) return;
+    if (!force && phase === 'move' && performance.now() - diagLast < 140) return;
+    diagLast = performance.now();
+    var line = phase + ' ' + (e.pointerType || '?') +
+               ' b=' + (e.button === undefined ? '-' : e.button) +
+               ' bt=' + (e.buttons === undefined ? '-' : (e.buttons | 0)) +
+               ' p=' + (typeof e.pressure === 'number' ? e.pressure.toFixed(2) : '-') +
+               (e.isPrimary === false ? ' 2nd' : '');
+    var el = diagBox();
+    el.classList.add('on');
+    diagLines.push(line);
+    if (diagLines.length > 9) diagLines.shift();
+    el.textContent = diagLines.join('\n');
+  }
+
+  /* ── 双击笔尖 → 切换橡皮 / 画笔 ── */
+  function toast(msg){
+    var el = document.getElementById('penToast');
+    if (!el){ el = document.createElement('div'); el.id = 'penToast'; document.body.appendChild(el); }
+    el.textContent = msg; el.classList.add('on');
+    clearTimeout(el._t);
+    el._t = setTimeout(function(){ el.classList.remove('on'); }, 1100);
+  }
+  function flashEra(){
+    var b = document.getElementById('mkErase'); if (!b) return;
+    b.classList.add('on');
+    clearTimeout(b._t);
+    b._t = setTimeout(function(){ if (mode !== 'erase') b.classList.remove('on'); }, 180);
+  }
+  function dropTapDots(n){
+    for (var k = 0; k < n; k++){
+      var s = strokes[strokes.length - 1];
+      if (!s) break;
+      var p = s.pts, x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+      for (var i = 0; i < p.length; i++){
+        if (p[i][0] < x0) x0 = p[i][0];
+        if (p[i][0] > x1) x1 = p[i][0];
+        if (p[i][1] < y0) y0 = p[i][1];
+        if (p[i][1] > y1) y1 = p[i][1];
+      }
+      /* 位移极小 = 双击留下的无效字迹（正常书写绝不会这么短） */
+      if ((x1 - x0) < 26 && (y1 - y0) < 26) strokes.pop(); else break;
+    }
+    hasEra = false;
+    for (var j = 0; j < strokes.length; j++) if (strokes[j].era){ hasEra = true; break; }
+  }
+  /* 双击检测走独立手势（见文件末尾的 penTapDown/Move/Up），这里保持空实现 */
+  function checkPenTap(){}
+
+  /* ── 独立手势：笔尖双击 → 切换橡皮（不依赖是否开启涂写） ── */
+  var penTapRec = null;
+  function penTapDown(e){
+    if (e.pointerType !== 'pen') return;
+    diag(e, 'down', true);           /* 诊断：未开涂写时也能看到事件 */
+    penTapRec = { t: performance.now(), x: e.pageX, y: e.pageY, moved: false };
+  }
+  function penTapMove(e){
+    if (e.pointerType !== 'pen' || !penTapRec) return;
+    if (Math.abs(e.pageX - penTapRec.x) > 26 || Math.abs(e.pageY - penTapRec.y) > 26) penTapRec.moved = true;
+  }
+  function penTapUp(e){
+    if (e.pointerType !== 'pen' || !penTapRec) return;
+    diag(e, 'up', true);
+    var was = penTapRec; penTapRec = null;
+    var now = performance.now();
+    var tap = !was.moved;
+    var fast = lastPenTap.t && (now - lastPenTap.t) < 900;
+    var near = Math.abs(was.x - lastPenTap.x) < 90 && Math.abs(was.y - lastPenTap.y) < 90;
+    if (tap && fast && near){
+      lastPenTap = { t:0, x:0, y:0 };
+      dropTapDots(2);
+      if (mode === 'erase'){ setMode('draw'); toast('🖊 双击笔尖 → 已切回画笔'); }
+      else { setMode('erase'); toast('✍️ 双击笔尖 → 已切到橡皮'); }
+      schedule(true);
+    } else {
+      lastPenTap = { t: now, x: was.x, y: was.y };
+    }
+  }
+  /* 双击笔尖切换橡皮：按用户要求已停用（误触率太高） */
+
+  var EXCLUDE = 'input,textarea,select,#markBar,#foot,#bar,#prep';
+  function hitUI(t, x, y){
+    if (t && t.closest && t.closest(EXCLUDE)) return true;
+    var bar = document.getElementById('markBar');
+    if (bar){ var r = bar.getBoundingClientRect();
+      if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) return true; }
+    return false;
+  }
+
+  /* ── 手指滚动：涂写模式下浏览器手势已禁用，这里手动接管（含惯性） ── */
+  function scrollHost(el){
+    while (el && el.nodeType === 1 && el !== document.documentElement){
+      var st = getComputedStyle(el);
+      if ((st.overflowY === 'auto' || st.overflowY === 'scroll') && el.scrollHeight > el.clientHeight + 2) return el;
+      el = el.parentElement;
+    }
+    return null;
+  }
+  var TF = { id:null, y:0, host:null, base:0, hist:[], locked:false };
+  function tfBegin(e){
+    if (mode === 'off' || e.pointerType !== 'touch' || TF.id !== null) return;
+    diag(e, 'down', true);
+    if (e.isPrimary === false) return;
+    if (hitUI(e.target, e.clientX, e.clientY)) return;
+    if (e.target && e.target.closest && e.target.closest('input,textarea,select')) return;
+    TF.id = e.pointerId; TF.y = e.clientY; TF.locked = false;
+    TF.host = scrollHost(e.target);
+    TF.base = TF.host ? TF.host.scrollTop : (window.pageYOffset || 0);
+    TF.hist = [[e.clientY, performance.now()]];
+  }
+  function tfMove(e){
+    if (TF.id === null || e.pointerId !== TF.id) return;
+    var dy = TF.y - e.clientY;
+    if (!TF.locked){
+      if (Math.abs(dy) < 5) return;      /* 轻点不拦，保证选项可点选 */
+      TF.locked = true;
+    }
+    e.preventDefault();
+    var v = TF.base + dy;
+    if (TF.host) TF.host.scrollTop = v; else window.scrollTo(window.pageXOffset || 0, v);
+    TF.hist.push([e.clientY, performance.now()]);
+    if (TF.hist.length > 5) TF.hist.shift();
+    schedule(true);
+  }
+  function tfEnd(e){
+    if (TF.id === null || e.pointerId !== TF.id) return;
+    var host = TF.host, hist = TF.hist, locked = TF.locked;
+    TF.id = null; TF.host = null;
+    if (!locked || hist.length < 2) return;
+    var a = hist[0], b = hist[hist.length - 1];
+    var dt = b[1] - a[1];
+    if (dt < 8) return;
+    var vel = (a[0] - b[0]) / dt;                       /* px/ms，向上滑为正 */
+    if (Math.abs(vel) < 0.12) return;
+    var last = performance.now();
+    (function step(){
+      var now = performance.now(), d = now - last; last = now;
+      if (d > 64) return;
+      vel *= Math.pow(0.9955, d);
+      if (Math.abs(vel) < 0.03) return;
+      var delta = vel * d, moved = true;
+      if (host){
+        var b0 = host.scrollTop;
+        host.scrollTop = b0 + delta;
+        if (host.scrollTop === b0) moved = false;
+      } else {
+        var y0 = window.pageYOffset || 0;
+        window.scrollTo(window.pageXOffset || 0, y0 + delta);
+      }
+      schedule(true);
+      if (moved) requestAnimationFrame(step);
+    })();
+  }
+  document.addEventListener('pointerdown', tfBegin, {capture:true, passive:true});
+  document.addEventListener('pointermove', tfMove, {capture:true, passive:false});
+  document.addEventListener('pointerup', tfEnd, {capture:true, passive:true});
+  document.addEventListener('pointercancel', tfEnd, {capture:true, passive:true});
+  window.addEventListener('blur', function(){ TF.id = null; TF.host = null; });
+
+  document.addEventListener('pointerdown', function(e){
+    if (mode === 'off') return;
+    if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
+    if (hitUI(e.target, e.clientX, e.clientY)) return;
+    diag(e, 'down', true);
+    TF.id = null; TF.host = null;          /* 笔落下：立即终止手指滚动接管 */
+    drawing = true;
+    /* 笔上的橡皮按钮（规范：button=5 / buttons=32）→ 本次直接用橡皮，不改变当前工具 */
+    var eraBtn = (e.button === 5) || ((e.buttons & 32) === 32);
+    var useEra = (mode === 'erase') || eraBtn;
+    if (eraBtn && mode !== 'erase') flashEra();
+    var x = e.pageX, y = e.pageY, w = widthOf(e, useEra);
+    var o = ownerOf(x, y);
+    var he0 = document.elementFromPoint(e.clientX, e.clientY);
+    var host0 = o.c || (he0 && he0.closest ? (he0.closest('.panel') || he0.closest('.card')) : null);
+    cur = { pts:[[x, y, w]], color:color, era:useEra,
+            c:o.c, c0:o.c0, host:host0, n:1, mid:[0, 0], bb:null,
+            anch: anchorOf(e.clientX, e.clientY) };
+    if (cur.era) hasEra = true;
+    strokes.push(cur);
+    var bx = -OX, by = offOf(cur) - OY + shiftOf(cur, null);
+    ctx.save();
+    clipC(cur.c);
+    if (!cur.era){
+      ctx.fillStyle = color;
+      ctx.beginPath(); ctx.arc(x+bx, y+by, Math.max(.6, w/2), 0, 6.2832); ctx.fill();
+    }
+    ctx.restore();
+    cur.mid = [x+bx, y+by];
+    e.preventDefault();
+  }, {capture:true, passive:false});
+
+  document.addEventListener('pointermove', function(e){
+    if (!drawing || !cur) return;
+    if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
+    diag(e, 'move', false);
+    var evs = (typeof e.getCoalescedEvents === 'function') ? e.getCoalescedEvents() : null;
+    if (evs && evs.length){ for (var i = 0; i < evs.length; i++){ var p = evs[i]; cur.pts.push([p.pageX, p.pageY, widthOf(p, cur.era)]); } }
+    else cur.pts.push([e.pageX, e.pageY, widthOf(e, cur.era)]);
+    schedule(false);
+    e.preventDefault();
+  }, {capture:true, passive:false});
+
+  ['pointerup','pointercancel'].forEach(function(ev){
+    document.addEventListener(ev, function(e){
+      if (e.pointerType !== 'pen' && e.pointerType !== 'mouse') return;
+      if (!drawing){ return; }
+      diag(e, 'up', true);
+      if (rafId && (needLive || needFull)){ cancelAnimationFrame(rafId); rafId = 0; }
+      if (needLive) live();
+      needLive = false; needFull = false;
+      var done = cur;
+      if (done) done.bb = bboxOf(done);
+      inkQueue();                        /* 收笔即落盘（合并 250ms），刷新不丢 */
+      drawing = false; cur = null;
+      pendFull = false;
+      checkPenTap(done);                /* 双击笔尖 → 切换橡皮 */
+      schedule(true);                    /* 收笔后统一重绘一次，保证最终形态完整 */
+    }, {capture:true});
+  });
+
+  /* 重做本套时由作答脚本调用：清内存 + 清存储，避免 pagehide 又把笔迹写回去 */
+  window.__inkReset = function(){
+    strokes = []; hasEra = false; cur = null; drawing = false;
+    try{ localStorage.removeItem(INK_KEY); }catch(e){}
+    try{ ctx.setTransform(DPR, 0, 0, DPR, 0, 0); ctx.clearRect(0, 0, VW, VH); }catch(e){}
+  };
+  inkLoad();                             /* 页面打开即还原当天笔迹 */
+  schedule(true);
+  window.addEventListener('pagehide', inkFlush);
+  document.addEventListener('visibilitychange', function(){
+    if (document.visibilityState === 'hidden') inkFlush();
+  });
+})();
+
+</script>
+<script>
+
+(function(){
+  var bar = document.getElementById('markBar');
+  if (!bar || bar.dataset.v2) return;
+  bar.dataset.v2 = '1';
+  var fab = document.getElementById('mkFab'), grip = bar.querySelector('.grip');
+  var KEY = 'cet4pen2:' + (location.pathname.split('/').pop() || 'x');
+
+  function place(l, t){ bar.style.left=l+'px'; bar.style.top=t+'px';
+    bar.style.right='auto'; bar.style.bottom='auto'; }
+  function clamp(l, t){
+    var w = bar.offsetWidth, h = bar.offsetHeight;
+    l = Math.max(6, Math.min(l, window.innerWidth - w - 6));
+    t = Math.max(6, Math.min(t, window.innerHeight - h - 6));
+    place(l, t);
+  }
+  function save(){
+    var r = bar.getBoundingClientRect();
+    try{ localStorage.setItem(KEY, JSON.stringify({l:Math.round(r.left), t:Math.round(r.top),
+      o:bar.classList.contains('open')})); }catch(e){}
+  }
+  var st = null;
+  try{ st = JSON.parse(localStorage.getItem(KEY) || 'null'); }catch(e){}
+  if (st && st.o) bar.classList.add('open');
+  if (st && st.l != null){ place(st.l, st.t); clamp(st.l, st.t); }
+  /* 第一次打开：贴左下边，躲开分段按钮和底部步骤条；拖过一次就按记忆位置 */
+  else { bar.style.right='6px'; bar.style.left='auto';
+         /* 比精听页高 26px：本页底部有固定交卷条（约 99px），88px 会压住它 */
+         bar.style.bottom='calc(112px + env(safe-area-inset-bottom))'; bar.style.top='auto'; }
+
+  function setOpen(o){
+    bar.classList.toggle('open', o);
+    save();
+    setTimeout(function(){ var r = bar.getBoundingClientRect(); clamp(r.left, r.top); }, 300);
+  }
+  var cls = document.getElementById('mkMini');
+  if (cls) cls.addEventListener('click', function(e){ e.stopPropagation(); setOpen(false); });
+
+  function drag(handle, tap){
+    var down = false, moved = false, ox = 0, oy = 0, sx = 0, sy = 0;
+    handle.addEventListener('pointerdown', function(e){
+      if (e.target && e.target.closest && e.target.closest('.cls')) return;
+      down = true; moved = false; sx = e.clientX; sy = e.clientY;
+      var r = bar.getBoundingClientRect(); ox = e.clientX - r.left; oy = e.clientY - r.top;
+      try{ handle.setPointerCapture(e.pointerId); }catch(_){}
+      e.preventDefault();
+    });
+    handle.addEventListener('pointermove', function(e){
+      if (!down) return;
+      if (!moved && (Math.abs(e.clientX - sx) + Math.abs(e.clientY - sy)) > 6) moved = true;
+      if (moved) clamp(e.clientX - ox, e.clientY - oy);
+      e.preventDefault();
+    });
+    function end(){
+      if (!down) return;
+      down = false;
+      if (moved) save();
+      else if (tap) tap();
+    }
+    handle.addEventListener('pointerup', end);
+    handle.addEventListener('pointercancel', function(){ down = false; });
+  }
+  if (fab) drag(fab, function(){ setOpen(true); });
+  if (grip) drag(grip);
+  window.addEventListener('resize', function(){
+    var r = bar.getBoundingClientRect(); clamp(r.left, r.top); });
+})();
+
 </script>
 </body>
 </html>

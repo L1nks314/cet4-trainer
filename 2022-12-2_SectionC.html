@@ -1223,7 +1223,10 @@ var QUIZ = [{"id": "q16", "stem": "16. What do we learn about Steve Miller?", "z
 
   var pen = document.getElementById('mkPen'), era = document.getElementById('mkErase'),
       clr = document.getElementById('mkClear');
-  var mode = 'off', color = '#1b1e23', baseW = 3, drawing = false;
+  var mode = 'off',
+      /* 默认笔色跟随主题：深墨在暗底上等于看不见 */
+      color = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? '#e6e9ef' : '#1b1e23',
+      baseW = 3, drawing = false;
 
   function setMode(m){
     mode = m;

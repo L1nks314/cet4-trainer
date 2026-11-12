@@ -931,7 +931,10 @@ header.ph>p b,header.ph>p strong{color:rgba(255,255,255,.95);font-weight:600;}
 
   var pen = document.getElementById('mkPen'), era = document.getElementById('mkErase'),
       clr = document.getElementById('mkClear');
-  var mode = 'off', color = '#1b1e23', baseW = 3, drawing = false;
+  var mode = 'off',
+      /* 默认笔色跟随主题：深墨在暗底上等于看不见 */
+      color = (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? '#e6e9ef' : '#1b1e23',
+      baseW = 3, drawing = false;
 
   function setMode(m){
     mode = m;
