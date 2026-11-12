@@ -115,11 +115,13 @@ body.zh .qsz{display:block}
 .vdf{font-size:12px;padding:2px 9px;border-radius:20px;font-weight:600}
 .vd.ok .vdf{background:var(--green);color:#fff}
 .vd.bad .vdf{background:var(--line);color:var(--sub)}
-.pairs{display:flex;flex-direction:column;gap:4px;margin:7px 0}
-.pair{display:flex;gap:8px;align-items:baseline;font-size:13px;flex-wrap:wrap}
-.po{color:var(--green);font-weight:600}
-.pa{color:var(--sub)}
-.pp{color:var(--blue);font-weight:600}
+.pairs{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.pair{display:block;font-size:12.5px;line-height:1.62}
+.po{display:block;background:var(--grey);border-radius:5px;padding:3px 7px;color:var(--txt2)}
+.pa{display:none}
+.pp{display:block;margin-top:4px;padding:3px 7px 3px 21px;position:relative;
+  background:var(--green-soft);border-radius:5px;color:var(--green);font-weight:600}
+.pp::before{content:'→';position:absolute;left:8px;top:3px;line-height:1.62;color:var(--sub);font-weight:400}
 .vdn{margin:7px 0 0;font-size:13.5px;color:var(--txt3);line-height:1.72}
 table{width:100%;border-collapse:collapse;font-size:13.5px}
 th,td{padding:8px 7px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
@@ -396,6 +398,7 @@ document.querySelectorAll('.submit').forEach(function(btn){
     var sc = document.getElementById('sc-' + sec);
     sc.textContent = '得分 ' + right + '/' + total + '  ·  正确率 ' + Math.round(right/total*100) + '%';
     sc.style.color = right/total >= 0.6 ? 'var(--green)' : 'var(--red)';
+    if (window.__readAnaAttach) window.__readAnaAttach(box);
 
     // 生成回执
     var wrongList = [];
@@ -1799,5 +1802,160 @@ header.ph>p b,header.ph>p strong{color:rgba(255,255,255,.95);font-weight:600;}
 </script>
 <!-- __ANS_SNAP_END__ -->
 <script src="goal.js?v=2"></script>
+
+<!-- READ_ANA_V1_START -->
+<style>
+/* READ_ANA_V1 阅读解析联动 */
+.rmark{font-size:12px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap}
+.rmark.ok{background:var(--green-soft);color:var(--green)}
+.rmark.bad{background:var(--red-soft);color:var(--red)}
+.anainline{margin:-4px 0 14px}
+.anainline .ana{margin:0}
+.anainline .ac{font-size:0}
+.anainline .ac::before{content:'展开解析';font-size:12.5px}
+.anainline.ana[open] .ac::before{content:'收起'}
+.amethod{margin:0 0 11px;border:1px dashed var(--line);border-radius:9px;padding:0 10px 2px}
+.amethod>summary{padding:8px 0;font-size:12.5px;line-height:1.5;color:var(--sub);cursor:pointer;list-style:none}
+.amethod>summary::-webkit-details-marker{display:none}
+.amethod>summary::before{content:'▸  ';color:var(--sub2)}
+.amethod[open]>summary::before{content:'▾  '}
+.amethod .arow{margin:0 0 10px}
+.anasect-hint{margin:0 0 10px;padding:8px 10px;font-size:12.5px;line-height:1.6;
+  color:var(--blue);background:var(--blue-soft);border-radius:9px}
+::highlight(cet4loc){background:#ffe58a;color:#3a2b00}
+@media (prefers-color-scheme:dark){::highlight(cet4loc){background:#b8860b;color:#fff}}
+</style>
+<script>
+/* READ_ANA_V1：判分后把解析搬到题下；点定位在原文里高亮那一句 */
+(function(){
+  var HL = 'cet4loc';
+
+  // 在段落里把指定英文短句高亮（CSS Custom Highlight，不改 DOM，不影响画笔/复制）
+  function markSentence(para, sent){
+    if (!window.CSS || !CSS.highlights || !sent) return;
+    var p = para.querySelector('p.en') || para;
+    if (!p) return;
+    var walker = document.createTreeWalker(p, NodeFilter.SHOW_TEXT, null);
+    var nodes = [], full = '', n;
+    while ((n = walker.nextNode())){ nodes.push({n:n, s:full.length}); full += n.nodeValue; }
+    var key = sent.slice(0, 26).replace(/\s+/g,' ');
+    var idx = full.indexOf(key);
+    if (idx < 0){
+      // 退一步：用最长的一段词去匹配
+      var words = key.split(' ');
+      for (var w = 0; w < 3 && idx < 0; w++){
+        key = words.slice(w, w + 4).join(' ');
+        if (key.length > 12) idx = full.indexOf(key);
+      }
+    }
+    if (idx < 0){ try{ CSS.highlights.delete(HL); }catch(e){} return; }
+    var end = Math.min(idx + sent.length, full.length);
+    function at(pos){
+      for (var k = 0; k < nodes.length; k++){
+        var o = nodes[k];
+        if (pos <= o.s + o.n.nodeValue.length) return {node:o.n, off:pos - o.s};
+      }
+      var last = nodes[nodes.length-1];
+      return {node:last.n, off:last.n.nodeValue.length};
+    }
+    try{
+      var a = at(idx), b = at(end);
+      var r = document.createRange();
+      r.setStart(a.node, Math.max(0, a.off));
+      r.setEnd(b.node, Math.max(0, b.off));
+      CSS.highlights.set(HL, new Highlight(r));
+    }catch(e){}
+  }
+
+  // 取某题解析里的定位句
+  function locOf(qnum){
+    var d = document.querySelector('.panel[id$="-ana"] details.ana[data-q="' + qnum + '"]');
+    if (!d) return null;
+    var len = d.querySelector('.len');
+    return len ? len.textContent.trim() : null;
+  }
+
+  window.__readAnaAttach = function(box){
+    var panel = box.querySelector('.panel[id$="-ana"]');
+    if (!panel) return;
+    // 清掉上一次的（重做后再交卷）
+    Array.prototype.slice.call(document.querySelectorAll('.anainline')).forEach(function(x){
+      if (x.parentNode) x.parentNode.removeChild(x);
+    });
+
+    var wrong = 0, total = 0;
+    box.querySelectorAll('.q').forEach(function(qd){
+      var q = qd.dataset.q;
+      var src = panel.querySelector('details.ana[data-q="' + q + '"]');
+      if (!src) return;
+      total++;
+      var hit = qd.querySelector('.opt.right[data-pick="1"]');   // 正确项且是自己选的
+      var miss = qd.querySelector('.opt.wrong');                  // 自己选错的那项
+      var right = !!hit;
+      var myKey = miss ? miss.dataset.k : (hit ? hit.dataset.k : '');
+      var d = src.cloneNode(true);
+      d.classList.add('anainline');
+      d.removeAttribute('open');
+      d.setAttribute('data-q', q);
+      if (!right){ d.setAttribute('open',''); wrong++; }
+
+      // 纠错优先：判型/拆句是方法论，折起来，让定位和错因一屏可见
+      var mrows = [];
+      Array.prototype.slice.call(d.querySelectorAll('.abody > .arow')).forEach(function(r){
+        var tg = r.querySelector('.atag');
+        if (tg && (tg.textContent.trim() === '判型' || tg.textContent.trim() === '拆句')) mrows.push(r);
+      });
+      if (mrows.length){
+        var mb = document.createElement('details');
+        mb.className = 'amethod';
+        var ms = document.createElement('summary');
+        ms.textContent = '这题怎么判、怎么拆（方法论）';
+        mb.appendChild(ms);
+        mrows[0].parentNode.insertBefore(mb, mrows[0]);
+        mrows.forEach(function(r){ mb.appendChild(r); });
+      }
+
+      var sum = d.querySelector('summary');
+      var tag = document.createElement('span');
+      tag.className = 'rmark ' + (right ? 'ok' : 'bad');
+      tag.textContent = right ? '✓ 选对' : ('✗ 你选 ' + (myKey || '空'));
+      var ac = sum.querySelector('.ac');
+      if (ac) sum.insertBefore(tag, ac); else sum.appendChild(tag);
+
+      qd.parentNode.insertBefore(d, qd.nextSibling);
+    });
+
+    // 解析 tab 顶部加一句：错题已经搬下去了
+    var hint = panel.querySelector('.anasect-hint');
+    if (!hint){
+      hint = document.createElement('p');
+      hint.className = 'anasect-hint';
+      panel.insertBefore(hint, panel.firstChild);
+    }
+    hint.textContent = '判分后，错题解析已直接显示在题目下方（' + wrong + ' 题错）。这里保留全量解析，方便按顺序回看。';
+
+    var sc = box.querySelector('.score');
+    if (sc && wrong){
+      var s = document.createElement('span');
+      s.className = 'score-jump';
+      s.textContent = ' ↓ 错题已展开解析';
+      sc.appendChild(s);
+    }
+  };
+
+  // 点「定位 P#」：跳段之后，再把那句高亮出来
+  document.querySelectorAll('.jump').forEach(function(b){
+    b.addEventListener('click', function(){
+      var qnum = b.dataset.qnum, go = b.dataset.go;
+      if (!qnum || !go) return;
+      var para = document.getElementById(go);
+      if (!para) return;
+      var sent = locOf(qnum);
+      if (sent) markSentence(para, sent);
+    });
+  });
+})();
+</script>
+<!-- READ_ANA_V1_END -->
 </body>
 </html>
