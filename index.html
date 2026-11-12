@@ -874,12 +874,17 @@ function renderTasks(){
         + '<div class="sm">' + x.m + '</div></div>';
     }).join('');
     var curS = (curI >= 0) ? setSteps[curI] : null;
-    var nowTxt = curS ? ('现在：第 ' + (curI + 1) + ' 步 · ' + curS.t + '　·　' + curS.m)
+    /* 套号信息 + 当前步骤分成两行。
+       合成一行时 375px 下会折成三段，每段以「·」开头，读起来像三个并列项；
+       时长也不写在这里——下面那行步骤右侧已经有一个 22′。 */
+    var nowTxt = curS ? ('现在：第 ' + (curI + 1) + ' 步 · ' + curS.t)
                       : '今天这套走完了';
 
     tHtml += '<div class="steps">'
       + '<div class="shd">'
-      +   '<div><b>今天 · 整套听力</b><div class="sdt">' + lessonTxt + '　·　' + nowTxt + '</div></div>'
+      +   '<div><b>今天 · 整套听力</b>'
+      +     '<div class="sdt">' + lessonTxt + '</div>'
+      +     '<div class="sdt" style="margin-top:1px">' + nowTxt + '</div></div>'
       +   '<div class="smin">' + (SHORT ? '约 27 分钟' : '约 37 分钟') + '</div>'
       + '</div>'
       + rows
