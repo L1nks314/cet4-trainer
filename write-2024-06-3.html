@@ -213,7 +213,52 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
   #cloudBar button{padding:10px 12px;font-size:12.5px}
   #cloudSt{max-width:180px;padding:7px 10px;font-size:11.5px}
 }
+
+  /* VIS_V1_START ═══ 视觉改版 v1（2026-11-12）：与首页、精听页、整套页同一套取值 ═══
+     只覆盖变量、卡片外观、和暗色下失效的实心按钮；不动结构、不改内边距。要回退删掉本块。 */
+  :root{
+    --bg:#f6f6f4; --soft:#fafaf9; --grey:#f1f1ef;
+    --line:#e8e8e5; --line2:#f1f1ee; --track:#e9e9e6;
+    --txt:#16161a; --txt2:#242429; --txt3:#3c3c44; --sub:#6d6d76; --sub2:#7b8491;
+    --blue:#3355d1; --blue-soft:#eef1fd;
+    --green:#0b6b41; --green-soft:#e9f6ee;
+    --red:#b8332a; --red-soft:#fceeec;
+    --amber:#9a5109; --amber-soft:#fdf5e7; --amber-line:#eedeba; --green-line:#bfe3cf;
+    --shadow:0 1px 2px rgba(22,22,26,.04);
+    --shadow-lg:0 20px 44px -24px rgba(22,22,26,.28);
+  }
+  body{font-family:"MiSans VF",-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;}
+  .card{border:0;border-radius:18px;
+    box-shadow:0 1px 2px rgba(22,22,26,.04),0 14px 34px -26px rgba(22,22,26,.35);}
+  /* 解析块原来写死 #fff，暗色下会变成一块白板 */
+  .ana{background:var(--card);}
+  @media (prefers-color-scheme: dark){
+    :root{--bg:#0f1115;--card:#171a1f;--soft:#1d2026;--grey:#20242a;
+      --line:#282d35;--line2:#22262d;--track:#272c34;
+      --txt:#e8eaee;--txt2:#d5d8dd;--txt3:#bfc4cb;--sub:#98a0aa;--sub2:#98a0aa;
+      --blue:#7a97ff;--blue-soft:#1a2340;--green:#43cf92;--green-soft:#122e1f;
+      --red:#ef7a6b;--red-soft:#341d19;--amber:#e0a53f;--amber-soft:#302612;
+      --amber-line:#463619;--shadow:none;--shadow-lg:none;}
+    .card{border:1px solid rgba(255,255,255,.055);box-shadow:none;}
+    /* 亮蓝底配白字只有 2.7:1，改深底保留白字（与 section.css 同一处理） */
+    .tab.on,.tbtn2.on,.pno,.submit,.lbl,.prompt .lbl,.wbtn.primary,#cloudPhoto,.qno,
+    a.go,.go,.lnk,.btnp,.btn-primary,.btn-copy{
+      background:#2f4f9e;border-color:#2f4f9e;color:#fff;}
+    /* 圆形序号用 --txt 当底色，暗色下变成白底白字 */
+    h2 .num,.num{background:#2f4f9e;color:#fff;}
+    /* 这几类按钮写死了 #fff，暗色下是白底浅灰字 */
+    .sbtn,.tbtn,.pbtn,.opt,.cchip,.btn-ghost{
+      background:var(--soft);border-color:var(--line);color:var(--txt2);}
+    /* .tip 写死了深蓝字，暗色下压在深蓝底上只剩 1.4:1 */
+    .tip{color:#b9cdf5;}
+    /* 连读标注的亮黄底在暗色页面里是一块刺眼的高光，压成暗琥珀 */
+    body.mk .w.mk{background:#4a3f16;color:#ffe89a;}
+    /* 提示卡里的琥珀色粗体在暗色下只剩 2.5:1 */
+    .tip b{color:#e8b665;}
+  }
+  /* VIS_V1_END */
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/misans@5.0.0/lib/Normal/MiSansVF.min.css" crossorigin="anonymous">
 </head>
 <body>
 

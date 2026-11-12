@@ -39,14 +39,14 @@
   .hint{font-size:13px;color:var(--sub);margin:0 0 13px;}
   /* ---------- 播放器 ---------- */
   .speedbar{display:flex;gap:7px;margin-bottom:11px;flex-wrap:wrap;}
-  .sbtn{flex:1;min-width:96px;border:1.5px solid var(--line);background:#fff;border-radius:9px;
+  .sbtn{flex:1;min-width:96px;border:1.5px solid var(--line);background:var(--card);border-radius:9px;
     padding:9px 6px;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;color:var(--sub);
     transition:.15s;line-height:1.4;}
   .sbtn b{display:block;font-size:13px;color:var(--txt);}
   .sbtn.on{border-color:var(--blue);background:var(--blue-soft);color:var(--blue);}
   .sbtn.on b{color:var(--blue);}
   .transport{display:flex;gap:7px;margin:11px 0;flex-wrap:wrap;}
-  .tbtn{flex:1 1 0;min-width:82px;border:1.5px solid var(--line);background:#fff;border-radius:9px;
+  .tbtn{flex:1 1 0;min-width:82px;border:1.5px solid var(--line);background:var(--card);border-radius:9px;
     padding:10px 5px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;color:var(--txt);
     transition:.15s;line-height:1.3;}
   .tbtn:hover{border-color:var(--blue);color:var(--blue);}
@@ -59,7 +59,7 @@
   .line:last-child{border-bottom:none;}
   .line.on{background:var(--blue-soft);}
   .line .lh{display:flex;align-items:center;gap:7px;margin-bottom:4px;}
-  .pbtn{border:1px solid var(--line);background:#fff;border-radius:7px;padding:2px 9px;
+  .pbtn{border:1px solid var(--line);background:var(--card);border-radius:7px;padding:2px 9px;
     font-size:12px;cursor:pointer;font-family:inherit;color:var(--sub);line-height:1.7;}
   .pbtn:hover{border-color:var(--blue);color:var(--blue);}
   .pbtn.on{background:var(--green-soft);border-color:var(--green);color:var(--green);}
@@ -70,7 +70,8 @@
   .w.cur{background:#ffd84d;box-shadow:0 0 0 2px #ffd84d;}
   body.mk .w.mk{background:#fff2a8;}
   body.mk .w.cur.mk{background:#ffd84d;}
-  .note{font-size:12.5px;color:var(--purple);margin-top:3px;font-family:ui-monospace,Menlo,monospace;}
+  .note{font-size:12.5px;color:var(--blue);margin-top:3px;font-family:ui-monospace,Menlo,monospace;}
+  .mkleg{background:#fff2a8;padding:0 3px;border-radius:3px;}
   /* ---------- 题目 ---------- */
   .q{padding:14px 0;border-bottom:1px dashed var(--line);}
   .q:last-of-type{border-bottom:none;}
@@ -78,7 +79,7 @@
   .zh{color:var(--sub);font-size:13px;font-weight:400;display:block;margin-top:3px;}
   .opt{display:flex;align-items:flex-start;gap:9px;width:100%;text-align:left;cursor:pointer;
     padding:9px 13px;border:1.5px solid var(--line);border-radius:9px;margin-bottom:7px;
-    font-size:14.5px;background:#fff;font-family:inherit;color:inherit;line-height:1.6;transition:.13s;}
+    font-size:14.5px;background:var(--card);font-family:inherit;color:inherit;line-height:1.6;transition:.13s;}
   .opt .k{font-weight:700;color:var(--sub);flex:0 0 auto;}
   .opt:hover{border-color:#b9c6d8;background:#fafbfd;}
   .opt.sel{border-color:var(--blue);background:var(--blue-soft);}
@@ -90,7 +91,7 @@
   .cause{margin:9px 0 0;padding:11px 13px;background:var(--amber-soft);border-radius:9px;font-size:13px;}
   .cause .ct{font-weight:700;color:var(--amber-ink);margin-bottom:7px;}
   .cchips{display:flex;flex-wrap:wrap;gap:6px;}
-  .cchip{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid #e3d5a8;
+  .cchip{display:inline-flex;align-items:center;gap:5px;background:var(--card);border:1px solid #e3d5a8;
     border-radius:16px;padding:3px 11px;cursor:pointer;font-size:12.5px;color:var(--amber-ink);}
   .cchip input{width:14px;height:14px;accent-color:#e0a800;cursor:pointer;}
   /* ---------- 通用控件 ---------- */
@@ -99,7 +100,7 @@
   .btn-primary{background:var(--txt);color:#fff;}
   .btn-primary:disabled{background:#c3c8cf;cursor:not-allowed;}
   .btn-copy{background:var(--green);color:#fff;margin-top:10px;}
-  .btn-ghost{background:#fff;color:var(--sub);border:1.5px solid var(--line);font-size:14px;font-weight:600;margin-top:12px;}
+  .btn-ghost{background:var(--card);color:var(--sub);border:1.5px solid var(--line);font-size:14px;font-weight:600;margin-top:12px;}
   .progress{font-size:13px;color:var(--sub);text-align:center;margin-top:10px;}
   textarea{width:100%;min-height:175px;font-family:ui-monospace,Menlo,Consolas,monospace;
     font-size:12.5px;line-height:1.7;border:1.5px solid var(--line);border-radius:9px;padding:12px;
@@ -111,8 +112,8 @@
   .fld input[type=text]{flex:1;min-width:180px;}
   table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px;}
   th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
-  th{background:#f1f3f5;font-weight:600;font-size:13px;}
-  td code{background:#f1f3f5;padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,Menlo,monospace;}
+  th{background:var(--soft);font-weight:600;font-size:13px;}
+  td code{background:var(--soft);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:ui-monospace,Menlo,monospace;}
   .tip{border-radius:0 8px 8px 0;padding:11px 14px;font-size:13.5px;margin:12px 0 0;}
   .tip.amber{background:var(--amber-soft);border-left:3px solid #e0a800;color:var(--amber-ink);}
   .tip.green{background:var(--green-soft);border-left:3px solid var(--green);color:var(--green-ink);}
@@ -246,17 +247,17 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
  box-shadow:0 8px 28px rgba(15,20,30,.22)}
 #dictBar.on{display:flex}
 #dictBar .db-txt{font-size:12.5px;font-weight:700;color:var(--sub);white-space:nowrap;padding:0 2px;flex:1 0 100%;text-align:center}
-#dictBar button{border:1.5px solid var(--line);background:#fff;border-radius:10px;
+#dictBar button{border:1.5px solid var(--line);background:var(--card);border-radius:10px;
  padding:9px 10px;font-size:13.5px;font-weight:700;font-family:inherit;color:inherit;
  cursor:pointer;-webkit-tap-highlight-color:transparent;white-space:nowrap}
 #dictBar button.pri{background:var(--blue);border-color:var(--blue);color:#fff}
 #dictBar button.pri[disabled]{background:#c9d4e4;border-color:#c9d4e4;color:#fff;cursor:default}
 #dictBar #dbExit{padding:11px 11px;color:var(--sub);font-weight:600}
-#dictBar #dbRep{background:#fff;border-color:var(--amber);color:#8a6318}
-#dictBar #dbSpeed{background:#fff;border-color:var(--line);color:var(--sub)}
-#dictBar #dbSkip{background:#fff;border-color:var(--red);color:var(--red)}
+#dictBar #dbRep{background:var(--card);border-color:var(--amber);color:#8a6318}
+#dictBar #dbSpeed{background:var(--card);border-color:var(--line);color:var(--sub)}
+#dictBar #dbSkip{background:var(--card);border-color:var(--red);color:var(--red)}
 #dictBar #dbSkip.on{background:#fdecec;border-color:var(--red);color:#c0392b}
-#dictBar #dbPause{background:#fff;border-color:var(--amber);color:#8a6318;min-width:76px}
+#dictBar #dbPause{background:var(--card);border-color:var(--amber);color:#8a6318;min-width:76px}
 @media (max-width:560px){
   #dictBar{padding:7px 8px;gap:5px;border-radius:14px;bottom:10px}
   #dictBar button{padding:11px 9px;font-size:13px}
@@ -278,7 +279,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 .dprow .dpi::before{content:'▶ ';font-size:10px;opacity:.5}
 .dprow.cur .dpi{color:#a37d12}
 .dprow .dpeye{flex:0 0 auto;font-size:12.5px;font-weight:700;border:1.5px solid var(--line);
- border-radius:8px;padding:6px 9px;background:#fff;color:var(--sub);cursor:pointer;
+ border-radius:8px;padding:6px 9px;background:var(--card);color:var(--sub);cursor:pointer;
  -webkit-tap-highlight-color:transparent;white-space:nowrap;min-width:40px}
 .dprow .dpw{display:none;font-size:13px;color:var(--sub);line-height:1.55;flex:1;min-width:0}
 .dprow.open .dpw{display:block;flex-basis:100%}
@@ -286,15 +287,61 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 .dprow.skip .dpw{text-decoration:line-through;color:#9aa3ad}
 .dprow.unclear .dpw{text-decoration:line-through;color:#b08585}
 .dprow .dpx{flex:0 0 auto;font-size:12.5px;font-weight:700;border:1.5px solid var(--line);
- border-radius:8px;padding:6px 9px;background:#fff;color:var(--sub);cursor:pointer;
+ border-radius:8px;padding:6px 9px;background:var(--card);color:var(--sub);cursor:pointer;
  -webkit-tap-highlight-color:transparent;white-space:nowrap}
 .dprow .dpx.on{background:#fdecec;color:#c0392b;border-color:#f0c4c4}
+
+  /* VIS_V1_START ═══ 视觉改版 v1（2026-11-12）：与首页、精听页、整套页同一套取值 ═══
+     只覆盖变量、卡片外观、和暗色下失效的实心按钮；不动结构、不改内边距。要回退删掉本块。 */
+  :root{
+    --bg:#f6f6f4; --soft:#fafaf9; --grey:#f1f1ef;
+    --line:#e8e8e5; --line2:#f1f1ee; --track:#e9e9e6;
+    --txt:#16161a; --txt2:#242429; --txt3:#3c3c44; --sub:#6d6d76; --sub2:#7b8491;
+    --blue:#3355d1; --blue-soft:#eef1fd;
+    --green:#0b6b41; --green-soft:#e9f6ee;
+    --red:#b8332a; --red-soft:#fceeec;
+    --amber:#9a5109; --amber-soft:#fdf5e7; --amber-line:#eedeba; --green-line:#bfe3cf;
+    --shadow:0 1px 2px rgba(22,22,26,.04);
+    --shadow-lg:0 20px 44px -24px rgba(22,22,26,.28);
+  }
+  body{font-family:"MiSans VF",-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;}
+  .card{border:0;border-radius:18px;
+    box-shadow:0 1px 2px rgba(22,22,26,.04),0 14px 34px -26px rgba(22,22,26,.35);}
+  /* 解析块原来写死 #fff，暗色下会变成一块白板 */
+  .ana{background:var(--card);}
+  @media (prefers-color-scheme: dark){
+    :root{--bg:#0f1115;--card:#171a1f;--soft:#1d2026;--grey:#20242a;
+      --line:#282d35;--line2:#22262d;--track:#272c34;
+      --txt:#e8eaee;--txt2:#d5d8dd;--txt3:#bfc4cb;--sub:#98a0aa;--sub2:#98a0aa;
+      --blue:#7a97ff;--blue-soft:#1a2340;--green:#43cf92;--green-soft:#122e1f;
+      --red:#ef7a6b;--red-soft:#341d19;--amber:#e0a53f;--amber-soft:#302612;
+      --amber-line:#463619;--shadow:none;--shadow-lg:none;}
+    .card{border:1px solid rgba(255,255,255,.055);box-shadow:none;}
+    /* 亮蓝底配白字只有 2.7:1，改深底保留白字（与 section.css 同一处理） */
+    .tab.on,.tbtn2.on,.pno,.submit,.lbl,.prompt .lbl,.wbtn.primary,#cloudPhoto,.qno,
+    a.go,.go,.lnk,.btnp,.btn-primary,.btn-copy{
+      background:#2f4f9e;border-color:#2f4f9e;color:#fff;}
+    /* 圆形序号用 --txt 当底色，暗色下变成白底白字 */
+    h2 .num,.num{background:#2f4f9e;color:#fff;}
+    /* 这几类按钮写死了 #fff，暗色下是白底浅灰字 */
+    .sbtn,.tbtn,.pbtn,.opt,.cchip,.btn-ghost{
+      background:var(--soft);border-color:var(--line);color:var(--txt2);}
+    /* .tip 写死了深蓝字，暗色下压在深蓝底上只剩 1.4:1 */
+    .tip{color:#b9cdf5;}
+    /* 连读标注的亮黄底在暗色页面里是一块刺眼的高光，压成暗琥珀 */
+    body.mk .w.mk{background:#4a3f16;color:#ffe89a;}
+    /* 提示卡里的琥珀色粗体在暗色下只剩 2.5:1 */
+    .tip b{color:#e8b665;}
+    .mkleg{background:#4a3f16;color:#ffe89a;}
+  }
+  /* VIS_V1_END */
 </style>
 <noscript><style>
   .locked-sec{filter:none !important;opacity:1 !important;pointer-events:auto !important;user-select:auto !important;}
   #resultCard,#receiptCard{display:block !important;}
   #submitBtn{display:none !important;}
 </style></noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/misans@5.0.0/lib/Normal/MiSansVF.min.css" crossorigin="anonymous">
 </head>
 <body class="mk">
 <div class="wrap">
@@ -351,7 +398,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 
 <div class="card locked-sec" id="transCard">
   <h2><span class="num">4</span>原文点读</h2>
-  <p class="hint">点任意单词从该处播放，正在读的词会高亮。<span style="background:#fff2a8;padding:0 3px;">黄底</span>是连读/失爆发生处。</p>
+  <p class="hint">点任意单词从该处播放，正在读的词会高亮。<span class="mkleg">黄底</span>是连读/失爆发生处。</p>
   <div class="line" data-li="0"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">我们睡觉时，大脑做的事远不止为第二天做准备。</span></div><div class="en"><span class="w" data-li="0" data-wi="0">While</span> <span class="w" data-li="0" data-wi="1">we</span> <span class="w" data-li="0" data-wi="2">sleep,</span> <span class="w" data-li="0" data-wi="3">our</span> <span class="w" data-li="0" data-wi="4">brains</span> <span class="w" data-li="0" data-wi="5">are</span> <span class="w" data-li="0" data-wi="6">doing</span> <span class="w" data-li="0" data-wi="7">much</span> <span class="w" data-li="0" data-wi="8">more</span> <span class="w" data-li="0" data-wi="9">than</span> <span class="w mk" data-li="0" data-wi="10">getting</span> <span class="w mk" data-li="0" data-wi="11">ready</span> <span class="w mk" data-li="0" data-wi="12">for</span> <span class="w mk" data-li="0" data-wi="13">the</span> <span class="w" data-li="0" data-wi="14">next</span> <span class="w" data-li="0" data-wi="15">day.</span></div><div class="note">for the → /fə ðə/ 虚词弱读</div></div><div class="line" data-li="1"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">我们为什么需要睡眠？睡觉只是用来做梦的时间吗？</span></div><div class="en"><span class="w" data-li="1" data-wi="0">Why</span> <span class="w" data-li="1" data-wi="1">do</span> <span class="w" data-li="1" data-wi="2">we</span> <span class="w" data-li="1" data-wi="3">need</span> <span class="w" data-li="1" data-wi="4">sleep?</span> <span class="w" data-li="1" data-wi="5">Is</span> <span class="w" data-li="1" data-wi="6">bedtime</span> <span class="w" data-li="1" data-wi="7">just</span> <span class="w mk" data-li="1" data-wi="8">a</span> <span class="w mk" data-li="1" data-wi="9">time</span> <span class="w mk" data-li="1" data-wi="10">for</span> <span class="w" data-li="1" data-wi="11">dreaming?</span></div><div class="note">time for → /taɪm fə/</div></div><div class="line" data-li="2"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">到了夜里，我们的大脑会关机吗？</span></div><div class="en"><span class="w" data-li="2" data-wi="0">Do</span> <span class="w" data-li="2" data-wi="1">our</span> <span class="w" data-li="2" data-wi="2">brains</span> <span class="w mk" data-li="2" data-wi="3">turn</span> <span class="w mk" data-li="2" data-wi="4">off</span> <span class="w" data-li="2" data-wi="5">for</span> <span class="w" data-li="2" data-wi="6">the</span> <span class="w" data-li="2" data-wi="7">night?</span></div><div class="note">turn off → /tɜːnɒf/ 连读</div></div><div class="line" data-li="3"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">如果我告诉你，科学家最近发现大脑在夜间的忙碌程度不亚于白天，你会怎么想？</span></div><div class="en"><span class="w mk" data-li="3" data-wi="0">What</span> <span class="w mk" data-li="3" data-wi="1">if</span> <span class="w mk" data-li="3" data-wi="2">I</span> <span class="w" data-li="3" data-wi="3">told</span> <span class="w" data-li="3" data-wi="4">you</span> <span class="w" data-li="3" data-wi="5">that</span> <span class="w" data-li="3" data-wi="6">scientists</span> <span class="w" data-li="3" data-wi="7">recently</span> <span class="w" data-li="3" data-wi="8">discovered</span> <span class="w" data-li="3" data-wi="9">that</span> <span class="w" data-li="3" data-wi="10">our</span> <span class="w" data-li="3" data-wi="11">brains</span> <span class="w" data-li="3" data-wi="12">may</span> <span class="w" data-li="3" data-wi="13">be</span> <span class="w" data-li="3" data-wi="14">just</span> <span class="w mk" data-li="3" data-wi="15">as</span> <span class="w mk" data-li="3" data-wi="16">busy</span> <span class="w mk" data-li="3" data-wi="17">at</span> <span class="w" data-li="3" data-wi="18">night</span> <span class="w" data-li="3" data-wi="19">as</span> <span class="w" data-li="3" data-wi="20">they</span> <span class="w" data-li="3" data-wi="21">are</span> <span class="w" data-li="3" data-wi="22">during</span> <span class="w" data-li="3" data-wi="23">the</span> <span class="w" data-li="3" data-wi="24">day?</span></div><div class="note">What if I → /wɒtɪfaɪ/ ｜ busy at → /ˈbɪziət/</div></div><div class="line" data-li="4"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">罗切斯特大学的研究人员发现，大脑可能正忙着「打扫房间」，清除有害的废物。</span></div><div class="en"><span class="w" data-li="4" data-wi="0">Researchers</span> <span class="w" data-li="4" data-wi="1">at</span> <span class="w" data-li="4" data-wi="2">the</span> <span class="w" data-li="4" data-wi="3">University</span> <span class="w" data-li="4" data-wi="4">of</span> <span class="w" data-li="4" data-wi="5">Rochester</span> <span class="w" data-li="4" data-wi="6">found</span> <span class="w" data-li="4" data-wi="7">that</span> <span class="w" data-li="4" data-wi="8">the</span> <span class="w" data-li="4" data-wi="9">brain</span> <span class="w" data-li="4" data-wi="10">may</span> <span class="w" data-li="4" data-wi="11">be</span> <span class="w" data-li="4" data-wi="12">busy</span> <span class="w" data-li="4" data-wi="13">cleaning</span> <span class="w" data-li="4" data-wi="14">house,</span> <span class="w mk" data-li="4" data-wi="15">cleaning</span> <span class="w mk" data-li="4" data-wi="16">out</span> <span class="w" data-li="4" data-wi="17">harmful</span> <span class="w" data-li="4" data-wi="18">waste</span> <span class="w" data-li="4" data-wi="19">materials.</span></div><div class="note">cleaning out → /ˈkliːnɪŋaʊt/</div></div><div class="line" data-li="5"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">和许多研究一样，研究人员求助于小鼠。</span></div><div class="en"><span class="w mk" data-li="5" data-wi="0">As</span> <span class="w mk" data-li="5" data-wi="1">with</span> <span class="w" data-li="5" data-wi="2">many</span> <span class="w" data-li="5" data-wi="3">studies,</span> <span class="w" data-li="5" data-wi="4">the</span> <span class="w" data-li="5" data-wi="5">researchers</span> <span class="w mk" data-li="5" data-wi="6">turned</span> <span class="w mk" data-li="5" data-wi="7">to</span> <span class="w" data-li="5" data-wi="8">mice</span> <span class="w" data-li="5" data-wi="9">for</span> <span class="w" data-li="5" data-wi="10">help.</span></div><div class="note">As with → /əzwɪð/ ｜ turned to → /tɜːnd tə/</div></div><div class="line" data-li="6"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">他们研究的是被注入彩色染料的小鼠。</span></div><div class="en"><span class="w" data-li="6" data-wi="0">They</span> <span class="w" data-li="6" data-wi="1">studied</span> <span class="w" data-li="6" data-wi="2">mice</span> <span class="w" data-li="6" data-wi="3">that</span> <span class="w" data-li="6" data-wi="4">had</span> <span class="w" data-li="6" data-wi="5">colored</span> <span class="w" data-li="6" data-wi="6">dye</span> <span class="w mk" data-li="6" data-wi="7">injected</span> <span class="w mk" data-li="6" data-wi="8">into</span> <span class="w" data-li="6" data-wi="9">their</span> <span class="w" data-li="6" data-wi="10">brains.</span></div><div class="note">injected into → /ɪnˈdʒektɪdˈɪntə/</div></div><div class="line" data-li="7"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">他们观察小鼠在睡眠和清醒状态下的脑部。</span></div><div class="en"><span class="w" data-li="7" data-wi="0">They</span> <span class="w" data-li="7" data-wi="1">observed</span> <span class="w" data-li="7" data-wi="2">the</span> <span class="w" data-li="7" data-wi="3">mice</span> <span class="w" data-li="7" data-wi="4">brains</span> <span class="w" data-li="7" data-wi="5">as</span> <span class="w" data-li="7" data-wi="6">they</span> <span class="w" data-li="7" data-wi="7">slept</span> <span class="w" data-li="7" data-wi="8">and</span> <span class="w" data-li="7" data-wi="9">when</span> <span class="w" data-li="7" data-wi="10">they</span> <span class="w" data-li="7" data-wi="11">were</span> <span class="w" data-li="7" data-wi="12">awake.</span></div></div><div class="line" data-li="8"><div class="lh"><button class="pbtn" data-act="play" title="播放整句">▶</button><button class="pbtn" data-act="pause" title="暂停">⏸</button><button class="pbtn" data-act="loop" title="循环这一句">🔁</button><span class="cn">研究人员说，他们看到睡眠中小鼠的大脑正在高速运转。</span></div><div class="en"><span class="w" data-li="8" data-wi="0">The</span> <span class="w" data-li="8" data-wi="1">researchers</span> <span class="w" data-li="8" data-wi="2">say</span> <span class="w" data-li="8" data-wi="3">they</span> <span class="w" data-li="8" data-wi="4">saw</span> <span class="w" data-li="8" data-wi="5">that</span> <span class="w" data-li="8" data-wi="6">the</span> <span class="w mk" data-li="8" data-wi="7">brains</span> <span class="w mk" data-li="8" data-wi="8">of</span> <span class="w" data-li="8" data-wi="9">sleeping</span> <span class="w" data-li="8" data-wi="10">mice</span> <span class="w" data-li="8" data-wi="11">were</span> <span class="w mk" data-li="8" data-wi="12">hard</span> <span class="w mk" data-li="8" data-wi="13">at</span> <span class="w mk" data-li="8" data-wi="14">work.</span></div><div class="note">brains of → /breɪnzəv/ ｜ hard at work → /hɑːdətˈwɜːk/</div></div>
 </div>
 
