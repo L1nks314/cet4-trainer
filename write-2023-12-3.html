@@ -257,13 +257,27 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
     .tip b{color:#e8b665;}
   }
   /* VIS_V1_END */
+
+/* PAGEHEAD_V1_START */
+header.ph{background:linear-gradient(150deg,#1d3fb6 0%,#172c65 100%);color:#fff;
+  border-radius:18px;padding:17px 18px;margin:0 0 14px;
+  box-shadow:0 10px 26px -12px rgba(20,26,48,.5);}
+header.ph>h1{margin:0;padding:0;border-left:0;font-size:17px;font-weight:700;
+  letter-spacing:-.2px;line-height:1.4;color:#fff;}
+header.ph>p{margin:7px 0 0;color:rgba(255,255,255,.66);font-size:12.5px;line-height:1.65;}
+header.ph>p b,header.ph>p strong{color:rgba(255,255,255,.95);font-weight:600;}
+@media (prefers-color-scheme:dark){
+  header.ph{background:linear-gradient(150deg,#182a63 0%,#0d1226 100%);box-shadow:none;}
+}
+/* PAGEHEAD_V1_END */
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/misans@5.0.0/lib/Normal/MiSansVF.min.css" crossorigin="anonymous">
 </head>
 <body>
 
 <a class="back" href="writing.html">← 返回写作与翻译</a>
-<h1>写作 · 2023年12月 第3套</h1>
+<header class="ph">
+<h1>写作 · 2023年12月 第3套</h1></header>
 
 <div class="card">
   <div class="chead"><h2>题目</h2><span class="cmeta">建议 30 分钟</span></div>
@@ -1528,6 +1542,6 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
   }
 })();
 </script>
-<script src="goal.js"></script>
+<script src="goal.js?v=2"></script>
 </body>
 </html>

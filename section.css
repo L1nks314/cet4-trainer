@@ -286,8 +286,8 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 #cloudPhoto:active{opacity:1}
 #cloudPhoto:disabled{background:#c9d4e4;cursor:default}
 #cloudSt{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:12.5px;color:var(--sub);box-shadow:0 4px 14px rgba(15,23,42,.10);max-width:220px;line-height:1.45}
-#cloudSt.read{color:var(--green);border-color:#b8e6c8;background:#f2fbf5}
-#cloudSt.err{color:var(--red);border-color:#f3c6c6;background:#fff5f5}
+#cloudSt.read{color:var(--green);border-color:var(--green-line);background:var(--green-soft)}
+#cloudSt.err{color:var(--red);border-color:var(--line);background:var(--red-soft)}
 #cloudBar.hide-photo #cloudPhoto{display:none}
 @media (max-width:640px){
   #cloudBar{gap:6px;margin:14px auto 8px}
@@ -300,13 +300,13 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
   .card>h2{font-size:15.5px;}
   .card>.hint{font-size:12.5px;margin-bottom:10px;line-height:1.65;}
 
-  header{background:var(--card)!important;color:var(--txt)!important;border:1px solid var(--line);
-    border-radius:14px;padding:13px 15px;margin-bottom:10px;box-shadow:var(--shadow);
+  header{background:linear-gradient(150deg,#1d3fb6 0%,#172c65 100%)!important;color:#fff!important;
+    border:0;border-radius:18px;padding:17px 18px;margin-bottom:14px;
+    box-shadow:0 10px 26px -12px rgba(20,26,48,.5);
     position:relative;overflow:hidden;}
-  header::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue);}
-  header h1{margin:0 0 2px!important;font-size:16.5px;font-weight:700;letter-spacing:-.2px;}
-  header .meta{font-size:12.5px;color:var(--sub);line-height:1.6;}
-  header .meta b{color:var(--txt3);font-weight:600;}
+  header h1{margin:0 0 5px!important;font-size:17px;font-weight:700;letter-spacing:-.2px;color:#fff!important;}
+  header .meta{font-size:12px;color:rgba(255,255,255,.68);line-height:1.65;}
+  header .meta b{color:rgba(255,255,255,.95);font-weight:600;}
   .badge{display:none!important;}
 
   /* 素材说明：收成一行 */
@@ -497,4 +497,9 @@ body{font-family:"MiSans VF",-apple-system,BlinkMacSystemFont,"PingFang SC","Hir
   /* 亮蓝底配白字只有 2.7:1，加深底色保留白字 */
   #dictBar button.pri,#cloudPhoto,.segpill,.segtoast button{background:#2f4f9e;color:#fff;}
   .card{border:1px solid rgba(255,255,255,.055);box-shadow:none;}
+}
+
+@media (prefers-color-scheme: dark){
+  /* 亮色渐变在暗底下过亮，压暗两档 */
+  header{background:linear-gradient(150deg,#182a63 0%,#0d1226 100%)!important;box-shadow:none;}
 }

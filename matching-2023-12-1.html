@@ -264,7 +264,8 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 <body>
 
 <a class="back" href="reading.html">← 阅读训练</a>
-<h1>长篇阅读 · 信息匹配 · 2023-12-1</h1>
+<header class="ph">
+<h1>长篇阅读 · 信息匹配 · 2023-12-1</h1></header>
 <div class="tip b" style="margin-bottom:14px"><b>题型：</b>给下面 10 个句子各配一个段落字母（A–L）。
 先读句子划关键词，再回原文定位。原文见左侧，题目在右侧。</div>
 
@@ -1463,6 +1464,19 @@ var _sb=document.getElementById('sy-m1'); if(_sb)_sb.addEventListener('click',fu
  box-shadow:0 2px 10px rgba(0,0,0,.10);cursor:pointer;-webkit-tap-highlight-color:transparent}
 #ansReset:active{transform:scale(.96);background:#fdf6e3}
 @media(max-width:420px){#ansReset{bottom:66px;padding:6px 10px;font-size:12px}}
+
+/* PAGEHEAD_V1_START */
+header.ph{background:linear-gradient(150deg,#1d3fb6 0%,#172c65 100%);color:#fff;
+  border-radius:18px;padding:17px 18px;margin:0 0 14px;
+  box-shadow:0 10px 26px -12px rgba(20,26,48,.5);}
+header.ph>h1{margin:0;padding:0;border-left:0;font-size:17px;font-weight:700;
+  letter-spacing:-.2px;line-height:1.4;color:#fff;}
+header.ph>p{margin:7px 0 0;color:rgba(255,255,255,.66);font-size:12.5px;line-height:1.65;}
+header.ph>p b,header.ph>p strong{color:rgba(255,255,255,.95);font-weight:600;}
+@media (prefers-color-scheme:dark){
+  header.ph{background:linear-gradient(150deg,#182a63 0%,#0d1226 100%);box-shadow:none;}
+}
+/* PAGEHEAD_V1_END */
 </style>
 <button id="ansReset" title="清空本套作答，重新做一遍（作答与判分已自动保存，刷新不丢）">🔄 重做本套</button>
 <script>
@@ -1644,6 +1658,6 @@ var _sb=document.getElementById('sy-m1'); if(_sb)_sb.addEventListener('click',fu
 })();
 </script>
 <!-- __ANS_SNAP_END__ -->
-<script src="goal.js"></script>
+<script src="goal.js?v=2"></script>
 </body>
 </html>

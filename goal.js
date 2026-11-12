@@ -61,8 +61,8 @@
     var st = document.createElement('style');
     st.textContent = css;
     document.head.appendChild(st);
-    if (h.tagName === 'HEADER') h.insertAdjacentHTML('beforeend', html);
-    else h.insertAdjacentHTML('afterend', html);
+    /* 页头是深色块，任务卡要落在块外，不能嵌进页头 */
+    h.insertAdjacentHTML('afterend', html);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);

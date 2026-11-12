@@ -27,8 +27,8 @@
     font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
     line-height:1.75;font-size:16px;-webkit-text-size-adjust:100%;}
   .wrap{max-width:790px;margin:0 auto;}
-  header{background:linear-gradient(135deg,#1f3a5f,#43606f);color:#fff;border-radius:15px;padding:22px;margin-bottom:16px;}
-  header h1{margin:0 0 6px;font-size:20px;}
+  header{background:linear-gradient(150deg,#1d3fb6 0%,#172c65 100%);color:#fff;border-radius:18px;padding:17px 18px;margin-bottom:12px;}
+  header h1{margin:0 0 6px;font-size:17px;}
   header .meta{font-size:13px;opacity:.9;line-height:1.8;}
   .badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
     border-radius:20px;padding:2px 11px;font-size:12px;margin:8px 6px 0 0;}
@@ -340,6 +340,10 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
   .locked-sec{filter:none !important;opacity:1 !important;pointer-events:auto !important;user-select:auto !important;}
   #resultCard,#receiptCard{display:block !important;}
   #submitBtn{display:none !important;}
+
+@media (prefers-color-scheme:dark){
+  header{background:linear-gradient(150deg,#182a63 0%,#0d1226 100%);}
+}
 </style></noscript>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/misans@5.0.0/lib/Normal/MiSansVF.min.css" crossorigin="anonymous">
 </head>
@@ -1971,6 +1975,6 @@ var QUIZ = [];
   window.__dictMode = { playLine: playLine, togglePause: doPause };
 })();
 </script>
-<script src="goal.js"></script>
+<script src="goal.js?v=2"></script>
 </body>
 </html>

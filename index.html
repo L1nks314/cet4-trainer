@@ -189,6 +189,9 @@ a.it.now .tx{font-weight:700;color:var(--green)}
 .goalcard .grow i{flex:0 0 34px;font-style:normal;font-weight:700;color:var(--sub2,#8b93a1);font-size:11.5px;white-space:nowrap}
 .goalcard .grow.cur{color:var(--txt,#1b1e23);font-weight:600}
 .goalcard .grow.cur i{color:var(--blue,#2563eb)}
+/* 分段明细另起一行：并排会在「·」处折断，读起来像掉字 */
+.goalcard .grow .gdet{display:block;font-style:normal;font-size:11px;font-weight:500;
+  color:var(--sub2,#8b93a1);line-height:1.5;letter-spacing:.2px}
 /* 校准期横幅 */
 .calib{margin:0 0 12px;padding:12px 14px;border-radius:13px;
  background:linear-gradient(180deg,#fff8ed,#fffdf9);border:1px solid #f5d9b0}
@@ -257,7 +260,7 @@ a.it.now .tx{font-weight:700;color:var(--green)}
       --blue:#7a97ff;--blue-soft:#1a2340;--green:#43cf92;--green-soft:#122e1f;
       --red:#ef7a6b;--red-soft:#341d19;--amber:#e0a53f;--amber-soft:#302612;
       --amber-line:#463619;--shadow:none;--shadow-lg:none;}
-    .hero{background:linear-gradient(150deg,#26386f 0%,#141a30 100%) !important;box-shadow:none;}
+    .hero{background:linear-gradient(150deg,#182a63 0%,#0d1226 100%) !important;box-shadow:none;}
     .hero .note{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1);}
     .card{box-shadow:none;border:1px solid rgba(255,255,255,.055);}
     /* 亮蓝底配白字只有 2.7:1，加深底色保留白字 */
@@ -396,7 +399,7 @@ var GOALS = {
     listen:"先测一次整套，看 25 题对几题（别管目标）", read:"11/10 那周补 1 套（两篇 10 题），把 7/10 的样本凑够",
     match:"做 1 篇，「最多错一两个」需要变成数字", write:"写 1 篇，看模板基础在哪一档" },
   base: { name:"打底期", range:"11/9 – 11/22",
-    listen:"整套听力 ≥15/25（A 5/7 · B 5/8 · C 5/10）", read:"仔细阅读 ≥82%",
+    listen:"整套听力 ≥15/25<em class=\"gdet\">A 5/7 · B 5/8 · C 5/10</em>", read:"仔细阅读 ≥82%",
     match:"长篇匹配 ≥85%", write:"写作进 9 分档：三段式 + 2 套模板" },
   exam: { name:"上考场期", range:"11/23 – 12/11",
     listen:"整套听力 ≥18/25，第 3 段不掉链子", read:"仔细阅读 ≥85%，两篇 15 分钟做完",
@@ -1150,6 +1153,6 @@ Promise.all([
   };
 })();
 </script>
-<script src="goal.js"></script>
+<script src="goal.js?v=2"></script>
 </body>
 </html>
