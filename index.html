@@ -244,6 +244,27 @@ a.it.now .tx{font-weight:700;color:var(--green)}
   .card h2{font-size:15px;font-weight:700;letter-spacing:.01em;}
   .tt{font-size:15.5px;font-weight:650;letter-spacing:-.01em;}
   .card{text-wrap:pretty;}
+  /* 首屏唯一的动作入口：白底实心按钮，压在深蓝 hero 里。
+     之前「去做第 1 步」在任务卡底部，手机要滚一屏才看得到，
+     打开页面到开始听力多了一次滑动——这里省掉。 */
+  .herocta{display:flex;align-items:center;gap:12px;justify-content:space-between;
+    margin-top:15px;background:#fff;color:#1b2a5e;border-radius:14px;
+    padding:13px 16px;text-decoration:none;position:relative;
+    box-shadow:0 10px 24px -12px rgba(6,14,44,.6);
+    transition:transform .14s ease,box-shadow .14s ease;}
+  .herocta:active{transform:scale(.985);box-shadow:0 6px 16px -12px rgba(6,14,44,.6);}
+  .herocta .ct{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;line-height:1.32;}
+  .herocta .cm{display:block;font-size:12px;font-weight:500;color:#5b6a94;
+    margin-top:2px;font-style:normal;line-height:1.32;}
+  .herocta .ca{font-size:17px;font-weight:700;color:#3355d1;flex:none;line-height:1;}
+  .herocta.done .ca{display:none;}
+  @media (prefers-color-scheme: dark){
+    /* 纯白在整片暗色里偏刺眼，压成冷白；文字与箭头同步降一档 */
+    .herocta{background:#eef1f8;color:#18224a;
+      box-shadow:0 10px 26px -14px rgba(0,0,0,.85);}
+    .herocta .cm{color:#4e5a7a;}
+    .herocta .ca{color:#2f4f9e;}
+  }
   /* MiSans 比苹方宽约 4%，这一行会断在「C」后面。降 0.5px 刚好收回来 */
   .goalcard .grow span{font-size:12px;}
   .td{font-size:13px;line-height:1.62;margin-top:5px;}
@@ -461,7 +482,7 @@ function setSync(ok){
   var hh=String(t.getHours()).padStart(2,"0"), mm=String(t.getMinutes()).padStart(2,"0");
   if(ok===true){ el.textContent="☁ "+hh+":"+mm; el.style.color=""; }
   else if(ok===false){ el.textContent="⌂ 本机"; el.style.color="rgba(255,255,255,.72)"; }
-  else { el.textContent="☁ 同步中…"; }
+  else { el.textContent="☁ 同步中"; }
 }
 
 function pull(){
@@ -531,12 +552,31 @@ function renderHead(){
    '<div class="top"><div class="days">'+toExam+'<small>天后考试</small></div>'
    +'<div class="stage">'+(CALIB_G ? '校准期 · 只测数据' : st[2])+'</div></div>'
    +'<div class="bar"><i style="width:'+Math.max(pct,3)+'%"></i></div>'
-   +'<div class="sub">集训第 '+dayNo+' 天 / 共 '+totalDays+' 天 · '+(today.getMonth()+1)+'月'+today.getDate()+'日 周'+'日一二三四五六'[wd]
-   +' &nbsp;·&nbsp; <span id="syncTag" style="font-size:12px;opacity:.9">☁ 同步中…</span></div>'
+   +'<div class="sub">集训第 '+dayNo+' 天 / 共 '+totalDays+' 天 · '+(today.getMonth()+1)+'/'+today.getDate()+' 周'+'日一二三四五六'[wd]
+   +' <span style="white-space:nowrap">&nbsp;·&nbsp;<span id="syncTag" style="font-size:12px;opacity:.9">☁ 同步中</span></span></div>'
    +(toExam <= 7 && toExam >= 0
      ? '<div class="note" style="background:#fef6e7;color:#7a5b00;border-radius:9px;padding:8px 11px;margin-top:9px">'
        + '考前收口期，<b>不再做新套</b>。按 <a href="exam-week.html" style="color:#7a5b00;text-decoration:underline">考前七天表</a> 走。</div>'
-     : '<div class="note">一天一套听力 + 一个副项 · 一小时上下（目标见下方卡片）</div>');
+     : '')
+   +'<a class="herocta" id="heroCta" href="listen-set.html">'
+   +  '<span class="cx"><span class="ct">打开今天的训练</span>'
+   +    '<span class="cm">正在读取进度…</span></span>'
+   +  '<span class="ca">→</span></a>';
+   /* 原来这里还有一条「一天一套听力 + 一个副项 · 一小时上下（目标见下方卡片）」。
+      按钮进来之后它是重复的：动作按钮已经说了做什么，目标卡就在下一屏写着阶段和四项达标线，
+      而且「约一小时」和按钮上的「22′」并列会让人以为是两个不同的量。删掉。 */
+}
+
+/* 首页 hero 里的主按钮。renderTasks 每算出一个「今天该做什么」就回填一次：
+   休息日、最小档、听力的某一步，出口不同但入口只有一个。 */
+function setCta(href, main, meta, done){
+  var a = document.getElementById('heroCta');
+  if (!a) return;
+  a.href = href;
+  a.classList.toggle('done', !!done);
+  var t = a.querySelector('.ct'), m = a.querySelector('.cm');
+  if (t) t.textContent = main;
+  if (m) m.textContent = meta || '';
 }
 
 var TIER_KEY = 'cet4_tier_';
@@ -656,6 +696,7 @@ function renderTasks(){
      +'<a class="btn ghost" href="review.html">随便听 10 分钟 →</a></div></div>' + streak;
     document.getElementById("tasks").innerHTML = h1;
     bindBoxes();
+    setCta('review.html', '随便听 10 分钟', '休息日 · 不打卡也不断签');
     return;
   }
 
@@ -803,12 +844,14 @@ function renderTasks(){
        A→B→C 一次播完 22′，25 题一屏，交卷后看分段得分，
        再只精听错得最多的那一段 3 句。三步，不再拆成六步。 */
     var ST = getSteps();
+    /* c = 塞进 hero 主按钮的动作名。t 是卡片里的完整步骤名，
+       放进按钮会折行（「第 1 步 · 整套连做 A→B→C」在 375px 下正好卡边缘），所以单独给短的。 */
     var setSteps = [
-      {k:'l1', n:'①', t:'整套连做 A→B→C', m:'22′',
+      {k:'l1', c:'开始整套听力', n:'①', t:'整套连做 A→B→C', m:'22′',
        d:'一次播完，不暂停、不回放、不拖进度。25 题全在一屏，边听边点；开播前可以先把三段选项扫一遍。'},
-      {k:'l2', n:'②', t:'交卷看分段得分', m:'5′',
+      {k:'l2', c:'交卷看分段得分', n:'②', t:'交卷看分段得分', m:'5′',
        d:'交卷后才出答案。先看 A/B/C 各错几题、错在哪几道，别盯总分——总分只跟上一轮比。'},
-      {k:'l3', n:'③', t:'精听错最多那段 3 句', m:'10′',
+      {k:'l3', c:'精听错最多的那段', n:'③', t:'精听错最多那段 3 句', m:'10′',
        d:'只做错得最多的那一段，3 句。每句连放 3 遍；听不出来就跟读 + 脱稿复述，说得出才算过。'}
     ];
     if (SHORT) setSteps = setSteps.slice(0, 2);
@@ -855,6 +898,19 @@ function renderTasks(){
     tHtml += '<div class="task' + (dnL ? " on" : "") + '" data-k="l"><div class="box' + (dnL ? " on" : "") + '"></div>'
       + '<div class="tk"><div class="tt">今天这套做完了</div>'
       + '<div class="td">交卷后会自动勾上；没交成、或者只听了没做题，就手动点这里。</div></div></div>';
+  }
+
+  /* ── hero 主按钮：把「今天该点哪儿」挪到首屏 ──
+     四种出口：考试周 / 最小档 / 听力某一步 / 今天已走完。 */
+  var _setNo = '第 ' + (setIdx + 1) + '/' + SLIST.length + ' 套';
+  if (toExam <= 7 && toExam >= 0){
+    setCta('exam-week.html', '按考前七天表走', '不做新套 · 每天一个收口动作');
+  } else if (tier === 'min'){
+    setCta(setUrl, '做 10 分钟就关', '最小档 · 听到哪算哪 · ' + _setNo);
+  } else if (curS){
+    setCta(_hrefOf(curS), curS.c, curS.m + ' · ' + _setNo);
+  } else {
+    setCta('records.html', '今天这套做完了', '看记录 · 明天换下一套', true);
   }
 
   if (side === 'read'){
