@@ -205,6 +205,37 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
 #markBar{width:44px;height:44px}
 #mkFab{font-size:19px}
 /* INK_V1_START */
+
+  /* ---------- 答题解析 ANA_V1（与 section.css 同一套）---------- */
+  .ana-slot{margin:8px 0 2px}
+  .ana{margin:8px 0 0;border:1px solid var(--line);border-radius:11px;background:var(--soft);overflow:hidden}
+  .ana>summary{display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;list-style:none;
+    font-size:12.5px;line-height:1.5;-webkit-user-select:none;user-select:none}
+  .ana>summary::-webkit-details-marker{display:none}
+  .ana>summary b{color:var(--green);font-size:12.5px}
+  .ana>summary em{margin-left:auto;color:var(--blue);font-style:normal;font-size:11.5px;font-weight:600}
+  .ana>summary em::before{content:'展开解析'}
+  .ana[open]>summary em::before{content:'收起'}
+  .ana[open]>summary{border-bottom:1px dashed var(--line)}
+  .ab{padding:2px 10px 10px}
+  .ar{display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--line2)}
+  .ar:last-of-type{border-bottom:0}
+  .ar>span{flex:0 0 26px;font-size:10.5px;color:var(--sub2);padding-top:3px}
+  .ar>div{flex:1;min-width:0}
+  .aen{margin:0 0 3px;font-family:Georgia,"Times New Roman",serif;font-size:13px;line-height:1.6;
+    color:var(--txt2);word-break:break-word}
+  .azh{margin:0;font-size:11.5px;line-height:1.6;color:var(--sub)}
+  .apair{margin-bottom:6px}
+  .apair code{display:block;background:var(--grey);border-radius:5px;padding:3px 7px;
+    font-size:11px;color:var(--txt2);word-break:break-word}
+  .apair code+code{margin-top:3px;padding-left:17px;position:relative;background:var(--green-soft);color:var(--green)}
+  .apair code+code::before{content:'→';position:absolute;left:6px;top:3px;color:var(--sub2)}
+  .aopt{font-size:12px;line-height:1.7;color:var(--txt2);margin-bottom:3px}
+  .aopt b{display:inline-block;min-width:12px;color:var(--sub);font-weight:700}
+  .aopt em{font-style:normal;font-size:10px;padding:1px 4px;border-radius:4px;margin:0 4px;
+    background:var(--red-soft);color:var(--red);white-space:nowrap}
+  .atip{margin:8px 0 0;padding:6px 8px;font-size:11.5px;line-height:1.65;color:var(--amber);
+    background:var(--amber-soft);border-left:2px solid var(--amber);border-radius:0 5px 5px 0}
 </style>
 </head>
 <body>
@@ -707,6 +738,7 @@ function submit(){
     var row = function(d){
       return '<div class="wd"><div class="n">' + d.no + '</div><div class="t">' + esc(d.stem.replace(/^\d+\.\s*/, ''))
         + '<div class="a">你选 ' + (d.mine || '空') + ' · 正确 <b>' + d.right + '</b></div>'
+        + '<div class="ana-slot" data-no="' + d.no + '"></div>'
         + '<div class="whys">' + WHY.map(function(w){
             return '<button class="wy" data-qid="' + d.qid + '" data-page="' + d.page
               + '" data-w="' + w[0] + '">' + w[1] + '</button>';
@@ -727,12 +759,63 @@ function submit(){
   h += '<a class="golink" href="index.html">← 回首页</a></div>';
   $('res').innerHTML = h;
   $('res').classList.remove('hide');
+  loadAna();
 
   var mw = $('moreW');
   if (mw) mw.addEventListener('click', function(){
     $('wMore').classList.remove('hide');
     mw.classList.add('hide');
   });
+
+  /* ---------- 答题解析 ----------
+     数据在 explain/<套号>.js，本页只负责把错题行接上。
+     没有数据文件的套次直接跳过，不影响交卷。 */
+  function loadAna(){
+    var A = (window.CET4_ANA || {})[SID];
+    if (A){ fillAna(A); return; }
+    if (window.__anaLoading === SID) return;
+    window.__anaLoading = SID;
+    var sc = document.createElement('script');
+    sc.src = 'explain/' + SID + '.js';
+    sc.onload = function(){
+      var B = (window.CET4_ANA || {})[SID];
+      if (B) fillAna(B);
+    };
+    sc.onerror = function(){};
+    document.head.appendChild(sc);
+  }
+
+  function fillAna(A){
+    var slots = document.querySelectorAll('.ana-slot');
+    for (var i = 0; i < slots.length; i++){
+      var sl = slots[i];
+      if (sl.firstChild) continue;
+      var no = sl.getAttribute('data-no'), it = null, k;
+      for (k in A.secs){ if (A.secs[k]['q' + no]){ it = A.secs[k]['q' + no]; break; } }
+      if (!it) continue;
+      var d = document.createElement('details');
+      d.className = 'ana';
+      var h = '<summary><b>答案 ' + esc(it.ans) + '</b><em></em></summary><div class="ab">';
+      h += (it.loc || []).map(function(x){
+        return '<div class="ar"><span>定位</span><div>'
+          + '<p class="aen">' + esc(x.en) + '</p><p class="azh">' + esc(x.zh) + '</p></div></div>';
+      }).join('');
+      if (it.pairs && it.pairs.length){
+        h += '<div class="ar"><span>替换</span><div>' + it.pairs.map(function(p){
+          return '<div class="apair"><code>' + esc(p[0]) + '</code><code>' + esc(p[1]) + '</code></div>';
+        }).join('') + '</div></div>';
+      }
+      if (it.opts){
+        h += '<div class="ar"><span>干扰</span><div>' + Object.keys(it.opts).sort().map(function(k2){
+          var o = it.opts[k2];
+          return '<div class="aopt"><b>' + k2 + '</b><em>' + esc(o.kind) + '</em>' + esc(o.why) + '</div>';
+        }).join('') + '</div></div>';
+      }
+      if (it.tip) h += '<p class="atip">' + esc(it.tip) + '</p>';
+      d.innerHTML = h + '</div>';
+      sl.appendChild(d);
+    }
+  }
 
   /* 错题本：交卷这一刻就落盘，不等用户点任何东西。
      单段页一直是「判分后写 cet4_wrongbook」，整套页从来没写，

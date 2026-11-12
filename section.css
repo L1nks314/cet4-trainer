@@ -503,3 +503,40 @@ body{font-family:"MiSans VF",-apple-system,BlinkMacSystemFont,"PingFang SC","Hir
   /* 亮色渐变在暗底下过亮，压暗两档 */
   header{background:linear-gradient(150deg,#182a63 0%,#0d1226 100%)!important;box-shadow:none;}
 }
+
+/* ---------- 答题解析 ANA_V1（2025-12-1 起）----------
+   错题在题目下方原地展开：定位句（可点播）→ 同义替换 → 干扰项归因 → 一句提醒。
+   数据在 explain/<套号>.js，样式只有这一处。 */
+.ana{margin:12px 0 10px;border:1px solid var(--line);border-radius:11px;background:var(--soft);overflow:hidden}
+.ana>summary{display:flex;align-items:center;gap:8px;padding:9px 11px;cursor:pointer;list-style:none;
+  font-size:13px;line-height:1.5;-webkit-user-select:none;user-select:none}
+.ana>summary::-webkit-details-marker{display:none}
+.ana>summary b{color:var(--green);font-size:13px}
+.ana>summary em{margin-left:auto;color:var(--blue);font-style:normal;font-size:12px;font-weight:600}
+.ana>summary em::before{content:'展开解析'}
+.ana[open]>summary em::before{content:'收起'}
+.ana[open]>summary{border-bottom:1px dashed var(--line)}
+.ab{padding:2px 11px 11px}
+.ar{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line2)}
+.ar:last-of-type{border-bottom:0}
+.ar>span{flex:0 0 28px;font-size:11px;color:var(--sub2);padding-top:3px;letter-spacing:.5px}
+.ar>div{flex:1;min-width:0}
+.aen{margin:0 0 3px;font-family:Georgia,"Times New Roman",serif;font-size:13.5px;line-height:1.65;
+  color:var(--txt2);word-break:break-word}
+.azh{margin:0;font-size:12px;line-height:1.6;color:var(--sub)}
+.apb{display:inline-flex;align-items:center;gap:3px;margin:0 0 6px;padding:3px 9px;border-radius:20px;
+  border:1px solid var(--line);background:var(--card);color:var(--blue);
+  font:600 11.5px/1.5 inherit;cursor:pointer}
+.apb:active{transform:scale(.97)}
+.apair{margin-bottom:7px;font-size:12px;line-height:1.65}
+.apair code{display:block;background:var(--grey);border-radius:5px;padding:3px 7px;
+  font-size:11.5px;color:var(--txt2);word-break:break-word}
+.apair code+code{margin-top:3px;padding-left:18px;position:relative;
+  background:var(--green-soft);color:var(--green-ink)}
+.apair code+code::before{content:'→';position:absolute;left:6px;top:3px;color:var(--sub2)}
+.aopt{font-size:12.5px;line-height:1.7;color:var(--txt2);margin-bottom:4px}
+.aopt b{display:inline-block;min-width:13px;color:var(--sub);font-weight:700}
+.aopt em{font-style:normal;font-size:10.5px;padding:1px 5px;border-radius:4px;margin:0 5px;
+  background:var(--red-soft);color:var(--red);white-space:nowrap}
+.atip{margin:9px 0 0;padding:7px 9px;font-size:12px;line-height:1.7;color:var(--amber-ink,var(--amber));
+  background:var(--amber-soft);border-left:2px solid var(--amber);border-radius:0 5px 5px 0}
