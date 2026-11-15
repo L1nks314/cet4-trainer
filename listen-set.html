@@ -302,6 +302,7 @@ body.penon input,body.penon textarea{-webkit-user-select:text;user-select:text;t
   </div>
 </div>
 
+<script src="hist.js?v=1"></script>
 <script>
 (function(){
 'use strict';
@@ -333,12 +334,31 @@ function todayStr(){
   var d = new Date();
   return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
 }
+/* 结果卡里的历史一行。
+   注意调用时机：结果卡先渲染、成绩后写入（ls('cet4_set_') 在渲染之后），
+   所以这里把本次这一条拼进去再算，否则「第几次」会少一次。 */
+function histLine(v){
+  if (!window.CET4HIST) return '';
+  var a = CET4HIST.read().filter(function(x){ return !(x.d === todayStr() && x.s === SID); });
+  if (v) a = a.concat([{d: todayStr(), s: SID, v: v, u: 0, ts: Date.now()}]);
+  if (a.length < 2) return '';
+  var seg = a.slice(-5), n = seg.length, all = 0;
+  seg.forEach(function(x){ all += x.v[0] + x.v[1] + x.v[2]; });
+  var d = all / n, cur = a[a.length - 1], prev = a[a.length - 2];
+  var dv = (cur.v[0] + cur.v[1] + cur.v[2]) - (prev.v[0] + prev.v[1] + prev.v[2]);
+  return '<p class="dim" style="margin:9px 0 0">第 <b>' + a.length + '</b> 次整套听力'
+    + ' · 近 ' + n + ' 次平均 <b>' + d.toFixed(1) + '/25</b>'
+    + ' · 比上一次 <b>' + (dv > 0 ? '+' : '') + dv + '</b></p>';
+}
 function ls(k, v){
   try{
     if (v === undefined) return localStorage.getItem(k);
     localStorage.setItem(k, v);
   }catch(e){ return null; }
 }
+
+/* 进页面先合一次历史：把老的 cet4_set_* 迁进来，顺便续期云端那 12 小时 */
+if (window.CET4HIST) CET4HIST.sync();
 function setTitleOf(id){
   var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(id);
   if (!m) return id;
@@ -701,9 +721,26 @@ function submit(){
   var level = score >= 20 ? 'green' : (score >= 15 ? 'amber' : 'red');
   /* 三档都说「明天换下一套」：排期是 13 套轮流走完再进第二轮，
      结果页原来说「明天同一套再听一遍」，首页却会换成下一套——两边打架。 */
+  /* 低分段原来一律说「这套偏难 / 今天状态不对」——那是猜的。
+     现在有历史了，直接跟他自己的近 5 次平均比：持平就说持平，
+     免得 14/25 这种正常水平被安慰成「状态不好」，第二天又碰同样的墙。 */
+  var _h = (window.CET4HIST ? CET4HIST.read() : []).filter(function(x){
+    return !(x.d === todayStr() && x.s === SID);
+  }).slice(-5);
+  var _sum = 0;
+  _h.forEach(function(x){ _sum += x.v[0] + x.v[1] + x.v[2]; });
+  var _avg = _h.length ? _sum / _h.length : 0, _d = _h.length ? score - _avg : 0;
+  var _f = function(n){ return (Math.round(n * 10) / 10).toFixed(1); };
+
   var tip = score >= 20 ? '这一套稳了。明天换下一套。'
           : score >= 15 ? '中档。做错的题按段归因：是没听见，还是听见了没反应过来。明天换下一套。'
-          : '这一套偏难，或者今天状态不对。<b>别在这一套上耗</b>——按顺序做下一套，13 套走完第二轮再回来，前后两次的分数差才是真进步。';
+          : _h.length >= 2
+            ? (_d <= -3
+                ? '比近 ' + _h.length + ' 次平均（' + _f(_avg) + '）低 ' + _f(-_d) + ' 分，这套确实难。<b>整套不用重做</b>——按顺序换下一套，13 套走完第二轮再回来。'
+                : _d >= 3
+                  ? '比近 ' + _h.length + ' 次平均（' + _f(_avg) + '）高 ' + _f(_d) + ' 分，还在往上走。<b>整套不用重做</b>，把错的那段精听一遍就够。'
+                  : '和近 ' + _h.length + ' 次平均（' + _f(_avg) + '）基本持平——不是这套难，是每次都栽在同一类题上。<b>整套不用重做</b>，精听错得最多的那段。')
+            : '这一套偏难，或者今天状态不对。<b>别在这一套上耗</b>——按顺序做下一套，13 套走完第二轮再回来，前后两次的分数差才是真进步。';
 
   var h = '<div class="card">'
     + '<div class="score"><div class="big" style="color:var(--' + level + ')">' + score + '</div>'
@@ -713,7 +750,8 @@ function submit(){
     + '<div class="cell"><div class="l">Section B</div><div class="v">' + per[1] + '/8</div></div>'
     + '<div class="cell"><div class="l">Section C</div><div class="v">' + per[2] + '/10</div></div>'
     + '</div>'
-    + '<p class="lead">' + tip + '</p>';
+    + '<p class="lead">' + tip + '</p>'
+    + histLine(per);
 
   /* 错得最多的那一段，优先精听。先比错题数（要精听的内容多），
      平局再比正确率（同样的错题数、分母更小 = 这段更没听懂），
@@ -883,6 +921,11 @@ function submit(){
     d: todayStr(), score: score, a: per, ts: Date.now(),
     used: T0 ? Math.round((Date.now() - T0) / 1000) : 0
   }));
+  /* 成绩存档：同一份数据进历史，首页据此画正确率（hist.js） */
+  if (window.CET4HIST){
+    CET4HIST.add({d: todayStr(), s: SID, v: per,
+      u: T0 ? Math.round((Date.now() - T0) / 1000) : 0, ts: Date.now()});
+  }
   /* 首页据此判断「今天整套做完了」，并把 ①② 两步自动勾上 */
   try{
     var dn = JSON.parse(localStorage.getItem('cet4_done') || '{}');
