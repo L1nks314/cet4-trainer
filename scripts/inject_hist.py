@@ -51,10 +51,11 @@ function renderTrend(){
 
   function tot(x){ return x.v[0] + x.v[1] + x.v[2]; }
   function lvl(n){ return n >= 20 ? 'green' : (n >= 15 ? 'amber' : 'red'); }
-  function tag(s){ return s.replace(/^\d{4}-/, '').replace('-', '/'); }
+  function tag(s){ return s.slice(2).replace(/-/g, '/'); }   /* 25/12/1：只留年月日里的年后两位，13 套里 12 月有好几套，砍到 12/1 会撞名 */
 
   var last = a.slice(-6), cur = a[a.length - 1], i;
-  var h = '<div class="trow"><span class="tl">听力整套 · 最近 ' + last.length + ' 次</span>'
+  var h = '<div class="trow"><span class="tl">听力整套'
+        + (a.length > 1 ? ' · 最近 ' + last.length + ' 次' : '') + '</span>'
         + '<a class="tlk" href="listen-set.html">再练一套 ›</a></div>'
         + '<div class="tbig"><b style="color:var(--' + lvl(tot(cur)) + ')">' + tot(cur) + '</b>'
         + '<span>/25 · ' + Math.round(tot(cur) / 25 * 100) + '%</span>'
@@ -85,16 +86,18 @@ function renderTrend(){
 
   var wi = 0;
   for (i = 1; i < 3; i++) if (pc[i] < pc[wi]) wi = i;
-  h += '<p class="tft">近 ' + n + ' 次平均 <b>' + (all / n).toFixed(1) + '/25</b>';
   if (a.length > 1){
+    h += '<p class="tft">近 ' + n + ' 次平均 <b>' + (all / n).toFixed(1) + '/25</b>';
     var d = tot(cur) - tot(a[a.length - 2]);
     h += ' · 比上一次 <b>' + (d > 0 ? '+' : '') + d + '</b>';
+    if (n >= 2){
+      h += '<br>短板 <b>' + names[wi] + '</b>（近 ' + n + ' 次 ' + sum[wi] + '/' + (n * den[wi]) + '）'
+         + ' · <a href="' + cur.s + '_Section' + 'ABC'[wi] + '.html?jt=1&st=3">精听 3 句 ›</a>';
+    }
+    h += '</p>';
   }
-  if (n >= 2){
-    h += '<br>短板 <b>' + names[wi] + '</b>（近 ' + n + ' 次 ' + sum[wi] + '/' + (n * den[wi]) + '）'
-       + ' · <a href="' + cur.s + '_Section' + 'ABC'[wi] + '.html?jt=1&st=3">精听 3 句 ›</a>';
-  }
-  h += '</p>';
+  /* 只有一条时不显示「平均」（和上面那个大数字完全重复），改成一句提示 */
+  else h += '<p class="tft">第一次记录已存。做完下一套，这里会连成趋势。</p>';
 
   el.innerHTML = h;
   el.style.display = '';
@@ -145,10 +148,13 @@ def patch_index(p):
 
 
 HIST_LINE_JS = '''
-/* 结果卡里的历史一行：只读 hist.js，没有记录就不显示 */
-function histLine(){
+/* 结果卡里的历史一行。
+   注意调用时机：结果卡先渲染、成绩后写入（ls('cet4_set_') 在渲染之后），
+   所以这里把本次这一条拼进去再算，否则「第几次」会少一次。 */
+function histLine(v){
   if (!window.CET4HIST) return '';
-  var a = CET4HIST.read();
+  var a = CET4HIST.read().filter(function(x){ return !(x.d === todayStr() && x.s === SID); });
+  if (v) a = a.concat([{d: todayStr(), s: SID, v: v, u: 0, ts: Date.now()}]);
   if (a.length < 2) return '';
   var seg = a.slice(-5), n = seg.length, all = 0;
   seg.forEach(function(x){ all += x.v[0] + x.v[1] + x.v[2]; });
@@ -192,7 +198,7 @@ def patch_listen_set(p):
         h = h.replace(old, new, 1)
         n += 1
 
-    if "+ histLine()" not in h:
+    if "+ histLine(per)" not in h:
         old = """    + '<p class="lead">' + tip + '</p>';"""
         assert old in h, 'listen-set: 结果卡锚点丢了'
         h = h.replace(old, """    + '<p class="lead">' + tip + '</p>'
