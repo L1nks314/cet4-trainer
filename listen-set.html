@@ -715,17 +715,24 @@ function submit(){
     + '</div>'
     + '<p class="lead">' + tip + '</p>';
 
-  /* 错得最多的那一段，优先精听。按错题数算，不按正确率——
-     0/8 和 0/10 正确率一样，但 C 错 10 道，更该精听。 */
-  var wn = [7 - per[0], 8 - per[1], 10 - per[2]];
-  var wi = (wn[2] >= wn[1] && wn[2] >= wn[0]) ? 2 : (wn[0] >= wn[1] ? 0 : 1);
+  /* 错得最多的那一段，优先精听。先比错题数（要精听的内容多），
+     平局再比正确率（同样的错题数、分母更小 = 这段更没听懂），
+     还平就按 A→B→C。原先平局固定落到 C，14/25 那档会把 A 段（3/7）
+     判给 C 段（6/10），而 A 才是正确率最低的。 */
+  var wt = [7, 8, 10];
+  var wn = [wt[0] - per[0], wt[1] - per[1], wt[2] - per[2]];
+  var wi = 0;
+  for (var si = 1; si < 3; si++){
+    if (wn[si] > wn[wi]) wi = si;
+    else if (wn[si] === wn[wi] && per[si] * wt[wi] < per[wi] * wt[si]) wi = si;
+  }
   var worst = 'ABC'[wi];
 
   if (!detail.length){
     h += '<p class="lead" style="margin-top:16px;color:var(--green);font-weight:700">25 题全对。这一套不用精听，明天换下一套，直接进第二轮。</p>';
   } else {
     h += '<p class="dim" style="margin:16px 0 0">接下来做这一步，只做这一步：错得最多的是 <b>Section ' + worst
-      + '</b>（' + per[wi] + '/' + [7, 8, 10][wi] + '）。</p>'
+      + '</b>（' + per[wi] + '/' + wt[wi] + '，错 ' + wn[wi] + ' 题）。</p>'
       /* st=3 必须带：精听页靠它判断「本段已经在整套里听过、交过卷了」，
          直接跳到第 3 步。少了它，用户会被要求再盲听一遍、再做一遍题，
          而且第 2 步的「下一步」要本段自己的交卷记录才解锁——那边永远点不动。 */
