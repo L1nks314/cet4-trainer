@@ -21,7 +21,10 @@
     if (!/^\d{4}-\d{2}-\d{2}$/.test(d) || !s || !v || v.length !== 3) return null;
     var a = [+v[0] || 0, +v[1] || 0, +v[2] || 0];
     if (a[0] > 7 || a[1] > 8 || a[2] > 10) return null;
-    var ts = +x.ts || Date.parse(d + 'T12:00:00') || 0;
+    var ds = Date.parse(d + 'T12:00:00') || 0, ts = +x.ts || ds;
+    /* 时间戳必须和日期同一天（±7 天）：跨端合并时见过「日期写 11-09、
+       时间戳却是去年」的脏记录，留着会在趋势图上多出一根没有过的柱子。 */
+    if (!ts || (ds && Math.abs(ts - ds) > 7 * 864e5)) return null;
     return {d: d, s: s, v: a, u: +x.u || 0, ts: ts};
   }
 
@@ -107,7 +110,10 @@
     var local = merge(read().concat(fromSets()));
     save(local);
     pending = pull().then(function(remote){
-      var all = save(merge(local.concat(remote)));
+      /* 这里必须重新读一次，不能用开跑时的 local：
+         拉取要走网络，这期间用户可能刚交完一卷（add() 已写进 storage），
+         用旧快照回写会把他刚交的那条冲掉。 */
+      var all = save(merge(read().concat(remote)));
       return push(all).then(function(){ pending = null; return all; },
         function(){ pending = null; return all; });
     });
